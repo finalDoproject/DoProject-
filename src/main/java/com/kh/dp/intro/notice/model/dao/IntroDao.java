@@ -1,4 +1,4 @@
-package com.kh.doproject.intro.notice.model.dao;
+package com.kh.dp.intro.notice.model.dao;
 
 public interface IntroDao {
 

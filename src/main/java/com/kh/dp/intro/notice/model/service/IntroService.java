@@ -1,4 +1,4 @@
-package com.kh.doproject.intro.notice.model.service;
+package com.kh.dp.intro.notice.model.service;
 
 public interface IntroService {
 
