@@ -7,8 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelpController {
 
 	@RequestMapping("/intro/help/help.do")
-	public String NoticeView() {
+	public String helpView() {
+		
+		return null;
+	}
+	
+	
+	@RequestMapping("/intro/help/helpDetail.do")
+	public String helpDetailView() {
 		
 		return null;
 	}
 }
+
