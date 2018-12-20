@@ -44,7 +44,7 @@
 							<!-- Section -->
 								<section>
 									<header class="major">
-										<h2>Erat lacinia</h2>
+										<h2>h2로 쓰는 글자</h2>
 									</header>
 									<div class="features">
 										<article>
