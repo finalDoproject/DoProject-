@@ -161,7 +161,9 @@
 										<li><a href="${pageContext.request.contextPath}/member/join.do">회원</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/notice/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/help/help.do">고객센터</a></li>
-
+										<li><a href="#"
+											onclick="window.open('${pageContext.request.contextPath}/chat/chat.ch', '채팅창',
+											'width=800, height=600, toolbar=no, menubar=no, scrollbars=no, resizable=yes');">채팅 테스트</a></li>
 									</ul>
 								</nav>
 
