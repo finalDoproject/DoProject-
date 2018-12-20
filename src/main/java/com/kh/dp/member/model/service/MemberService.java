@@ -1,4 +1,4 @@
-package com.kh.doproject.member.model.service;
+package com.kh.dp.member.model.service;
 
 public interface MemberService {
 

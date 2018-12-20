@@ -1,4 +1,4 @@
-package com.kh.doproject.intro.notice.model.vo;
+package com.kh.dp.intro.notice.model.vo;
 
 public class Intro {
 
