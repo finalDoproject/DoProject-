@@ -11,4 +11,10 @@ public class ProjectController {
 		
 		return null;
 	}
+	
+	@RequestMapping("/project/projectPage.do")
+	public String ProjectPageView() {
+		
+		return null;
+	}
 }

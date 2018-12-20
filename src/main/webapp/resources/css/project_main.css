@@ -1,0 +1,61 @@
+
+
+.pj_folder{
+	cursor:pointer !important;
+    display: inline-block;
+    position: relative;
+    width: 230px;
+    height: 230px;
+    margin: 10px;
+    box-shadow: 2px 3px 4px rgba(116, 116, 116, 0.32);
+}
+
+.pj_folder_in{
+    float: left;
+    position: absolute;
+    padding: 20px 10px;
+    width: 230px;
+    height: 230px;
+}
+
+.setting_icon{
+    cursor: pointer;
+    position: relative;
+    left: 100px;
+    top: 5px;
+    color:rgba(173, 173, 173, 0.7);
+}
+
+.pj_folder_in h5{
+    font-weight: 700;
+}
+.pj_folder_in p{
+    font-size: 13px;
+}
+
+.progress_area{
+    width: 80%;
+    position: absolute;
+    bottom: 30px;
+    left: 10%;
+}
+
+.users_area{
+    width: 80%;
+    position: absolute;
+    bottom: 30px;
+    left: 10%;
+}
+
+.users_cropcircle{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background: #eee no-repeat center;
+    background-size: cover;
+  }
+  
+  #users_Img{
+    background-image: url("../images/lyon.jpg");
+  }
