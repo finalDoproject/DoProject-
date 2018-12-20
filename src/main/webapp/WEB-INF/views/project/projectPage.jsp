@@ -107,7 +107,7 @@
 
       <div id="content-wrapper" >
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="height: 2000px">
 
 
           <!-- Page Content -->
@@ -155,6 +155,7 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
@@ -174,10 +175,10 @@
         $(document).ready(function() {
           var memopad = $('.memopad');
           memopad.focus(function(){
-            $(this).val("포커스 on");
+           // $(this).val("포커스 on");
           });
           memopad.blur(function(){
-            $(this).val("포커스 out");
+            // $(this).val("포커스 out");
           });
         });
         // right nav checkBox 
