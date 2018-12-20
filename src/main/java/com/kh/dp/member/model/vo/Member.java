@@ -1,4 +1,4 @@
-package com.kh.doproject.member.model.vo;
+package com.kh.dp.member.model.vo;
 
 public class Member {
 
