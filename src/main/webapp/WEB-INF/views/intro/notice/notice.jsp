@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE HTML>
 <!--
 	Editorial by HTML5 UP
@@ -21,53 +24,65 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-
+					
 							<!-- Header -->
 								<header id="header">
-									<a href="index.html" class="logo"><strong>Editorial</strong> by HTML5 UP</a>
-									<ul class="icons">
-										<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
-										<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon fa-medium"><span class="label">Medium</span></a></li>
-									</ul>
+									<a href="/dp" class="logo"><strong>Do </strong> Project!</a>
 								</header>
 
 							<!-- Content -->
 								<section>
 									<header class="main">
-										<h1>Elements</h1>
+										<h1>공지사항</h1>
 									</header>
+											<a href="#" style="float : right; " class="button primary small">글쓰기</a>
+											<h2> 공지</h2>
+													
+													<div class="table-wrapper">
+														<table>
+															<thead>
+																<tr>
+																	<th>번호</th>
+																	<th>내용</th>
+																	<th>작성자</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>Item1</td>
+																	<td>Ante turpis integer aliquet porttitor.</td>
+																	<td>29.99</td>
+																</tr>
+																<tr>
+																	<td>Item2</td>
+																	<td>Vis ac commodo adipiscing arcu aliquet.</td>
+																	<td>19.99</td>
+																</tr>
+																<tr>
+																	<td>Item3</td>
+																	<td> Morbi faucibus arcu accumsan lorem.</td>
+																	<td>29.99</td>
+																</tr>
+																<tr>
+																	<td>Item4</td>
+																	<td>Vitae integer tempus condimentum.</td>
+																	<td>19.99</td>
+																</tr>
+																<tr>
+																	<td>Item5</td>
+																	<td>Ante turpis integer aliquet porttitor.</td>
+																	<td>29.99</td>
+																</tr>
+															</tbody>
+															<tfoot>
+																<tr>
+																	<td colspan="2"></td>
+																	<td>100.00</td>
+																</tr>
+															</tfoot>
+														</table>
+													</div>
 
-									<!-- Content -->
-										<h2 id="content">Sample Content</h2>
-										<p>Praesent ac adipiscing ullamcorper semper ut amet ac risus. Lorem sapien ut odio odio nunc. Ac adipiscing nibh porttitor erat risus justo adipiscing adipiscing amet placerat accumsan. Vis. Faucibus odio magna tempus adipiscing a non. In mi primis arcu ut non accumsan vivamus ac blandit adipiscing adipiscing arcu metus praesent turpis eu ac lacinia nunc ac commodo gravida adipiscing eget accumsan ac nunc adipiscing adipiscing lorem ipsum dolor sit amet nullam veroeros adipiscing.</p>
-										<div class="row">
-											<div class="col-6 col-12-small">
-												<h3>Sem turpis amet semper</h3>
-												<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat commodo eu sed ante lacinia. Sapien a lorem in integer ornare praesent commodo adipiscing arcu in massa commodo lorem accumsan at odio massa ac ac. Semper adipiscing varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-											</div>
-											<div class="col-6 col-12-small">
-												<h3>Magna odio tempus commodo</h3>
-												<p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor. Ante commodo blandit adipiscing integer semper orci eget. Faucibus commodo adipiscing mi eu nullam accumsan morbi arcu ornare odio mi adipiscing nascetur lacus ac interdum morbi accumsan vis mi accumsan.</p>
-											</div>
-											<!-- Break -->
-											<div class="col-4 col-12-medium">
-												<h3>Interdum sapien gravida</h3>
-												<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit.</p>
-											</div>
-											<div class="col-4 col-12-medium">
-												<h3>Faucibus consequat lorem</h3>
-												<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit.</p>
-											</div>
-											<div class="col-4 col-12-medium">
-												<h3>Accumsan montes viverra</h3>
-												<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit.</p>
-											</div>
-										</div>
-
-									<hr class="major" />
 
 									<!-- Elements -->
 										<h2 id="elements">Elements</h2>
@@ -423,14 +438,14 @@
 													<h3>Preformatted</h3>
 													<pre><code>i = 0;
 
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
-
-print 'It took ' + i + ' iterations to sort the deck.';
-</code></pre>
+													while (!deck.isInOrder()) {
+													    print 'Iteration ' + i;
+													    deck.shuffle();
+													    i++;
+													}
+													
+													print 'It took ' + i + ' iterations to sort the deck.';
+													</code></pre>
 
 											</div>
 										</div>
@@ -440,99 +455,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 						</div>
 					</div>
 
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-
-							<!-- Search -->
-								<section id="search" class="alt">
-									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search" />
-									</form>
-								</section>
-
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="index.html">Homepage</a></li>
-										<li><a href="generic.html">Generic</a></li>
-										<li><a href="elements.html">Elements</a></li>
-										<li>
-											<span class="opener">Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Etiam Dolore</a></li>
-										<li><a href="#">Adipiscing</a></li>
-										<li>
-											<span class="opener">Another Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Maximus Erat</a></li>
-										<li><a href="#">Sapien Mauris</a></li>
-										<li><a href="#">Amet Lacinia</a></li>
-									</ul>
-								</nav>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Ante interdum</h2>
-									</header>
-									<div class="mini-posts">
-										<article>
-											<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic09.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-									</div>
-									<ul class="actions">
-										<li><a href="#" class="button">More</a></li>
-									</ul>
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin sed aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-									<ul class="contact">
-										<li class="fa-envelope-o"><a href="#">information@untitled.tld</a></li>
-										<li class="fa-phone">(000) 000-0000</li>
-										<li class="fa-home">1234 Somewhere Road #8254<br />
-										Nashville, TN 00000-0000</li>
-									</ul>
-								</section>
-
-							<!-- Footer -->
-								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-								</footer>
-
-						</div>
-					</div>
-
-			</div>
+				<c:import url="../../common/introSidebar.jsp"/>
 
 		<!-- Scripts -->
 			<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
