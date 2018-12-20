@@ -1,4 +1,4 @@
-package com.kh.dp.mypage.model.dao;
+package com.kh.doproject.mypage.model.dao;
 
 public interface MypageDao {
 

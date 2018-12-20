@@ -1,4 +1,4 @@
-package com.kh.dp.project.model.dao;
+package com.kh.doproject.project.model.dao;
 
 public interface ProjectDao {
 

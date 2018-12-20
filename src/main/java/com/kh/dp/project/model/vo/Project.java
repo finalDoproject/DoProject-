@@ -1,4 +1,4 @@
-package com.kh.dp.project.model.vo;
+package com.kh.doproject.project.model.vo;
 
 public class Project {
 

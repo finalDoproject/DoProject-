@@ -1,4 +1,4 @@
-package com.kh.dp.intro.notice.controller;
+package com.kh.doproject.intro.notice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

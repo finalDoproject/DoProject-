@@ -1,4 +1,4 @@
-package com.kh.dp.mypage.model.vo;
+package com.kh.doproject.mypage.model.vo;
 
 public class Mypage {
 

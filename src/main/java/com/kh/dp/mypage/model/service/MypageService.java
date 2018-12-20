@@ -1,4 +1,4 @@
-package com.kh.dp.mypage.model.service;
+package com.kh.doproject.mypage.model.service;
 
 public interface MypageService {
 

@@ -1,4 +1,4 @@
-package com.kh.dp.member.model.dao;
+package com.kh.doproject.member.model.dao;
 
 public interface MemberDao {
 
