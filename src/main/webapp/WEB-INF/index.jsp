@@ -20,7 +20,7 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="/" class="logo"><strong>Do</strong> project!</a>
+									<a href="/" class="logo"><strong>Do_</strong> project!</a>
 								</header>
 
 							<!-- Banner -->
