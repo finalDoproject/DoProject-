@@ -194,10 +194,8 @@
 			<!-- 메시지 입력 화면 -->
 			<div class="wrap-message">
 				<div class="message">
-					<!-- <input type="textarea" class="input-message" name="chatContent" id="chatContent" onkeydown="keydown()"
-                        placeholder="내용을 입력해주세요"> -->
 					<textarea class="input-message" name="chatContent" id="chatContent"
-						cols="30" rows="10" onkeyup="keyUp()" placeholder="내용을 입력해주세요"
+						cols="30" rows="10" onkeydown="keyDown()" placeholder="내용을 입력해주세요"
 						style="resize: none;"></textarea>
 				</div>
 				<i class="fa fa-paper-plane" aria-hidden="true" id="submit"
@@ -206,46 +204,57 @@
 		</section>
 	</div>
 	<script>
+		$(window).load(function(){
+			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		});
+	
         function formatAMPM(date) {
             var hours = date.getHours();
             var minutes = date.getMinutes();
             var ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = hours ? hours : 12;
             minutes = minutes < 10 ? '0' + minutes : minutes;
             var strTime = hours + ':' + minutes + ' ' + ampm;
             return strTime;
         }
 
-        function keyUp() {
+        function keyDown() {
             var date = formatAMPM(new Date());
 
             if (event.shiftKey && event.keyCode == 13) {
             } else if (event.keyCode == 13) {
-                $("<div style='clear:both;'></div>" + "<div class='chat-bubble me' id='myChat'>" +
-                    "<div class='content' id='content' style='word-break:break-all;'>" + $('#chatContent').val().replace(/\n/g, "<br />") +
-                    "</div><div class='time'>" + date + "</div></div>"
-                ).appendTo($('#chatList'));
-                $('#chatContent').val("");
-                $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+                inputMsg();
             }
         }
 
         function submitMsg() {
-            var date = formatAMPM(new Date());
+            inputMsg();            
+            $('#chatContent').focus();
+        }
+        
+        function inputMsg(){
+        	var date = formatAMPM(new Date());
 
             $("<div style='clear:both;'></div>" + "<div class='chat-bubble me' id='myChat'>" +
-                "<div class='content' id='content' style='word-break:break-all;'>" + $('#chatContent').val().replace(/\n/g, "<br />") +
+                "<div class='content' id='content' style='word-break:break-all;'>" + ConvertSystemSourcetoHtml($('#chatContent').val()) +
                 "</div><div class='time'>" + date + "</div></div>"
             ).appendTo($('#chatList'));
             $('#chatContent').val("");
             $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-            
-            $('#chatContent').focus();
+        }
+        
+        function ConvertSystemSourcetoHtml(str){
+        	 str = str.replace(/</g,"&lt;");
+        	 str = str.replace(/>/g,"&gt;");
+        	 str = str.replace(/\"/g,"&quot;");
+        	 str = str.replace(/\'/g,"&#39;");
+        	 str = str.replace(/\n/g,"<br />");
+        	 return str;
         }
 
         function searchRoom() {
-            if(('#searchRoom').val() == "" || ('#searchRoom').val() == null){
+            if(('#searchRoom').val() == ""){
                 
             } else {
 
