@@ -4,9 +4,25 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="matching">
 
+	<resultMap type="Matching" id="resultMatching">
+		<id property="no" column="smno"></id>
+		<result property="title" column="smcontent"/>
+		<result property="startDate" column="smdate"/>
+		<result property="endDate" column="smenddate"/>
+		<result property="mno" column="smmno"/>
+		<result property="statusNo" column="ssno"/>
+	</resultMap>
+
+
 	<select id="browseMember" resultType="Member">
-	SELECT * FROM MEMBER;
+	SELECT NICKNAME FROM MEMBER
 	</select>
+	
+	<insert id="insertMatching" parameterType="Matching">
+	INSERT INTO SCHEDULE_MATCHING VALUES
+				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate},
+				#{smenddate},#{smmno}, DEFAULT)
+	</insert>
 </mapper>
 
 
