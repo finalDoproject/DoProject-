@@ -1,0 +1,25 @@
+package com.kh.dp.side.model.dao;
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.kh.dp.member.model.vo.Member;
+
+/*@Repository
+public class SideDaoImpl implements SideDao {
+
+	@Autowired 
+	SqlSessionTemplate sqlSession;
+
+	@Override
+	public List<Member> browseMember() {
+		
+		return sqlSession.selectList("matching.browseMember");
+	}
+	
+	
+
+}
+*/
