@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.dao.SideDao;
+import com.kh.dp.side.model.vo.Matching;
 
-/*@Service
+@Service
 public class SideServiceImpl implements SideService {
 
 	@Autowired
@@ -20,4 +21,10 @@ public class SideServiceImpl implements SideService {
 		return sideDao.browseMember();
 	}
 
-}*/
+	@Override
+	public int insertMatching(Matching matching) {
+		
+		return sideDao.insertMatching(matching);
+	}
+
+}

@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dp.member.model.vo.Member;
+import com.kh.dp.side.model.vo.Matching;
 
-/*@Repository
+@Repository
 public class SideDaoImpl implements SideDao {
 
 	@Autowired 
@@ -18,8 +19,13 @@ public class SideDaoImpl implements SideDao {
 		
 		return sqlSession.selectList("matching.browseMember");
 	}
+
+	@Override
+	public int insertMatching(Matching matching) {
+		
+		return sqlSession.insert("matching.insertMatching", matching);
+	}
 	
 	
 
 }
-*/
