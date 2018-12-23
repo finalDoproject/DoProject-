@@ -7,8 +7,6 @@
 	<typeAliases>
 		<typeAlias type="com.kh.dp.member.model.vo.Member"
 		         alias="Member"/>
-		<typeAlias type="com.kh.dp.intro.board.model.vo.Board"
-		         alias="Board"/>
 	</typeAliases>
 	
 	

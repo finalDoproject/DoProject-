@@ -15,19 +15,6 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
-		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-		
-	<script>
-
-		$(function(){
-			$("tr[id]").on("click",function(){
-				var boardNo = $(this).attr("id");
-				console.log("bordNo="+boardNo);
-				location.href = "${pageContext.request.contextPath}/intro/board/helpDetail.do?bno="+bno;
-			});
-		});
-	</script>
-		
 	</head>
 	<body class="is-preload">
 
@@ -49,30 +36,54 @@
 										<h1>고객센터</h1>
 									</header>
 
-									<a href="${pageContext.request.contextPath}/intro/board/insertHelpView.do" style="float : right; " class="button primary small">글쓰기</a>
+									<a href="#" style="float : right; " class="button primary small">글쓰기</a>
 											<h2> QnA</h2>
 
-					<div class="table-wrapper" >
-						<table style="text-align:center;">
+					<div class="table-wrapper">
+						<table>
 							<thead>
 								<tr>
-									<th style="text-align:center;">번호</th>
-									<th width="70%" style="text-align:center;">제목</th>
-									<th style="text-align:center;">작성일</th>
+									<th>번호</th>
+									<th>내용</th>
+									<th>작성자</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${list}" var="h" varStatus="num">
-									<tr id="${h.bno}">
-										<td>${num.count}</td>
-										<td>${h.btitle}</td>
-										<td>${h.bdate}</td>
-									</tr>
-								</c:forEach>
+								<tr>
+									<td>Item1</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item2</td>
+									<td>Vis ac commodo adipiscing arcu aliquet.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item3</td>
+									<td>Morbi faucibus arcu accumsan lorem.</td>
+									<td>29.99</td>
+								</tr>
+								<tr>
+									<td>Item4</td>
+									<td>Vitae integer tempus condimentum.</td>
+									<td>19.99</td>
+								</tr>
+								<tr>
+									<td>Item5</td>
+									<td>Ante turpis integer aliquet porttitor.</td>
+									<td>29.99</td>
+								</tr>
 							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2"></td>
+									<td>100.00</td>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
- 				<c:out value="${pageBar}" escapeXml="false"/>
+ 
 			</section>
 
 						</div>
