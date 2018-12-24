@@ -20,8 +20,7 @@
 	
 	<insert id="insertMatching" parameterType="Matching">
 	INSERT INTO SCHEDULE_MATCHING VALUES
-				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate},
-				#{smenddate},#{smmno}, DEFAULT)
+				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
 	</insert>
 </mapper>
 
