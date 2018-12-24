@@ -25,6 +25,7 @@
 										<li><a href="${pageContext.request.contextPath}/intro/notice/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/help/help.do">고객센터</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/help/helpDetail.do">고객센터세부</a></li>
+										<li><a href="${pageContext.request.contextPath}/chat.ch">채팅 샘플</a></li>
 
 									</ul>
 								</nav>
