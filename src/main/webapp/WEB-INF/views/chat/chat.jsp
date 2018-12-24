@@ -40,6 +40,7 @@ $(function(){
 	$("#submit").click(function(){
 		sendMessage();
 		$("#chatContent").val('');
+	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 	});
 });
 
@@ -48,6 +49,7 @@ function keyUp() {
     } else if (event.keyCode == 13) {
     	sendMessage();
 		$("#chatContent").val('');
+	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
     }
 }
 
@@ -76,7 +78,6 @@ function onMessage(evt){
 		console.log("strArray[3] : " + strArray[3]);
 
 		var ck_host='${host}';
-		console.log("ck_host : " + $(window).url);
 		if(host==ck_host||(host==0&&ck_host.includes('0:0:')))
 		{
 			var printHTML="<div style='clear:both;'></div>";

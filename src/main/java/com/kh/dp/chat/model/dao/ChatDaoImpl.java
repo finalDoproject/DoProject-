@@ -11,8 +11,8 @@ import com.kh.dp.chat.model.vo.Chat;
 @Repository
 public class ChatDaoImpl implements ChatDao{
 	
-	@Autowired
-	SqlSessionTemplate sqlSession;
+	/*@Autowired
+	SqlSessionTemplate sqlSession;*/
 
 	@Override
 	public List<Chat> selectProjectChatList(int pno) {
