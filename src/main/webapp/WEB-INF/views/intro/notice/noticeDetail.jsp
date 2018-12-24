@@ -6,7 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Do Project! - 고객센터</title>
+<meta charset="UTF-8">
+<title>Do Project! - 공지사항</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
@@ -16,19 +17,17 @@
 			
 				var con_test = confirm("글을 정말 삭제하시겠습니까?");
 				if(con_test == true){
-				  location.href ="${pageContext.request.contextPath}/intro/board/deleteHelp.do?bno=" +${board.bno}
+				  location.href ="${pageContext.request.contextPath}/intro/board/deleteNotice.do?bno=" +${board.bno}
 				}
 				else if(con_test == false){
 				  alert("취소되었습니다.");
 				}
 		
 		}
-	
+
 		</script>
-
 </head>
-	<body class="is-preload">
-
+<body>
 		<!-- Wrapper -->
 			<div id="wrapper">
 
@@ -44,10 +43,10 @@
 				<!-- Content -->
 				<section>
 					<header class="main">
-						<h1>고객센터</h1>
+						<h1>공지사항</h1>
 					</header>
 
-					<h2>QnA</h2>
+					<h2>공지글</h2>
 
 					<div class="col-lg-7">
 						<div class="ui-block">
@@ -83,8 +82,8 @@
 							</article>
 						</div>
 						</div>
-						<a href="${pageContext.request.contextPath}/intro/board/help.do" class="button primary icon fa-search" >목록으로</a>
-						<a href="${pageContext.request.contextPath}/intro/board/updateHelpView.do?bno=${board.bno}" class="button icon fa-download" style="float: right;" >수정하기</a>
+						<a href="${pageContext.request.contextPath}/intro/board/notice.do" class="button primary icon fa-search" >목록으로</a>
+						<a href="${pageContext.request.contextPath}/intro/board/updateNoticeView.do?bno=${board.bno}" class="button icon fa-download" style="float: right;" >수정하기</a>
 						<a href="javascript:void(0)" onclick="delHelp();" id="delhelp" class="button icon fa-download" style="float: right;" >삭제하기</a>
 				</section>
 	
@@ -92,11 +91,7 @@
 		</div>
 
 
-
-
 		<c:import url="../../common/introSidebar.jsp"/>
-			
-			
 
 		<!-- Scripts -->
 			<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
@@ -105,5 +100,5 @@
 			<script src="${pageContext.request.contextPath}/resources/js/util.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
-	</body>
+</body>
 </html>

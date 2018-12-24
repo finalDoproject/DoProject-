@@ -15,6 +15,16 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+		<script>
+		$(function(){
+			$("tr[id]").on("click",function(){
+				var boardNo = $(this).attr("id");
+				console.log("bordNo="+boardNo);
+				location.href = "${pageContext.request.contextPath}/intro/board/noticeDetail.do?bno="+boardNo;
+			});
+		});
+		</script>
 	</head>
 	<body class="is-preload">
 
@@ -36,7 +46,7 @@
 						<h1>공지사항</h1>
 					</header>
 					<a
-						href="${pageContext.request.contextPath}/intro/board/insertnotice.do"
+						href="${pageContext.request.contextPath}/intro/board/insertNoticeView.do"
 						style="float: right;" class="button primary small">글쓰기</a>
 					<h2>공지</h2>
 
@@ -50,11 +60,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${list}" var="h" varStatus="num">
-									<tr id="${h.bno}">
+								<c:forEach items="${list}" var="n" varStatus="num">
+									<tr id="${n.bno}">
 										<td>${num.count}</td>
-										<td>${h.btitle}</td>
-										<td>${h.bdate}</td>
+										<td>${n.btitle}</td>
+										<td>${n.bdate}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

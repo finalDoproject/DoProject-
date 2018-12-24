@@ -7,22 +7,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Do Project! - FAQ 작성</title>
+<title>Do Project! - 공지 수정</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />		
-
-	<script>
+<script>
 	function gotoList(){
 	
-		location.href="${pageContext.request.contextPath}/intro/board/help.do";
+		location.href="${pageContext.request.contextPath}/intro/board/notice.do";
 	}
 	
 	</script>
 </head>
 <body>
-
-		
-	<div id="wrapper">
+<div id="wrapper">
 
 				<!-- Main -->
 		<div id="main">
@@ -36,12 +33,12 @@
 				<!-- Content -->
 				<section>
 					<header class="main">
-						<h1>고객센터</h1>
+						<h1>공지사항</h1>
 					</header>
-			<form action="${pageContext.request.contextPath}/intro/board/insertHelp.do" method="post">
-
+			<form action="${pageContext.request.contextPath}/intro/board/updateNotice.do" method="post">
+			<input type="hidden" name="bno" value="${board.bno }"/>
 			<div align="center" >
-				제목 : &nbsp; <input type="text" name="btitle" style="width:40%; " placeholder="제목을 입력하세요" required /><br>
+				제목 : &nbsp; <input type="text" name="btitle" style="width:40%; " placeholder="제목을 입력하세요" value="${board.btitle }" required /><br>
 					<input type="hidden" style="width: 20%;" value="1" />&nbsp; <br />
 
 			</div>
@@ -49,11 +46,11 @@
 
 			<div class="container" align="center">
 				
-				<textarea name="bcontent" style="width: 50%; height:400px; margin-left: 100px; margin-right: 100px;"></textarea>
+				<textarea name="bcontent" style="width: 50%; height:400px; margin-left: 100px; margin-right: 100px;">${board.bcontent }</textarea>
 
 				<div align="center">
 					<button type="reset" id="btn1" onclick="gotoList()">취소하기</button>
-					<button type="submit" id="btn2">등록하기</button>
+					<button type="submit" id="btn2">수정하기</button>
 				</div>
 			</div>
 

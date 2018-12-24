@@ -23,7 +23,7 @@
 			$("tr[id]").on("click",function(){
 				var boardNo = $(this).attr("id");
 				console.log("bordNo="+boardNo);
-				location.href = "${pageContext.request.contextPath}/intro/board/helpDetail.do?bno="+bno;
+				location.href = "${pageContext.request.contextPath}/intro/board/helpDetail.do?bno="+boardNo;
 			});
 		});
 	</script>
@@ -72,7 +72,7 @@
 							</tbody>
 						</table>
 					</div>
- 				<c:out value="${pageBar}" escapeXml="false"/>
+ 				<c:out  value="${pageBar}" escapeXml="false"/>
 			</section>
 
 						</div>
