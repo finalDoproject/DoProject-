@@ -11,25 +11,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
 
-<style>
-.post {
-	position: relative;
-	padding: 25px;
-	border-bottom: 1px solid #e6ecf5;
-}
-
-.m-link a {
-	color: #333;
-}
-
-.m-link a:hover {
-	color: #333;
-}
-
-h6.my-4 {
-margin: 13px;
-}
-</style>
 </head>
 	<body class="is-preload">
 
@@ -51,23 +32,19 @@ margin: 13px;
 						<h1>고객센터</h1>
 					</header>
 
-					<a href="#" style="float: right;" class="button primary small">글쓰기</a>
 					<h2>QnA</h2>
 
 					<div class="col-lg-7">
 						<div class="ui-block">
 							<article class="hentry post">
 								<div class="m-link">
-									<a href="#" target="_blank">
-										<h4>Why should I follow you, in five sentences?</h4>
-									</a>
+
+										<h2>제목</h2>
+						
 								</div>
 								<div class="post__author author vcard inline-items">
-									<img
-										src="https://a11.t26.net/taringa/avatares/9/1/2/F/7/8/Demon_King1/48x48_5C5.jpg"
-										alt="author">
 									<div class="author-date">
-										<a class="h6 post__author-name fn" href="#">Dipendra Singh</a>
+										Dipendra Singh
 										<div class="post__date">
 											<time class="published" datetime="2004-07-24T18:18">
 												Answered 2h ago </time>
@@ -84,9 +61,6 @@ margin: 13px;
 									ullamco laboris consequat.</p>
 								<div class="post-additional-info inline-items">
 									<p>
-										<a href="#" class="btn btn-sm btn-light"><span
-											class="fa fa-pencil"></span> Answer</a> <a href="#"
-											class="btn btn-sm btn-light"> Pass</a>
 									</p>
 									<p class="social-icons">
 										<a href="#" class="btn btn-sm btn-light"><i
@@ -99,6 +73,8 @@ margin: 13px;
 							</article>
 						</div>
 						</div>
+						<a href="#" class="button primary icon fa-search" >목록으로</a>
+						<a href="#" class="button icon fa-download" style="float: right;" >수정하기</a>
 				</section>
 	
 			</div>

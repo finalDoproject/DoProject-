@@ -7,8 +7,11 @@
 	<typeAliases>
 		<typeAlias type="com.kh.dp.member.model.vo.Member"
 		         alias="Member"/>
+		<typeAlias type="com.kh.dp.intro.board.model.vo.Board"
+		         alias="Board"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
+
 	</typeAliases>
 	
 	

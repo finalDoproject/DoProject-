@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
-	<!-- Root Context: defines shared resources visible to all other web components 파괴될 때 자동으로 꺼지게 설정-->
+	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- Root Context : 웹 서버 전체 설정과 관련된 내용을 작성하는 XML 파일 -->
 	<!-- DataSource : 연결하고자 하는 DB 설정을 담당하는 객체 -->
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<bean id="realDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
       <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
       <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
       <property name="username" value="DOPROJECT"/>
       <property name="password" value="DOPROJECT"/>
+    </bean>
+    
+  
+   <!-- log4jdbc용 연결 객체 -->
+   <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="realDataSource"/>
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+			<property name="loggingType" value="MULTI_LINE"/>
+			<property name="sqlPrefix" value="[SQL] "/>
+			</bean>
+		</property>
+	</bean>
+   
+   
+   <!-- Mybatis 사용과 관련된 sqlSessionTemplate 등록하기 -->
+   <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+   	<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
    </bean>
    
+
    <!-- Mybatis 연동 설정 -->
     <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
    <!-- dataSource : 마이바티스 빈 객체에 사용할 DB 설정 객체 참조 -->
