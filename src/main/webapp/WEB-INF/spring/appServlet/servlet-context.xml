@@ -21,8 +21,24 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- interceptor 태그를 사용해 dispatcherServlet 
+	동작 시 엮여서 동작하도록 작성한 클래스를 등록 -->
+	
+	<interceptors>
+		<interceptor>
+			<!-- 모든 url 경로에 대해 동작시키겠다 -->
+			<mapping path="/**"/>
+			<beans:bean id="loggerInterceptor" class="com.kh.dp.common.interceptor.LoggerInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/member/memberView.do"></mapping>
+			<!-- 특정 url 경로를 등록하여 제외시키기 -->
+			<exclude-mapping path="/join.do"/>
+			<beans:bean id="loginCheckInterceptor"
+						class="com.kh.dp.common.interceptor.LogincheckInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.kh.dp" />
-	
-	
 	
 </beans:beans>
