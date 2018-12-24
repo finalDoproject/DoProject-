@@ -11,7 +11,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />		
 
+	<script>
+	function gotoList(){
 	
+		location.href="${pageContext.request.contextPath}/intro/board/notice.do";
+	}
+	
+	</script>
 </head>
 <body>
 
@@ -32,20 +38,18 @@
 					<header class="main">
 						<h1>공지사항</h1>
 					</header>
-			<form action="/nInsert.no" method="post">
+			<form action="${pageContext.request.contextPath}/intro/board/insertNotice.do" method="post">
 
 			<div align="center" >
-				제목 : &nbsp; <input type="text" style="width:40%; " placeholder="제목을 입력하세요" /><br>
-				작성자 : <input type="text" style="width: 20%;" />&nbsp; <br />
-				작성일 : &nbsp; <input type="date" id="date" name="date">
-				<input type="hidden" value="" name="userId"> 
+				제목 : &nbsp; <input type="text" name="btitle" style="width:40%; " placeholder="제목을 입력하세요" required /><br>
+					<input type="hidden" style="width: 20%;" value="1" />&nbsp; <br />
 
 			</div>
 			<br>
 
 			<div class="container" align="center">
 				
-				<textarea id="helptext" style="width: 50%; height:400px; margin-left: 100px; margin-right: 100px;"></textarea>
+				<textarea name="bcontent" style="width: 50%; height:400px; margin-left: 100px; margin-right: 100px;"></textarea>
 
 				<div align="center">
 					<button type="reset" id="btn1" onclick="gotoList()">취소하기</button>

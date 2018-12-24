@@ -1,4 +1,4 @@
-package com.kh.dp.board.model.exception;
+package com.kh.dp.intro.board.model.exception;
 
 public class BoardException extends RuntimeException {
 
