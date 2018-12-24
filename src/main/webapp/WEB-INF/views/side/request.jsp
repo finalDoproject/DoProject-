@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matchingRequest.do" method="post">
+            <form name="requestForm" action="matching.do" method="post">
                     <table class="table">
                             <thead>
                               <tr>
@@ -67,11 +67,11 @@
                                 <th scope="row"><i class="fas fa-user fa-2x"></i></th>
                                 <td colspan="4">
                                 	
-                                    <select class="member-multiple" name="member" multiple="multiple"
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
                                     style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
-                             
-                                    <c:forEach items="${memberList}" var="member" varStatus="status">
-                                        <option value="${member.name}">${member.name} </option>
+                             		
+                                    <c:forEach items="${member}" var="member" varStatus="status">
+                                        <option value="${member.nickName}">${member.nickName} </option>
                                      </c:forEach>
                                      </select>
                                 </td>
@@ -79,19 +79,21 @@
                               <tr>
                                 <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
                                 <td colspan="3">
-                                        <input type="date" name="startDate">&nbsp;&nbsp;
+                                        <input type="date" name="startDate" id="startDate" onchange="getVal();" >&nbsp;&nbsp;
                                         <i class="fas fa-long-arrow-alt-right "></i>
-                                         &nbsp;&nbsp;<input type="date" name="endDate" >
+                                         &nbsp;&nbsp;<input type="date" id="endDate" name="endDate" >
                                 </td>
                               </tr>
                             </tbody>
                           </table>
-                          </form>
-            </div>
-            <div class="modal-footer" >
+                          <div class="modal-footer" >
                 <button type="submit" class="btn btn-primary">요청 완료</button>
               <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
             </div>
+                 </form>         
+            </div>
+            
+            
           </div>
         </div>
       </div>
@@ -114,6 +116,58 @@
                     placeholder: '함께할 인원을 선택하세요.'
                     }); 
             });
+            
+            // 오늘 이전 비활성화
+            $(function(){
+            	
+            	var today = new Date();
+            	var dd = today.getDate();
+            	var mm = today.getMonth()+1;
+            	var yyyy = today.getFullYear();
+            	
+            	if(dd < 10 ){
+            		dd = '0' + dd
+            	}
+            	if(mm < 10){
+            		mm = '0' + mm
+            	}
+            	
+            	today = yyyy +"-" + mm + "-" + dd;
+            	
+            	console.log(today);
+            	
+            	$('#startDate').attr("min",today);
+            	$('#endDate').attr("min",today);
+            	
+           	
+            });
+            
+            // 시작 날짜 선택 
+            // 7일 후 비활성화하기
+            
+            function getVal(){
+            
+            	var selectDate = $('#startDate').attr("min");
+            	console.log(selectDate);
+            	
+            	var date = selectDate.split("-");
+            	
+            	var yyyy = date[0];
+            	var mm = date[1];
+            	var dd = date[2];
+            	
+            	dd *= 1;
+            	
+            	dd = dd+7;
+            	
+            	var afterDate = yyyy + "-" + mm + "-" + dd;
+            	console.log(afterDate);
+            	
+            	$('#startDate').attr("min",selectDate);
+            	$('#endDate').attr("max",afterDate);
+            	
+            }
+            
             
     
     </script>

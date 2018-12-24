@@ -25,6 +25,8 @@
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/helpDetail.do">고객센터세부</a></li>
+										<li><a href="${pageContext.request.contextPath}/task/taskForm.do">업무작성</a></li>
+
 
 									</ul>
 								</nav>
