@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dp.member.model.vo.Member;
+import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 
 @Repository
@@ -24,6 +25,12 @@ public class SideDaoImpl implements SideDao {
 	public int insertMatching(Matching matching) {
 		
 		return sqlSession.insert("matching.insertMatching", matching);
+	}
+
+	@Override
+	public int insertMatchingDT(Join join) {
+		
+		return sqlSession.insert("matching.insertMatchingDT", join);
 	}
 	
 	

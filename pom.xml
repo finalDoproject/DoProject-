@@ -187,6 +187,7 @@
 		    <artifactId>spring-jdbc</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>   
+
 		<!-- Spring Websocket -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -205,13 +206,8 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.9.6</version>
 		</dependency>
-		<!-- log4jdbc lib -->
-		<dependency>
-		    <groupId>org.lazyluke</groupId>
-		    <artifactId>log4jdbc-remix</artifactId>
-		    <version>0.2.7</version>
-		</dependency>
 	</dependencies>
+
     <build>
         <plugins>
             <plugin>
