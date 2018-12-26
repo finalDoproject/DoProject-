@@ -16,7 +16,6 @@ public class ChatController {
 	
 	public String selectChatRoomList() {
 		// 채팅 좌측부분 채팅방 리스트 출력용
-		// 테스트용
 		return "";
 	}
 	
