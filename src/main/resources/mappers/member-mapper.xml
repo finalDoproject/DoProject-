@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+	<resultMap type="map" id="member"/>
+	
+	<select id="selectMemberList" resultType="member">
+		SELECT *
+		FROM MEMBER
+		ORDER BY MNO
+	</select>
+	
+	
+	<select id="selectMemberTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+	</select>
+
+	
+	<delete id="deleteMember" parameterType="_int">
+		DELETE FROM MEMBER WHERE MNO = #{mno}
+	</delete>
+	
+	
+</mapper>
