@@ -131,7 +131,7 @@
 			var yPos = (screen.availHeight / 2) - 300;
 
 			windowObj = window.open(
-					'${pageContext.request.contextPath}/chat.ch', '_blank',
+					'${pageContext.request.contextPath}/chat.ch', '채팅방',
 					'width=800,height=600,top=' + yPos + ',left=' + xPos
 					+ ',toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
 		}

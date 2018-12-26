@@ -5,18 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script>
-function openChat() {
-    var windowObj = null;
-    var xPos = (document.body.clientWidth / 2) - 400; 
-    xPos += window.screenLeft;
-    var yPos = (screen.availHeight / 2) - 300;
-    
-    windowObj = window.open('${pageContext.request.contextPath}/chat.ch', 
-    		  '_blank', 'width=800,height=600,top='+yPos+',left='+xPos
-            +',toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
-  }
-</script>
 </head>
 <body>
 	<!-- Sidebar -->
@@ -44,7 +32,6 @@ function openChat() {
 						href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/task/taskForm.do">업무작성</a></li>
-					<li><a href="#" onclick="openChat()">채팅 샘플</a></li>
 
 				</ul>
 			</nav>
