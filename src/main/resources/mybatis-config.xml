@@ -11,7 +11,7 @@
 		         alias="Board"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
-
+		<typeAlias alias="Memo" type="com.kh.dp.project.model.vo.Memo"/>
 	</typeAliases>
 	
 	
