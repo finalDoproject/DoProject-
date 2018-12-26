@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.dao.SideDao;
+import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 
 @Service
@@ -25,6 +26,12 @@ public class SideServiceImpl implements SideService {
 	public int insertMatching(Matching matching) {
 		
 		return sideDao.insertMatching(matching);
+	}
+
+	@Override
+	public int insertMatchingDT(Join join) {
+		
+		return sideDao.insertMatchingDT(join);
 	}
 
 }
