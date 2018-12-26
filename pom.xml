@@ -158,6 +158,7 @@
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-jdbc</artifactId>
 		    <version>${org.springframework-version}</version>
+<<<<<<< HEAD
 		</dependency>   
 		<!-- Spring Websocket -->
 		<dependency>
@@ -183,6 +184,44 @@
 		    <artifactId>log4jdbc-remix</artifactId>
 		    <version>0.2.7</version>
 		</dependency>
+=======
+		</dependency>  
+		
+		<!-- JSON lib -->
+		<!--  JSON  -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
+		</dependency>
+		 <!--  @Responsebody : java Object -> json  -->
+		 <!--
+		 https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind 
+		-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.5</version>
+		</dependency>
+		
+		<!-- log4jdbc lib -->
+		<dependency>
+	    	<groupId>org.lazyluke</groupId>
+	    	<artifactId>log4jdbc-remix</artifactId>
+	    	<version>0.2.7</version>
+		</dependency>
+		 
+>>>>>>> daseul
 	</dependencies>
     <build>
         <plugins>
