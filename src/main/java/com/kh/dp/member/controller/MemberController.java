@@ -24,12 +24,7 @@ public class MemberController {
 		return null;
 	}
 	
-	@RequestMapping("/member/adminPage.do")
-	public String adminPage() {
-		
-		return "intro/adminPage";
-	}
-	
+
 	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(
@@ -42,6 +37,7 @@ public class MemberController {
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(memberService.selectMemberList(cPage, numPerPage));
 		
+		System.out.println("list : " + list);
 		// 2. 전체 게시글 개수 가져오기
 		int totalContents = memberService.selectMemberTotalContents();
 		
@@ -53,6 +49,28 @@ public class MemberController {
 		.addAttribute("pageBar", pageBar);
 		
 		return "/intro/adminPage";
+		
+	}
+	
+	@RequestMapping("/member/adminDeleteMember.do")
+	public String deleteMember(@RequestParam int mno, Model model) {
+		
+		int result = memberService.deleteMember(mno);
+		
+		String loc = "/member/MemberList.do";
+		String msg = "";
+		
+		if(result > 0) {
+			msg="회원  삭제 성공";
+			loc ="/member/MemberList.do";
+		}else {
+			msg = "회원 삭제 실패";
+		}
+
+		model.addAttribute("loc" , loc)
+		.addAttribute("msg" , msg);
+		
+		return "common/msg";
 		
 	}
 

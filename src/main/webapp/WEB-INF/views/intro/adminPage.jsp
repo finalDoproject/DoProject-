@@ -12,7 +12,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
 		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-		
+
 </head>
 <body>
 		<!-- Wrapper -->
@@ -33,13 +33,13 @@
 										<h2>회원 관리 페이지</h2>
 									</header>
 
-									<a href="${pageContext.request.contextPath}/member/selectListMember.do" style="float : right; " class="button primary small">회원 삭제</a>
 											<h2> 회원 목록</h2>
 
 					<div class="table-wrapper" >
-						<table style="text-align:center;">
+						<table style="text-align:center;" id="mtable">
 							<thead>
 								<tr>
+									<th style="text-align:center;">선택</th>
 									<th style="text-align:center;">번호</th>
 									<th style="text-align:center;">회원 아이디</th>
 									<th style="text-align:center;">회원 이메일</th>
@@ -48,9 +48,10 @@
 									<th style="text-align:center;">가입일</th>									
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="color : black;">
 								<c:forEach items="${list}" var="m" varStatus="num">
 									<tr id="${m.mno}">
+										<td><a href="${pageContext.request.contextPath}/member/adminDeleteMember.do?mno=${m.mno}" class="button primary small">회원 삭제</a></td>
 										<td>${num.count}</td>
 										<td>${m.userId}</td>
 										<td>${m.email}</td>
@@ -77,6 +78,15 @@
 			<script src="${pageContext.request.contextPath}/resources/js/breakpoints.min.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/js/util.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
-
+		<script>
+		$('#mtable tbody').children().mouseenter(function () {
+			$(this).children().not(':first').css({'background':'#f56a6a', 'cursor':'pointer', 'opacity': '0.7'});
+			$(this).children().not(':first').click(function () {
+			});
+				
+		}).mouseleave(function () {
+			$(this).children().not(':first').css({'background':'white'});
+		});
+		</script>
 </body>
 </html>

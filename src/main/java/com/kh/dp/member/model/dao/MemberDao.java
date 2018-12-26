@@ -9,4 +9,5 @@ public interface MemberDao {
 
 	int selectMemberTotalContents();
 
+	int deleteMember(int mno);
 }

@@ -8,5 +8,7 @@ public interface MemberService {
 	List<Map<String, String>> selectMemberList(int cPage, int numPerPage);
 
 	int selectMemberTotalContents();
+	
+	int deleteMember(int mno);
 
 }

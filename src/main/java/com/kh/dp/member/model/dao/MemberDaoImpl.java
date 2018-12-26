@@ -28,4 +28,10 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.selectOne("member.selectMemberTotalContents");
 	}
 
+	@Override
+	public int deleteMember(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("member.deleteMember", mno);
+	}
+
 }
