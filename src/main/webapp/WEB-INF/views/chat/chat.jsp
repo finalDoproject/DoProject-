@@ -17,6 +17,14 @@
 <script>
 
 $(document).ready(function(){
+	window.addEventListener('resize', resizeTest);
+	
+	function resizeTest(){
+		if($(window).width() < 800 || $(window).height() < 600){
+			window.resizeTo(800,600);
+		}
+	}
+	
 	$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 });
 
