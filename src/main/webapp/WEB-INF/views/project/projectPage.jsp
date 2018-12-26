@@ -53,39 +53,11 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        <li>
-        <div class="dropup" style="position: absolute; top:760px; margin-left:20px;">
-  			<a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-  				style="background-color:#F88E6F;">
-    			<i class="fas fa-user-friends" style="color: rgba(255, 255, 255, 0.7);"></i> <span style="color: rgba(255, 255, 255, 0.7);">참여자리스트</span>
-  			</a>
-  			<div class="dropdown-menu">
-  				<div>
-    			<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-    				<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">홍길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">신사임당</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">김유신</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">고길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
-  				</div>
-			</div>
-		</div>
-		</li>
+        <li class="nav-item" style="position: absolute; top:760px;">
+          <a class="nav-link" href="#">
+            <i class="fas fa-user-friends"></i>
+            <span>참여자리스트</span></a>
+        </li>
       </ul>
          
       <!-- right nav -->
@@ -272,27 +244,6 @@
             }
         }); 
     });
-<<<<<<< HEAD
-        
-        function kick(){
-        	if(confirm("추방하시겠습니까?") == true){
-        		document.form.submit();
-        	}else{
-        		return;
-        	}
-        }
-        
-        function out(){
-        	if(confirm("해당 프로젝트에서 나가시겠습니까?") == true){
-        		document.form.submit();
-        	}else{
-        		return;
-        	}
-        }
-
-   	
-=======
->>>>>>> daseul
     </script>
     
     <!-- jsCalendar -->
