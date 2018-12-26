@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.dp.task.model.exception.TaskException;
 import com.kh.dp.task.model.service.TaskService;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
@@ -33,15 +35,19 @@ public class TaskController {
 	
 	@RequestMapping("task/taskFormEnd.do")
 	public String insertTask(Task task, Model model, HttpSession session,
+			HttpServletRequest request,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
-		
+		System.out.println("task값:" + task);
+		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
-		String saveDir = session.getServletContext().getRealPath("/resources/upload/board");
+		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
 		
 		List<Attachment> attachList = new ArrayList<Attachment>();
 		
 		// 2. 폴더 유무 확인하고 생성하기
 		File dir = new File(saveDir);
+		
+		System.out.println("폴더있니?" + dir.exists());
 		
 		if(dir.exists() == false) dir.mkdirs();
 		
@@ -75,9 +81,32 @@ public class TaskController {
 		
 		int result;
 		
-		result = taskService.insertTask(task, attachList);
-		// 여기서 부터 작성
-		return null;
+		try {
+			result = taskService.insertTask(task, attachList);	
+		} catch(Exception e) {
+			throw new TaskException("게시글 등록 오류");
+		}
 		
+		String loc = "/task/taskList.do";
+		String msg = "";
+		
+		if(result > 0) {
+			msg = "게시글 등록 성공!";
+			loc = "/task/taskView.do?no="+task.gettNo();
+		}else {
+			msg = "게시글 등록 실패";
+		}
+		
+		model.addAttribute("loc", loc).addAttribute("msg", msg);
+		
+		return "common/msg";
+	}
+	
+	@RequestMapping("/task/taskView.do")
+	public String selectOneTask(@RequestParam int no, Model model) {
+		model.addAttribute("tasK", taskService.selectOneTask(no)).
+		addAttribute("attachmentList", taskService.selectAttachmentList(no));
+		
+		return "task/taskView";
 	}
 }

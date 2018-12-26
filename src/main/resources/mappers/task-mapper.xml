@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="task">
+	<resultMap type="map" id="board"/>
+	
+	<insert id="insertTask">
+		INSERT INTO TASK(TNO, TLEVEL, TMANAGER, TENDDATE, TTPRIORITY,
+			TBNO, TTITLE, TCONTENT, TSTARTDATE)
+		VALUES (SEQ_TNO.NEXTVAL, #{tLevel}, #{tManager}, #{tEndDate}, #{tPriority},
+		#{tBno}, #{tTitle}, #{tContent}, #{tStartDate})
+		<selectKey keyProperty="tNo" resultType="_int"
+			order="AFTER">
+			SELECT SEQ_TNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		<!-- 다른방식 -->
+		<selectKey keyProperty="tNo" resultType="_int"
+			order="BEFORE">
+			SELECT SEQ_TNO.CURRVAL FROM DUAL
+		</selectKey>
+		INSERT INTO TASK_FILE(FNO, FOLDNAME, FNEWNAME, FTNO)
+		VALUES (SEQ_FNO.NEXTVAL,
+		#{originalFileName}, #{renamedFileName}, #{tNo})
+	</insert>
+</mapper>

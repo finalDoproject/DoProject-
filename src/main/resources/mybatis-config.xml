@@ -11,7 +11,10 @@
 		         alias="Board"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
-
+		<typeAlias type="com.kh.dp.task.model.vo.Task" 
+				 alias="Task"/>
+		<typeAlias type="com.kh.dp.task.model.vo.Attachment" 
+				 alias="Attachment"/>
 	</typeAliases>
 	
 	

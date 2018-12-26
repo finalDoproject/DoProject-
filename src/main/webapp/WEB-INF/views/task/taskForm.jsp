@@ -21,6 +21,17 @@
 	<%-- <c:import url="../common/header.jsp"/> --%>
 
 	<script>
+	
+	/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
+	function validate(){
+		var content = $("[name=boardContent]").val();
+		if(content.trim().length==0){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		return true;
+	}
+	
 	$(document).ready(function(){
 		$('.pcnt100').click(function(){
 			$('#PROGRESS').css('right','0%')
@@ -104,44 +115,48 @@
 <body>
 	<div class="post_write_wrap">
 		<%-- <c:import url="../common/introSidebar.jsp"/> --%><!-- css적용이 안됌 -->
-		<form name="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate();">
-		<div class="post_write_tab">											
-		<ul>																				
-		<li class="ico4 on"><a>업무</a></li>					
-		<li class="ico3 off"><a>일정</a></li>								
-		</ul>															
+		<form name="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
+		<div class="post_write_tab">
+		<ul>
+		<li class="ico4 on"><a>업무</a></li>
+		<li class="ico3 off"><a>일정</a></li>	
+		</ul>
 		</div>
-																
+		
 		<div class="pst_write_bx" id="collabo_427890">	
 		<div class="workwriteWrap mgb30" style="min-height: 120px;">
 		<!-- 업무명 -->
 		<div class="titleBx">
-			<input type="text" name="TASK_NM" placeholder="업무명을 입력하세요" maxlength="500">
+			<input type="text" name="tTitle" id="tTitle" placeholder="업무명을 입력하세요" maxlength="500">
+		</div>
+		<div class="writerBx">
+			작성자 <input type="text" name="tWriter" id="tWriter" value="홍길동" readonly required>
 		</div>
 		
 		<!-- 업무내용 -->
 		<div class="workwriteCont line-fold">
 			<!-- 1. 업무상태 지정 -->
-			<div class="line">
+			<div class="line" >
 				<label class="icon1"><span class="blind">상태</span></label>
 				<div class="workTab">
-					<button type="button" class="tab1">요청</button>
-					<button type="button" class="tab2">진행</button>
-					<button type="button" class="tab5">피드백</button>
-					<button type="button" class="tab3">완료</button>
-					<button type="button" class="tab4">보류</button>
+					<button type="button" name="tLevel" class="tab1" value="1">요청</button>
+					<button type="button" name="tLevel" class="tab2" value="2">진행</button>
+					<button type="button" name="tLevel" class="tab5" value="3">피드백</button>
+					<button type="button" name="tLevel" class="tab3" value="4">완료</button>
+					<button type="button" name="tLevel" class="tab4" value="5">보류</button>
 				</div>
 			</div>
 			<!-- 2. 담당자 지정 -->
 			<div class="line" id="WORKER_LINE">
-				<label class="icon2"><span class="blind">담당자</span></label>
-				<div id="workerTagLayer" class="nameBx">
+				<label class="icon2" ><span class="blind" >담당자</span></label>
+				<div id="workerTagLayer" class="nameBx" >
 					
 					<span id="workerTagSelected"></span>
 					<button class="namePlus" style="display:none;">담당자 변경</button>
 					<div class="txt_add_nm">
 						<span class="txt_add_nm_in">
-							<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input name="WORKER" type="text" placeholder="담당자 추가" class="ui-autocomplete-input" autocomplete="off">
+							<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+							<input name="tManager" type="text" placeholder="담당자 추가" class="ui-autocomplete-input" autocomplete="off">
 						</span>
 						<!-- user layer -->
 						<div id="workerSelectLayer" class="mentions-input" style="top: 21px; left: -1px; min-width: 170px; display: none;"><!-- 20170407 -->
@@ -157,7 +172,7 @@
 			<div class="line" id="START_DT_LINE">
 				<label class="icon3"><span class="blind">시작일</span></label>
 				<div class="workdate" style="display: block;">
-					<input class="START_DT" start_dt="" type="text" placeholder="시작일 추가" id="dp1545179837849"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+					<input class="START_DT" start_dt="" type="text" placeholder="시작일 추가"  name="tStartDate" id="dp1545179837849"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="START_DT_CNTN" class="c_red" style="display:none;">시작일이 마감일보다 이후 날짜로 되어 있습니다.</span>
 				</div>
 			</div>
@@ -165,7 +180,7 @@
 			<div class="line" id="END_DT_LINE">
 				<label class="icon4"><span class="blind">마감일</span></label>
 				<div class="workdate" style="display: block;">
-					<input class="END_DT" end_dt="" type="text" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+					<input class="END_DT" end_dt="" type="text"  name="tEndDate" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
@@ -191,11 +206,11 @@
 			<div class="line" id="PRIORITY_LINE">
 				<label class="icon6"><span class="blind">우선순위</span></label>
 				<div class="imptc">
-					<input type="text" name="imptcInput" placeholder="우선순위 선택" style="display: block;">
-					<span id="PRIORITY" class="lv1" style="display: none;">낮음</span>
+					<input type="text" name="imptcInput" name="tPriority" placeholder="우선순위 선택" style="display: block;">
+					
 					<button id="PRIORITY_DEL" style="margin-left:-1px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<!-- level layerpopup -->
-					<div id="PRIORITY_LAYER" class="imptc_ly" style="display: none;">
+					<div id="PRIORITY_LAYER" class="imptc_ly" style="display:none; "name="tPriority">
 						<ul>
 							<li><button class="lv1" data="0">낮음</button></li>
 							<li><button class="lv2" data="1">보통</button></li>
@@ -221,16 +236,15 @@
 		placeholder="글을 작성하세요." 
 		autocomplete="off"></textarea>
 				
-			<div class="pst_btn_bx" style="height: 24px;">	
+		<div class="pst_btn_bx" style="height: 24px;">	
 			<span class="btn app_addfile">		
 			<input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple/>
-			<!-- <a title="첨부파일" class="fileicon">파일첨부</a> 업로드전	 -->	
 			</span>		
-			</div>	
+		</div>	
 		</div>
 	
-		<div class="right">		
-			<input type="submit" class="btn_style1" id="insertFlow" onclick="fn_insertCollaboCommt();" value="UPLOAD"/>
+		<div class="right">
+			<input type="submit" class="btn_style1" id="insertFlow" value="UPLOAD"/>
 		</div>
 		</form>
 	</div>

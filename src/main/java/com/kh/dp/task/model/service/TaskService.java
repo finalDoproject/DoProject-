@@ -12,4 +12,8 @@ public interface TaskService {
 	int selectTaskTotalContents();
 	
 	int insertTask(Task task, List<Attachment> attachList);
+	
+	Task selectOneTask(int taskNo);
+
+	List<Attachment> selectAttachmentList(int no);
 }

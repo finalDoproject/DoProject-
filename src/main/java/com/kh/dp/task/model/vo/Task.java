@@ -8,39 +8,40 @@ public class Task {
 	private int tNo; //업무 번호
 	private String tWriter; // 작성자
 	private String tTitle; // 업무명
-	private String tStatus; // 업무상태
+	private String tLevel; // 업무상태
 	private String tManager; // 담당자
 	private Date tStartDate; // 시작일
 	private Date tEndDate; // 종료일
 	private String tPriority; // 우선순위
+	private String tContent; // 업무 내용
 	//첨부파일
 	private List<Attachment> tFiles = new ArrayList<Attachment>();
 	
 	public Task() {}
 
-	
-	public Task(int tNo, String tWriter, String tTitle, String tStatus, String tManager, Date tStartDate,
-			Date tEndDate, String tPriority) {
+	public Task(int tNo, String tWriter, String tTitle, String tLevel, String tManager, Date tStartDate,
+			Date tEndDate, String tPriority, String tContent) {
 		super();
 		this.tNo = tNo;
 		this.tWriter = tWriter;
 		this.tTitle = tTitle;
-		this.tStatus = tStatus;
+		this.tLevel = tLevel;
 		this.tManager = tManager;
 		this.tStartDate = tStartDate;
 		this.tEndDate = tEndDate;
 		this.tPriority = tPriority;
+		this.tContent = tContent;
 	}
 
 
 	// 첨부파일 있는 생성자
-	public Task(int tNo, String tWriter, String tTitle, String tStatus, String tManager, Date tStartDate,
+	public Task(int tNo, String tWriter, String tTitle, String tLevel, String tManager, Date tStartDate,
 			Date tEndDate, String tPriority, List<Attachment> tFiles) {
 		super();
 		this.tNo = tNo;
 		this.tWriter = tWriter;
 		this.tTitle = tTitle;
-		this.tStatus = tStatus;
+		this.tLevel = tLevel;
 		this.tManager = tManager;
 		this.tStartDate = tStartDate;
 		this.tEndDate = tEndDate;
@@ -79,18 +80,22 @@ public class Task {
 	}
 
 
-	public String gettStatus() {
-		return tStatus;
+	public String gettLevel() {
+		return tLevel;
 	}
 
 
-	public void settStatus(String tStatus) {
-		this.tStatus = tStatus;
+	public void settLevel(String tLevel) {
+		this.tLevel = tLevel;
 	}
 
 
 	public String gettManager() {
 		return tManager;
+	}
+	
+	public String gettContent() {
+		return tContent;
 	}
 
 
@@ -137,11 +142,15 @@ public class Task {
 	public void settFiles(List<Attachment> tFiles) {
 		this.tFiles = tFiles;
 	}
+	
+	public String settContent() {
+		return tContent;
+	}
 
 
 	@Override
 	public String toString() {
-		return "Task [tNo=" + tNo + ", tWriter=" + tWriter + ", tTitle=" + tTitle + ", tStatus=" + tStatus
+		return "Task [tNo=" + tNo + ", tWriter=" + tWriter + ", tTitle=" + tTitle + ", tLevel=" + tLevel
 				+ ", tManager=" + tManager + ", tStartDate=" + tStartDate + ", tEndDate=" + tEndDate + ", tPriority="
 				+ tPriority + ", tFiles=" + tFiles + "]";
 	}
