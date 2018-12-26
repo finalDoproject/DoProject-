@@ -20,6 +20,8 @@
     
     <!-- Fontawesome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
     .request_title {
@@ -30,6 +32,9 @@
     button {
         margin-left: auto;
         margin-right: auto;
+    }
+    .datepicker {
+    	width : 180px;
     }
 
 </style>
@@ -65,7 +70,7 @@
                             <tbody>
                               <tr>
                                 <th scope="row"><i class="fas fa-user fa-2x"></i></th>
-                                <td colspan="4">
+                                <td colspan="3">
                                 	
                                     <select class="member-multiple" name="mNickname" multiple="multiple"
                                     style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
@@ -79,9 +84,9 @@
                               <tr>
                                 <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
                                 <td colspan="3">
-                                        <input type="date" name="startDate" id="startDate" onchange="getVal();" >&nbsp;&nbsp;
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
                                         <i class="fas fa-long-arrow-alt-right "></i>
-                                         &nbsp;&nbsp;<input type="date" id="endDate" name="endDate" >
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
                                 </td>
                               </tr>
                             </tbody>
@@ -107,7 +112,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
    
+   
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    
+
 
     <script>
             // select2 
@@ -117,57 +128,56 @@
                     }); 
             });
             
-            // 오늘 이전 비활성화
-            $(function(){
-            	
-            	var today = new Date();
-            	var dd = today.getDate();
-            	var mm = today.getMonth()+1;
-            	var yyyy = today.getFullYear();
-            	
-            	if(dd < 10 ){
-            		dd = '0' + dd
-            	}
-            	if(mm < 10){
-            		mm = '0' + mm
-            	}
-            	
-            	today = yyyy +"-" + mm + "-" + dd;
-            	
-            	console.log(today);
-            	
-            	$('#startDate').attr("min",today);
-            	$('#endDate').attr("min",today);
-            	
-           	
-            });
+           $(function(){
+        	 
+        	   // 한국어 설정
+        	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+        	   
+        	   // 시작일
+        	   $('#startdate').datepicker({
+        		  // 데이터 형식 지정
+        		  dateFormat : "yy-mm-dd",
+        		  // 달 / 주 이름 지정
+        		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+        		  dayNamesMin : ["일","월","화","수","목","금","토"],
+        		  // 오늘 날짜 이후로 선택 가능
+        		  minDate : 1,
+        		  onClose : function(selectDate) {
+        			  // 시작일 datepicker가 닫힐 때
+        			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+        			  
+        			  $("#enddate").datepicker("option", "minDate", selectDate);
+        			  
+        			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+        			  var date = $(this).datepicker('getDate');
+        			  
+        			  date.setDate(date.getDate()+7);
+        			  $("#enddate").datepicker("option", "maxDate", date);
+        		  }
+
+        		   
+        	   });
+        	   
+        	   // 종료일
+        	   $('#enddate').datepicker({
+        		  dateFormat : "yy-mm-dd",
+         		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+         		  dayNamesMin : ["일","월","화","수","목","금","토"],
+         		  minDate : 0,
+         		  
+         		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+         		  onClose : function(selectDate){
+         			 
+         			  $('#startdate').datepicker("option", "maxDate", selectDate);
+         		  }
+        	   });
+           });
             
-            // 시작 날짜 선택 
-            // 7일 후 비활성화하기
             
-            function getVal(){
             
-            	var selectDate = $('#startDate').attr("min");
-            	console.log(selectDate);
-            	
-            	var date = selectDate.split("-");
-            	
-            	var yyyy = date[0];
-            	var mm = date[1];
-            	var dd = date[2];
-            	
-            	dd *= 1;
-            	
-            	dd = dd+7;
-            	
-            	var afterDate = yyyy + "-" + mm + "-" + dd;
-            	console.log(afterDate);
-            	
-            	$('#startDate').attr("min",selectDate);
-            	$('#endDate').attr("max",afterDate);
-            	
-            }
             
+			
+           
             
     
     </script>

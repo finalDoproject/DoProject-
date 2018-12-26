@@ -48,4 +48,13 @@ public class SideController {
 		return "redirect:/";
 		
 	}
+	
+	// 스케줄 참여 버튼 띄우기
+	@RequestMapping("/side/matchingJoin.do")
+	public String matcingJoin() {
+		
+		return "side/join";
+	}
+	
+	
 }
