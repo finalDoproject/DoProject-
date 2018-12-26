@@ -9,6 +9,8 @@
 		         alias="Member"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
+		<typeAlias type="com.kh.dp.side.model.vo.Join"
+				 alias="Join"/>
 	</typeAliases>
 	
 	
