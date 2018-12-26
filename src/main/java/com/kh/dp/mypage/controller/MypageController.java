@@ -12,4 +12,28 @@ public class MypageController {
 		return null;
 	}
 	
+	@RequestMapping("/mypage/profile.do")
+	public String profileView() {
+		
+		return null;
+	}
+	
+	@RequestMapping("/mypage/keeping.do")
+	public String keepingView() {
+		
+		return null;
+	}
+	
+	@RequestMapping("/mypage/mypost.do")
+	public String mypostView() {
+		
+		return null;
+	}
+	
+	@RequestMapping("/mypage/mycalendar.do")
+	public String mycalendarView() {
+		
+		return null;
+	}
+	
 }

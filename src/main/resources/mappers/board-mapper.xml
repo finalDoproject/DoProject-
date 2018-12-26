@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="board">
+	<resultMap type="map" id="board"/>
+	
+	
+	<!--  고객센터 관련 -->
+	<select id="selectHelpList" resultType="board">
+		SELECT *
+		FROM BOARD  
+		WHERE BCONDITION = 'Y' AND BTYPE = 2
+		ORDER BY BDATE DESC, BNO DESC
+	</select>
+	
+	<select id="selectOneHelp" parameterType="_int" resultType="Board">
+		SELECT * FROM BOARD WHERE BNO = #{bno}
+	</select>
+	
+	
+	<select id="selectHelpTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE BTYPE = 2 AND BCONDITION = 'Y'
+	</select>
+
+	<insert id="insertHelp" >
+		INSERT INTO BOARD(BNO, BTITLE, BCONTENT, BCONDITION, BDATE, BMNO, BTYPE, BPNO) 
+		VALUES (SEQ_BNO.NEXTVAL, #{btitle} ,#{bcontent} , DEFAULT, DEFAULT, 1, 2, NULL)
+		<!-- 전달한 board객체의 boardNo 프로퍼티에 결과값을 담는다. -->
+		<selectKey keyProperty="bno" resultType="_int" order="AFTER"> 
+			SELECT SEQ_BNO.CURRVAL FROM DUAL 
+		</selectKey>
+	</insert>
+	
+	<update id="updateHelp" parameterType="Board">
+		UPDATE BOARD 
+		SET BTITLE = #{btitle}, BCONTENT = #{bcontent}
+		WHERE BNO = #{bno}
+	</update>
+	
+	<update id="deleteHelp" parameterType="_int">
+		UPDATE BOARD 
+		SET BCONDITION = 'N'
+		WHERE BNO = #{bno}
+	</update>
+	
+	<!--  공지사항 관련  -->
+	<select id="selectNoticeList" resultType="board">
+		SELECT *
+		FROM BOARD  
+		WHERE BCONDITION = 'Y' AND BTYPE = 1
+		ORDER BY BDATE DESC, BNO DESC
+	</select>
+	
+	<select id="selectOneNotice" parameterType="_int" resultType="Board">
+		SELECT * FROM BOARD WHERE BNO = #{bno}
+	</select>
+	
+	
+	<select id="selectNoticeTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE BTYPE = 1 AND BCONDITION = 'Y'
+	</select>
+	
+	<insert id="insertNotice" >
+		INSERT INTO BOARD(BNO, BTITLE, BCONTENT, BCONDITION, BDATE, BMNO, BTYPE, BPNO) 
+		VALUES (SEQ_BNO.NEXTVAL, #{btitle} ,#{bcontent} , DEFAULT, DEFAULT, 1, 1, NULL)
+		<!-- 전달한 board객체의 boardNo 프로퍼티에 결과값을 담는다. -->
+		<selectKey keyProperty="bno" resultType="_int" order="AFTER"> 
+			SELECT SEQ_BNO.CURRVAL FROM DUAL 
+		</selectKey>
+	</insert>
+	
+	<update id="updateNotice" parameterType="Board">
+		UPDATE BOARD 
+		SET BTITLE = #{btitle}, BCONTENT = #{bcontent}
+		WHERE BNO = #{bno}
+	</update>
+	
+	<update id="deleteNotice" parameterType="_int">
+		UPDATE BOARD 
+		SET BCONDITION = 'N'
+		WHERE BNO = #{bno}
+	</update>
+		
+
+	
+</mapper>

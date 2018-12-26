@@ -10,26 +10,22 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+		
+		<script>
+		function delHelp(){
+			
+				var con_test = confirm("글을 정말 삭제하시겠습니까?");
+				if(con_test == true){
+				  location.href ="${pageContext.request.contextPath}/intro/board/deleteHelp.do?bno=" +${board.bno}
+				}
+				else if(con_test == false){
+				  alert("취소되었습니다.");
+				}
+		
+		}
+	
+		</script>
 
-<style>
-.post {
-	position: relative;
-	padding: 25px;
-	border-bottom: 1px solid #e6ecf5;
-}
-
-.m-link a {
-	color: #333;
-}
-
-.m-link a:hover {
-	color: #333;
-}
-
-h6.my-4 {
-margin: 13px;
-}
-</style>
 </head>
 	<body class="is-preload">
 
@@ -51,26 +47,20 @@ margin: 13px;
 						<h1>고객센터</h1>
 					</header>
 
-					<a href="#" style="float: right;" class="button primary small">글쓰기</a>
 					<h2>QnA</h2>
 
 					<div class="col-lg-7">
 						<div class="ui-block">
 							<article class="hentry post">
 								<div class="m-link">
-									<a href="#" target="_blank">
-										<h4>Why should I follow you, in five sentences?</h4>
-									</a>
+
+										<h2><strong>${board.btitle }</strong></h2>
+						
 								</div>
 								<div class="post__author author vcard inline-items">
-									<img
-										src="https://a11.t26.net/taringa/avatares/9/1/2/F/7/8/Demon_King1/48x48_5C5.jpg"
-										alt="author">
 									<div class="author-date">
-										<a class="h6 post__author-name fn" href="#">Dipendra Singh</a>
+										
 										<div class="post__date">
-											<time class="published" datetime="2004-07-24T18:18">
-												Answered 2h ago </time>
 										</div>
 									</div>
 									<div class="more">
@@ -78,15 +68,9 @@ margin: 13px;
 										</a>
 									</div>
 								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempo incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris consequat.</p>
+								<h3><p>${board.bcontent }</p></h3>
 								<div class="post-additional-info inline-items">
 									<p>
-										<a href="#" class="btn btn-sm btn-light"><span
-											class="fa fa-pencil"></span> Answer</a> <a href="#"
-											class="btn btn-sm btn-light"> Pass</a>
 									</p>
 									<p class="social-icons">
 										<a href="#" class="btn btn-sm btn-light"><i
@@ -99,6 +83,9 @@ margin: 13px;
 							</article>
 						</div>
 						</div>
+						<a href="${pageContext.request.contextPath}/intro/board/help.do" class="button primary icon fa-search" >목록으로</a>
+						<a href="${pageContext.request.contextPath}/intro/board/updateHelpView.do?bno=${board.bno}" class="button icon fa-download" style="float: right;" >수정하기</a>
+						<a href="javascript:void(0)" onclick="delHelp();" id="delhelp" class="button icon fa-download" style="float: right;" >삭제하기</a>
 				</section>
 	
 			</div>
