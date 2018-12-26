@@ -10,26 +10,6 @@
 		</layout>
 	</appender>
 	
-  <!-- log4jdbc-remix Appender -->
-  <appender name="sqlLogger" class="org.apache.log4j.ConsoleAppender">
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%-5p: %m%n"/>
-    </layout>
-  </appender>
-  
-   <!--  log4jdbc-remix 관련 logger 시작  -->
-   <!--  Query Loggers   -->
-  <logger name="jdbc.sqlonly" additivity="false">
-    <level value="INFO"/>
-    <appender-ref ref="sqlLogger"/>
-  </logger>
-  
-  <logger name="jdbc.resultsettable" additivity="false">
-    <level value="INFO"/>
-    <appender-ref ref="sqlLogger"/>
-  </logger>
-  
-	
 	<!-- Application Loggers -->
 	<logger name="com.kh.dp">
 		<level value="info" />
