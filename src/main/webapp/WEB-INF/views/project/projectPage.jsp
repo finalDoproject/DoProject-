@@ -58,6 +58,18 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
+        
+         <li class="nav-item" style="position: absolute; top:720px;">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
+            <i class="fas fa-user-friends"></i>
+            <span>초대하기</span></a>
+        </li>
+        
+        <li class="nav-item" style="position: absolute; top:760px;">
+          <a class="nav-link" href="#">
+            <i class="fas fa-user-friends"></i>
+            <span>참여자리스트</span></a>
+
         <hr />
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
@@ -91,6 +103,48 @@
 			</div>
         </li>
       </ul>
+      <!-- invitationModal -->
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+              <div class="modal-dialog" role="document">
+              
+               <form id="proejctEnrollFrm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
+                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
+                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
+                      </div>                  
+                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
+                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
+                        <div class="form-group levelbox" style="display: none;">
+                          <hr>
+                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
+                          <button type="button" class="btn plusbtn btn-light">+</button>
+                          <button type="button" class="btn minusbtn btn-light">-</button>
+                          
+                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
+
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
+                  </div>                  
+                </div>
+               </form>
+              </div>
+            </div>   
+      
          
       <!-- right nav --> 
       <div id="rightNav">
