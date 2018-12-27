@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,6 +53,9 @@
 	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
+	               <c:if test="${!empty member}">
+	               <span>${member.nickName}님</span>&nbsp;&nbsp;
+	               </c:if>
 	              <i class="fas fa-home" style="color: rgba(248, 143, 111, 0.6)"></i>
 	              </a>
 	            </li>
