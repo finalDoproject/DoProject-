@@ -22,6 +22,11 @@
 	INSERT INTO SCHEDULE_MATCHING VALUES
 				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
 	</insert>
+	
+	<insert id="insertMatchingDT" parameterType="Join" >
+	INSERT INTO SCHEDULE_JOIN VALUES
+	(#{sjmno}, #{sjsm}, #{sjdtno})
+	</insert>
 </mapper>
 
 

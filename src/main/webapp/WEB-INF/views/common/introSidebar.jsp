@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +25,6 @@
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
 										<li><a href="${pageContext.request.contextPath}/task/taskForm.do">업무작성</a></li>
-                    <li><a href="${pageContext.request.contextPath}/chat.ch">채팅 샘플</a></li>
 										<li><a href="${pageContext.request.contextPath}/member/MemberList.do"">관리자 페이지</a></li>
 							
 
