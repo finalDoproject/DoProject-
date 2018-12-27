@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dp.chat.model.vo.ChatPtm;
+import com.kh.dp.project.model.vo.Project;
 
 @Repository
 public class ChatDaoImpl implements ChatDao{
@@ -21,9 +22,13 @@ public class ChatDaoImpl implements ChatDao{
 	}
 
 	@Override
-	public List<ChatPtm> selectChatRoomList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectChatRoomList(int pno) {
+		return sqlSession.selectList("chat.selectChatRoomList", pno);
+	}
+	
+	@Override
+	public Project selectProject(int pno) {
+		return sqlSession.selectOne("chat.selectProject", pno);
 	}
 
 	@Override

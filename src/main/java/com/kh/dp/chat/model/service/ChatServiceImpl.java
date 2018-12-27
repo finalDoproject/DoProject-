@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dp.chat.model.dao.ChatDao;
 import com.kh.dp.chat.model.vo.ChatPtm;
+import com.kh.dp.project.model.vo.Project;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -17,14 +18,17 @@ public class ChatServiceImpl implements ChatService{
 	
 	@Override
 	public List<Map<String, String>> selectProjectChatList(int pno) {
-		// TODO Auto-generated method stub
 		return chatDao.selectProjectChatList(pno);
 	}
 
 	@Override
-	public List<ChatPtm> selectChatRoomList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectChatRoomList(int pno) {
+		return chatDao.selectChatRoomList(pno);
+	}
+	
+	@Override
+	public Project selectProject(int pno) {
+		return chatDao.selectProject(pno);
 	}
 
 	@Override

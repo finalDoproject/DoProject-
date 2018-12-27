@@ -1,6 +1,7 @@
 package com.kh.dp.chat.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.dp.chat.model.service.ChatService;
+import com.kh.dp.project.model.vo.Project;
 
 @Controller
 public class ChatController {
@@ -23,12 +25,21 @@ public class ChatController {
 		// 프로젝트 번호
 		int pno = 1;
 		
+		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
 		
-		model.addAttribute("list", list);
+		// 해당 프로젝트에 참여중인 회원 불러오기
+		ArrayList<Map<String, String>> secondList =
+				new ArrayList<Map<String, String>>(chatService.selectChatRoomList(pno));
+		// 해당 프로젝트 불러오기
+		Project p = chatService.selectProject(pno);
 		
-		System.out.println("list : " + list);
+		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
+		
+		System.out.println("list1 : " + list);
+		System.out.println("list2 : " + secondList);
+		System.out.println("project : " + p);
 		
 		return "chat/chat";
 	}

@@ -185,70 +185,33 @@ function searchRoom() {
 			<!-- 참여자 리스트 화면 -->
 			<div class="contact-list">
 				<!-- 프로젝트 단체방 -->
-				<div class="contact" id="1">
+				<div class="contact">
 					<img src="" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text">
-							<h1 class="font-name">DOPE</h1>
+							<h1 class="font-name">${project.pTitle}</h1>
 						</div>
 					</div>
 					<div class="contact-time">
 						<p>1주 전</p>
 					</div>
 				</div>
-				<!-- 프로젝트 참여자 목록 -->
-				<div class="contact" id="2">
-					<img src="https://bootdey.com/img/Content/avatar/avatar2.png"
-						alt="profilpicture">
-					<div class="contact-preview">
-						<div class="contact-text">
-							<h1 class="font-name">이순신</h1>
-							<p class="font-preview">온라인</p>
-						</div>
-					</div>
-					<div class="contact-time">
-						<p>17:54</p>
-					</div>
-				</div>
-				<div class="contact" id="3">
-					<img src="https://bootdey.com/img/Content/avatar/avatar4.png"
-						alt="profilpicture">
-					<div class="contact-preview">
-						<div class="contact-text">
-							<h1 class="font-name">김유신</h1>
-							<p class="font-preview">온라인</p>
-						</div>
-					</div>
-					<div class="contact-time">
-						<p>3일 전</p>
-					</div>
-				</div>
-				<div class="contact" id="4">
-					<img src="https://bootdey.com/img/Content/avatar/avatar1.png"
-						alt="profilpicture">
-					<div class="contact-preview">
-						<div class="contact-text">
-							<h1 class="font-name">홍길동</h1>
-							<p class="font-preview">온라인</p>
-						</div>
-					</div>
-					<div class="contact-time">
-						<p>1일 전</p>
-					</div>
-				</div>
-				<div class="contact" id="5">
-					<img src="https://bootdey.com/img/Content/avatar/avatar3.png"
-						alt="profilpicture">
-					<div class="contact-preview">
-						<div class="contact-text">
-							<h1 class="font-name">신사임당</h1>
-							<p class="font-preview">오프라인</p>
-						</div>
-					</div>
-					<div class="contact-time">
-						<p>20:11</p>
-					</div>
-				</div>
+				<c:forEach items="${secondList}" var="sl">
+						<c:if test="${sl.mno ne member.mno}">
+							<div class="contact">
+								<img src="resources/images/profile/${member.mProfile}" alt="profilpicture">
+								<div class="contact-preview">
+									<div class="contact-text">
+										<h1 class="font-name">${sl.nickName}</h1>
+										<p class="font-preview">온/오프라인</p>
+									</div>
+								</div>
+								<div class="contact-time">
+								<p>10:00</p>
+								</div>
+							</div>
+						</c:if>
+				</c:forEach>
 			</div>
 		</section>
 

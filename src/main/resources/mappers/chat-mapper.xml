@@ -9,5 +9,14 @@
 		WHERE CHPNO = #{pno}
 		ORDER BY CHNO
 	</select>
+	
+	<select id="selectChatRoomList" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (
+    		SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<select id="selectProject" resultType="project">
+		SELECT * FROM PROJECT WHERE PNO = #{pno}
+	</select>
 		
 </mapper>
