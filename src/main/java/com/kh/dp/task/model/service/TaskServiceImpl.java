@@ -1,11 +1,14 @@
 package com.kh.dp.task.model.service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.dp.intro.board.model.service.BoardServiceImpl;
 import com.kh.dp.task.model.dao.TaskDao;
@@ -30,13 +33,19 @@ public class TaskServiceImpl implements TaskService {
 	public int insertTask(Task task, List<Attachment> attachList) {
 		int result = 0;
 		int taskNo = 0;
-		
+		/*
+		task.setTstartdate(startdate);
+		task.setTenddate(enddate);
+		*/
+		System.out.println("확인 : " + task);
 		try {
 			result = taskDao.insertTask(task);
 			if(result == TASK_SERVICE_ERROR) throw new TaskException();
 			
-			taskNo = task.gettNo();
+			taskNo = task.getTno();
 			logger.debug("taskNo = " + taskNo);
+			
+			
 			
 			if(attachList.size()>0) {
 				for(Attachment a : attachList) {

@@ -2,9 +2,10 @@ package com.kh.dp.task.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +34,19 @@ public class TaskController {
 		// taskForm.jsp를 연결짓는다.
 	}
 	
-	@RequestMapping("task/taskFormEnd.do")
+	@RequestMapping("/task/taskFormEnd.do")
 	public String insertTask(Task task, Model model, HttpSession session,
 			HttpServletRequest request,
-			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
+			@RequestParam(value="upFile", required = false) MultipartFile[] upFile,
+			@RequestParam String tmanager
+			/*@RequestParam(value="startdate", required=false) String startdate,
+			@RequestParam(value="enddate", required=false) String enddate*/) {
+		
 		System.out.println("task값:" + task);
+		System.out.println("task manager:" + tmanager);
+		
+		task.setTmno(1);
+		
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
@@ -62,7 +71,7 @@ public class TaskController {
 				int rnNum = (int)(Math.random() * 1000);
 				
 				// 서버 저장 후 관리할 파일명
-				String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+				String renamedName = sdf.format(new java.util.Date()) + "_" + rnNum + "." + ext;
 				
 				// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
 				try {
@@ -72,8 +81,8 @@ public class TaskController {
 				}
 				
 				Attachment at = new Attachment();
-				at.setOriginalFileName(originName);
-				at.setRenamedFileName(renamedName);
+				at.setFoldname(originName);
+				at.setFnewname(renamedName);
 				
 				attachList.add(at);
 			}
@@ -92,7 +101,7 @@ public class TaskController {
 		
 		if(result > 0) {
 			msg = "게시글 등록 성공!";
-			loc = "/task/taskView.do?no="+task.gettNo();
+			loc = "/task/taskView.do?no="+task.getTno();
 		}else {
 			msg = "게시글 등록 실패";
 		}
@@ -101,6 +110,7 @@ public class TaskController {
 		
 		return "common/msg";
 	}
+	
 	
 	@RequestMapping("/task/taskView.do")
 	public String selectOneTask(@RequestParam int no, Model model) {

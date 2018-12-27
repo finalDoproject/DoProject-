@@ -127,10 +127,10 @@
 		<div class="workwriteWrap mgb30" style="min-height: 120px;">
 		<!-- 업무명 -->
 		<div class="titleBx">
-			<input type="text" name="tTitle" id="tTitle" placeholder="업무명을 입력하세요" maxlength="500">
+			<input type="text" name="ttitle" id="ttitle" placeholder="업무명을 입력하세요" maxlength="500">
 		</div>
 		<div class="writerBx">
-			작성자 <input type="text" name="tWriter" id="tWriter" value="홍길동" readonly required>
+			작성자 <input type="text" name="twriter" id="twriter" value="유저01" readonly required>
 		</div>
 		
 		<!-- 업무내용 -->
@@ -138,41 +138,47 @@
 			<!-- 1. 업무상태 지정 -->
 			<div class="line" >
 				<label class="icon1"><span class="blind">상태</span></label>
-				<div class="workTab">
-					<button type="button" name="tLevel" class="tab1" value="1">요청</button>
-					<button type="button" name="tLevel" class="tab2" value="2">진행</button>
-					<button type="button" name="tLevel" class="tab5" value="3">피드백</button>
-					<button type="button" name="tLevel" class="tab3" value="4">완료</button>
-					<button type="button" name="tLevel" class="tab4" value="5">보류</button>
+				<div class="workTab" name="tLevelSelect">
+					<input type="hidden" name="tlevel" id="tlevel" value="0"/>
+					<button type="button" name="level" class="tLevelSelect tab1" value="1">요청</button>
+					<button type="button" name="level" class="tLevelSelect tab2" value="2">진행</button>
+					<button type="button" name="level" class="tLevelSelect tab5" value="3">피드백</button>
+					<button type="button" name="level" class="tLevelSelect tab3" value="4">완료</button>
+					<button type="button" name="level" class="tLevelSelect tab4" value="5">보류</button>
 				</div>
+				<script>
+					$(".tLevelSelect").each(function(){
+						$(this).click(function(){
+							$('#tlevel').val($(this).val());
+						});
+					});
+				</script>
 			</div>
 			<!-- 2. 담당자 지정 -->
 			<div class="line" id="WORKER_LINE">
 				<label class="icon2" ><span class="blind" >담당자</span></label>
 				<div id="workerTagLayer" class="nameBx" >
-					
 					<span id="workerTagSelected"></span>
 					<button class="namePlus" style="display:none;">담당자 변경</button>
 					<div class="txt_add_nm">
 						<span class="txt_add_nm_in">
 							<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-							<input name="tManager" type="text" placeholder="담당자 추가" class="ui-autocomplete-input" autocomplete="off">
+							<input name="tmanager" type="text" placeholder="담당자 추가" class="ui-autocomplete-input" autocomplete="off">
 						</span>
 						<!-- user layer -->
 						<div id="workerSelectLayer" class="mentions-input" style="top: 21px; left: -1px; min-width: 170px; display: none;"><!-- 20170407 -->
 							<ul tabindex="0" class="user_list sizeSamll ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" style="left: 0px; top: 0px; width: 130% !important; display: block;"><!-- 20170407 -->
 							</ul>
 						</div>
-						<!-- //user layer -->
-								
-					</div>										
+						<!-- //user layer -->		
+					</div>									
 				</div>
 			</div>
 			<!-- 3. 시작일 지정 -->
 			<div class="line" id="START_DT_LINE">
 				<label class="icon3"><span class="blind">시작일</span></label>
 				<div class="workdate" style="display: block;">
-					<input class="START_DT" start_dt="" type="text" placeholder="시작일 추가"  name="tStartDate" id="dp1545179837849"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+					<input class="START_DT" start_dt="" type="text" name="tstartdate" placeholder="시작일 추가"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="START_DT_CNTN" class="c_red" style="display:none;">시작일이 마감일보다 이후 날짜로 되어 있습니다.</span>
 				</div>
 			</div>
@@ -180,7 +186,7 @@
 			<div class="line" id="END_DT_LINE">
 				<label class="icon4"><span class="blind">마감일</span></label>
 				<div class="workdate" style="display: block;">
-					<input class="END_DT" end_dt="" type="text"  name="tEndDate" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+					<input class="END_DT" end_dt="" type="text"  name="tenddate" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
@@ -201,21 +207,20 @@
 					</div><!-- 20170407 수정 -->
 				</a>
 			</div>
-			
 			<!-- 6. 우선순위 지정 -->
 			<div class="line" id="PRIORITY_LINE">
 				<label class="icon6"><span class="blind">우선순위</span></label>
 				<div class="imptc">
-					<input type="text" name="imptcInput" name="tPriority" placeholder="우선순위 선택" style="display: block;">
+					<input type="number" name="ttpriority" placeholder="우선순위 선택" style="display: block;">
 					
 					<button id="PRIORITY_DEL" style="margin-left:-1px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<!-- level layerpopup -->
-					<div id="PRIORITY_LAYER" class="imptc_ly" style="display:none; "name="tPriority">
+					<div id="PRIORITY_LAYER" class="imptc_ly" style="display:none; "name="ttpriority">
 						<ul>
-							<li><button class="lv1" data="0">낮음</button></li>
-							<li><button class="lv2" data="1">보통</button></li>
-							<li><button class="lv3" data="2">높음</button></li>
-							<li><button class="lv4" data="3">긴급</button></li>
+							<li><button class="lv1"  value="0">낮음</button></li>
+							<li><button class="lv2"  value="1">보통</button></li>
+							<li><button class="lv3"  value="2">높음</button></li>
+							<li><button class="lv4"  value="3">긴급</button></li>
 						</ul>
 					</div>
 				</div>
@@ -224,11 +229,8 @@
 		</div>
 		
 		<!-- 최초화면툴팁layer -->	
-		<div class="red_ttip_ly" id="postTtip" style="display:none;"><div class="po"><span class="tail"></span><p class="txt_r">내용을 입력하세요.</p></div></div>	
-		<div class="red_ttip_ly" id="postTtipTask" style="display:none;"><div class="po"><span class="tail"></span><p class="txt_r">업무명을 입력하세요.</p></div></div>	
 		
-		<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-		<textarea cols="" rows="" onkeyup="fn_textAreaResize(this);" 
+		<textarea name="tcontent" cols="" rows="" onkeyup="fn_textAreaResize(this);" 
 		class="mentions input ui-autocomplete-input" 
 		style="line-height: 23px; 
 		background-color: transparent; 
