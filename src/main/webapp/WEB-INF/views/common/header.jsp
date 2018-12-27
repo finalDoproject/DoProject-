@@ -59,7 +59,7 @@
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger">9+</span>
 	          </a>
-	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown" style="width:500px;">
+	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
 	            <!-- c:for 알람 내용 읽어오기 -->
 	            <a class="dropdown-item" href="#">[회원명]님 회원 가입을 환영합니다.</a>
 	            <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
