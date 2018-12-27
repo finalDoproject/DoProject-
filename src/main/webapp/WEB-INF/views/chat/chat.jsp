@@ -189,7 +189,7 @@ function searchRoom() {
 					<img src="" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text">
-							<h1 class="font-name">${project.pTitle}</h1>
+							<h1 class="font-name">${project.ptitle}</h1>
 						</div>
 					</div>
 					<div class="contact-time">
