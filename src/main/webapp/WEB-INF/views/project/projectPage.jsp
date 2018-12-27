@@ -11,7 +11,7 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-	
+
 	<div id="wrapper" >
 
       <!-- Sidebar -->
@@ -45,11 +45,11 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        <li>
-        <div class="dropup" style="position: absolute; top:760px; margin-left:20px;">
-  			<a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-  				style="background-color:#F88E6F;">
-    			<i class="fas fa-user-friends" style="color: rgba(255, 255, 255, 0.7);"></i> <span style="color: rgba(255, 255, 255, 0.7);">참여자리스트</span>
+        <hr />
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+    			<i class="fas fa-user-friends"></i>
+    			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
   				<div>
@@ -76,11 +76,10 @@
 				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
   				</div>
 			</div>
-		</div>
-		</li>
+        </li>
       </ul>
          
-      <!-- right nav -->
+      <!-- right nav --> 
       <div id="rightNav">
         <div class="memoBox">
             <textarea class="memopad" id="" cols="22" rows="9" onclick="this.value=''">간단한 메모를 작성하세요.
@@ -143,7 +142,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-
+<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
