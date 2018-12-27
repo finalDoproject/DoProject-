@@ -9,6 +9,8 @@
 		         alias="Member"/>
 		<typeAlias type="com.kh.dp.intro.board.model.vo.Board"
 		         alias="Board"/>
+        <typeAlias type="com.kh.dp.project.model.vo.Project"
+				alias="Project"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Join"
