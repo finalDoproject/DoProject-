@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,6 +53,9 @@
 	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
+	               <c:if test="${!empty member}">
+	               <span>${member.nickName}님</span>&nbsp;&nbsp;
+	               </c:if>
 	              <i class="fas fa-home" style="color: rgba(248, 143, 111, 0.6)"></i>
 	              </a>
 	            </li>
@@ -59,7 +64,7 @@
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger">9+</span>
 	          </a>
-	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown" style="width:500px;">
+	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
 	            <!-- c:for 알람 내용 읽어오기 -->
 	            <a class="dropdown-item" href="#">[회원명]님 회원 가입을 환영합니다.</a>
 	            <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>

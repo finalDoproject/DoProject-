@@ -19,7 +19,7 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-	
+
 	<div id="wrapper" >
 
       <!-- Sidebar -->
@@ -64,6 +64,38 @@
           <a class="nav-link" href="#">
             <i class="fas fa-user-friends"></i>
             <span>참여자리스트</span></a>
+
+        <hr />
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+    			<i class="fas fa-user-friends"></i>
+    			<span>참여자 목록</span>
+  			</a>
+  			<div class="dropdown-menu">
+  				<div>
+    			<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
+    				<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+    				&nbsp;<span style="vertical-align:middle;">홍길동</span></a>
+				</div>
+				<div>
+				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
+					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+					&nbsp;<span style="vertical-align:middle;">신사임당</span></a>
+				</div>
+				<div>
+				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
+					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+					&nbsp;<span style="vertical-align:middle;">김유신</span></a>
+				</div>
+				<div>
+				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
+					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+					&nbsp;<span style="vertical-align:middle;">고길동</span></a>
+				</div>
+				<div>
+				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
+  				</div>
+			</div>
         </li>
       </ul>
       <!-- invitationModal -->
@@ -109,7 +141,7 @@
             </div>   
       
          
-      <!-- right nav -->
+      <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
       <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
@@ -186,7 +218,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-
+<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 

@@ -51,7 +51,7 @@
 					<h2>공지</h2>
 
 					<div class="table-wrapper" >
-						<table style="text-align:center;">
+						<table style="text-align:center;" id="mtable">
 							<thead>
 								<tr>
 									<th style="text-align:center;">번호</th>
@@ -546,5 +546,16 @@
 			src="${pageContext.request.contextPath}/resources/js/breakpoints.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/js/util.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+		
+		<script>
+			$('#mtable tbody').children().mouseenter(function () {
+				$(this).children().not(':first').css({'background':'#f56a6a', 'cursor':'pointer', 'opacity': '0.7'});
+				$(this).children().not(':first').click(function () {
+				});
+					
+			}).mouseleave(function () {
+				$(this).children().not(':first').css({'background':'white'});
+			});
+		</script>
 </body>
 </html>
