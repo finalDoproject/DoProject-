@@ -41,6 +41,11 @@ public class ChatDaoImpl implements ChatDao{
 		
 		return sqlSession.selectList("chat.selectOneChatList", map);
 	}
+	
+	@Override
+	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
+		return sqlSession.selectList("chat.selectSearchChatRoom", roomName);
+	}
 
 	@Override
 	public int insertChat(int pno, int mno) {
@@ -52,12 +57,6 @@ public class ChatDaoImpl implements ChatDao{
 	public int updateChat(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public List<ChatPtm> selectSearchChatRoom(String roomName) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

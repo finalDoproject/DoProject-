@@ -71,13 +71,38 @@ public class ChatController {
 		return mv;
 	}
 	
-	public String insertChat() {
-		// 채팅 기록 저장용
-		return "";
+	@RequestMapping(value="/chatProject.ch", method=RequestMethod.GET)
+	public ModelAndView selectProject(Model model, @RequestParam("pno") int pno) {
+		ModelAndView mv = new ModelAndView();
+		
+		// 저장되있는 채팅 내용 불러오기
+		ArrayList<Map<String, String>> list = 
+				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
+		
+		mv.addObject("chatProjectList", list);
+		mv.setViewName("jsonView");
+		System.out.println("ajax 채팅 : " + list);
+		
+		return mv;
 	}
 	
-	public String selectSearchChatRoom() {
+	@RequestMapping(value="/searchChatRoom.ch", method=RequestMethod.GET)
+	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("roomName") String roomName) {
 		// ajax 채팅방 리스트 검색용
+		ModelAndView mv = new ModelAndView();
+		
+		ArrayList<Map<String, String>> list =
+				new ArrayList<Map<String, String>>(chatService.selectSearchChatRoom(roomName));
+		
+		mv.addObject("ajaxList", list);
+		mv.setViewName("jsonView");
+		System.out.println("ajax 검색 : " + list);
+		
+		return mv;
+	}
+	
+	public String insertChat() {
+		// 채팅 기록 저장용
 		return "";
 	}
 	

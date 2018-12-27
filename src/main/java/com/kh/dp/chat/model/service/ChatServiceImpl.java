@@ -33,10 +33,14 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
-		// TODO Auto-generated method stub
 		return chatDao.selectOneChatList(pno, chWriter, chReader);
 	}
-
+	
+	@Override
+	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
+		return chatDao.selectSearchChatRoom(roomName);
+	}
+	
 	@Override
 	public int insertChat(int pno, int mno) {
 		// TODO Auto-generated method stub
@@ -47,12 +51,6 @@ public class ChatServiceImpl implements ChatService{
 	public int updateChat(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public List<ChatPtm> selectSearchChatRoom(String roomName) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

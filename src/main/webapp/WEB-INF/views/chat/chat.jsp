@@ -30,7 +30,7 @@ $(document).ready(function(){
 	$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 });
 
-function formatAMPM(date) {
+function sockformatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';
@@ -106,7 +106,7 @@ function onMessage(evt){
 			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
 			printHTML+=ConvertSystemSourcetoHtml(message);
 			printHTML+="</div><div class='time'>";
-			printHTML+=formatAMPM(today)+"</div></div>";
+			printHTML+=sockformatAMPM(today)+"</div></div>";
 			$('#chatList').append(printHTML);
 			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 		}
@@ -116,7 +116,7 @@ function onMessage(evt){
 			printHTML+="<div class='content'>";
 			printHTML+=ConvertSystemSourcetoHtml(message);
 			printHTML+="</div><div class='time'>";
-			printHTML+=formatAMPM(today)+"</div></div></div>";
+			printHTML+=sockformatAMPM(today)+"</div></div></div>";
 			printHTML+="<div style='clear: both;'></div>";
 			$('#chatList').append(printHTML);
 			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
@@ -133,7 +133,7 @@ function onMessage(evt){
 		printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
 		printHTML+=ConvertSystemSourcetoHtml(message);
 		printHTML+="</div><div class='time'>";
-		printHTML+=formatAMPM(today)+"</div></div>";
+		printHTML+=sockformatAMPM(today)+"</div></div>";
 		$('#chatList').append(printHTML);	
 		
 	}
@@ -234,13 +234,80 @@ function chatMtm(me, you){
 	});
 }
 
+function chatPtm(me, pno){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/chatProject.ch",
+		type : "GET",
+		data : { "pno" : pno },
+		success : function(responseData){
+			var data = responseData.chatProjectList;
+			if(data.length == 0){
+				$("#chatList").empty();
+				$('#chatList').append("<span>채팅 기록이 없습니다.</span>");
+			} else {
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1;
+				var yyyy = today.getFullYear();
+				if(dd<10){ dd = '0'+dd }
+				if(mm<10){ mm = '0'+mm }
+				today = yyyy + '-' + mm + '-' + dd;
+				
+				$("#chatList").empty();
+				for(var i = 0; i < data.length; i++){
+					var chatDay = (data[i].chDate.year+1900) + '-' + (data[i].chDate.month+1) + '-' + (data[i].chDate.date);
+					if(data[i].chWriter == me)
+					{
+						var printHTML="<div style='clear:both;'></div>";
+						printHTML+="<div class='chat-bubble me' id='myChat'>";
+						printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
+						printHTML+="</div><div class='time'>";
+						if(dateDiff(chatDay, today) == 0){
+							printHTML+=formatAMPM(data[i].chDate.hours, data[i].chDate.minutes)+"</div></div>";
+						} else {
+							printHTML+=dateDiff(chatDay, today)+"일 전</div></div>";
+						}
+						$('#chatList').append(printHTML);
+						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+					}
+					else{
+						var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+						printHTML+="<div class='chat-bubble you' style='float: left;'>";
+						printHTML+="<div class='content'>";
+						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
+						printHTML+="</div><div class='time'>";
+						if(dateDiff(chatDay, today) == 0){
+							printHTML+=formatAMPM(data[i].chDate.hours, data[i].chDate.minutes)+"</div></div></div>";
+						} else {
+							printHTML+=dateDiff(chatDay, today)+"일 전</div></div>";
+						}
+						printHTML+="<div style='clear: both;'></div>";
+						$('#chatList').append(printHTML);
+						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
+					}
+				}
+			}
+		}
+	});
+}
+
 function searchRoom() {
-    if(('#searchRoom').val() == ""){
+    if($('#searchRoom').val() == "" || $('#searchRoom').val() == null){
         
     } else {
-
+		$.ajax({
+			url : "${pageContext.request.contextPath}/searchChatRoom.ch",
+			type : "GET",
+			data : { "roomName" : $('#searchRoom').val() },
+			success : function(data){
+				console.log(data);
+			},
+			error : function(data){
+				console.log("검색 결과 없음 : " + data);
+			}
+        });
     }
-    console.log('Ajax로 DB검색해서 읽어오기, 값이 없으면 모두 보여주기');
 }
 </script>
 </head>
@@ -267,7 +334,7 @@ function searchRoom() {
 			<!-- 참여자 리스트 화면 -->
 			<div class="contact-list">
 				<!-- 프로젝트 단체방 -->
-				<div class="contact">
+				<div class="contact" onclick="chatPtm(${member.mno}, ${project.pno});">
 					<img src="" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text">
