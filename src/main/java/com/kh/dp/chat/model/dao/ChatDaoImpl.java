@@ -1,5 +1,6 @@
 package com.kh.dp.chat.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +33,18 @@ public class ChatDaoImpl implements ChatDao{
 	}
 
 	@Override
-	public List<ChatPtm> selectOneChatList(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("chWriter", chWriter);
+		map.put("chReader", chReader);
+		
+		return sqlSession.selectList("chat.selectOneChatList", map);
+	}
+	
+	@Override
+	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
+		return sqlSession.selectList("chat.selectSearchChatRoom", roomName);
 	}
 
 	@Override
@@ -47,12 +57,6 @@ public class ChatDaoImpl implements ChatDao{
 	public int updateChat(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public List<ChatPtm> selectSearchChatRoom(String roomName) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
