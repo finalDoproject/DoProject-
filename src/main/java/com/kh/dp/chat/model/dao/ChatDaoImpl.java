@@ -1,33 +1,33 @@
 package com.kh.dp.chat.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.dp.chat.model.vo.Chat;
+import com.kh.dp.chat.model.vo.ChatPtm;
 
 @Repository
 public class ChatDaoImpl implements ChatDao{
 	
-	/*@Autowired
-	SqlSessionTemplate sqlSession;*/
+	@Autowired
+	SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<Chat> selectProjectChatList(int pno) {
+	public List<Map<String, String>> selectProjectChatList(int pno) {
+		return sqlSession.selectList("chat.selectProjectChatList", pno);
+	}
+
+	@Override
+	public List<ChatPtm> selectChatRoomList(int pno) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Chat> selectChatRoomList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Chat> selectOneChatList(int pno, int mno) {
+	public List<ChatPtm> selectOneChatList(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -45,7 +45,7 @@ public class ChatDaoImpl implements ChatDao{
 	}
 
 	@Override
-	public List<Chat> selectSearchChatRoom(String roomName) {
+	public List<ChatPtm> selectSearchChatRoom(String roomName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

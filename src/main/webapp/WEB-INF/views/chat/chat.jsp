@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +26,7 @@ $(document).ready(function(){
 			window.resizeTo(800,600);
 		}
 	}
-	
+
 	$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 });
 
@@ -95,9 +97,10 @@ function onMessage(evt){
 			printHTML+="</div><div class='time'>";
 			printHTML+=formatAMPM(today)+"</div></div>";
 			$('#chatList').append(printHTML);
+			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 		}
 		else{
-			var printHTML="<div><img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left;'>";
+			var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
 			printHTML+="<div class='chat-bubble you' style='float: left;'>";
 			printHTML+="<div class='content'>";
 			printHTML+=ConvertSystemSourcetoHtml(message);
@@ -105,7 +108,7 @@ function onMessage(evt){
 			printHTML+=formatAMPM(today)+"</div></div></div>";
 			printHTML+="<div style='clear: both;'></div>";
 			$('#chatList').append(printHTML);
-						
+			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
 		}
 
 	}
@@ -161,6 +164,14 @@ function searchRoom() {
 </head>
 
 <body>
+	<div style="display:none;" id="mProfile">${member.mProfile}</div>
+	<div style="display:none;" id="userId">${member.userId}</div>
+	<div style="display:none;" id="password">${member.password}</div>
+	<div style="display:none;" id="email">${member.email}</div>
+	<div style="display:none;" id="nickName">${member.nickName}</div>
+	<div style="display:none;" id="mCondition">${member.mCondition}</div>
+	<div style="display:none;" id="mDate">${member.mDate}</div>
+	<div style="display:none;" id="mProfile">${member.mProfile}</div>
 	<div class="wrap">
 		<section class="left" style="background: #f98d70">
 			<!-- 대화방 검색 -->
@@ -253,24 +264,28 @@ function searchRoom() {
 			<div class="wrap-chat">
 				<!-- 채팅 내용 화면 -->
 				<div class="chat" id="chatList">
-					<div>
-						<img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+					<c:forEach items="${list}" var="c">
+						<c:if test="${c.chWriter ne member.mno}">
+						<div>
+						<img src="resources/images/profile/${member.mProfile}"
 							alt="profilpicture" style="float: left;">
 						<div class="chat-bubble you" style="float: left;">
-							<!-- <div class="your-mouth"></div> -->
 							<div class="content">
-								안녕하세요. <br> 만나서 반갑습니다. <br> 저는 홍길동 입니다.
+								${c.chContent}
 							</div>
-							<div class="time">17:24</div>
+							<div class="time">${c.chDate}</div>
 						</div>
-					</div>
-					<div style="clear: both;"></div>
-					<div class="chat-bubble me" id="myChat">
-						<!-- <div class="my-mouth"></div> -->
-						<div class="content">네 저도 반갑습니다</div>
-						<div class="time">17:38</div>
-					</div>
-					<div style="clear: both;"></div>
+						</div>
+						<div style="clear: both;"></div>
+						</c:if>
+						<c:if test="${c.chWriter eq member.mno}">
+						<div class="chat-bubble me" id="myChat">
+							<div class="content">${c.chContent}</div>
+							<div class="time">${c.chDate}</div>
+						</div>
+						<div style="clear: both;"></div>
+						</c:if>
+					</c:forEach>
 				</div>
 				<div class="information"></div>
 			</div>

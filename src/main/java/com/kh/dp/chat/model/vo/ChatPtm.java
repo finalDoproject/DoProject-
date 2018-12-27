@@ -2,71 +2,67 @@ package com.kh.dp.chat.model.vo;
 
 import java.util.Date;
 
-public class Chat {
+public class ChatPtm {
 
 	private int chNo;
 	private String chContent;
 	private Date chDate;
 	private String chCondition;
-	private int chRoomnum;
-
-	public Chat() {
+	private int chWriter;
+	private int chPno;
+	
+	public ChatPtm() {
 		super();
 	}
-
-	public Chat(int chNo, String chContent, Date chDate, String chCondition, int chRoomnum) {
+	public ChatPtm(int chNo, String chContent, Date chDate, String chCondition, int chWriter, int chPno) {
 		super();
 		this.chNo = chNo;
 		this.chContent = chContent;
 		this.chDate = chDate;
 		this.chCondition = chCondition;
-		this.chRoomnum = chRoomnum;
+		this.chWriter = chWriter;
+		this.chPno = chPno;
 	}
-
 	public int getChNo() {
 		return chNo;
 	}
-
 	public void setChNo(int chNo) {
 		this.chNo = chNo;
 	}
-
 	public String getChContent() {
 		return chContent;
 	}
-
 	public void setChContent(String chContent) {
 		this.chContent = chContent;
 	}
-
 	public Date getChDate() {
 		return chDate;
 	}
-
 	public void setChDate(Date chDate) {
 		this.chDate = chDate;
 	}
-
 	public String getChCondition() {
 		return chCondition;
 	}
-
 	public void setChCondition(String chCondition) {
 		this.chCondition = chCondition;
 	}
-
-	public int getChRoomnum() {
-		return chRoomnum;
+	public int getChWriter() {
+		return chWriter;
 	}
-
-	public void setChRoomnum(int chRoomnum) {
-		this.chRoomnum = chRoomnum;
+	public void setChWriter(int chWriter) {
+		this.chWriter = chWriter;
 	}
-
+	public int getChPno() {
+		return chPno;
+	}
+	public void setChPno(int chPno) {
+		this.chPno = chPno;
+	}
 	@Override
 	public String toString() {
-		return "Chat [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition=" + chCondition
-				+ ", chRoomnum=" + chRoomnum + "]";
+		return "Chat_PTM [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
+				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + "]";
 	}
 
 }

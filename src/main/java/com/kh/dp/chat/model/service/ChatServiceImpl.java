@@ -1,12 +1,13 @@
 package com.kh.dp.chat.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dp.chat.model.dao.ChatDao;
-import com.kh.dp.chat.model.vo.Chat;
+import com.kh.dp.chat.model.vo.ChatPtm;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -15,19 +16,19 @@ public class ChatServiceImpl implements ChatService{
 	ChatDao chatDao;
 	
 	@Override
-	public List<Chat> selectProjectChatList(int pno) {
+	public List<Map<String, String>> selectProjectChatList(int pno) {
+		// TODO Auto-generated method stub
+		return chatDao.selectProjectChatList(pno);
+	}
+
+	@Override
+	public List<ChatPtm> selectChatRoomList(int pno) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Chat> selectChatRoomList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Chat> selectOneChatList(int pno, int mno) {
+	public List<ChatPtm> selectOneChatList(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -45,7 +46,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public List<Chat> selectSearchChatRoom(String roomName) {
+	public List<ChatPtm> selectSearchChatRoom(String roomName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
