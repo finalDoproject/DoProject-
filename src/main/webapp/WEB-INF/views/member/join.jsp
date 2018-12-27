@@ -146,21 +146,21 @@ input[type="submit"].login:focus{outline: none;}
 			<p class="formLabel">아이디</p>
 			<!-- <input type="email" name="email" id="email" class="form-style" autocomplete="off" required="required"/> -->
 			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" />
-			<span class="idCheckPass">사용가능한 아이디입니다.</span>
-			<span class="idCheckFail">이미 사용중인 아이디입니다.</span>
+			<span class="idCheckPass"><em>사용가능한 아이디입니다.</em></span>
+			<span class="idCheckFail"><em>이미 사용중인 아이디입니다.</em></span>
 			<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0"/>	
 		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>
 			<input type="password" name="password" id="password" class="form-style" required="required"/>
-			<span class="pwdCheckFail">비밀번호는 숫자, 문자, 특수문자 각각 1개 이상을 포함하여 최소 4글자 입니다.</span>
+			<span class="pwdCheckFail"><em>비밀번호는 숫자, 문자, 특수문자 각각 1개 이상을 포함하여 최소 4글자 입니다.</em></span>
 		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">비밀번호 재확인</p>
 			<input type="password" id="password2" class="form-style"  />
-			<span class="pw2CheckFail">비밀번호를 다시 한 번 확인해주세요.</span>
+			<span class="pw2CheckFail"><em>비밀번호를 다시 한 번 확인해주세요.</em></span>
 		</div>
 		
 		<div class="form-item">
@@ -216,7 +216,6 @@ $(document).ready(function(){
 	});
 });
 
-//-------------------------------------//
 
 $(function(){
 	
@@ -248,57 +247,148 @@ $(function(){
                 console.log(errorThrown);
             }
     	});
-		
 	});
-	
 });
 
 
+	$("#mbEnrollFrm").submit(function(event){
+		
+	
+		 if($('#password').val() != $('#password2').val()){
+			 $(".pw2CheckFail").show();
+			event.preventDefault();
+			return;
+		}
+			
+		var pw  = $('#password').val();
+/* 		var pwRegex = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{4,20}$/;
+		
+		if (!pwRegex.test(pw)) {
+        	$("pwCheckFail").show();
+            return false;
+        }  */
+		
+	    if (isValidPasswd(pw) != true) {
+	    	$(".pwdCheckFail").show();
+	        return false;
+	    }
+	    
+	    function checkSpace(str) {
+	        if (str.search(/\s/) != -1) {
+	            return true;
+	        } else {
+	        	$(".pwdCheckFail").show();
+	            return false;
+	        }
+	    }
+
+	    function isValidPasswd(str) {
+	    	 var cnt = 0;
+	         if (str == "") {
+	             return false;
+	         }
+
+	         /* check whether input value is included space or not */
+	         var retVal = checkSpace(str);
+	         if (retVal) {
+	             return false;
+	         }
+	         if (str.length < 8) {
+	             return false;
+	         }
+	         for (var i = 0; i < str.length; ++i) {
+	             if (str.charAt(0) == str.substring(i, i + 1))
+	                 ++cnt;
+	         }
+	         if (cnt == str.length) {
+	             return false;
+	         }
+
+	         var isPW = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{4,}$/;
+	         if (!isPW.test(str)) {
+	        	 $("pwCheckFail").show();
+	             return false;
+	         }
+
+	         return true;
+	    }
+	    
+		
+		var email = $("#email").val();
+
+		var regex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		var isEmailValid = true;
+
+		
+		
+		if (email == "") {
+		
+			alert("올바른 이메일 주소를 입력해주세요.");
+			event.preventDefault();
+			return;
+		}
+
+		
 
 
- $("#mbEnrollFrm").submit(function(){
+		
+
+		
+	
+
+	});
+	
+	
+	
+
+
+ /* $("#mbEnrollFrm").submit(function(){
 	
 	var p1=$("#password").val(), p2=$("#password2").val();
 
-    function isValidPassPwd(p1) {
-       
-       
+    if (isValidPasswd(p1) != true) {
+    	$(".pwdCheckFail").show();
+        return false;
+    }
+	
+     function isValidPassPwd(p1) { 
+ 
         var pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{4,}$/;
+        
         if (!pwRegex.test(p1)) {
         	$("pwCheckFail").show();
             return false;
         } 
-        
-         function checkSpace(p1) {
-            if (p1.search(/\s/) != -1) {
-                return true;
-            } else {
-            	alert("비밀번호는 공백이 없어야합니다.");
-                return false;
-            }
-        } 
-         
-    	if (p2 == "") {
-          	alert("비밀번호 재확인란을 작성해주세요.");
-            return false;
-        }  
-         
-     	// 비번 재확인
-     	if(p1 != p2){
-     		$("pw2CheckFail").show();
-     		/* event.preventDefault(); */
-     		return false;
-     	}
-     	
+
      
-
-
-    }
+     	return true;
+     } 
+     
+ 	-------- 비번 재확인
+  	if(p1 != p2){
+  		$("pw2CheckFail").show();
+  		------------------------------ event.preventDefault(); 
+  		return false;
+  	}
+ 	
+     function checkSpace(p1) {
+         if (p1.search(/\s/) != -1) {
+             return true;
+         } else {
+         	alert("비밀번호는 공백이 없어야합니다.");
+             return false;
+         }
+     } 
+     
+ 	if (p2 == "") {
+      	alert("비밀번호 재확인란을 작성해주세요.");
+        return false;
+    }  
     
-	
 	var email = $("#email").val();
 
 	var emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	
 	function isEmailValid(email){
 		if(!emailRegix.test(email)){
 			alert("이메일 형식을 올바르게 작성해주세요.");
@@ -306,27 +396,17 @@ $(function(){
 		}
 	}
 
-
-
-	
-	
-	
-	
-	//숨길거 나올거 다시 확ㅇ니!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	        $(".idCheckPass").hide();
+	    $(".idCheckPass").hide();
     	$(".idCheckFail").hide();
     	$(".pwdCheckFail").hide();
     	$(".pw2CheckFail").hide();
-        return true;
+  
 	return true;
 	
 });
- 
+  */
 
-
-
-	
-
+  
 </script>
 
 
