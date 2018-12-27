@@ -16,6 +16,10 @@
 		<typeAlias type="com.kh.dp.side.model.vo.Join"
 				 alias="Join"/>
 		<typeAlias alias="Memo" type="com.kh.dp.project.model.vo.Memo"/>
+		<typeAlias type="com.kh.dp.chat.model.vo.ChatPtm"
+				alias="ChatPtm" />
+		<typeAlias type="com.kh.dp.project.model.vo.Project"
+				alias="Project" />
 	</typeAliases>
 	
 	

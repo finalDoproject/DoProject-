@@ -1,16 +1,46 @@
 package com.kh.dp.chat.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.kh.dp.chat.model.service.ChatService;
+import com.kh.dp.project.model.vo.Project;
 
 @Controller
 public class ChatController {
 
+	@Autowired
+	private ChatService chatService;
+	
 	@RequestMapping(value="/chat.ch", method=RequestMethod.GET)
-	public String selectProjectChatList() {	
-		// 해당 프로젝트 번호 가져와 그 프로젝트 내의 채팅 내역 불러오기
-		// 처음 실행 화면
+	public String selectProjectChatList(Model model) {	
+		// 해당 프로젝트 번호 가져와 그 프로젝트 내의 채팅 내역 불러오기 | 처음 실행 화면
+		// 프로젝트 번호
+		int pno = 1;
+		
+		// 저장되있는 채팅 내용 불러오기
+		ArrayList<Map<String, String>> list = 
+				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
+		
+		// 해당 프로젝트에 참여중인 회원 불러오기
+		ArrayList<Map<String, String>> secondList =
+				new ArrayList<Map<String, String>>(chatService.selectChatRoomList(pno));
+		// 해당 프로젝트 불러오기
+		Project p = chatService.selectProject(pno);
+		
+		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
+		
+		System.out.println("list1 : " + list);
+		System.out.println("list2 : " + secondList);
+		System.out.println("project : " + p);
+		
 		return "chat/chat";
 	}
 	
