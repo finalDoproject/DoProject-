@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +11,11 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
+
+<!-- jsCalendar -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
+
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -81,14 +89,28 @@
          
       <!-- right nav --> 
       <div id="rightNav">
-        <div class="memoBox">
-            <textarea class="memopad" id="" cols="22" rows="9" onclick="this.value=''">간단한 메모를 작성하세요.
-        </textarea>
-      </div>
+      <c:forEach items="${memoList}" var="memo" varStatus="vs">
+      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
+          <div class="memoBox">
+	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
+	        
+	      </div>
+      <!-- </form> -->
+      </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
-        <h6>달력</h6>
-        <div style="width: 200px; height: 200px; background-color: antiquewhite; margin: 0 auto"></div>
+      	
+      	 <!-- Wrapper -->
+        <div id="calWrapper">
+          <!-- Calendar element -->
+          <div id="events-calendar"></div>
+          <!-- Events -->       
+          <div id="events"></div>
+          <!-- Clear -->
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>       
+      	  
       </div>
       <hr>
       <div class="todo" style="color: #555">
@@ -201,13 +223,39 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
+          
+         
           memopad.focus(function(){
-           // $(this).val("포커스 on");
+        	  $(memopad).html()
+         
+         
           });
           memopad.blur(function(){
-            // $(this).val("포커스 out");
-          });
+           var saveMemo = $(memopad).val();
+
+            console.log(saveMemo);
+  
+        	  $.ajax({
+  				url: "${pageContext.request.contextPath }/project/projectPage.do",
+  				dataType: "json",
+  				/* contentType: 'application/json; charset=utf-8', */
+  				type:"post",
+  				data:{saveMemo:saveMemo},
+  				success : function(data){
+  					// alert(data.msg);
+  					$(memopad).reload();
+  				},
+  		        error:function(jqxhr, textStatus, errorThrown){
+  					console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+  		        }
+  			});
+            
+          }); 
+        	
         });
+        
+        
+        
         // right nav checkBox 
         $(document).ready(function() { 
         $("input:checkbox").on('click', function() {
@@ -223,25 +271,153 @@
             }
         }); 
     });
-        
-        function kick(){
-        	if(confirm("추방하시겠습니까?") == true){
-        		document.form.submit();
-        	}else{
-        		return;
-        	}
-        }
-        
-        function out(){
-        	if(confirm("해당 프로젝트에서 나가시겠습니까?") == true){
-        		document.form.submit();
-        	}else{
-        		return;
-        	}
-        }
-
-   	
     </script>
+    
+    <!-- jsCalendar -->
+   <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/jsCalendar.js"></script>
+   <script>
+    // Create the calendar
+    $("#calWrapper").ready(function () {
+			// Get elements
+			var elements = {
+				// Calendar element
+				calendar : document.getElementById("events-calendar"),
+				// Input element
+				events : document.getElementById("events")
+			}
+
+			// Create the calendar
+			elements.calendar.className = "clean-theme";
+			var calendar = jsCalendar.new(elements.calendar);
+
+			// Create events elements
+			elements.title = document.createElement("div");
+			// elements.title.className = "title";
+			// elements.events.appendChild(elements.title);
+			// elements.subtitle = document.createElement("div");
+			// elements.subtitle.className = "subtitle";
+			// elements.events.appendChild(elements.subtitle);
+			elements.list = document.createElement("div");
+			elements.list.className = "list";
+			elements.events.appendChild(elements.list);
+			elements.actions = document.createElement("div");
+			elements.actions.className = "action";
+			elements.events.appendChild(elements.actions);
+			elements.addButton = document.createElement("input");
+			elements.addButton.type = "button";
+			elements.addButton.value = "Add";
+			elements.actions.appendChild(elements.addButton);
+
+			var events = {};
+			var date_format = "DD/MM/YYYY";
+			var current = null;
+
+			var showEvents = function(date){
+				// Date string
+				var id = jsCalendar.tools.dateToString(date, date_format, "en");
+				// Set date
+				current = new Date(date.getTime());
+				// Set title
+				// elements.title.textContent = id;
+				// Clear old events
+				elements.list.innerHTML = "";
+				// Add events on list
+				if (events.hasOwnProperty(id) && events[id].length) {
+					// Number of events
+					// elements.subtitle.textContent = events[id].length + " " + ((events[id].length > 1) ? "events" : "event");
+
+					var div;
+					var close;
+					// For each event
+					for (var i = 0; i < events[id].length; i++) {
+						div = document.createElement("div");
+						div.className = "event-item";
+						div.textContent = (i + 1) + ". " + events[id][i].name;
+						elements.list.appendChild(div);
+						close = document.createElement("div");
+						close.className = "close";
+						close.textContent = "×";
+						div.appendChild(close);
+						close.addEventListener("click", (function (date, index) {
+							return function () {
+								removeEvent(date, index);
+							}
+						})(date, i), false);
+					}
+				} else {
+					// elements.subtitle.textContent = "No events";
+				}
+			};
+
+			var removeEvent = function (date, index) {
+				// Date string
+				var id = jsCalendar.tools.dateToString(date, date_format, "en");
+
+				// If no events return
+				if (!events.hasOwnProperty(id)) {
+					return;
+				}
+				// If not found
+				if (events[id].length <= index) {
+					return;
+				}
+
+				// Remove event
+				events[id].splice(index, 1);
+
+				// Refresh events
+				showEvents(current);
+
+				// If no events uncheck date
+				if (events[id].length === 0) {
+					calendar.unselect(date);
+				}
+			}
+
+			// Show current date events
+			showEvents(new Date());
+
+			// Add events
+			calendar.onDateClick(function(event, date){
+				// Update calendar date
+				calendar.set(date);
+				// Show events
+				showEvents(date);
+			});
+
+			elements.addButton.addEventListener("click", function(){
+				// Get event name
+				var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
+				var name = prompt(
+					"Event info",
+					names[Math. floor(Math.random() * names.length)] + "'s birthday."
+				);
+
+				//Return on cancel
+				if (name === null || name === "") {
+					return;
+				}
+
+				// Date string
+				var id = jsCalendar.tools.dateToString(current, date_format, "en");
+
+				// If no events, create list
+				if (!events.hasOwnProperty(id)) {
+					// Select date
+					calendar.select(current);
+					// Create list
+					events[id] = [];
+				}
+
+				// Add event
+				events[id].push({name : name});
+
+				// Refresh events
+				showEvents(current);
+      }, false);
+    });
+	</script>
+    
 	
 </body>
 
