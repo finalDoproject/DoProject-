@@ -33,7 +33,7 @@
                <form id="proejctEnrollFrm">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">프로젝트 생성</h5>
+                    <h5 class="modal-title" id="projectModalLabel">프로젝트 생성</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -79,8 +79,9 @@
             <div class="pj_folder" style="background: rgba(255, 220, 205, 1);">
                 <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
-              <div class="pj_folder_in">
-                    <h5>${project.ptitle}<span style="display: none;">${project.pno}</span></h5>
+              <div class="pj_folder_in" >
+            		<span id="pno" style="display: none;">${project.pno}</span>
+                    <h5>${project.ptitle}</h5>
                     <p>${project.psummary}</p>
                     <div class="progress_area">
                       <small>진행률</small>
@@ -99,7 +100,8 @@
                   <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
                   <div class="pj_folder_in">
-                        <h5>${project.ptitle}<span style="display: none;">${project.pno}</span></h5>
+                  		<span id="pno" style="display: none;">${project.pno}</span>
+                        <h5>${project.ptitle}</h5>
                         <p>${project.psummary}</p>
                         <div class="users_area">
                           <div id="users_Img" class="users_cropcircle"></div>
@@ -246,7 +248,7 @@
 	            success : function(data){
 	                console.log(data);
 	                
-	                $("#mainView").html(data);
+	               
 	            },
 	            error : function(jqxhr, textStatus, errorThrown){
 	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
@@ -257,10 +259,16 @@
 	});
 
 	
-	 $('.pj_folder_in').click(function (e) {  
-         e.preventDefault();  
-         var url = "${pageContext.request.contextPath}/project/projectPage.do";  
-         window.open(url, "_self");  
+	 $('.pj_folder_in').click(function () {  
+         //e.preventDefault();  
+        /*  var url = "${pageContext.request.contextPath}/project/projectPage.do";  
+         window.open(url, "_self");   */
+         var pno = $(this).children("#pno").text();
+         //var pno = document.getElementById('pno').val();
+         console.log(pno);
+         window.location.href="<c:url value='projectPage.do' />?pno="+pno;
+
+         
      }); 
 	 
 	 /* project level btn */

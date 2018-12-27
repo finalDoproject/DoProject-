@@ -9,6 +9,7 @@ import com.kh.dp.project.model.vo.Project;
 public interface ProjectDao {
 	// ---- 프로젝트 ----//
 	List<Map<String, String>> selectProjectList();
+	Project selectOneProject(int pno);
 	
 	
 	// ---- 메모 ---- //
@@ -17,6 +18,8 @@ public interface ProjectDao {
 
 
 	int insertProject(Project project);
+
+
 
 
 }

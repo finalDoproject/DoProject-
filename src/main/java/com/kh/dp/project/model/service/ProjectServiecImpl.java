@@ -27,6 +27,12 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.insertProject(project);
 	}
 	
+	@Override
+	public Project selectOneProject(int pno) {
+		return projectDao.selectOneProject(pno);
+	}
+
+	
 	
 	// ---- 메모 ---- //
 	@Override
@@ -39,9 +45,5 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.updateMemo(saveMemo);
 	}
 
-
-
-
 	
-
 }

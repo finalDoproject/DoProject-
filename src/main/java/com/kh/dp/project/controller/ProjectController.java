@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,11 +44,21 @@ public class ProjectController {
 	}
 	
 	
+	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
+	public String ProjectPageView(@PathVariable("pno") int pno,Model model) {
+		
+		Project project = projectService.selectOneProject(pno);
+		model.addAttribute("project",project);
+		
+		return "project/projectPage";
+	}
+	
 	@RequestMapping("/project/projectPage.do")
-	public String ProjectPageView(Model model) {
+	public String ProjectPageMemo(Model model) {
 		
 		List<Map<String,String>> memoList = projectService.selectMemoList();
 		model.addAttribute("memoList",memoList);
+		
 		
 		return "project/projectPage";
 	}

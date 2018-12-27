@@ -27,6 +27,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.insert("project.insertProject", project);
 	}
 	
+	@Override
+	public Project selectOneProject(int pno) {
+		return sqlSession.selectOne("project.selectOneProject", pno);
+	}
 	
 	// ---- 메모 ----//
 	@Override
@@ -38,6 +42,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int updateMemo(String saveMemo) {
 		return sqlSession.update("memo.updateMemo", saveMemo);
 	}
+
+	
 
 
 

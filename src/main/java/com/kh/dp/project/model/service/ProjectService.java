@@ -11,6 +11,8 @@ public interface ProjectService {
 	List<Map<String, String>> selectProjectList();
 	int insertProject(Project project);
 
+	Project selectOneProject(int pno);
+	
 	
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList();
