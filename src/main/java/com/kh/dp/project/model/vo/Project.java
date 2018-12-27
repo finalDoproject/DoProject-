@@ -1,58 +1,144 @@
 package com.kh.dp.project.model.vo;
 
 public class Project {
-
-	private int pNo;
-	private String pTitle;
-	private String pSummary;
-	private int pLevel;
-	private int pMno;
+	private int pno; //프로젝트 번호
+	private String ptitle; //프로젝트 이름
+	private String psummary; //프로젝트 개요
+	private int plevel; //프로젝트 단계
+	private int pmno; //프로젝트 최초 회원 번호 (프로젝트 팀장 번호)
+	private int pmpno; //프로젝트 번호
+	private int pmmno; //회원 번호
+	private String pmtype; //프로젝트/회원 팀장 여부
+	private int plno; //프로젝트 단계 번호
+	private String plname; //프로젝트 단계 이름
 	
 	public Project() {
 		super();
 	}
-	public Project(int pNo, String pTitle, String pSummary, int pLevel, int pMno) {
+
+	public Project(int pno, String ptitle, String psummary, int plevel, int pmno) {
 		super();
-		this.pNo = pNo;
-		this.pTitle = pTitle;
-		this.pSummary = pSummary;
-		this.pLevel = pLevel;
-		this.pMno = pMno;
+		this.pno = pno;
+		this.ptitle = ptitle;
+		this.psummary = psummary;
+		this.plevel = plevel;
+		this.pmno = pmno;
 	}
-	public int getpNo() {
-		return pNo;
+
+	public Project(int pno, String ptitle, String psummary, int plevel, int pmno, int pmpno, int pmmno, String pmtype) {
+		super();
+		this.pno = pno;
+		this.ptitle = ptitle;
+		this.psummary = psummary;
+		this.plevel = plevel;
+		this.pmno = pmno;
+		this.pmpno = pmpno;
+		this.pmmno = pmmno;
+		this.pmtype = pmtype;
 	}
-	public void setpNo(int pNo) {
-		this.pNo = pNo;
+
+	public Project(int pno, String ptitle, String psummary, int plevel, int pmno, int pmpno, int pmmno, String pmtype,
+			int plno, String plname) {
+		super();
+		this.pno = pno;
+		this.ptitle = ptitle;
+		this.psummary = psummary;
+		this.plevel = plevel;
+		this.pmno = pmno;
+		this.pmpno = pmpno;
+		this.pmmno = pmmno;
+		this.pmtype = pmtype;
+		this.plno = plno;
+		this.plname = plname;
 	}
-	public String getpTitle() {
-		return pTitle;
+
+	public int getPno() {
+		return pno;
 	}
-	public void setpTitle(String pTitle) {
-		this.pTitle = pTitle;
+
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
-	public String getpSummary() {
-		return pSummary;
+
+	public String getPtitle() {
+		return ptitle;
 	}
-	public void setpSummary(String pSummary) {
-		this.pSummary = pSummary;
+
+	public void setPtitle(String ptitle) {
+		this.ptitle = ptitle;
 	}
-	public int getpLevel() {
-		return pLevel;
+
+	public String getPsummary() {
+		return psummary;
 	}
-	public void setpLevel(int pLevel) {
-		this.pLevel = pLevel;
+
+	public void setPsummary(String psummary) {
+		this.psummary = psummary;
 	}
-	public int getpMno() {
-		return pMno;
+
+	public int getPlevel() {
+		return plevel;
 	}
-	public void setpMno(int pMno) {
-		this.pMno = pMno;
+
+	public void setPlevel(int plevel) {
+		this.plevel = plevel;
 	}
+
+	public int getPmno() {
+		return pmno;
+	}
+
+	public void setPmno(int pmno) {
+		this.pmno = pmno;
+	}
+
+	public int getPmpno() {
+		return pmpno;
+	}
+
+	public void setPmpno(int pmpno) {
+		this.pmpno = pmpno;
+	}
+
+	public int getPmmno() {
+		return pmmno;
+	}
+
+	public void setPmmno(int pmmno) {
+		this.pmmno = pmmno;
+	}
+
+	public String getPmtype() {
+		return pmtype;
+	}
+
+	public void setPmtype(String pmtype) {
+		this.pmtype = pmtype;
+	}
+
+	public int getPlno() {
+		return plno;
+	}
+
+	public void setPlno(int plno) {
+		this.plno = plno;
+	}
+
+	public String getPlname() {
+		return plname;
+	}
+
+	public void setPlname(String plname) {
+		this.plname = plname;
+	}
+
 	@Override
 	public String toString() {
-		return "Project [pNo=" + pNo + ", pTitle=" + pTitle + ", pSummary=" + pSummary + ", pLevel=" + pLevel
-				+ ", pMno=" + pMno + "]";
+		return "Project [pno=" + pno + ", ptitle=" + ptitle + ", psummary=" + psummary + ", plevel=" + plevel
+				+ ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype=" + pmtype + ", plno=" + plno
+				+ ", plname=" + plname + "]";
 	}
+	
+	
 	
 }
