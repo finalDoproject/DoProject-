@@ -36,7 +36,7 @@
 										</header>
 										<p> &nbsp; 지금 바로 시작하기</p>
 										<ul class="actions">
-											<li> &nbsp;&nbsp;<a href="#" class="button big">login!</a></li>
+											<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/member/login.do" class="button big">login!</a></li>
 										</ul>
 									</div>
 									<span class="image object">
