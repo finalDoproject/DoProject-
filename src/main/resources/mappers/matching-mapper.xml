@@ -4,6 +4,16 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="matching">
 
+	<resultMap type="Matching" id="resultMatching">
+		<id property="no" column="smno"></id>
+		<result property="title" column="smcontent"/>
+		<result property="startDate" column="smdate"/>
+		<result property="endDate" column="smenddate"/>
+		<result property="mno" column="smmno"/>
+		<result property="statusNo" column="ssno"/>
+	</resultMap>
+
+
 	<select id="browseMember" resultType="Member">
 	SELECT NICKNAME FROM MEMBER
 	</select>
@@ -14,7 +24,7 @@
 	</insert>
 	
 	<insert id="insertMatchingDT" parameterType="Join" >
-	INSERT INTO  MEMBER_MATCHGIN VALUES
+	INSERT INTO SCHEDULE_JOIN VALUES
 	(#{sjmno}, #{sjsm}, #{sjdtno})
 	</insert>
 </mapper>

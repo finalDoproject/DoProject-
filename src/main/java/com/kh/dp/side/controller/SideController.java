@@ -68,16 +68,14 @@ public class SideController {
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		
-		int mno = 2;
-		int requestNo = 3;
+		int mno = 1;
+		int requestNo = 2;
 		
-		Join join = new Join(mno, dtNo, requestNo);
+		Join join = new Join(mno, requestNo, dtNo);
 		
 		int result = sideService.insertMatchingDT(join);
 		
 		return result;
 	}
-	
-	
 	
 }

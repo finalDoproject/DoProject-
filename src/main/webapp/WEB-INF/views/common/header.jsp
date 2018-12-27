@@ -11,7 +11,7 @@
 <!-- Bootstrap 4 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <!-- fontawesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 <!-- Bootstrap core CSS-->
 <link href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet">
 
