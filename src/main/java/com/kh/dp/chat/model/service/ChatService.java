@@ -12,7 +12,7 @@ public interface ChatService {
 	
 	List<Map<String, String>> selectChatRoomList(int pno);
 	
-	List<ChatPtm> selectOneChatList(int pno, int mno);
+	List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader);
 	
 	int insertChat(int pno, int mno);
 	

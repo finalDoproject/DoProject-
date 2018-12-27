@@ -32,9 +32,9 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public List<ChatPtm> selectOneChatList(int pno, int mno) {
+	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
 		// TODO Auto-generated method stub
-		return null;
+		return chatDao.selectOneChatList(pno, chWriter, chReader);
 	}
 
 	@Override

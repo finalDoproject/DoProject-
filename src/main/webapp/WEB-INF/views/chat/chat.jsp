@@ -152,6 +152,28 @@ function ConvertSystemSourcetoHtml(str){
 	 return str;
 }
 
+function chatMtm(me, you){
+	console.log("나 : " + me);
+	console.log("상대방 : " + you);
+	$.ajax({
+		url : "${pageContext.request.contextPath}/chatOne.ch",
+		type : "GET",
+		data : { "chWriter" : me, "chReader" : you},
+		success : function(responseData){
+			var data = responseData.chatOneList;
+			if(data.length == 0){
+				alert("채팅내역을 불러왔지만 내용이 없음");
+				console.log(data);
+			} else {
+				alert("채팅내역 불러오기 성공");
+				for(var i = 0; i < data.length; i++){
+					console.log(data[i]);
+				}
+			}
+		}
+	});
+}
+
 function searchRoom() {
     if(('#searchRoom').val() == ""){
         
@@ -189,7 +211,7 @@ function searchRoom() {
 					<img src="" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text">
-							<h1 class="font-name">${project.pTitle}</h1>
+							<h1 class="font-name">${project.ptitle}</h1>
 						</div>
 					</div>
 					<div class="contact-time">
@@ -198,7 +220,7 @@ function searchRoom() {
 				</div>
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
-							<div class="contact">
+							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno});">
 								<img src="resources/images/profile/${member.mProfile}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">

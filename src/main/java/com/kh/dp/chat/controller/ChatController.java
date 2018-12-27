@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.chat.model.service.ChatService;
 import com.kh.dp.project.model.vo.Project;
@@ -49,9 +51,24 @@ public class ChatController {
 		return "";
 	}
 	
-	public String selectOneChatList() {
+	@RequestMapping(value="/chatOne.ch", method=RequestMethod.GET)
+	public ModelAndView selectOneChatList(Model model,
+			@RequestParam("chWriter") int chWriter,
+			@RequestParam("chReader") int chReader) {
+		ModelAndView mv = new ModelAndView();
 		// 좌측 출력된 채팅방 클릭시 해당 채팅방의 내역 불러오기
-		return "";
+		// 프로젝트 번호
+		int pno = 1;
+
+		// 저장되있는 채팅 내용 불러오기
+		ArrayList<Map<String, String>> list = 
+				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
+		
+		mv.addObject("chatOneList", list);
+		mv.setViewName("jsonView");
+		System.out.println("ajax 채팅 : " + list);
+
+		return mv;
 	}
 	
 	public String insertChat() {
