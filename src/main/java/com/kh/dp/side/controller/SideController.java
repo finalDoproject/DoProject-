@@ -2,7 +2,9 @@ package com.kh.dp.side.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.service.SideService;
+import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 
 @Controller
@@ -56,5 +60,22 @@ public class SideController {
 		return "side/join";
 	}
 	
+	// 요일/시간 DB로 향하는 메소드
+	// @ResponseBody와 HttpMessageConverter 활용하기
+	@RequestMapping("/side/matchingDT.do")
+	@ResponseBody
+	public int matchingDT(@RequestParam int dtNo ) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		int mno = 1;
+		int requestNo = 2;
+		
+		Join join = new Join(mno, requestNo, dtNo);
+		
+		int result = sideService.insertMatchingDT(join);
+		
+		return result;
+	}
 	
 }
