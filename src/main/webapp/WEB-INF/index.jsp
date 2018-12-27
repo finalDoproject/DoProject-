@@ -9,7 +9,7 @@
 		<title>Do Project!</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="resources/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
 
 	</head>
 	<body class="is-preload">
@@ -144,11 +144,11 @@
 				<c:import url="views/common/introSidebar.jsp"/>
 
 		<!-- Scripts -->
-			<script src="resources/js/jquery.min.js"></script>
-			<script src="resources/js/browser.min.js"></script>
-			<script src="resources/js/breakpoints.min.js"></script>
-			<script src="resources/js/util.js"></script>
-			<script src="resources/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
 	</body>
 </html>
