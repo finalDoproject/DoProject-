@@ -18,5 +18,13 @@
 	<select id="selectProject" resultType="project">
 		SELECT * FROM PROJECT WHERE PNO = #{pno}
 	</select>
+	
+	<select id="selectOneChatList" resultType="chatMtm">
+		SELECT * FROM CHAT_MTM WHERE CHPNO = #{pno} AND ((CHWRITER = #{chWriter} AND CHREADER = #{chReader}) OR (CHWRITER = #{chReader} AND CHREADER = #{chWriter}))
+	</select>
+	
+	<select id="selectSearchChatRoom" resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{roomName} || '%'
+	</select>
 		
 </mapper>
