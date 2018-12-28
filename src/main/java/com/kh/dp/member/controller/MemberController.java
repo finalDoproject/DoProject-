@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
@@ -107,6 +110,20 @@ public class MemberController {
 		mv.setViewName("common/msg");
 
 		return mv;
+	}
+	
+	@RequestMapping(value="/member/memberLogout.do")
+	public String memberLogout(SessionStatus sessionStatus, HttpSession session, Model model) {
+		
+		if( !sessionStatus.isComplete()) sessionStatus.setComplete();
+		
+		String loc = "/";
+		String msg = "로그아웃에 성공했습니다.";
+		
+		model.addAttribute("loc", loc);
+		model.addAttribute("msg", msg);
+		
+		return "common/msg";
 	}
 	
 	@RequestMapping("/member/MemberList.do")
