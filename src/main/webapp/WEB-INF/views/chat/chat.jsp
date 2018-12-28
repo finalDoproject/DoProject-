@@ -52,108 +52,6 @@ function formatAMPM(hour, minute) {
     return strTime;
 }
 
-$(function(){
-	$("#submit").click(function(){
-		sendMessage();
-		$("#chatContent").val('');
-	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-	});
-});
-
-function keyUp() {
-    if (event.shiftKey && event.keyCode == 13) {
-    } else if (event.keyCode == 13) {
-    	sendMessage();
-		$("#chatContent").val('');
-	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-    }
-}
-
-function sendMessage(){
-	sock.send($("#chatContent").val());
-};
-
-var sock=new SockJS("<c:url value='/chat'/>");
-sock.onmessage=onMessage;
-sock.onclose=onClose;
-var today=null;
-
-function onMessage(evt){
-	var data=evt.data;//new text객체로 보내준 값을 받아옴.
-	var host=null;//메세지를 보낸 사용자 ip저장
-	var strArray=data.split("|");//데이터 파싱처리하기
-	var userName=null;//대화명 저장
-	console.log("data : " + data.split("|")[3].substr(5,4));
-	console.log("data : " + data);
-	if(strArray.length>1)
-	{
-		sessionId=strArray[0];
-		message=strArray[1];
-		host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
-		userName=strArray[3];
-		today=new Date();
-		
-		console.log("strArray[0] : " + strArray[0]);
-		console.log("strArray[1] : " + strArray[1]);
-		console.log("strArray[2] : " + strArray[2]);
-		console.log("strArray[3] : " + strArray[3]);
-		
-		var ck_host='${host}';
-		if(userName == $("#nickName").text())
-		{
-			var printHTML="<div style='clear:both;'></div>";
-			printHTML+="<div class='chat-bubble me' id='myChat'>";
-			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-		}
-		else{
-			var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
-			printHTML+="<div class='chat-bubble you' style='float: left;'>";
-			printHTML+="<div class='content'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div></div>";
-			printHTML+="<div style='clear: both;'></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
-		}
-
-	}
-	else
-	{
-		today=new Date();
-		printDate=today.getFullYear()+"/"+today.getMonth()+"/"+today.getDate()+" "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
-		message=strArray[0];
-		var printHTML="<div style='clear:both;'></div>";
-		printHTML+="<div class='chat-bubble me' id='myChat'>";
-		printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-		printHTML+=ConvertSystemSourcetoHtml(message);
-		printHTML+="</div><div class='time'>";
-		printHTML+=sockformatAMPM(today)+"</div></div>";
-		$('#chatList').append(printHTML);	
-		
-	}
-};
-
-function onClose(evt){
-	location.href='${pageContext.request.contextPath};';
-};
-
-function inputMsg(){
-	var date = formatAMPM(new Date());
-
-    $("<div style='clear:both;'></div>" + "<div class='chat-bubble me' id='myChat'>" +
-        "<div class='content' id='content' style='word-break:break-all;'>" + ConvertSystemSourcetoHtml($('#chatContent').val()) +
-        "</div><div class='time'>" + date + "</div></div>"
-    ).appendTo($('#chatList'));
-    $('#chatContent').val("");
-    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-}
-
 function ConvertSystemSourcetoHtml(str){
 	 str = str.replace(/</g,"&lt;");
 	 str = str.replace(/>/g,"&gt;");
@@ -182,10 +80,10 @@ function chatMtm(me, you){
 		type : "GET",
 		data : { "chWriter" : me, "chReader" : you},
 		success : function(responseData){
+			// 데이터 불러오기
 			var data = responseData.chatOneList;
 			if(data.length == 0){
 				$("#chatList").empty();
-				$('#chatList').append("<span>채팅 기록이 없습니다.</span>");
 			} else {
 				var today = new Date();
 				var dd = today.getDate();
@@ -232,6 +130,82 @@ function chatMtm(me, you){
 			}
 		}
 	});
+	
+	// 웹소켓으로 데이터 추가하기
+	var sock=new SockJS("<c:url value='/chat'/>");
+	sock.onmessage=onMessage;
+	sock.onclose=onClose;
+	var today=null;
+
+	function sendMessage(){
+		sock.send($("#chatContent").val());
+	};
+
+	function onMessage(evt){
+		var data=evt.data;//new text객체로 보내준 값을 받아옴.
+		var host=null;//메세지를 보낸 사용자 ip저장
+		var strArray=data.split("|");//데이터 파싱처리하기
+		var userName=null;//대화명 저장
+		console.log("data : " + data.split("|")[3].substr(5,4));
+		console.log("data : " + data);
+		if(strArray.length>1)
+		{
+			sessionId=strArray[0];
+			message=strArray[1];
+			host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
+			userName=strArray[3];
+			today=new Date();
+			
+			console.log("strArray[0] : " + strArray[0]);
+			console.log("strArray[1] : " + strArray[1]);
+			console.log("strArray[2] : " + strArray[2]);
+			console.log("strArray[3] : " + strArray[3]);
+			
+			if(userName == $("#nickName").text())
+			{
+				var printHTML="<div style='clear:both;'></div>";
+				printHTML+="<div class='chat-bubble me' id='myChat'>";
+				printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+			}
+			else{
+				var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+				printHTML+="<div class='chat-bubble you' style='float: left;'>";
+				printHTML+="<div class='content'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div></div>";
+				printHTML+="<div style='clear: both;'></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
+			}
+
+		}
+	};
+
+	function onClose(evt){
+		location.href='${pageContext.request.contextPath};';
+	};
+	
+	$(function(){
+		$("#submit").click(function(){
+			sendMessage();
+			$("#chatContent").val('');
+		    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		});
+		$("#chatContent").keyup(function(event){
+			if (event.shiftKey && event.keyCode == 13) {
+		    } else if (event.keyCode == 13) {
+		    	sendMessage();
+				$("#chatContent").val('');
+			    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		    }
+		});
+	});
 }
 
 function chatPtm(me, pno){
@@ -243,7 +217,6 @@ function chatPtm(me, pno){
 			var data = responseData.chatProjectList;
 			if(data.length == 0){
 				$("#chatList").empty();
-				$('#chatList').append("<span>채팅 기록이 없습니다.</span>");
 			} else {
 				var today = new Date();
 				var dd = today.getDate();
@@ -405,7 +378,7 @@ function searchRoom() {
 			<div class="wrap-message">
 				<div class="message">
 					<textarea class="input-message" name="chatContent" id="chatContent"
-						cols="30" rows="10" onkeyup="keyUp();" placeholder="내용을 입력해주세요"
+						cols="30" rows="10" placeholder="메시지를 입력하세요.&#13;&#10;(Enter로 전달, Shift-Enter로 줄바꿈)"
 						style="resize: none;"></textarea>
 				</div>
 				<i class="fa fa-paper-plane" aria-hidden="true" id="submit"></i>
