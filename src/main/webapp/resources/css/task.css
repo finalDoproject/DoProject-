@@ -1,0 +1,212 @@
+@charset "UTF-8";
+body{
+	font-size:14px;color:#505050;
+	font-family:Apple SD Gothic Neo, Malgun Gothic, '돋움', '굴림', Arial, sans-serif;
+	src: url('../font/MalgunGothic.eot');
+	src: url('../font/MalgunGothic.eot?#iefix') format('embedded-opentype'),
+	url('../font/MalgunGothic.woff') format('woff'),
+	url('../font/MalgunGothic.ttf') format('truetype');
+	overflow-y: scroll;
+}
+input,select,textarea,button{
+	margin:0;vertical-align:middle;border:1px solid #e7e7e7;
+	font-family:Apple SD Gothic Neo, Malgun Gothic, '돋움', '굴림', Arial, sans-serif;
+	src: url('../font/MalgunGothic.eot');
+	src: url('../font/MalgunGothic.eot?#iefix') format('embedded-opentype'),
+	url('../font/MalgunGothic.woff') format('woff'),
+	url('../font/MalgunGothic.ttf') format('truetype');
+}
+
+/* input 기본 스타일 초기화 */
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=email],
+input[type=phone],
+button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background:none;
+	border:none;
+	font-family:NotoSansCJKkr !important;
+}
+
+/*업무진행상태*/
+.workwriteWrap button{cursor:pointer;}
+button, a{cursor:pointer;}
+.workTab{margin:7px 0 0 0;display:inline-block;height:32px;overflow:hidden;}
+.workTab button{
+	display:inline-block;
+	vertical-align:top;
+	padding-bottom:2px;margin-left:-1px;
+	width:61px;height:32px;line-height:14px;
+	font-size:14px;color:#969696;text-align:center;
+	background-color:#fff;border:1px solid #f0f1f3;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+
+.tab1.selected {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.tab2.selected {
+    background-color: #008CBA;
+    color: white;
+}
+
+
+.tab3.selected {
+    background-color: #f44336;
+    color: white;
+}
+
+.tab4.selected {
+	background-color: #e7e7e7;
+}
+
+.tab5.selected {
+    background-color: #555555;
+    color: white;
+}
+
+/* 업무진척도 */
+/* 업무진척도 */
+.workPrgrs{display:block;margin-top:6px;margin-bottom:-3px;padding-bottom:3px;height:20px;}
+.workPrgrs:focus{outline:0;border:0;}
+.workPrgrs_bg{position:relative;width:150px;height:14px;border-radius:3px;background-color:#eaeaea;}
+.workPrgrs_bg .txt{z-index:1;position:absolute;top:0;left:0;right:0;text-align:center;font-size:10px;color:#111;}
+.workPrgrs_bg .bar{
+	display:block;
+	position:absolute;top:0;left:0;bottom:0;
+	border-radius:3px;
+	background-color:#7099de;
+}
+.bar.color100p{background-color:#6db47c;}
+.workPrgrs_bg .pcnt{
+	z-index:1000;display: none;
+	position:absolute;top:20px;left:100%;
+	margin-left:-18px;
+	width:36px;height:23px;line-height:21px;
+	border-radius:3px;
+	background-color:rgba(0,0,0,0.6);
+}
+.workPrgrs_bg .pcnt button{
+	position:relative;
+	display: block;
+	width:36px;height:23px;line-height:21px;
+	font-size:11px;color:#fff;text-align:center;
+	border:0;background:none;
+}
+.workPrgrs_bg .pcnt::before{
+	display:block;position:absolute;top:-5px;left:50%;
+	margin-left:-5px;
+	content:" ";
+	width:10px;height:5px;
+	background:url(${pageContext.request.contextPath}/resources/images/bg/tail_filelayer.png) no-repeat;
+	opacity:0.8;
+}
+.pcnt0, .pcnt20, .pcnt40, .pcnt60, .pcnt80, .pcnt100{z-index:100;display: none;position:absolute;top:0;bottom:-10px;width:20%;}
+.pcnt20{left:0%;width:15%;display:block;}
+.pcnt40{left:20%;display:block;}
+.pcnt60{left:40%;display:block;}
+.pcnt80{left:60%;display:block;}
+.pcnt100{left:80%;display:block;}
+.pcnt20.on > .pcnt, .pcnt20:hover > .pcnt,
+.pcnt40.on > .pcnt, .pcnt40:hover > .pcnt,
+.pcnt60.on > .pcnt, .pcnt60:hover > .pcnt,
+.pcnt80.on > .pcnt, .pcnt80:hover > .pcnt,
+.pcnt100.on > .pcnt, .pcnt100:hover > .pcnt{display: block;}
+.pcnt0.on > .pcnt, .pcnt0:hover > .pcnt{display:block;left:5%;}
+.cblist_contwrap .workPrgrs{margin:0 !important;padding:0 !important;position:absolute;bottom:0;right:0;}
+.cblist_contwrap.bdk_type .workPrgrs{margin:0 !important;padding:0 !important;position:relative !important;}
+.cblist_contwrap.bdk_type .workPrgrs .workPrgrs_bg{margin:0 auto !important;}
+
+
+
+/*업무중요도, 우선순위*/
+.imptc span, .imptc button{
+	display:inline-block;
+	font-size:14px;color:#000;
+	border:0;background:none;
+}
+/*.imptc span{margin-top:2px;} 20170421 수정 */
+.imptc_ly{z-index:1000;position:absolute;top:33px;left:35px;width:120px;border:1px solid #d2d2d2;border-radius:2px;background-color:#fff;}
+.imptc span::before, .imptc button::before{
+	display:inline-block;vertical-align:middle;
+	content:" ";
+	margin:-2px 8px 0 0;
+	width:10px;height:11px;
+	background:url(../img_rn/ico/ico_implv.png) no-repeat;
+}
+.workTable-tr.finished .imptc span::before,
+.workTable-tr .imptc button::before{
+	display:inline-block;vertical-align:middle;
+	content:" ";
+	margin:-2px 8px 0 0;
+	width:10px;height:11px;
+	background:url(../img_rn/ico/ico_implv2.png) no-repeat;
+}
+.workTable-tr.hold .imptc span::before,
+.workTable-tr.hold .imptc button::before{
+	display:inline-block;vertical-align:middle;
+	content:" ";
+	margin:-2px 8px 0 0;
+	width:10px;height:11px;
+	background:url(../img_rn/ico/ico_implv2.png) no-repeat;
+}
+.imptc span.lv1::before, .imptc button.lv1::before,
+.workTable-tr.hold .imptc span.lv1::before, .workTable-tr.hold .imptc button.lv1::before,
+.workTable-tr.finished .imptc span.lv1::before, .workTable-tr.finished .imptc button.lv1::before{
+	background-position:0 0;
+}
+.imptc span.lv2::before, .imptc button.lv2::before,
+.workTable-tr.hold .imptc span.lv2::before, .workTable-tr.hold .imptc button.lv2::before,
+.workTable-tr.finished .imptc span.lv2::before, .workTable-tr.finished .imptc button.lv2::before{
+	background-position:0 -28px;
+}
+.imptc span.lv3::before, .imptc button.lv3::before,
+.workTable-tr.hold .imptc span.lv3::before, .workTable-tr.hold .imptc button.lv3::before,
+.workTable-tr.finished .imptc span.lv3::before, .workTable-tr.finished .imptc button.lv3::before{
+	background-position:0 -56px;
+}
+.imptc span.lv4::before, .imptc button.lv4::before,
+.workTable-tr.hold .imptc span.lv4::before, .workTable-tr.hold .imptc button.lv4::before,
+.workTable-tr.finished .imptc span.lv4::before, .workTable-tr.finished .imptc button.lv4::before{
+	background-position:0 -83px;
+}
+.imptc span.blank::before, .imptc button.blank::before,
+.workTable-tr.hold .imptc span.blank::before, .workTable-tr.hold .imptc button.blank::before,
+.workTable-tr.finished .imptc span.blank::before, .workTable-tr.finished .imptc button.blank::before{
+	background:none;
+}
+.imptc span.lv4, .imptc button.lv4{
+	color:#d64648;
+}
+.imptc_ly button{
+	display:block;
+	vertical-align:middle;
+	padding-left:12px;padding-bottom:2px;
+	width:100%;height:30px;line-height:18px;
+	text-align:left;
+	box-sizing:border-box;
+}
+.imptc_ly button:hover, .imptc_ly button:focus{background-color:#f5f5f5;}
+
+input:focus{outline:none;}
