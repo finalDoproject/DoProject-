@@ -16,6 +16,11 @@ public class Project {
 		super();
 	}
 
+	public Project(int pmmno) {
+		super();
+		this.pmmno = pmmno;
+	}
+
 	public Project(int pno, String ptitle, String psummary, int plevel, int pmno) {
 		super();
 		this.pno = pno;
