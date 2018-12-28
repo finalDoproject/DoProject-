@@ -33,7 +33,7 @@ public class MemberController {
 	@RequestMapping("/member/join.do")
 	public String MemberView() {
 		
-		return null;
+		return "/member/join";
 	}
 	
 	// 로그인 버튼 클릭시 로그인페이지 이동
