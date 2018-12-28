@@ -22,8 +22,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("session주소 : "+session.getRemoteAddress());
-		System.out.println(session.getAttributes().get("member"));
+		/*System.out.println("session주소 : "+session.getRemoteAddress());
+		System.out.println(session.getAttributes().get("member"));*/
 		Member m = (Member)session.getAttributes().get("member");
 		for(WebSocketSession sess : sessionList) {
 			sess.sendMessage(new TextMessage(session.getId() + "|" + message.getPayload() + "|" + session.getRemoteAddress() + "|" + m.getNickName()));
@@ -32,6 +32,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		System.out.println("채팅방 퇴장자 :"+session.getId());
 		sessionList.remove(session);
 	}
 	

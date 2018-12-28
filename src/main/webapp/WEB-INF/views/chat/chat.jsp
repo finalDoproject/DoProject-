@@ -128,83 +128,84 @@ function chatMtm(me, you){
 					}
 				}
 			}
-		}
-	});
-	
-	// 웹소켓으로 데이터 추가하기
-	var sock=new SockJS("<c:url value='/chat'/>");
-	sock.onmessage=onMessage;
-	sock.onclose=onClose;
-	var today=null;
-
-	function sendMessage(){
-		sock.send($("#chatContent").val());
-	};
-
-	function onMessage(evt){
-		var data=evt.data;//new text객체로 보내준 값을 받아옴.
-		var host=null;//메세지를 보낸 사용자 ip저장
-		var strArray=data.split("|");//데이터 파싱처리하기
-		var userName=null;//대화명 저장
-		console.log("data : " + data.split("|")[3].substr(5,4));
-		console.log("data : " + data);
-		if(strArray.length>1)
-		{
-			sessionId=strArray[0];
-			message=strArray[1];
-			host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
-			userName=strArray[3];
-			today=new Date();
+			// 웹소켓 객체 생성하기
+			var sock=new SockJS("<c:url value='/chat'/>");
+			console.log(sock);
+			sock.onmessage=onMessage;
+			sock.onclose=onClose;
+			var today=null;
 			
-			console.log("strArray[0] : " + strArray[0]);
-			console.log("strArray[1] : " + strArray[1]);
-			console.log("strArray[2] : " + strArray[2]);
-			console.log("strArray[3] : " + strArray[3]);
+			// 웹소켓으로 데이터 추가하기
+			$(function(){
+				$("#submit").click(function(){
+					sendMessage();
+					$("#chatContent").val('');
+				    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+				});
+				$("#chatContent").keyup(function(event){
+					if (event.shiftKey && event.keyCode == 13) {
+				    } else if (event.keyCode == 13) {
+				    	sendMessage();
+						$("#chatContent").val('');
+					    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+				    }
+				});
+			});
 			
-			if(userName == $("#nickName").text())
-			{
-				var printHTML="<div style='clear:both;'></div>";
-				printHTML+="<div class='chat-bubble me' id='myChat'>";
-				printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-				printHTML+=ConvertSystemSourcetoHtml(message);
-				printHTML+="</div><div class='time'>";
-				printHTML+=sockformatAMPM(today)+"</div></div>";
-				$('#chatList').append(printHTML);
-				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-			}
-			else{
-				var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
-				printHTML+="<div class='chat-bubble you' style='float: left;'>";
-				printHTML+="<div class='content'>";
-				printHTML+=ConvertSystemSourcetoHtml(message);
-				printHTML+="</div><div class='time'>";
-				printHTML+=sockformatAMPM(today)+"</div></div></div>";
-				printHTML+="<div style='clear: both;'></div>";
-				$('#chatList').append(printHTML);
-				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
-			}
+			function sendMessage(){
+				sock.send($("#chatContent").val());
+			};
 
+			function onMessage(evt){
+				var data=evt.data;//new text객체로 보내준 값을 받아옴.
+				var host=null;//메세지를 보낸 사용자 ip저장
+				var strArray=data.split("|");//데이터 파싱처리하기
+				var userName=null;//대화명 저장
+				console.log("data : " + data.split("|")[3].substr(5,4));
+				console.log("data : " + data);
+				if(strArray.length>1)
+				{
+					sessionId=strArray[0];
+					message=strArray[1];
+					host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
+					userName=strArray[3];
+					today=new Date();
+					
+					console.log("strArray[0] : " + strArray[0]);
+					console.log("strArray[1] : " + strArray[1]);
+					console.log("strArray[2] : " + strArray[2]);
+					console.log("strArray[3] : " + strArray[3]);
+					
+					if(userName == $("#nickName").text())
+					{
+						var printHTML="<div style='clear:both;'></div>";
+						printHTML+="<div class='chat-bubble me' id='myChat'>";
+						printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+						printHTML+=ConvertSystemSourcetoHtml(message);
+						printHTML+="</div><div class='time'>";
+						printHTML+=sockformatAMPM(today)+"</div></div>";
+						$('#chatList').append(printHTML);
+						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+					}
+					else{
+						var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+						printHTML+="<div class='chat-bubble you' style='float: left;'>";
+						printHTML+="<div class='content'>";
+						printHTML+=ConvertSystemSourcetoHtml(message);
+						printHTML+="</div><div class='time'>";
+						printHTML+=sockformatAMPM(today)+"</div></div></div>";
+						printHTML+="<div style='clear: both;'></div>";
+						$('#chatList').append(printHTML);
+						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
+					}
+
+				}
+			};
+
+			function onClose(evt){
+				/* location.href='${pageContext.request.contextPath}'; */
+			};
 		}
-	};
-
-	function onClose(evt){
-		location.href='${pageContext.request.contextPath};';
-	};
-	
-	$(function(){
-		$("#submit").click(function(){
-			sendMessage();
-			$("#chatContent").val('');
-		    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-		});
-		$("#chatContent").keyup(function(event){
-			if (event.shiftKey && event.keyCode == 13) {
-		    } else if (event.keyCode == 13) {
-		    	sendMessage();
-				$("#chatContent").val('');
-			    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-		    }
-		});
 	});
 }
 
@@ -321,7 +322,7 @@ function searchRoom() {
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
 							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno});">
-								<img src="resources/images/profile/${member.mProfile}" alt="profilpicture">
+								<img src="resources/images/profile/${sl.mProfile}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">
 										<h1 class="font-name">${sl.nickName}</h1>

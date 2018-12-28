@@ -48,7 +48,6 @@ public class ChatController {
 				new ArrayList<Map<String, String>>(chatService.selectChatRoomList(pno));
 		// 해당 프로젝트 불러오기
 		Project p = chatService.selectProject(pno);
-		
 		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
 		
 		System.out.println("list1 : " + list);
