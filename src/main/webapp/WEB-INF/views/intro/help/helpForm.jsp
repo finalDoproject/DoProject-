@@ -11,7 +11,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />		
 
+	<script>
+	function gotoList(){
 	
+		location.href="${pageContext.request.contextPath}/intro/board/help.do";
+	}
+	
+	</script>
 </head>
 <body>
 

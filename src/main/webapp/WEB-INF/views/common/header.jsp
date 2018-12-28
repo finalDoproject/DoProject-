@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +11,7 @@
 <!-- Bootstrap 4 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <!-- fontawesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
 <!-- Bootstrap core CSS-->
 <link href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet">
 
@@ -50,6 +53,9 @@
 	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
+	               <c:if test="${!empty member}">
+	               <span style="color:rgba(248, 143, 111);">${member.nickName}님</span>&nbsp;&nbsp;
+	               </c:if>
 	              <i class="fas fa-home" style="color: rgba(248, 143, 111, 0.6)"></i>
 	              </a>
 	            </li>
@@ -59,24 +65,30 @@
 	            <span class="badge badge-danger">9+</span>
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-	            <a class="dropdown-item" href="#">Action</a>
-	            <a class="dropdown-item" href="#">Another action</a>
-	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item" href="#">Something else here</a>
+	            <!-- c:for 알람 내용 읽어오기 -->
+	            <a class="dropdown-item" href="#">[회원명]님 회원 가입을 환영합니다.</a>
+	            <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
+	            <a class="dropdown-item" href="#">[스케줄요청 명]이 종료 되었습니다.</a>
+	            <a class="dropdown-item" href="#">[스케줄요청 명]이 요청 되었습니다.</a>
+	            <a class="dropdown-item" href="#">[업무 명] 새 업무가 있습니다.</a>
+	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a>
 	          </div>
 	        </li>
 	
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	        <!-- c:if 부분 조건식 수정해서 프로젝트 메인인지 상세인지로 구분, chat 표현방식 바꾸기 -->
+	        <c:set var="chatTest" value="2" />
+	          <c:if test="${chatTest eq '1'}">
+	          <a class="nav-link dropdown-toggle" href="#" onclick="openAlert()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
+	          </a>
+	          </c:if>
+	          <c:if test="${chatTest ne '1'}">
+	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger">7</span>
 	          </a>
-	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-	            <a class="dropdown-item" href="#">Action</a>
-	            <a class="dropdown-item" href="#">Another action</a>
-	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item" href="#">Something else here</a>
-	          </div>
+	          </c:if>
 	        </li>
 	        <li class="nav-item dropdown no-arrow">
 	          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -110,13 +122,28 @@
 
 <!-- Custom scripts for all pages-->
 <script src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
-<script>
+	<script>
+		$('.goPjview').click(function(e) {
+			e.preventDefault();
+			var url = "${pageContext.request.contextPath}/project/projectMain.do";
+			window.open(url, "_self");
+		});
 
-	 $('.goPjview').click(function (e) {  
-       e.preventDefault();  
-       var url = "${pageContext.request.contextPath}/project/projectMain.do";  
-       window.open(url, "_self");  
-   });  
-</script>
+		function openChat() {
+			var windowObj = null;
+			var xPos = (document.body.clientWidth / 2) - 400;
+			xPos += window.screenLeft;
+			var yPos = (screen.availHeight / 2) - 300;
+
+			windowObj = window.open(
+					'${pageContext.request.contextPath}/chat.ch', '채팅방',
+					'width=800,height=600,top=' + yPos + ',left=' + xPos
+					+ ',toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
+		}
+		
+		function openAlert() {
+			alert("프로젝트에 참여한 후 확인 가능합니다.");
+		}
+	</script>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+	<resultMap type="map" id="member"/>
+
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER VALUES (
+			SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, 
+			DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	
+	<select id="checkIdDuplicate" statementType="CALLABLE" parameterType="hashmap">
+		{ CALL ID_DUP_CHK(
+			#{userId, mode=IN, jdbcType=VARCHAR},
+			#{result, mode=OUT, jdbcType=NUMERIC,
+			  javaType=integer}
+			)
+		}
+	</select>
+	
+	<select id="loginMember" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER 
+		WHERE USERID = #{userId}
+
+	</select>
+	
+	<select id="selectMemberList" resultType="member">
+		SELECT *
+		FROM MEMBER
+		ORDER BY MNO
+	</select>
+	
+	
+	<select id="selectMemberTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+	</select>
+
+	
+	<delete id="deleteMember" parameterType="_int">
+		DELETE FROM MEMBER WHERE MNO = #{mno}
+	</delete>
+	
+	
+</mapper>

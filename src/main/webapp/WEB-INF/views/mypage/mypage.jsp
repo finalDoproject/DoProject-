@@ -8,6 +8,8 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.css">
+   <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.print.min.css" media="print">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -56,54 +58,36 @@
 
 
           <!-- Page Content -->
-            <div class="pj_folder" style="background: rgba(255, 220, 205, 1);">
-              <i class="fas fa-cog setting_icon fa-1x"></i>
-              <div class="pj_folder_in">
-                    <h5>프로젝트 명</h5>
-                    <p>프로젝트 개요 설명 ~~ <br>
-                    두줄쓰기 많이많이 </p>
-                    <div class="progress_area">
-                      <small>진행률</small>
-                      <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" 
-                        style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">75%</div>
-                      </div>
-                      <p>AA님 외 N명 참여중</p>
-                    </div>       
-              </div>
-            </div>
-            <div class="pj_folder" style="background: rgba(255, 236, 201, 1);">
-                <i class="fas fa-cog setting_icon fa-1x"></i>
-                <div class="pj_folder_in">
-                      <h5>프로젝트 명</h5>
-                      <p>프로젝트 개요 설명 ~~ <br>
-                      두줄쓰기 많이많이 <br>
-                      세줄까지가능 ㅎㅎ</p>
-                      <div class="progress_area">
-                        <small>진행률</small>
-                        <div class="progress">
-                          <div class="progress-bar bg-success" role="progressbar" 
-                          style="width: 20%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">20%</div>
+             <div class="page-wrapper">
+            <div class="page-breadcrumb" align="left">
+                <div class="row">
+                    <div class="col-5 align-self-center">
+                        <h4 class="page-title">내 캘린더</h4>
+                    </div>
+                    <div class="col-7 align-self-center">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="#">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">내 캘린더</li>
+                                </ol>
+                            </nav>
                         </div>
-                        <p>AA님 외 N명 참여중</p>
-                      </div>  
+                    </div>
                 </div>
-              </div>
-              <div class="pj_folder" style="background: rgb(252, 247, 204);">
-                  <i class="fas fa-cog setting_icon fa-1x"></i>
-                  <div class="pj_folder_in">
-                        <h5>프로젝트 명</h5>
-                        <p>프로젝트 개요 설명 ~~ <br>
-                          진행단계 설정 안했을 경우<br>
-                        하단에 참여자 프로필사진</p>
-                        <div class="users_area">
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <p>AA님 외 N명 참여중</p>
-                        </div>       
-                  </div>
+            </div>
+            
+            <!-- ============================================================== -->
+            <!-- Container fluid -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <div class="card">
+                    <div id="calendar"></div>
                 </div>
+            </div>
+        </div>
           <!-- /Page Content -->
 
         </div>
@@ -125,6 +109,21 @@
      });  
 	
 	</script>
+	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/fullcalendar/moment.min.js"></script>
+     <script src="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/fullcalendar/locale/ko.js"></script>
+    <script>
+    
+      $(function() {
+    
+        $('#calendar').fullCalendar({
+        });
+    
+      });
+    
+    </script>
 </body>
 
 </html>

@@ -17,33 +17,76 @@ public class BoardDaoImpl implements BoardDao {
 	SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage) {
+	public List<Map<String, String>> selectHelpList(int cPage, int numPerPage) {
 		// TODO Auto-generated method stub
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		return sqlSession.selectList("board.selectHelpList", rowBounds);
 	}
 
 	@Override
-	public int selectBoardTotalContents() {
-		return sqlSession.selectOne("board.selectBoardTotalContents");
+	public int selectHelpTotalContents() {
+		return sqlSession.selectOne("board.selectHelpTotalContents");
 	}
 
 	@Override
-	public int insertBoard(Board board) {
+	public int insertHelp(Board board) {
 		
-		return sqlSession.insert("board.insertBoard", board);
+		return sqlSession.insert("board.insertHelp", board);
 	}
 
 	@Override
-	public Board selectOneBoard(int bno) {
+	public Board selectOneHelp(int bno) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("board.selectOneHelp",bno);
 	}
 
 	@Override
-	public int updateBoard(Board board) {
+	public int updateHelp(Board board) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update("board.updateHelp", board);
+	}
+
+	@Override
+	public int deleteHelp(int bno) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("board.deleteHelp", bno);
+	}
+
+	@Override
+	public List<Map<String, String>> selectNoticeList(int cPage, int numPerPage) {
+		// TODO Auto-generated method stub
+		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		return sqlSession.selectList("board.selectNoticeList", rowBounds);
+	}
+
+	@Override
+	public int selectNoticeTotalContents() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("board.selectNoticeTotalContents");
+	}
+
+	@Override
+	public int insertNotice(Board board) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("board.insertNotice", board);
+	}
+
+	@Override
+	public Board selectOneNotice(int bno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("board.selectOneNotice", bno);
+	}
+
+	@Override
+	public int updateNotice(Board board) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("board.updateNotice", board);
+	}
+
+	@Override
+	public int deleteNotice(int bno) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("board.deleteNotice", bno);
 	}
 
 }

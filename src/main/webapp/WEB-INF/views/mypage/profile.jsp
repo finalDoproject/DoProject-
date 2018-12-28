@@ -86,9 +86,18 @@
                     <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card">
                             <div class="card-body">
-                                <center class="m-t-30"> 
+                             <div class="text-center">
+                                    <center class="m-t-30 profile-pic"> 
+                                        <img src="${pageContext.request.contextPath }/resources/images/mypage/users/4.jpg" class="rounded-circle" width="150">
+                                        <a href="javascript:;" class="pic-change" align="center">
+                                            <!-- <i class="fas fa-camera"></i> -->
+                                            <input class="file-upload" type="file" accept="image/*"/>
+                                        </a>
+                                    </center>
+                                </div>
+                                <%-- <center class="m-t-30"> 
                                     <img src="${pageContext.request.contextPath }/resources/images/mypage/users/4.jpg" class="rounded-circle" width="150">
-                                </center>
+                                </center> --%>
                             </div>
                             <div>
                                 <hr> </div>
@@ -171,6 +180,14 @@
      });  
 	
 	</script>
+	
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/script.js"></script>
+    
 </body>
 
 </html>

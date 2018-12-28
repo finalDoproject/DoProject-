@@ -10,6 +10,21 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+		
+		<script>
+		function delHelp(){
+			
+				var con_test = confirm("글을 정말 삭제하시겠습니까?");
+				if(con_test == true){
+				  location.href ="${pageContext.request.contextPath}/intro/board/deleteHelp.do?bno=" +${board.bno}
+				}
+				else if(con_test == false){
+				  alert("취소되었습니다.");
+				}
+		
+		}
+	
+		</script>
 
 </head>
 	<body class="is-preload">
@@ -39,15 +54,13 @@
 							<article class="hentry post">
 								<div class="m-link">
 
-										<h2>제목</h2>
+										<h2><strong>${board.btitle }</strong></h2>
 						
 								</div>
 								<div class="post__author author vcard inline-items">
 									<div class="author-date">
-										Dipendra Singh
+										
 										<div class="post__date">
-											<time class="published" datetime="2004-07-24T18:18">
-												Answered 2h ago </time>
 										</div>
 									</div>
 									<div class="more">
@@ -55,10 +68,7 @@
 										</a>
 									</div>
 								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempo incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris consequat.</p>
+								<h3><p>${board.bcontent }</p></h3>
 								<div class="post-additional-info inline-items">
 									<p>
 									</p>
@@ -73,8 +83,9 @@
 							</article>
 						</div>
 						</div>
-						<a href="#" class="button primary icon fa-search" >목록으로</a>
-						<a href="#" class="button icon fa-download" style="float: right;" >수정하기</a>
+						<a href="${pageContext.request.contextPath}/intro/board/help.do" class="button primary icon fa-search" >목록으로</a>
+						<a href="${pageContext.request.contextPath}/intro/board/updateHelpView.do?bno=${board.bno}" class="button icon fa-download" style="float: right;" >수정하기</a>
+						<a href="javascript:void(0)" onclick="delHelp();" id="delhelp" class="button icon fa-download" style="float: right;" >삭제하기</a>
 				</section>
 	
 			</div>

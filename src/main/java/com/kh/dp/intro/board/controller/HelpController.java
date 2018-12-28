@@ -28,10 +28,10 @@ public class HelpController {
 		
 		// 1. 현재 페이지 게시글 목록 가져오기
 		ArrayList<Map<String, String>> list = 
-				new ArrayList<Map<String, String>>(boardService.selectBoardList(cPage, numPerPage));
+				new ArrayList<Map<String, String>>(boardService.selectHelpList(cPage, numPerPage));
 		
 		// 2. 전체 게시글 개수 가져오기
-		int totalContents = boardService.selectBoardTotalContents();
+		int totalContents = boardService.selectHelpTotalContents();
 		
 		// 3. 페이지 계산 후 작성할 HTML 추가
 		String pageBar = Utils.getPageBar(totalContents, cPage, numPerPage, "help.do");
@@ -47,7 +47,7 @@ public class HelpController {
 	@RequestMapping("/intro/board/helpDetail.do")
 	public String helpDetailView(@RequestParam int bno, Model model) {
 		
-		model.addAttribute("board", boardService.selectOneBoard(bno));
+		model.addAttribute("board", boardService.selectOneHelp(bno));
 		
 		return "/intro/help/helpDetail";
 	}
@@ -59,20 +59,20 @@ public class HelpController {
 	}
 	
 	@RequestMapping("/intro/board/insertHelp.do")
-	public String insertHelp(Board board, Model model, HttpSession Session) {
+	public String insertHelp(Board board, Model model) {
 		
 		int result;
 		
 
-			result= boardService.insertBoard(board);
+			result= boardService.insertHelp(board);
 
 		
-		String loc = "/board/boardList.do";
+		String loc = "/intro/help/help";
 		String msg = "";
 		
 		if(result > 0 ) {
 			msg="고객센터글 등록 성공";
-			loc = "/intro/help/helpDetail.do?no="+board.getBno();
+			loc = "/intro/board/helpDetail.do?bno="+board.getBno();
 		}else {
 			msg="고객센터글 등록 실패";
 		}
@@ -83,7 +83,57 @@ public class HelpController {
 		
 		return "common/msg";
 	}
+	
+	@RequestMapping("/intro/board/updateHelpView.do")
+	public String updateHelpView(@RequestParam int bno, Model model) {
+		
+		model.addAttribute("board", boardService.selectOneHelp(bno));
+		
+		return "/intro/help/helpUpdateView";
+	}
+	
+	@RequestMapping("/intro/board/updateHelp.do")
+	public String updateHelp(Board board, Model model ) {
+		
+		int result = boardService.updateHelp(board);
+		
 
+		String loc = "/intro/help/help";
+		String msg = "";
+		
+		if(result > 0) {
+			msg="고객센터 글 수정 성공";
+			loc ="/intro/board/helpDetail.do?bno="+ board.getBno();
+		}else {
+			msg = "고객센터 글 수정 실패";
+		}
+
+		model.addAttribute("loc" , loc)
+		.addAttribute("msg" , msg);
+		
+		return "common/msg";
+	}
+	
+	@RequestMapping("/intro/board/deleteHelp.do")
+	public String deleteHelp(@RequestParam int bno, Model model) {
+		
+		int result = boardService.deleteHelp(bno);
+		
+		String loc = "/intro/help/help";
+		String msg = "";
+		
+		if(result > 0) {
+			msg="고객센터 글 삭제 성공";
+			loc ="/intro/board/help.do";
+		}else {
+			msg = "고객센터 글 삭제 실패";
+		}
+
+		model.addAttribute("loc" , loc)
+		.addAttribute("msg" , msg);
+		
+		return "common/msg";
+	}
 	
 }
 
