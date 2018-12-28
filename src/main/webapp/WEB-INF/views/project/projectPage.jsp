@@ -12,14 +12,35 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<!-- Select 2 -->
+<link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
+
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
 
-<!-- Select 2 -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<style>
+
+.ok{
+	float:right;
+	width: 112px;
+	height: 37px;
+	border-radius:5px;
+	background-clip: padding-box;
+	background-color: #F88E6F;
+	border:none;
+	color: #fff;
+	font-weight: bold;
+	margin-left :auto;
+	margin-right : auto;
+}
+
+.ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
+.ok:focus{outline: none;}
+
+</style>
 
 </head>
 <body>
@@ -187,7 +208,7 @@
                 <a href="#" style="color: #555;">고양이 친목모임 <button class="ongoing">진행중</button></a>
               </li>
               <li>
-                <a href="#" style="color: #555;">연말 모임<button class="complete">완료</button></a>
+                <a href="#" style="color: #555;">연말 모임 <button class="complete">완료</button></a>
               </li>
             </ul>
         </div>
@@ -198,7 +219,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Schedule Matching</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px;">스케줄 매칭</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -209,37 +230,37 @@
                             <thead>
                               <tr>
                                 <th scope="col" colspan="4">
-                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%;" >
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <th scope="row"><i class="fas fa-user fa-2x" style="color:black;"></i></th>
                                 <td colspan="3">
                                 	
                                     <select class="member-multiple" name="mNickname" multiple="multiple"
                                     style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
                              		
-                                    <%-- <c:forEach items="${member}" var="member" varStatus="status">
-                                        <option value="${member.nickName}">${member.nickName} </option>
-                                     </c:forEach> --%>
+                                     <c:forEach items="${mArr}" var="m" varStatus="status">
+                                        <option value="${m.nickName}">${m.nickName} </option>
+                                     </c:forEach> 
+
                                      </select>
                                 </td>
                               </tr>
                               <tr>
-                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <th scope="row"><i class="far fa-calendar fa-2x" style="color:black;"></i></th>
                                 <td colspan="3">
                                         <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
-                                        <i class="fas fa-long-arrow-alt-right "></i>
+                                        <i class="fas fa-long-arrow-alt-right" style="color:black;"></i>
                                         <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="btn btn-primary">요청 완료</button>
-              <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="submit" class="ok">요청 완료</button>
             </div>
                  </form>         
             </div>
@@ -309,15 +330,28 @@
     <!-- datepicker를 위한 js -->
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
 	<!-- select2를 위한 js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
+
+    
+ 	// select2 
+    $('.member-multiple').select2({
+    	placeholder : "함께할 인원을 선택해주세요."
+    }); 
+ 
+ 	$('.select2-search__field').attr("style", "width : 370px");
+    
+
     $(function(){
 		var mno = $(".headerMno").text();		
 		console.log(mno);
 	});
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -340,6 +374,7 @@
          
          
           });
+          
           memopad.blur(function(){
            var saveMemo = $(memopad).val();
 
@@ -526,6 +561,52 @@
 				showEvents(current);
       }, false);
     });
+    
+    $(function(){
+   	 
+ 	   // 한국어 설정
+ 	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+ 	   
+ 	   // 시작일
+ 	   $('#startdate').datepicker({
+ 		  // 데이터 형식 지정
+ 		  dateFormat : "yy-mm-dd",
+ 		  // 달 / 주 이름 지정
+ 		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+ 		  dayNamesMin : ["일","월","화","수","목","금","토"],
+ 		  // 오늘 날짜 이후로 선택 가능
+ 		  minDate : 1,
+ 		  onClose : function(selectDate) {
+ 			  // 시작일 datepicker가 닫힐 때
+ 			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+ 			  
+ 			  $("#enddate").datepicker("option", "minDate", selectDate);
+ 			  
+ 			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+ 			  var date = $(this).datepicker('getDate');
+ 			  
+ 			  date.setDate(date.getDate()+7);
+ 			  $("#enddate").datepicker("option", "maxDate", date);
+ 		  }
+ 		   
+ 	   });
+ 	   
+ 	   // 종료일
+ 	   $('#enddate').datepicker({
+ 		  dateFormat : "yy-mm-dd",
+  		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+  		  dayNamesMin : ["일","월","화","수","목","금","토"],
+  		  minDate : 0,
+  		  
+  		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+  		  onClose : function(selectDate){
+  			 
+  			  $('#startdate').datepicker("option", "maxDate", selectDate);
+  		  }
+ 	   });
+    });
+     
+    	
 	</script>
     
 	
