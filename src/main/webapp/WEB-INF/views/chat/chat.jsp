@@ -52,11 +52,6 @@ function formatAMPM(hour, minute) {
     return strTime;
 }
 
-var sock=new SockJS("<c:url value='/chat'/>");
-sock.onmessage=onMessage;
-sock.onclose=onClose;
-var today=null;
-
 $(function(){
 	$("#submit").click(function(){
 		sendMessage();
@@ -78,6 +73,11 @@ function sendMessage(){
 	sock.send($("#chatContent").val());
 };
 
+var sock=new SockJS("<c:url value='/chat'/>");
+sock.onmessage=onMessage;
+sock.onclose=onClose;
+var today=null;
+
 function onMessage(evt){
 	var data=evt.data;//new text객체로 보내준 값을 받아옴.
 	var host=null;//메세지를 보낸 사용자 ip저장
@@ -97,9 +97,9 @@ function onMessage(evt){
 		console.log("strArray[1] : " + strArray[1]);
 		console.log("strArray[2] : " + strArray[2]);
 		console.log("strArray[3] : " + strArray[3]);
-
+		
 		var ck_host='${host}';
-		if(host==ck_host||(host==0&&ck_host.includes('0:0:')))
+		if(userName == $("#nickName").text())
 		{
 			var printHTML="<div style='clear:both;'></div>";
 			printHTML+="<div class='chat-bubble me' id='myChat'>";
