@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
@@ -41,6 +42,12 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public int updateMemo(String saveMemo) {
 		return sqlSession.update("memo.updateMemo", saveMemo);
+	}
+
+	// --- 인원 불러오기 --- //
+	@Override
+	public List<Member> browseMember() {
+		return sqlSession.selectList("matching.browseMember");
 	}
 
 	
