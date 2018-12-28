@@ -3,7 +3,6 @@ package com.kh.dp.project.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
@@ -19,9 +18,6 @@ public interface ProjectDao {
 
 
 	int insertProject(Project project);
-	
-	// --- 인원 불러오기 --- //
-	List<Member> browseMember();
 
 
 

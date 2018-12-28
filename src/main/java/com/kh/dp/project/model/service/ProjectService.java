@@ -3,7 +3,6 @@ package com.kh.dp.project.model.service;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
@@ -18,10 +17,6 @@ public interface ProjectService {
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList();
 	int updateMemo(String saveMemo);
-	
-	// --- 스케줄 매칭 --- //
-	public List<Member> browseMember();
-	
 
 
 

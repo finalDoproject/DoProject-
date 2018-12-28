@@ -267,8 +267,8 @@
          //var pno = document.getElementById('pno').val();
          console.log(pno);
          window.location.href="<c:url value='projectPage.do' />?pno="+pno;
+
          
-       
      }); 
 	 
 	 /* project level btn */

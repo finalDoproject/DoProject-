@@ -26,16 +26,16 @@ public class SideController {
     private SideService sideService;
 	
 	// 스케줄 매칭 인원 불러오기 위한 메소드
-	@RequestMapping("/side/projectPage.do")
-	public String MatchingRequest(Model model, @RequestParam int pno) {
+	@RequestMapping("/side/matchingRequest.do")
+	public String MatchingRequest(Model model) {
 		
 		List<Member> mArr = new ArrayList<Member>();
 		
 		mArr = sideService.browseMember();
 		
-		model.addAttribute("mArr", mArr);
+		model.addAttribute("member", mArr);
 		
-		return "redirect:/project/projectPage/"+pno;
+		return "side/request";
 	}
 	
 	// 스케줄 매칭 요청 완료. DB로 향하는 메소드

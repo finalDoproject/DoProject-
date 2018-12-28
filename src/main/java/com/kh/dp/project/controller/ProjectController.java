@@ -1,6 +1,5 @@
 package com.kh.dp.project.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 
@@ -45,12 +43,12 @@ public class ProjectController {
 		return map;
 	}
 	
-	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
-	public String ProjectPageView(@PathVariable("pno") int pno, Model model) {
 	
-		Project project = projectService.selectOneProject(pno);
+	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
+	public String ProjectPageView(@PathVariable("pno") int pno,Model model) {
 		
-		model.addAttribute("project", project);
+		Project project = projectService.selectOneProject(pno);
+		model.addAttribute("project",project);
 		
 		return "project/projectPage";
 	}
@@ -79,4 +77,6 @@ public class ProjectController {
 		return hmap;
 		
 	}
+	
+
 }

@@ -85,23 +85,3 @@
     font-weight:600;
     color:#999;
 }
-
-	.login{
-	float:right;
-	width: 112px;
-	height: 37px;
-	-moz-border-radius: 19px;
-	-webkit-border-radius: 19px;
-	border-radius:5px;
-	-moz-background-clip: padding;
-	-webkit-background-clip: padding-box;
-	background-clip: padding-box;
-	background-color: #F88E6F;
-	border:1px solid #F88E6F;
-	border:none;
-	color: #fff;
-	font-weight: bold;
-	}
-	
-	.login:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
-	.login:focus{outline: none;}
