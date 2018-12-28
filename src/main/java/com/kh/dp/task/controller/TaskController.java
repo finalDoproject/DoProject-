@@ -29,6 +29,14 @@ public class TaskController {
 	@Autowired
 	private TaskService taskService;
 	
+	private Task task;
+	
+	@RequestMapping("/task/taskList.do")
+	public String selectTaskList() {
+		
+		return "task/taskList";
+	}
+	
 	@RequestMapping("/task/taskForm.do")
 	public void taskForm() {
 		// taskForm.jsp를 연결짓는다.
@@ -42,7 +50,7 @@ public class TaskController {
 			/*@RequestParam(value="startdate", required=false) String startdate,
 			@RequestParam(value="enddate", required=false) String enddate*/) {
 		
-		System.out.println("task값:" + task);
+		
 		System.out.println("task manager:" + tmanager);
 		
 		task.setTmno(1);
@@ -83,10 +91,14 @@ public class TaskController {
 				Attachment at = new Attachment();
 				at.setFoldname(originName);
 				at.setFnewname(renamedName);
-				
+				at.setFpath(saveDir);
+				at.setFtno(task.getTno());
 				attachList.add(at);
 			}
 		}
+		System.out.println("Attachment값:" + attachList);
+	
+		
 		
 		int result;
 		
@@ -95,13 +107,15 @@ public class TaskController {
 		} catch(Exception e) {
 			throw new TaskException("게시글 등록 오류");
 		}
-		
+		System.out.println("task tno 값:" + task.getTbno() );
 		String loc = "/task/taskList.do";
 		String msg = "";
 		
 		if(result > 0) {
 			msg = "게시글 등록 성공!";
-			loc = "/task/taskView.do?no="+task.getTno();
+			/*loc = "/task/taskView.do?no="+task.getTno();*/
+			loc = "/task/taskList.do";
+			
 		}else {
 			msg = "게시글 등록 실패";
 		}

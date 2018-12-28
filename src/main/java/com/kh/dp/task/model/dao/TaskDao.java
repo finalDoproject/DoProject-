@@ -14,4 +14,6 @@ public interface TaskDao {
 	Task selectOneTask(int taskNo);
 
 	List<Attachment> selectAttachmentList(int taskNo);
+
+	int selectTaskTotalContents();
 }

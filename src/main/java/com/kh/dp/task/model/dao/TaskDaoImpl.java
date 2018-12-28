@@ -16,6 +16,11 @@ public class TaskDaoImpl implements TaskDao {
 	SqlSessionTemplate sqlSession;
 	
 	@Override
+	public int selectTaskTotalContents() {
+		return sqlSession.selectOne("task.selectTaskTotalContents");
+	}
+	
+	@Override
 	public int insertTask(Task task) {
 		return sqlSession.insert("task.insertTask",task);
 	}

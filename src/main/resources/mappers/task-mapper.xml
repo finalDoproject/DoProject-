@@ -3,6 +3,10 @@
 <mapper namespace="task">
 	<resultMap type="map" id="task"/>
 	
+	<select id="selectTaskTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM TASK
+	</select>
+	
 	<insert id="insertTask">
 		INSERT INTO TASK(TNO, TLEVEL, TMNO, TENDDATE, TTPRIORITY,
 			TTITLE, TCONTENT, TSTARTDATE, TWRITER)

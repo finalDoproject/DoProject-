@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
 	
 	@Override
 	public int selectTaskTotalContents() {
-		return 0;
+		return taskDao.selectTaskTotalContents();
 	}
 
 	@Override
@@ -49,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
 			
 			if(attachList.size()>0) {
 				for(Attachment a : attachList) {
+					a.setFtno(taskNo);
 					result = taskDao.insertAttachment(a);
 					if(result == TASK_SERVICE_ERROR) throw new TaskException();
 				}
