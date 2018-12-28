@@ -54,6 +54,7 @@
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
 	               <c:if test="${!empty member}">
+	               <span class="headerMno" >${member.mno}</span>
 	               <span>${member.nickName}님</span>&nbsp;&nbsp;
 	               </c:if>
 	              <i class="fas fa-home" style="color: rgba(248, 143, 111, 0.6)"></i>
@@ -123,6 +124,10 @@
 <!-- Custom scripts for all pages-->
 <script src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
 	<script>
+		$(function(){
+			var mno = $(".headerMno").text();
+			console.log(mno);
+		});
 		$('.goPjview').click(function(e) {
 			e.preventDefault();
 			var url = "${pageContext.request.contextPath}/project/projectMain.do";

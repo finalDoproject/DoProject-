@@ -33,16 +33,33 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
-	public Map<String,String> insertMenu(@RequestBody Project project){
+	public Map<String,String> insertProject(@RequestBody Project project){
+		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
+		//String msg2  = projectService.insertProjectMember(project)>0?"프로젝트멤버 생성 완료":"프로젝트멤버 생성 실패";
+		
 		
 		//리턴타입도 json변환가능한 map 전송함.
 		//String 전송하면 에러! -> 클라이언트에서 json parse error!
-		Map<String,String> map = new HashMap<>();
-		map.put("msg", msg);
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("msg", msg);	
 		return map;
 	}
 	
+//	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
+//	public Map<String,String> insertProjectMember(@RequestBody Project project){
+//		
+//		String msg  = projectService.insertProjectMember(project)>0?"프로젝트멤버 생성 완료":"프로젝트멤버 생성 실패";
+//		
+//		
+//		//리턴타입도 json변환가능한 map 전송함.
+//		//String 전송하면 에러! -> 클라이언트에서 json parse error!
+//		
+//		Map<String, String> map = new HashMap<>();
+//		map.put("msg", msg);
+//		return map;
+//	}
 	
 	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
 	public String ProjectPageView(@PathVariable("pno") int pno,Model model) {

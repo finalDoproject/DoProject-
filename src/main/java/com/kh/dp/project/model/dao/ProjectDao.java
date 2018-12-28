@@ -10,6 +10,7 @@ public interface ProjectDao {
 	// ---- 프로젝트 ----//
 	List<Map<String, String>> selectProjectList();
 	Project selectOneProject(int pno);
+	int insertProject(Project project);
 	
 	
 	// ---- 메모 ---- //
@@ -17,7 +18,6 @@ public interface ProjectDao {
 	int updateMemo(String saveMemo);
 
 
-	int insertProject(Project project);
 
 
 

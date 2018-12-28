@@ -228,14 +228,17 @@
 	<script>
 	
 	$(function(){
+		
+		
 		$("#proejctEnrollFrm .btn-send").on("click",function(){
 			//파라미터를 post방식으로 전송 -> message body에 씀
 			//json문자열로 처리해야 컨트롤러에서 @RequestBody가 처리함(HttpMessageConverter에 의해 커맨트객체 매핑)
 			//ajax요청 필수속성  => contentType: 'application/json; charset=utf-8' 
+			
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
 			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
-			
+			param.pmmno =$(".headerMno").text();
 			var jsonStr = JSON.stringify(param);
 			console.log(jsonStr);
 			
@@ -264,9 +267,12 @@
         /*  var url = "${pageContext.request.contextPath}/project/projectPage.do";  
          window.open(url, "_self");   */
          var pno = $(this).children("#pno").text();
+         var mno = $(".headerMno").text();
          //var pno = document.getElementById('pno').val();
          console.log(pno);
-         window.location.href="<c:url value='projectPage.do' />?pno="+pno;
+         //console.log("메인"+mno);
+         
+         window.location.href="<c:url value='projectPage.do' />?pno="+pno+"?mno="+mno;
 
          
      }); 
