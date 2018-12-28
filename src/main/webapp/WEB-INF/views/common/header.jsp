@@ -126,10 +126,7 @@
 <!-- Custom scripts for all pages-->
 <script src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
 	<script>
-		$(function(){
-			var mno = $(".headerMno").text();
-			console.log(mno);
-		});
+		
 		$('.goPjview').click(function(e) {
 			e.preventDefault();
 			var url = "${pageContext.request.contextPath}/project/projectMain.do";
