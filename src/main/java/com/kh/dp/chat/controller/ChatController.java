@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.chat.model.service.ChatService;
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Project;
 
 @Controller
@@ -22,10 +25,19 @@ public class ChatController {
 	private ChatService chatService;
 	
 	@RequestMapping(value="/chat.ch", method=RequestMethod.GET)
-	public String selectProjectChatList(Model model) {	
+	public String selectProjectChatList(Model model, HttpServletRequest req) {	
 		// 해당 프로젝트 번호 가져와 그 프로젝트 내의 채팅 내역 불러오기 | 처음 실행 화면
 		// 프로젝트 번호
 		int pno = 1;
+		
+		Member m = (Member)req.getSession().getAttribute("member");
+		
+		if(m == null) {
+			System.out.println("로그인이 필요한 기능입니다.");
+			String msg = "로그인이 필요한 기능입니다.";
+			model.addAttribute("msg", msg);
+			return "common/closeMsg";
+		} else {
 		
 		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
@@ -36,14 +48,15 @@ public class ChatController {
 				new ArrayList<Map<String, String>>(chatService.selectChatRoomList(pno));
 		// 해당 프로젝트 불러오기
 		Project p = chatService.selectProject(pno);
-		
 		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
 		
 		System.out.println("list1 : " + list);
 		System.out.println("list2 : " + secondList);
 		System.out.println("project : " + p);
-		
+
 		return "chat/chat";
+		}
+		
 	}
 	
 	public String selectChatRoomList() {
@@ -52,7 +65,7 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/chatOne.ch", method=RequestMethod.GET)
-	public ModelAndView selectOneChatList(Model model,
+	public ModelAndView selectOneChatList(Model model, HttpServletRequest req,
 			@RequestParam("chWriter") int chWriter,
 			@RequestParam("chReader") int chReader) {
 		ModelAndView mv = new ModelAndView();
@@ -60,6 +73,8 @@ public class ChatController {
 		// 프로젝트 번호
 		int pno = 1;
 
+		Member m = (Member)req.getSession().getAttribute("member");
+		
 		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
