@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class LoggerInterceptor extends HandlerInterceptorAdapter {
+
 	// Controller 실행 시에 전, 후 시점을 캐치하여 해당 시점에서 동작할 코드를 미리 선언하여
 	// 작동 시키는 클래스
 	// - 시점 별 구현 메소드 -
@@ -18,31 +19,37 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 	
 	private Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		if(logger.isDebugEnabled()) {
+
 			logger.debug("======= start =======");
 			logger.debug(request.getRequestURI());
 			logger.debug("---------------------");
 						
 		}
 		return super.preHandle(request, response, handler); 
+
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug("--------- VIEW ----------");
 		}
 		
+
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
+
 		if(logger.isDebugEnabled()) {
 			logger.debug("========== END ========== \n");
 		}
