@@ -3,94 +3,69 @@ package com.kh.dp.task.model.vo;
 import java.sql.Date;
 
 public class Attachment {
-	private int attachmentNo;
-	private int boardNo;
-	private String originalFileName;
-	private String renamedFileName;
-	private Date uploadDate;
-	private int downloadCount;
-	private String status;
+	private int fno; // 파일 번호
+	private String foldname;
+	private String fnewname;
+	private String fpath;
+	private int ftno; // 파일 업무 번호
 	
-	public Attachment() {}
+	public Attachment() {
+		
+	}
 
-	public Attachment(int attachmentNo, int boardNo, String originalFileName, String renamedFileName, Date uploadDate,
-			int downloadCount, String status) {
+	public Attachment(int fno, String foldname, String fnewname, String fpath, int ftno) {
 		super();
-		this.attachmentNo = attachmentNo;
-		this.boardNo = boardNo;
-		this.originalFileName = originalFileName;
-		this.renamedFileName = renamedFileName;
-		this.uploadDate = uploadDate;
-		this.downloadCount = downloadCount;
-		this.status = status;
+		this.fno = fno;
+		this.foldname = foldname;
+		this.fnewname = fnewname;
+		this.fpath = fpath;
+		this.ftno = ftno;
 	}
 
-	public int getAttachmentNo() {
-		return attachmentNo;
+	public int getFno() {
+		return fno;
 	}
 
-	public void setAttachmentNo(int attachmentNo) {
-		this.attachmentNo = attachmentNo;
+	public void setFno(int fno) {
+		this.fno = fno;
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public String getFoldname() {
+		return foldname;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setFoldname(String foldname) {
+		this.foldname = foldname;
 	}
 
-	public String getOriginalFileName() {
-		return originalFileName;
+	public String getFnewname() {
+		return fnewname;
 	}
 
-	public void setOriginalFileName(String originalFileName) {
-		this.originalFileName = originalFileName;
+	public void setFnewname(String fnewname) {
+		this.fnewname = fnewname;
 	}
 
-	public String getRenamedFileName() {
-		return renamedFileName;
+	public String getFpath() {
+		return fpath;
 	}
 
-	public void setRenamedFileName(String renamedFileName) {
-		this.renamedFileName = renamedFileName;
+	public void setFpath(String fpath) {
+		this.fpath = fpath;
 	}
 
-	public Date getUploadDate() {
-		return uploadDate;
+	public int getFtno() {
+		return ftno;
 	}
 
-	public void setUploadDate(Date uploadDate) {
-		this.uploadDate = uploadDate;
-	}
-
-	public int getDownloadCount() {
-		return downloadCount;
-	}
-
-	public void setDownloadCount(int downloadCount) {
-		this.downloadCount = downloadCount;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	public void setFtno(int ftno) {
+		this.ftno = ftno;
 	}
 
 	@Override
 	public String toString() {
-		return "Attachment [attachmentNo=" + attachmentNo + ", boardNo=" + boardNo + ", originalFileName="
-				+ originalFileName + ", renamedFileName=" + renamedFileName + ", uploadDate=" + uploadDate
-				+ ", downloadCount=" + downloadCount + ", status=" + status + "]";
+		return "Attachment [fno=" + fno + ", foldname=" + foldname + ", fnewname=" + fnewname + ", fpath=" + fpath
+				+ ", ftno=" + ftno + "]";
 	}
-	
-	
-	
-	
-	
 	
 }

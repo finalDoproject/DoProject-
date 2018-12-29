@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +19,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link " href="#" data-toggle="modal" data-target="#exampleModal">
+          <a class="nav-link " href="#" data-toggle="modal" data-target="#projectModal">
             <i class="fas fa-folder-plus"></i>
             <span>프로젝트 생성</span>
           </a>
@@ -24,52 +27,44 @@
       </ul>
           
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+          <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
               <div class="modal-dialog" role="document">
+              
+               <form id="proejctEnrollFrm">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">프로젝트 생성</h5>
+                    <h5 class="modal-title" id="projectModalLabel">프로젝트 생성</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form>
                       <div class="form-group">
                         <label for="recipient-name" class="form-control-label">프로젝트 명</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
                       </div>
                       <div class="form-group">
                         <label for="message-text" class="form-control-label">프로젝트 개요</label>
-                        <textarea class="form-control" id="message-text" style="resize: none;"></textarea>
+                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
                       </div>                  
                         <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
                         <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
                         <div class="form-group levelbox" style="display: none;">
                           <hr>
                           <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
                           <button type="button" class="btn plusbtn btn-light">+</button>
-
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
                           <button type="button" class="btn minusbtn btn-light">-</button>
+                          
+                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
+
                         </div>
-                    </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm" style="background-color: coral; color: white">만들기!</button>
-                  </div>
+                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
+                  </div>                  
                 </div>
+               </form>
               </div>
             </div>
 
@@ -78,15 +73,16 @@
         <div class="container-fluid">
 
 
-          <!-- Page Content -->
+          <!-- Page Content --> 
+          <c:forEach items="${projectList}" var="project" varStatus="vs">
+          <c:if test="${project.plevel >0}">
             <div class="pj_folder" style="background: rgba(255, 220, 205, 1);">
                 <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
-                
-              <div class="pj_folder_in">
-                    <h5>프로젝트 명</h5>
-                    <p>프로젝트 개요 설명 ~~ <br>
-                    두줄쓰기 많이많이 </p>
+              <div class="pj_folder_in" >
+            		<span id="pno" style="display: none;">${project.pno}</span>
+                    <h5>${project.ptitle}</h5>
+                    <p>${project.psummary}</p>
                     <div class="progress_area">
                       <small>진행률</small>
                       <div class="progress">
@@ -97,32 +93,16 @@
                     </div>       
               </div>
             </div>
-            <div class="pj_folder" style="background: rgba(255, 236, 201, 1);">
-                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
-                    <i class="fas fa-cog setting_icon fa-1x"></i></button>
-                <div class="pj_folder_in">
-                      <h5>프로젝트 명</h5>
-                      <p>프로젝트 개요 설명 ~~ <br>
-                      두줄쓰기 많이많이 <br>
-                      세줄까지가능 ㅎㅎ</p>
-                      <div class="progress_area">
-                        <small>진행률</small>
-                        <div class="progress">
-                          <div class="progress-bar bg-success" role="progressbar" 
-                          style="width: 20%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">20%</div>
-                        </div>
-                        <p>AA님 외 N명 참여중</p>
-                      </div>       
-                </div>
-              </div>
+            </c:if>
+            
+            <c:if test="${project.plevel<1}">
               <div class="pj_folder" style="background: rgb(252, 247, 204);">
                   <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
                   <div class="pj_folder_in">
-                        <h5>프로젝트 명</h5>
-                        <p>프로젝트 개요 설명 ~~ <br>
-                          진행단계 설정 안했을 경우<br>
-                        하단에 참여자 프로필사진</p>
+                  		<span id="pno" style="display: none;">${project.pno}</span>
+                        <h5>${project.ptitle}</h5>
+                        <p>${project.psummary}</p>
                         <div class="users_area">
                           <div id="users_Img" class="users_cropcircle"></div>
                           <div id="users_Img" class="users_cropcircle"></div>
@@ -131,7 +111,8 @@
                         </div>       
                   </div>
                 </div>
-
+			</c:if>
+			</c:forEach>
                 <!-- optionModal -->
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
                     <div class="modal-dialog" role="document">
@@ -246,10 +227,54 @@
 	
 	<script>
 	
-	 $('.pj_folder_in').click(function (e) {  
-         e.preventDefault();  
-         var url = "${pageContext.request.contextPath}/project/projectPage.do";  
-         window.open(url, "_self");  
+	$(function(){
+		
+		
+		$("#proejctEnrollFrm .btn-send").on("click",function(){
+			//파라미터를 post방식으로 전송 -> message body에 씀
+			//json문자열로 처리해야 컨트롤러에서 @RequestBody가 처리함(HttpMessageConverter에 의해 커맨트객체 매핑)
+			//ajax요청 필수속성  => contentType: 'application/json; charset=utf-8' 
+			
+			var param = {};
+			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
+			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
+			param.pmmno =$(".headerMno").text();
+			var jsonStr = JSON.stringify(param);
+			console.log(jsonStr);
+			
+			$.ajax({
+	            url  : "${pageContext.request.contextPath}/project/projectMain",
+	            data : jsonStr,
+	            dataType: "json",
+	            contentType: 'application/json; charset=utf-8',
+	            type : "post",
+	            success : function(data){
+	                console.log(data);
+	                
+	               
+	            },
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+	        });
+			 location.reload();
+		});
+	});
+
+	
+	 $('.pj_folder_in').click(function () {  
+         //e.preventDefault();  
+        /*  var url = "${pageContext.request.contextPath}/project/projectPage.do";  
+         window.open(url, "_self");   */
+         var pno = $(this).children("#pno").text();
+         //var mno = $(".headerMno").text();
+         //var pno = document.getElementById('pno').val();
+         console.log(pno);
+         //console.log("메인"+mno);
+         
+         window.location.href="<c:url value='projectPage.do' />?pno="+pno;/* +"?mno="+mno; */
+
+         
      }); 
 	 
 	 /* project level btn */

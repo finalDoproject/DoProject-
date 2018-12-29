@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project">
+	<resultMap type="map" id="project"/>
+	
+	
+	<select id="selectProjectList" resultType="project">
+		SELECT *
+		FROM PROJECT  
+		ORDER BY PNO DESC
+	</select>
+	
+	<select id="selectOneProject" parameterType="_int" resultType="project">
+		SELECT * FROM PROJECT WHERE PNO = #{pno}
+	</select>
+	
+	<insert id="insertProject">
+		 INSERT INTO PROJECT VALUES
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
+	</insert>
+
+	
+</mapper>
