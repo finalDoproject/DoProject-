@@ -17,7 +17,6 @@
 	rel="stylesheet">
 <script src="https://use.fontawesome.com/1c6f725ec5.js"></script>
 <script>
-
 $(document).ready(function(){
 	window.addEventListener('resize', resizeTest);
 	
@@ -28,6 +27,7 @@ $(document).ready(function(){
 	}
 
 	$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+	
 });
 
 function sockformatAMPM(date) {
@@ -74,7 +74,13 @@ function dateDiff(_date1, _date2) {
     return diff;
 }
 
-function chatMtm(me, you){
+function chatMtm(me, you, yourNick){
+	var sock;
+	// console.log("ajax 실행 : " + sock);
+	$("#chatContent").val('');
+	$("#chatContent").focus();
+	$("#chatNickName").text(yourNick);
+	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chatOne.ch",
 		type : "GET",
@@ -82,6 +88,8 @@ function chatMtm(me, you){
 		success : function(responseData){
 			// 데이터 불러오기
 			var data = responseData.chatOneList;
+			var roomName = responseData.roomName;
+			//console.log("방이름 : " + roomName)
 			if(data.length == 0){
 				$("#chatList").empty();
 			} else {
@@ -129,8 +137,8 @@ function chatMtm(me, you){
 				}
 			}
 			// 웹소켓 객체 생성하기
-			var sock=new SockJS("<c:url value='/chat'/>");
-			console.log(sock);
+			sock=new SockJS("<c:url value='/chat'/>");
+			//console.log("소켓 : " + sock);
 			sock.onmessage=onMessage;
 			sock.onclose=onClose;
 			var today=null;
@@ -153,6 +161,7 @@ function chatMtm(me, you){
 			});
 			
 			function sendMessage(){
+				console.log("채팅 내용 : " + $("#chatContent").val());
 				sock.send($("#chatContent").val());
 			};
 
@@ -161,8 +170,8 @@ function chatMtm(me, you){
 				var host=null;//메세지를 보낸 사용자 ip저장
 				var strArray=data.split("|");//데이터 파싱처리하기
 				var userName=null;//대화명 저장
-				console.log("data : " + data.split("|")[3].substr(5,4));
-				console.log("data : " + data);
+				console.log("메시지 작성자 : " + data.split("|")[3]); //회원 아이디
+				//console.log("data : " + data);
 				if(strArray.length>1)
 				{
 					sessionId=strArray[0];
@@ -171,12 +180,12 @@ function chatMtm(me, you){
 					userName=strArray[3];
 					today=new Date();
 					
-					console.log("strArray[0] : " + strArray[0]);
+					/* console.log("strArray[0] : " + strArray[0]);
 					console.log("strArray[1] : " + strArray[1]);
 					console.log("strArray[2] : " + strArray[2]);
-					console.log("strArray[3] : " + strArray[3]);
+					console.log("strArray[3] : " + strArray[3]); */
 					
-					if(userName == $("#nickName").text())
+					if(userName == $("#nickName").text() && roomName == (me + "_" + you))
 					{
 						var printHTML="<div style='clear:both;'></div>";
 						printHTML+="<div class='chat-bubble me' id='myChat'>";
@@ -200,16 +209,22 @@ function chatMtm(me, you){
 					}
 
 				}
+				
 			};
+			
+			$(".contact").click(function(){
+				sock.close();
+			});
 
 			function onClose(evt){
-				/* location.href='${pageContext.request.contextPath}'; */
 			};
 		}
 	});
 }
 
 function chatPtm(me, pno){
+	$("#chatContent").val('');
+	$("#chatContent").focus();
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chatProject.ch",
 		type : "GET",
@@ -321,7 +336,7 @@ function searchRoom() {
 				</div>
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
-							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno});">
+							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno}, '${sl.nickName}');">
 								<img src="resources/images/profile/${sl.mProfile}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">
@@ -343,7 +358,7 @@ function searchRoom() {
 				<img src="https://bootdey.com/img/Content/avatar/avatar1.png"
 					alt="profilpicture">
 				<div class="chat-name">
-					<h1 class="font-name">홍길동</h1>
+					<h1 class="font-name" id="chatNickName">홍길동</h1>
 					<p class="font-online">온라인</p>
 				</div>
 			</div>
