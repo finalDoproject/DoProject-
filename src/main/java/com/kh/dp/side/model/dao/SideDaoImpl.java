@@ -16,9 +16,9 @@ public class SideDaoImpl implements SideDao {
 	SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<Member> browseMember() {
+	public List<Member> browseMember(int pno) {
 		
-		return sqlSession.selectList("matching.browseMember");
+		return sqlSession.selectList("matching.browseMember", pno);
 	}
 
 	@Override
@@ -31,6 +31,11 @@ public class SideDaoImpl implements SideDao {
 	public int insertMatchingDT(Join join) {
 		
 		return sqlSession.insert("matching.insertMatchingDT", join);
+	}
+	
+	@Override
+	public int insertMember(int mno) {
+		return sqlSession.insert("matching.insertMember", mno);
 	}
 	
 	

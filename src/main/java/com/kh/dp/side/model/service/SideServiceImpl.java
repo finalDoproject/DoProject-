@@ -17,9 +17,9 @@ public class SideServiceImpl implements SideService {
 	private SideDao sideDao;
 	
 	@Override
-	public List<Member> browseMember() {
+	public List<Member> browseMember(int pno) {
 		
-		return sideDao.browseMember();
+		return sideDao.browseMember(pno);
 	}
 
 	@Override
@@ -32,6 +32,12 @@ public class SideServiceImpl implements SideService {
 	public int insertMatchingDT(Join join) {
 		
 		return sideDao.insertMatchingDT(join);
+	}
+
+
+	@Override
+	public int insertMember(int mno) {
+		return sideDao.insertMember(mno);
 	}
 
 }

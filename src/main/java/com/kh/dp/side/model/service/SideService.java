@@ -8,10 +8,12 @@ import com.kh.dp.side.model.vo.Matching;
 
 public interface SideService {
 
-	public List<Member> browseMember();
+	public List<Member> browseMember(int pno);
 
 	public int insertMatching(Matching matcing);
 	
 	public int insertMatchingDT(Join join);
+
+	public int insertMember(int mno);
 
 }
