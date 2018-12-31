@@ -4,19 +4,25 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="matching">
 
-	<select id="browseMember" resultType="Member">
-	SELECT NICKNAME FROM MEMBER
+	<select resultType="Member" parameterType="_int" id="browseMember"> 
+	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
+	WHERE PMPNO = #{pno} 
 	</select>
-	
-	<insert id="insertMatching" parameterType="Matching">
-	INSERT INTO SCHEDULE_MATCHING VALUES
-				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
-	</insert>
-	
-	<insert id="insertMatchingDT" parameterType="Join" >
-	INSERT INTO  MEMBER_MATCHGIN VALUES
-	(#{sjmno}, #{sjsm}, #{sjdtno})
-	</insert>
+	<insert parameterType="Matching" id="insertMatching">
+	 INSERT INTO SCHEDULE_MATCHING VALUES 
+	 (SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
+	 </insert>
+	 <insert parameterType="_int" id="insertMember">
+	  INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
+	 </insert><insert parameterType="Join" id="insertMatchingDT">
+	  INSERT INTO MEMBER_MATCHGIN VALUES (#{sjmno}, #{sjsm}, #{sjdtno})
+	 </insert>
+	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
+	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
+	 FROM SCHEDULE_MATCHING
+	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
+	 WHERE SJMNO = #{mno}
+	 </select>
 </mapper>
 
 
