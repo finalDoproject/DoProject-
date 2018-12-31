@@ -55,8 +55,8 @@
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
 	               <c:if test="${!empty member}">
 
-	               <span class="headerMno" >${member.mno}</span>
-	               <span>${member.nickName}님</span>&nbsp;&nbsp;
+							<span class="headerMno" name="mno" style="display: none;">${member.mno}</span>
+							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
 	              <i class="fas fa-home" style="color: rgba(248, 143, 111, 0.6)"></i>
