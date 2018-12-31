@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
-
+	
 .ok{
 	float:right;
 	width: 112px;
@@ -150,12 +150,9 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -285,7 +282,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-<a href="#">TEST</a>
+			<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
@@ -337,7 +334,7 @@
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
-
+    
     
  	// select2 
     $('.member-multiple').select2({
@@ -378,12 +375,8 @@
             });
     	});
     	
-    	
-    	
-		var mno = $(".headerMno").text();		
-		console.log(mno);
 	});
-
+	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -399,12 +392,9 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
-          
          
           memopad.focus(function(){
         	  $(memopad).html()
-         
-         
           });
           
           memopad.blur(function(){

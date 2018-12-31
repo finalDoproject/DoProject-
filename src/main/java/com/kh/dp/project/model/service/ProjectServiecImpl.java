@@ -37,8 +37,8 @@ public class ProjectServiecImpl implements ProjectService {
 	
 	// ---- 메모 ---- //
 	@Override
-    public List<Map<String, String>> selectMemoList() {
-        return projectDao.selectMemoList();
+    public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
+        return projectDao.selectMemoList(map);
     }
 
 	@Override
