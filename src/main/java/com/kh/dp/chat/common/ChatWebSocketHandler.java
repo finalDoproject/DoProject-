@@ -25,6 +25,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		System.out.println(message.getPayload());
 		Member m = (Member)session.getAttributes().get("member");
 		for(WebSocketSession testList : sessionList) {
 			System.out.println("[접속 중 세션 리스트 : " + testList + " ]");

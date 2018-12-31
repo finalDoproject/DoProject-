@@ -76,7 +76,7 @@ function dateDiff(_date1, _date2) {
 }
 
 function chatMtm(me, you, yourNick){
-	/* location.href = "/chatOne.ch?pno="+$("#pPno").text()+"&chWriter="+me+"&chReader="+you; */
+	/* location.href = "/chatOne.ch?pno="+$("#pno").text()+"&chWriter="+me+"&chReader="+you; */
 	$("#chatContent").val('');
 	$("#chatContent").focus();
 	$("#chatNickName").text(yourNick);
@@ -84,7 +84,7 @@ function chatMtm(me, you, yourNick){
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chatOne.ch",
 		type : "GET",
-		data : { "chWriter" : me, "chReader" : you, "pno" : $("#pPno").text()},
+		data : { "chWriter" : me, "chReader" : you, "pno" : $("#pno").text()},
 		success : function(responseData){
 			// 데이터 불러오기
 			var data = responseData.chatOneList;
@@ -167,7 +167,16 @@ function chatMtm(me, you, yourNick){
 			};
 			
 			function onOpen(){
-				
+				/* var chatMtmJson = {
+					"mno" : $("#mno").text(),
+					"userId" : $("#userId").text(),
+					"nickName" : $("#nickName").text(),
+					"pno" : $("#pno").text()
+				};
+				sock.send(chatMtmJson.mno);
+				sock.send(chatMtmJson.userId);
+				sock.send(chatMtmJson.nickName);
+				sock.send(chatMtmJson.pno); */
 			}
 
 			function onMessage(evt){
@@ -307,6 +316,7 @@ function searchRoom() {
 </head>
 
 <body>
+	<div style="display:none;" id="mno">${member.mno}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
 	<div style="display:none;" id="userId">${member.userId}</div>
 	<div style="display:none;" id="password">${member.password}</div>
@@ -315,7 +325,7 @@ function searchRoom() {
 	<div style="display:none;" id="mCondition">${member.mCondition}</div>
 	<div style="display:none;" id="mDate">${member.mDate}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
-	<div style="display:none;" id="pPno">${project.pno}</div>
+	<div style="display:none;" id="pno">${project.pno}</div>
 	<div class="wrap">
 		<section class="left" style="background: #f98d70">
 			<!-- 대화방 검색 -->
