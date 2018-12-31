@@ -7,13 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 
@@ -22,6 +23,7 @@ public class ProjectController {
 	
 	@Autowired
 	ProjectService projectService;
+	MemberService memberService;
 	
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model) {
@@ -61,13 +63,21 @@ public class ProjectController {
 //		return map;
 //	}
 	
-	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
-	public String ProjectPageView(@PathVariable("pno") int pno,Model model) {
+	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
+	public String ProjectPageView(@RequestParam int pno,Model model) {
 		
 		Project project = projectService.selectOneProject(pno);
 		model.addAttribute("project",project);
 		
 		return "project/projectPage";
+	}
+	
+	@RequestMapping(value="/project/{nickname}", method=RequestMethod.GET)
+	public Member findUserView(@RequestParam String nickname,Model model) {
+		Member m = memberService.selectOneNickname(nickname);
+		model.addAttribute("member", m);
+		if(m==null) m = new Member();
+		return m;
 	}
 	
 	@RequestMapping("/project/projectPage.do")

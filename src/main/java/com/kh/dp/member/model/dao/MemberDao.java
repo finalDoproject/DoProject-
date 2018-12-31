@@ -19,4 +19,6 @@ public interface MemberDao {
 	int selectMemberTotalContents();
 
 	int deleteMember(int mno);
+
+	Member selectOneNickname(String nickname);
 }

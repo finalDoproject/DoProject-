@@ -131,10 +131,10 @@
                   <div class="modal-body">
                       <div class="form-group">
                         <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
-                        <input type="text" class="form-control" name="memberName" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
-                        <button type="button" class="btn btn-outline-warning">검색</button>
+                        <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                        <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
                       </div>
-                                      
+                      <div class="result" id="findUser-result"></div>                
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
@@ -348,6 +348,38 @@
     
 
     $(function(){
+    	$("#findUserBtn").on("click",function(){
+    		var nickname = $('.nickname').val();
+    		
+    		console.log(nickname);
+    		$.ajax({
+                url  : "${pageContext.request.contextPath}/project/projectPage",
+                data: {nickname:nickname},
+                dataType: "json",
+                type : "get",
+                success : function(data){
+                    console.log(data);
+                    var html = "<table class=table>";
+                    html+="<tr><th>이름</th><th>ID</th></tr>";
+	        		if(data==0) alert("해당하는 정보가 없습니다.");
+	        		else{
+	        			 for(var i in data){
+	                     	html += "<tr><td>"+data[i].nickname+"</td>";
+	                     	html += "<td>"+data[i].userId+"</td></tr>";
+	                     }
+	        			 html+="</table>";
+	                     $("#findUser-result").html(html);
+	        		}
+	        	},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+
+            });
+    	});
+    	
+    	
+    	
 		var mno = $(".headerMno").text();		
 		console.log(mno);
 	});
