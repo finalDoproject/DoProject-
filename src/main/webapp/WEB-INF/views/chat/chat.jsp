@@ -17,6 +17,7 @@
 	rel="stylesheet">
 <script src="https://use.fontawesome.com/1c6f725ec5.js"></script>
 <script>
+var sock;
 $(document).ready(function(){
 	window.addEventListener('resize', resizeTest);
 	
@@ -75,8 +76,7 @@ function dateDiff(_date1, _date2) {
 }
 
 function chatMtm(me, you, yourNick){
-	var sock;
-	// console.log("ajax 실행 : " + sock);
+	/* location.href = "/chatOne.ch?pno="+$("#pPno").text()+"&chWriter="+me+"&chReader="+you; */
 	$("#chatContent").val('');
 	$("#chatContent").focus();
 	$("#chatNickName").text(yourNick);
@@ -84,7 +84,7 @@ function chatMtm(me, you, yourNick){
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chatOne.ch",
 		type : "GET",
-		data : { "chWriter" : me, "chReader" : you},
+		data : { "chWriter" : me, "chReader" : you, "pno" : $("#pPno").text()},
 		success : function(responseData){
 			// 데이터 불러오기
 			var data = responseData.chatOneList;
@@ -136,13 +136,14 @@ function chatMtm(me, you, yourNick){
 					}
 				}
 			}
-			// 웹소켓 객체 생성하기
+			//웹소켓 객체 생성하기
 			sock=new SockJS("<c:url value='/chat'/>");
 			//console.log("소켓 : " + sock);
+			sock.onopen=onOpen;
 			sock.onmessage=onMessage;
 			sock.onclose=onClose;
 			var today=null;
-			
+
 			// 웹소켓으로 데이터 추가하기
 			$(function(){
 				$("#submit").click(function(){
@@ -159,11 +160,15 @@ function chatMtm(me, you, yourNick){
 				    }
 				});
 			});
-			
+
 			function sendMessage(){
 				console.log("채팅 내용 : " + $("#chatContent").val());
 				sock.send($("#chatContent").val());
 			};
+			
+			function onOpen(){
+				
+			}
 
 			function onMessage(evt){
 				var data=evt.data;//new text객체로 보내준 값을 받아옴.
@@ -185,7 +190,7 @@ function chatMtm(me, you, yourNick){
 					console.log("strArray[2] : " + strArray[2]);
 					console.log("strArray[3] : " + strArray[3]); */
 					
-					if(userName == $("#nickName").text() && roomName == (me + "_" + you))
+					if(userName == $("#nickName").text())
 					{
 						var printHTML="<div style='clear:both;'></div>";
 						printHTML+="<div class='chat-bubble me' id='myChat'>";
@@ -211,7 +216,7 @@ function chatMtm(me, you, yourNick){
 				}
 				
 			};
-			
+
 			$(".contact").click(function(){
 				sock.close();
 			});
@@ -310,6 +315,7 @@ function searchRoom() {
 	<div style="display:none;" id="mCondition">${member.mCondition}</div>
 	<div style="display:none;" id="mDate">${member.mDate}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
+	<div style="display:none;" id="pPno">${project.pno}</div>
 	<div class="wrap">
 		<section class="left" style="background: #f98d70">
 			<!-- 대화방 검색 -->
