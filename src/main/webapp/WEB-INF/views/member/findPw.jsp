@@ -157,7 +157,7 @@ color:#F88E6F;
 		
 </div>
 
-
+<form id="findPw" name="findPw" action = "findPw.do" method="post">
  		<div class="form-item">
 			<p class="formLabel">이름</p>
 			<input type="text" name="userName" id="userName" class="form-style" autocomplete="off"/>
@@ -171,13 +171,13 @@ color:#F88E6F;
 		
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
-		<input type="submit" class="login pull-right" value="가입완료">
+		<input type="submit" id="findId" class="login pull-right" value="가입완료">
 		<br />
 		<!-- <div class="clear-fix"></div>  -->
 	    </div>
 	
 	
-	
+	</form>
 	
 	
 	

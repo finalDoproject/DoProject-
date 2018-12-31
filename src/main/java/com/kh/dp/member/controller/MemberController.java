@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
+
 import com.kh.dp.member.model.vo.Member;
 
 @SessionAttributes(value= {"member"})
@@ -125,6 +126,11 @@ public class MemberController {
 		
 		return "common/msg";
 	}
+	
+/*	@RequestMapping(value="/member/findPw.do")
+	public String findPw() throws Exception{
+		return "/member/foundPw";
+	}*/
 	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(

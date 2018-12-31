@@ -15,6 +15,9 @@ import com.kh.dp.member.model.vo.Member;
 @Repository
 public class MemberDaoImpl implements MemberDao {
 	
+	@Autowired
+	SqlSessionTemplate sqlSession;
+	
 	@Override
 	public int insertMember(Member member) {
 		System.out.println(member);
@@ -34,9 +37,6 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	
-	@Autowired
-	SqlSessionTemplate sqlSession;
-
 	@Override
 	public List<Map<String, String>> selectMemberList(int cPage, int numPerPage) {
 		// TODO Auto-generated method stub
