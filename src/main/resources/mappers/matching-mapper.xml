@@ -4,22 +4,14 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="matching">
 
-	<select id="browseMember" parameterType="_int" resultType="Member">
-	SELECT MNO,NICKNAME FROM 
-	MEMBER JOIN PROJECT_MEMBER 
-	ON(PMMNO = MNO) WHERE PMPNO = #{pno}
+	<select id="browseMember" resultType="Member">
+	SELECT NICKNAME FROM MEMBER
 	</select>
 	
 	<insert id="insertMatching" parameterType="Matching">
 	INSERT INTO SCHEDULE_MATCHING VALUES
 				(SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
 	</insert>
-	
-	<insert id="insertMember" parameterType="_int">
-	INSERT INTO SCHEDULE_JOIN VALUES
-				(#{mno} ,SEQ_SMNO.CURRVAL)
-	</insert>
-	
 	
 	<insert id="insertMatchingDT" parameterType="Join" >
 	INSERT INTO  MEMBER_MATCHGIN VALUES

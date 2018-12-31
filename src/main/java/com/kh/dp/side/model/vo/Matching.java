@@ -31,13 +31,6 @@ public class Matching implements Serializable {
 		this.smenddate = smenddate;
 		this.smmno = smmno;
 	}
-	
-	public Matching(String smcontent, Date smdate, Date smenddate) {
-		super();
-		this.smcontent = smcontent;
-		this.smdate = smdate;
-		this.smenddate = smenddate;
-	}
 
 
 	public int getSmno() {
