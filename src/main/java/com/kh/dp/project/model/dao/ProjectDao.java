@@ -14,7 +14,7 @@ public interface ProjectDao {
 	
 	
 	// ---- 메모 ---- //
-	List<Map<String, String>> selectMemoList();
+	List<Map<String, String>> selectMemoList(Map<String, Object> map);
 	int updateMemo(String saveMemo);
 
 

@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
-
+	
 .ok{
 	float:right;
 	width: 112px;
@@ -131,10 +131,10 @@
                   <div class="modal-body">
                       <div class="form-group">
                         <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
-                        <input type="text" class="form-control" name="memberName" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
-                        <button type="button" class="btn btn-outline-warning">검색</button>
+                        <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                        <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
                       </div>
-                                      
+                      <div class="result" id="findUser-result"></div>                
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
@@ -150,12 +150,9 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -285,7 +282,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-<a href="#">TEST</a>
+			<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
@@ -337,7 +334,7 @@
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
-
+    
     
  	// select2 
     $('.member-multiple').select2({
@@ -348,10 +345,38 @@
     
 
     $(function(){
-		var mno = $(".headerMno").text();		
-		console.log(mno);
-	});
+    	$("#findUserBtn").on("click",function(){
+    		var nickname = $('.nickname').val();
+    		
+    		console.log(nickname);
+    		$.ajax({
+                url  : "${pageContext.request.contextPath}/project/projectPage",
+                data: {nickname:nickname},
+                dataType: "json",
+                type : "get",
+                success : function(data){
+                    console.log(data);
+                    var html = "<table class=table>";
+                    html+="<tr><th>이름</th><th>ID</th></tr>";
+	        		if(data==0) alert("해당하는 정보가 없습니다.");
+	        		else{
+	        			 for(var i in data){
+	                     	html += "<tr><td>"+data[i].nickname+"</td>";
+	                     	html += "<td>"+data[i].userId+"</td></tr>";
+	                     }
+	        			 html+="</table>";
+	                     $("#findUser-result").html(html);
+	        		}
+	        	},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
 
+            });
+    	});
+    	
+	});
+	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -367,12 +392,9 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
-          
          
           memopad.focus(function(){
         	  $(memopad).html()
-         
-         
           });
           
           memopad.blur(function(){
