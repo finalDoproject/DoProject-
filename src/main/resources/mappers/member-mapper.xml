@@ -40,5 +40,18 @@
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER 
+		SET NICKNAME = #{nickName},
+		EMAIL = #{email},
+		PASSWORD = #{password}
+		WHERE USERID = #{userId}
+	</update>
+	
+	<delete id="withdrawMember" parameterType="string">
+		DELETE FROM MEMBER WHERE USERID = #{userId}
+	</delete>
+	
+	
 	
 </mapper>
