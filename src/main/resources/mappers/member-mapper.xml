@@ -40,5 +40,10 @@
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+	<select id="selectOneNickname" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER 
+		WHERE NICKNAME = #{nickname}
+
+	</select>
 	
 </mapper>

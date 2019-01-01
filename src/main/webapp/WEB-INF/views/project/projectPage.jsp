@@ -12,9 +12,34 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<!-- Select 2 -->
+<link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
+
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<style>
+	
+.ok{
+	float:right;
+	width: 112px;
+	height: 37px;
+	border-radius:5px;
+	background-clip: padding-box;
+	background-color: #F88E6F;
+	border:none;
+	color: #fff;
+	font-weight: bold;
+	margin-left :auto;
+	margin-right : auto;
+}
+
+.ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
+.ok:focus{outline: none;}
+
+</style>
 <script>
 	function kick(name, pno, mno){
 		if(confirm(name + " 님을 추방하시겠습니까?") == true){
@@ -65,19 +90,7 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        
-         <li class="nav-item" style="position: absolute; top:720px;">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
-            <i class="fas fa-user-friends"></i>
-            <span>초대하기</span></a>
-        </li>
-        
-        <li class="nav-item" style="position: absolute; top:760px;">
-          <a class="nav-link" href="#">
-            <i class="fas fa-user-friends"></i>
-            <span>참여자리스트</span></a>
-
-        <hr />
+        <hr>
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
@@ -90,6 +103,7 @@
   				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
     				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
     				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
+
 				</div>
   				</c:if>
   				<c:if test="${project.pmno ne member.mno}">
@@ -112,10 +126,11 @@
         </li>
       </ul>
       <!-- invitationModal -->
-      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
               <div class="modal-dialog" role="document">
               
                <form id="proejctEnrollFrm">
+               
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
@@ -125,30 +140,18 @@
                   </div>
                   <div class="modal-body">
                       <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
-                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
+                        <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
+                        <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                        <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
                       </div>
-                      <div class="form-group">
-                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
-                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
-                      </div>                  
-                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
-                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
-                        <div class="form-group levelbox" style="display: none;">
-                          <hr>
-                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-                          <button type="button" class="btn minusbtn btn-light">-</button>
-                          
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-
-                        </div>
+                      <div class="result" id="findUser-result"></div>                
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
+                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">초대하기</button>
                   </div>                  
                 </div>
+                
                </form>
               </div>
             </div>   
@@ -157,12 +160,9 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -207,17 +207,78 @@
       <hr>
       <div class="timetable" style="color: #555">
           <h6>스케줄매칭</h6>
+          <button class="request" data-toggle="modal" data-target="#exampleModalCenter">요청하기</button>
+          <br /><br />
           <ul style="list-style-type: disc;">
             
               <li>
                 <a href="#" style="color: #555;">고양이 친목모임 <button class="ongoing">진행중</button></a>
               </li>
               <li>
-                <a href="#" style="color: #555;">연말 모임<button class="complete">완료</button></a>
+                <a href="#" style="color: #555;">연말 모임 <button class="complete">완료</button></a>
               </li>
             </ul>
         </div>
         <hr>
+        
+        <!-- Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px;">스케줄 매칭</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do" method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%;" >
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x" style="color:black;"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+                                     <c:forEach items="${mArr}" var="m" varStatus="status">
+                                        <option value="${m.nickName}">${m.nickName} </option>
+                                     </c:forEach> 
+
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x" style="color:black;"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right" style="color:black;"></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="ok">요청 완료</button>
+            </div>
+                 </form>         
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+      
+      
+      
       </div>
       <!-- /right nav -->
 
@@ -231,7 +292,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-<a href="#">TEST</a>
+			<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
@@ -272,9 +333,60 @@
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
+    
+    <!-- datepicker를 위한 js -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
+	<!-- select2를 위한 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
+    
+    
+ 	// select2 
+    $('.member-multiple').select2({
+    	placeholder : "함께할 인원을 선택해주세요."
+    }); 
+ 
+ 	$('.select2-search__field').attr("style", "width : 370px");
+    
+
+    $(function(){
+    	$("#findUserBtn").on("click",function(){
+    		var nickname = $('.nickname').val();
+    		
+    		console.log(nickname);
+    		$.ajax({
+                url  : "${pageContext.request.contextPath}/project/projectPage",
+                data: {nickname:nickname},
+                dataType: "json",
+                type : "get",
+                success : function(data){
+                    console.log(data);
+                    var html = "<table class=table>";
+                    html+="<tr><th>이름</th><th>ID</th></tr>";
+	        		if(data==0) alert("해당하는 정보가 없습니다.");
+	        		else{
+	        			 for(var i in data){
+	                     	html += "<tr><td>"+data[i].nickname+"</td>";
+	                     	html += "<td>"+data[i].userId+"</td></tr>";
+	                     }
+	        			 html+="</table>";
+	                     $("#findUser-result").html(html);
+	        		}
+	        	},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+
+            });
+    	});
+    	
+	});
+	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -290,13 +402,11 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
-          
          
           memopad.focus(function(){
         	  $(memopad).html()
-         
-         
           });
+          
           memopad.blur(function(){
            var saveMemo = $(memopad).val();
 
@@ -483,6 +593,52 @@
 				showEvents(current);
       }, false);
     });
+    
+    $(function(){
+   	 
+ 	   // 한국어 설정
+ 	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+ 	   
+ 	   // 시작일
+ 	   $('#startdate').datepicker({
+ 		  // 데이터 형식 지정
+ 		  dateFormat : "yy-mm-dd",
+ 		  // 달 / 주 이름 지정
+ 		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+ 		  dayNamesMin : ["일","월","화","수","목","금","토"],
+ 		  // 오늘 날짜 이후로 선택 가능
+ 		  minDate : 1,
+ 		  onClose : function(selectDate) {
+ 			  // 시작일 datepicker가 닫힐 때
+ 			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+ 			  
+ 			  $("#enddate").datepicker("option", "minDate", selectDate);
+ 			  
+ 			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+ 			  var date = $(this).datepicker('getDate');
+ 			  
+ 			  date.setDate(date.getDate()+7);
+ 			  $("#enddate").datepicker("option", "maxDate", date);
+ 		  }
+ 		   
+ 	   });
+ 	   
+ 	   // 종료일
+ 	   $('#enddate').datepicker({
+ 		  dateFormat : "yy-mm-dd",
+  		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+  		  dayNamesMin : ["일","월","화","수","목","금","토"],
+  		  minDate : 0,
+  		  
+  		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+  		  onClose : function(selectDate){
+  			 
+  			  $('#startdate').datepicker("option", "maxDate", selectDate);
+  		  }
+ 	   });
+    });
+     
+    	
 	</script>
     
 	

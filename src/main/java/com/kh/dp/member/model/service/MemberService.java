@@ -19,4 +19,6 @@ public interface MemberService {
 	
 	int deleteMember(int mno);
 
+	Member selectOneNickname(String nickname);
+
 }

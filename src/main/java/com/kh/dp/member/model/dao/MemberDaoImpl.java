@@ -56,4 +56,9 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.delete("member.deleteMember", mno);
 	}
 
+	@Override
+	public Member selectOneNickname(String nickname) {
+		return sqlSession.selectOne("member.selectOneNickname", nickname);
+	}
+
 }

@@ -35,8 +35,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	
 	// ---- 메모 ----//
 	@Override
-	public List<Map<String, String>> selectMemoList() {
-		return sqlSession.selectList("memo.selectMemoList");
+	public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
+		return sqlSession.selectList("memo.selectMemoList",map);
 	}
 
 	@Override
@@ -70,6 +70,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Map<String, String>> selectAlarmList(int mno) {
 		return sqlSession.selectList("project.selectAlarmList", mno);
 	}
+
+	
 
 	
 
