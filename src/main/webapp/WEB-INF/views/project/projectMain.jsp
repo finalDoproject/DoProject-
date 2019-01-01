@@ -234,7 +234,7 @@
 			//ajax요청 필수속성  => contentType: 'application/json; charset=utf-8' 
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
-			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
+			param.selectProjectListpsummary = $("#proejctEnrollFrm [name=psummary]").val();
 			
 			var jsonStr = JSON.stringify(param);
 			console.log(jsonStr);

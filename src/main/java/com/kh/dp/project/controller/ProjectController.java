@@ -25,10 +25,13 @@ public class ProjectController {
 	ProjectService projectService;
 	
 	@RequestMapping("/project/projectMain.do")
-	public String ProjectView(Model model) {
+	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -87,7 +90,10 @@ public class ProjectController {
 		projectService.deleteLeaveProject(pno, mno);
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}

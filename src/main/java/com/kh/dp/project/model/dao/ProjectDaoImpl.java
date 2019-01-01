@@ -66,6 +66,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.delete("project.deleteLeaveProject", map);
 	}
 
+	@Override
+	public List<Map<String, String>> selectAlarmList(int mno) {
+		return sqlSession.selectList("project.selectAlarmList", mno);
+	}
+
 	
 
 

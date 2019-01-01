@@ -66,12 +66,31 @@
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
 	            <!-- c:for 알람 내용 읽어오기 -->
-	            <a class="dropdown-item" href="#">[회원명]님 회원 가입을 환영합니다.</a>
-	            <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
+	            <c:forEach items="${alarmList}" var="al">
+	            <c:if test="${al.atype eq 1}">
+	            	<a class="dropdown-item" href="${pageContext.request.contextPath}/project/updateAlarm.do?ano=${al.ano}&mno=${member.mno}">[${member.nickName}]님 ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 2}">
+	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 3}">
+	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 4}">
+	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 5}">
+	            	<a class="dropdown-item" href="#">[일정 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 6}">
+	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
+	            </c:if>
+	            <!-- <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
 	            <a class="dropdown-item" href="#">[스케줄요청 명]이 종료 되었습니다.</a>
 	            <a class="dropdown-item" href="#">[스케줄요청 명]이 요청 되었습니다.</a>
 	            <a class="dropdown-item" href="#">[업무 명] 새 업무가 있습니다.</a>
-	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a>
+	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a> -->
+	            </c:forEach>
 	          </div>
 	        </li>
 	

@@ -61,5 +61,10 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.deleteMemberFromProject(pno, mno);
 	}
 
+	@Override
+	public List<Map<String, String>> selectAlarmList(int mno) {
+		return projectDao.selectAlarmList(mno);
+	}
+
 	
 }

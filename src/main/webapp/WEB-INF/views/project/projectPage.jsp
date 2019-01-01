@@ -18,7 +18,11 @@
 <script>
 	function kick(name, pno, mno){
 		if(confirm(name + " 님을 추방하시겠습니까?") == true){
-			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			if(mno == ${member.mno}){
+				alert("본인은 추방할 수 없습니다.");
+			}else{
+				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			}
 		}else{
 			return;
 		}
@@ -96,8 +100,14 @@
 				</div>
   				</c:if>
   				</c:forEach>
+  				<c:if test="${project.pmno ne member.mno}">
   				<a class="dropdown-item" href="${pageContext.request.contextPath}/project/leaveProject.do?pno=${project.pno}&mno=${member.mno}"
-				style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
+				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+				</c:if>
+				<c:if test="${project.pmno eq member.mno}">
+  				<a class="dropdown-item" onclick="alert('팀장은 나갈수 없습니다.')"
+				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+				</c:if>
 			</div>
         </li>
       </ul>
