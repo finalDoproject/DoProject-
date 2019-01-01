@@ -266,8 +266,9 @@
          var pno = $(this).children("#pno").text();
          //var pno = document.getElementById('pno').val();
          console.log(pno);
-         window.location.href="<c:url value='projectPage.do' />?pno="+pno;
-
+         //window.location.href="<c:url value='projectPage.do' />?pno="+pno;
+         //window.location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+pno;
+         location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+pno;
          
      }); 
 	 

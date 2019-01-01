@@ -74,7 +74,8 @@ public class ChatController {
 		// 좌측 출력된 채팅방 클릭시 해당 채팅방의 내역 불러오기
 		// 프로젝트 번호
 		//int pno = 1;
-		String roomName = chWriter + "_" + chReader;
+		String roomNameOne = chWriter + "_" + chReader;
+		String roomNameTwo = chReader + "_" + chWriter;
 		/*System.out.println("방 이름 : " + roomName);*/
 
 		Member m = (Member)req.getSession().getAttribute("member");
@@ -83,7 +84,7 @@ public class ChatController {
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
-		mv.addObject("chatOneList", list).addObject("roomName", roomName);
+		mv.addObject("chatOneList", list).addObject("roomNameOne", roomNameOne).addObject("roomNameTwo", roomNameTwo);
 		mv.setViewName("jsonView");
 		/*System.out.println("ajax 채팅 : " + list);*/
 

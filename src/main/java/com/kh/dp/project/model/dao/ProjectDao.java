@@ -19,7 +19,10 @@ public interface ProjectDao {
 
 	int insertProject(Project project);
 
-
+	// 프로젝트 참여자 검색
+	List<Map<String, String>> selectProjectIntoMember(int pno);
+	int deleteLeaveProject(int pno, int mno);
+	int deleteMemberFromProject(int pno, int mno);
 
 
 }

@@ -1,5 +1,6 @@
 package com.kh.dp.project.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +45,13 @@ public class ProjectController {
 	}
 	
 	
-	@RequestMapping(value="/project/projectPage/{pno}", method=RequestMethod.GET)
-	public String ProjectPageView(@PathVariable("pno") int pno,Model model) {
-		
+	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
+	public String ProjectPageView(@RequestParam("pno") int pno,Model model) {
 		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
 		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
 		
 		return "project/projectPage";
 	}
@@ -78,5 +81,29 @@ public class ProjectController {
 		
 	}
 	
+	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
+	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteLeaveProject(pno, mno);
+		
+		List<Map<String,String>> projectList = projectService.selectProjectList();
+		model.addAttribute("projectList",projectList);
+		
+		return "project/projectMain";
+	}
+	
+	@RequestMapping(value="/project/exile.do", method=RequestMethod.GET)
+	public String deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteMemberFromProject(pno, mno);
+		
+		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
+				
+		return "project/projectPage";
+	}
 
 }

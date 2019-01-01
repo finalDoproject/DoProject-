@@ -20,15 +20,10 @@
 				alias="ChatPtm" />
 		<typeAlias type="com.kh.dp.chat.model.vo.ChatMtm"
 				alias="ChatMtm" />
-		<typeAlias type="com.kh.dp.project.model.vo.Project"
-				alias="Project" />
 	</typeAliases>
 	
 	
 </configuration>
-
-
-
 
 
 

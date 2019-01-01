@@ -15,7 +15,15 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-
+<script>
+	function kick(name, pno, mno){
+		if(confirm(name + " 님을 추방하시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+		}else{
+			return;
+		}
+	}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -72,29 +80,24 @@
     			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
+  				<c:forEach items="${memberList}" var="mList">
+  				<c:if test="${project.pmno eq member.mno}">
   				<div>
-    			<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-    				<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">홍길동</span></a>
+  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
+    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
 				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">신사임당</span></a>
+  				</c:if>
+  				<c:if test="${project.pmno ne member.mno}">
+  				<div>
+  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;">
+    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
 				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">김유신</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">고길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
-  				</div>
+  				</c:if>
+  				</c:forEach>
+  				<a class="dropdown-item" href="${pageContext.request.contextPath}/project/leaveProject.do?pno=${project.pno}&mno=${member.mno}"
+				style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
 			</div>
         </li>
       </ul>

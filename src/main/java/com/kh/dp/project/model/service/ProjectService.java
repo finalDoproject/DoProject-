@@ -18,6 +18,10 @@ public interface ProjectService {
 	List<Map<String, String>> selectMemoList();
 	int updateMemo(String saveMemo);
 
+	// 프로젝트 참여자 검색
+	List<Map<String, String>> selectProjectIntoMember(int pno);
+	int deleteLeaveProject(int pno, int mno);
+	int deleteMemberFromProject(int pno, int mno);
 
 
 }

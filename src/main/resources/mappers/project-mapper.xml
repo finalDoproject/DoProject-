@@ -6,7 +6,7 @@
 	
 	<select id="selectProjectList" resultType="project">
 		SELECT *
-		FROM PROJECT  
+		FROM PROJECT
 		ORDER BY PNO DESC
 	</select>
 	
@@ -19,6 +19,14 @@
 		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, 1)
 	</insert>
 		
+	<select id="selectProjectIntoMember" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (
+    		SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<delete id="deleteLeaveProject">
+		DELETE FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</delete>
 
 	
 </mapper>
