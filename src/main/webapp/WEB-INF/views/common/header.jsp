@@ -69,24 +69,43 @@
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
 	            <!-- c:for 알람 내용 읽어오기 -->
-	            <a class="dropdown-item" href="#">[회원명]님 회원 가입을 환영합니다.</a>
-	            <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
+	            <c:forEach items="${alarmList}" var="al">
+	            <c:if test="${al.atype eq 1}">
+	            	<a class="dropdown-item" href="${pageContext.request.contextPath}/project/updateAlarm.do?ano=${al.ano}&mno=${member.mno}">[${member.nickName}]님 ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 2}">
+	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 3}">
+	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 4}">
+	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 5}">
+	            	<a class="dropdown-item" href="#">[일정 명] ${al.acontent}</a>
+	            </c:if>
+	            <c:if test="${al.atype eq 6}">
+	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
+	            </c:if>
+	            <!-- <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
 	            <a class="dropdown-item" href="#">[스케줄요청 명]이 종료 되었습니다.</a>
 	            <a class="dropdown-item" href="#">[스케줄요청 명]이 요청 되었습니다.</a>
 	            <a class="dropdown-item" href="#">[업무 명] 새 업무가 있습니다.</a>
-	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a>
+	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a> -->
+	            </c:forEach>
 	          </div>
 	        </li>
 	
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
 	        <!-- c:if 부분 조건식 수정해서 프로젝트 메인인지 상세인지로 구분, chat 표현방식 바꾸기 -->
-	        <c:set var="chatTest" value="2" />
-	          <c:if test="${chatTest eq '1'}">
+	        <c:set var="pno" value="${param.pno}" />
+	          <c:if test="${pno eq null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openAlert()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	          </a>
 	          </c:if>
-	          <c:if test="${chatTest ne '1'}">
+	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger">7</span>
@@ -138,11 +157,18 @@
 			var xPos = (document.body.clientWidth / 2) - 400;
 			xPos += window.screenLeft;
 			var yPos = (screen.availHeight / 2) - 300;
-
+			
+			var pno = '<c:out value="${param.pno}"/>';
+			
+			if(pno == null){
+			alert("로그인이 필요한 기능입니다.");	
+			}else{		
 			windowObj = window.open(
-					'${pageContext.request.contextPath}/chat.ch', '채팅방',
+					'${pageContext.request.contextPath}/chat.ch?pno='+pno, '채팅방',
 					'width=800,height=600,top=' + yPos + ',left=' + xPos
 					+ ',toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
+			}
+			
 		}
 		
 		function openAlert() {

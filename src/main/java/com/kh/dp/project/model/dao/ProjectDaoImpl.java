@@ -1,5 +1,6 @@
 package com.kh.dp.project.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,33 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public int updateMemo(String saveMemo) {
 		return sqlSession.update("memo.updateMemo", saveMemo);
+	}
+
+	// 프로젝트 참여자 리스트
+	@Override
+	public List<Map<String, String>> selectProjectIntoMember(int pno) {
+		return sqlSession.selectList("project.selectProjectIntoMember", pno);
+	}
+
+	@Override
+	public int deleteLeaveProject(int pno, int mno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		return sqlSession.delete("project.deleteLeaveProject", map);
+	}
+
+	@Override
+	public int deleteMemberFromProject(int pno, int mno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		return sqlSession.delete("project.deleteLeaveProject", map);
+	}
+
+	@Override
+	public List<Map<String, String>> selectAlarmList(int mno) {
+		return sqlSession.selectList("project.selectAlarmList", mno);
 	}
 
 	

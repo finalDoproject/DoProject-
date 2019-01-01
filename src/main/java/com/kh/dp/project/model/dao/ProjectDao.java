@@ -19,7 +19,11 @@ public interface ProjectDao {
 
 
 
-
+	// 프로젝트 참여자 검색
+	List<Map<String, String>> selectProjectIntoMember(int pno);
+	int deleteLeaveProject(int pno, int mno);
+	int deleteMemberFromProject(int pno, int mno);
+	List<Map<String, String>> selectAlarmList(int mno);
 
 
 }

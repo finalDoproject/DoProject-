@@ -1,5 +1,6 @@
 package com.kh.dp.project.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,13 @@ public class ProjectController {
 	MemberService memberService;
 	
 	@RequestMapping("/project/projectMain.do")
-	public String ProjectView(Model model) {
+	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -50,7 +54,10 @@ public class ProjectController {
 	public String ProjectPageView(@RequestParam int pno, @RequestParam int mno, Model model) {
 		
 		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
 		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
 		
 		
 		Map<String,Object> map = new HashMap<>();
@@ -86,5 +93,32 @@ public class ProjectController {
 		
 	}
 	
+	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
+	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteLeaveProject(pno, mno);
+		
+		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
+		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
+		
+		return "project/projectMain";
+	}
+	
+	@RequestMapping(value="/project/exile.do", method=RequestMethod.GET)
+	public String deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteMemberFromProject(pno, mno);
+		
+		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
+				
+		return "project/projectPage";
+	}
 
 }

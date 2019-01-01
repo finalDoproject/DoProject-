@@ -25,10 +25,11 @@ public class ChatController {
 	private ChatService chatService;
 	
 	@RequestMapping(value="/chat.ch", method=RequestMethod.GET)
-	public String selectProjectChatList(Model model, HttpServletRequest req) {	
+	public String selectProjectChatList(Model model, HttpServletRequest req,
+			@RequestParam("pno") int pno) {	
 		// 해당 프로젝트 번호 가져와 그 프로젝트 내의 채팅 내역 불러오기 | 처음 실행 화면
 		// 프로젝트 번호
-		int pno = 1;
+		//int pno = 1;
 		
 		Member m = (Member)req.getSession().getAttribute("member");
 		
@@ -50,9 +51,9 @@ public class ChatController {
 		Project p = chatService.selectProject(pno);
 		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
 		
-		System.out.println("list1 : " + list);
+		/*System.out.println("list1 : " + list);
 		System.out.println("list2 : " + secondList);
-		System.out.println("project : " + p);
+		System.out.println("project : " + p);*/
 
 		return "chat/chat";
 		}
@@ -67,13 +68,15 @@ public class ChatController {
 	@RequestMapping(value="/chatOne.ch", method=RequestMethod.GET)
 	public ModelAndView selectOneChatList(Model model, HttpServletRequest req,
 			@RequestParam("chWriter") int chWriter,
-			@RequestParam("chReader") int chReader) {
+			@RequestParam("chReader") int chReader,
+			@RequestParam("pno") int pno) {
 		ModelAndView mv = new ModelAndView();
 		// 좌측 출력된 채팅방 클릭시 해당 채팅방의 내역 불러오기
 		// 프로젝트 번호
-		int pno = 1;
-		String roomName = chWriter + "_" + chReader;
-		System.out.println("방 이름 : " + roomName);
+		//int pno = 1;
+		String roomNameOne = chWriter + "_" + chReader;
+		String roomNameTwo = chReader + "_" + chWriter;
+		/*System.out.println("방 이름 : " + roomName);*/
 
 		Member m = (Member)req.getSession().getAttribute("member");
 		
@@ -81,9 +84,9 @@ public class ChatController {
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
-		mv.addObject("chatOneList", list).addObject("roomName", roomName);
+		mv.addObject("chatOneList", list).addObject("roomNameOne", roomNameOne).addObject("roomNameTwo", roomNameTwo);
 		mv.setViewName("jsonView");
-		System.out.println("ajax 채팅 : " + list);
+		/*System.out.println("ajax 채팅 : " + list);*/
 
 		return mv;
 	}

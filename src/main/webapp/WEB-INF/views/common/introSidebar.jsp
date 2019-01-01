@@ -19,7 +19,7 @@
 									</header>
 									<ul>
 										<li><a href="/dp">index</a></li>
-										<li><a href="${pageContext.request.contextPath}/project/projectMain.do">프로젝트 화면</a></li>
+										<li><a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}">프로젝트 화면</a></li>
 										<li><a href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a></li>
 										<li><a href="${pageContext.request.contextPath}/member/join.do">회원</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
