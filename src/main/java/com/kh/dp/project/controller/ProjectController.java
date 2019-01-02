@@ -44,6 +44,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,String> insertProject(@RequestBody Project project){
 		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
@@ -75,10 +76,6 @@ public class ProjectController {
 		model.addAttribute("memoList",memoList);
 		
 
-
-		// 메모가 없을 때 DB에서 메모 새로 만들어줘야함 ㅠㅠ
-		// if(memoList==null) memoList = projectService.insertMemo(map);
-
 		// 스케줄 매칭 요청 리스트 불러오기
 		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
 		model.addAttribute("sArr", sArr);
@@ -96,6 +93,8 @@ public class ProjectController {
 		if(m==null) m = new Member();
 		return m;
 	}
+	
+	
 	
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.POST)

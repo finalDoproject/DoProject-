@@ -82,19 +82,7 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        
-         <li class="nav-item" style="position: absolute; top:720px;">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
-            <i class="fas fa-user-friends"></i>
-            <span>초대하기</span></a>
-        </li>
-        
-        <li class="nav-item" style="position: absolute; top:760px;">
-          <a class="nav-link" href="#">
-            <i class="fas fa-user-friends"></i>
-            <span>참여자리스트</span></a>
-
-        <hr />
+        <hr>
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
@@ -267,10 +255,10 @@
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
          <div class="memoBox">
-         <c:if test="${empty memoList}">
+         <c:if test="${memo.mmcontent eq null}">
 	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
 	     </c:if>
-	     <c:if test="${!empty memoList}">
+	     <c:if test="${memo.mmcontent ne null}">
 	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
 	     </c:if>
 	     </div>
@@ -397,12 +385,12 @@
     
     
  	// select2 
-    $('.member-multiple').select2({
+    /* $('.member-multiple').select2({
     	placeholder : "함께할 인원을 선택해주세요."
     }); 
  
  	$('.select2-search__field').attr("style", "width : 370px");
-    
+     */
 
         $(document).ready(function () {
             w3.includeHTML(init);

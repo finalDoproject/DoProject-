@@ -172,7 +172,7 @@
 
 		$('.goPjview').click(function(e) {
 			e.preventDefault();
-			var url = "${pageContext.request.contextPath}/project/projectMain.do";
+			var url = "${pageContext.request.contextPath}/project/projectMain.do?mno="+${member.mno};
 			window.open(url, "_self");
 		});
 

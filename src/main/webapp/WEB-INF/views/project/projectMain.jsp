@@ -223,13 +223,11 @@
       <!-- /.content-wrapper -->
       
     </div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+    
 	
+<script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 	<script>
 	
-	$(function(){
-		
-		
 		$("#proejctEnrollFrm .btn-send").on("click",function(){
 			//파라미터를 post방식으로 전송 -> message body에 씀
 			//json문자열로 처리해야 컨트롤러에서 @RequestBody가 처리함(HttpMessageConverter에 의해 커맨트객체 매핑)
@@ -261,7 +259,7 @@
 	        });
 			 location.reload();
 		});
-	});
+
 
 	
 	 $('.pj_folder_in').click(function () {  
@@ -309,6 +307,8 @@
           }); 
       });
 	</script>
+	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 
 </html>
