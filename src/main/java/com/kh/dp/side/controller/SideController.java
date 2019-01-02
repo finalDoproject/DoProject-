@@ -27,7 +27,8 @@ public class SideController {
 									 @RequestParam Date startDate,
 									 @RequestParam Date endDate,
 									 @RequestParam String[] mNickname,
-									 @RequestParam int pno) 
+									 @RequestParam int pno,
+									 @RequestParam int mno) 
 		{
 			ModelAndView mv = new ModelAndView();
 			
@@ -35,7 +36,7 @@ public class SideController {
 			int result = sideService.insertMatching(matcing);
 			
 			
-			String loc = "/project/projectPage.do?pno="+pno;
+			String loc = "/project/projectPage.do?pno="+pno+"&mno="+mno;
 			String msg = "스케줄 매칭 요청 완료";
 			
 			for(int i=0; i<mNickname.length; i++) {

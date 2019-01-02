@@ -8,15 +8,20 @@
 	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
 	WHERE PMPNO = #{pno} 
 	</select>
+	
 	<insert parameterType="Matching" id="insertMatching">
 	 INSERT INTO SCHEDULE_MATCHING VALUES 
 	 (SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
 	 </insert>
+	 
 	 <insert parameterType="_int" id="insertMember">
 	  INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
-	 </insert><insert parameterType="Join" id="insertMatchingDT">
+	 </insert>
+	 
+	 <insert parameterType="Join" id="insertMatchingDT">
 	  INSERT INTO MEMBER_MATCHGIN VALUES (#{sjmno}, #{sjsm}, #{sjdtno})
 	 </insert>
+	 
 	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
 	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
 	 FROM SCHEDULE_MATCHING
