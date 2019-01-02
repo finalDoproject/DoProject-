@@ -7,8 +7,10 @@
 	<select id="selectProjectList"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
 		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) 
-		ORDER BY PNO DESC
 	</select>
+	<!-- 	수정해주세요 아래 쿼리는 참여자 기준으로 프로젝트 검색입니다 위에 사용하신 부분은 전체 프로젝트에요 
+	SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = 6) ORDER BY PNO DESC;
+	-->
 	
 	<select id="selectOneProject" parameterType="_int" resultType="project">
 		SELECT * FROM PROJECT WHERE PNO = #{pno}
@@ -18,6 +20,19 @@
 		 INSERT INTO PROJECT VALUES
 		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
 	</insert>
+		
+	<select id="selectProjectIntoMember" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (
+    		SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<delete id="deleteLeaveProject">
+		DELETE FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</delete>
+	
+	<select id="selectAlarmList" resultType="alarm">
+		SELECT * FROM ALARM WHERE AMNO = #{mno} AND ACONDITION = 'Y'
+	</select>
 
 	
 </mapper>
