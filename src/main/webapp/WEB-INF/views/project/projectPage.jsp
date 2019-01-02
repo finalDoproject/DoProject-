@@ -82,25 +82,16 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        
-         <li class="nav-item" style="position: absolute; top:720px;">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
-            <i class="fas fa-user-friends"></i>
-            <span>초대하기</span></a>
-        </li>
-        
-        <li class="nav-item" style="position: absolute; top:760px;">
-          <a class="nav-link" href="#">
-            <i class="fas fa-user-friends"></i>
-            <span>참여자리스트</span></a>
-
-        <hr />
+        <hr>
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
+  				<div>
+				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
+				</div>
   				<c:forEach items="${memberList}" var="mList">
   				<c:if test="${project.pmno eq member.mno}">
   				<div>
@@ -128,6 +119,38 @@
 			</div>
         </li>
       </ul>
+      
+      <!-- invitationModal -->
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+         <div class="modal-dialog" role="document">
+         
+          <form id="proejctEnrollFrm">
+          
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+                 <div class="form-group">
+                   <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
+                   <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                   <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
+                 </div>
+                 <div class="result" id="findUser-result"></div>                
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">초대하기</button>
+             </div>                  
+           </div>
+           
+          </form>
+         </div>
+       </div>   
+      
       
       <!-- 스케줄 매칭 Modal -->
       <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -232,10 +255,10 @@
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
          <div class="memoBox">
-         <c:if test="${empty memoList}">
+         <c:if test="${memo.mmcontent eq null}">
 	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
 	     </c:if>
-	     <c:if test="${!empty memoList}">
+	     <c:if test="${memo.mmcontent ne null}">
 	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
 	     </c:if>
 	     </div>
@@ -362,12 +385,12 @@
     
     
  	// select2 
-    $('.member-multiple').select2({
+    /* $('.member-multiple').select2({
     	placeholder : "함께할 인원을 선택해주세요."
     }); 
  
  	$('.select2-search__field').attr("style", "width : 370px");
-    
+     */
 
         $(document).ready(function () {
             w3.includeHTML(init);
