@@ -90,6 +90,7 @@ public class MemberController {
 		
 		String loc = "/";
 		String msg = "";
+		System.out.println("로그인 후 객체"+ m);
 		
 		if( m == null) {
 			msg = "존재하지 않는 회원입니다.";

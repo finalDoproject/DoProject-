@@ -7,6 +7,9 @@
 		INSERT INTO MEMBER VALUES (
 			SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, 
 			DEFAULT, DEFAULT, DEFAULT)
+	<selectKey keyProperty="mno" resultType="_int" order="AFTER"> 
+			SELECT SEQ_MNO.CURRVAL FROM DUAL 
+	</selectKey>
 	</insert>
 	
 	<select id="checkIdDuplicate" statementType="CALLABLE" parameterType="hashmap">
