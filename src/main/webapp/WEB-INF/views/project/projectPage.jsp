@@ -231,12 +231,14 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+         <c:if test="${empty memoList}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
+	     </c:if>
+	     <c:if test="${!empty memoList}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </c:if>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -357,6 +359,16 @@
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
+    
+    
+ 	// select2 
+    $('.member-multiple').select2({
+    	placeholder : "함께할 인원을 선택해주세요."
+    }); 
+ 
+ 	$('.select2-search__field').attr("style", "width : 370px");
+    
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -371,9 +383,25 @@
         }
         // right nav memopad 
         $(document).ready(function() {
+       	var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
+   			var returnValue; // 현재 URL 가져오기 
+   			var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+   			var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+   			// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return 
+   			for (var i = 0; i < parameters.length; i++) { 
+   				var varName = parameters[i].split('=')[0]; 
+   					if (varName.toUpperCase() == paramName.toUpperCase()) { 
+   						returnValue = parameters[i].split('=')[1]; 
+   						return decodeURIComponent(returnValue);
+   					} 
+   				} 
+   			};
+        	
           var memopad = $('.memopad');
+          var pno = getParameters('pno');
+          var mno = getParameters('mno');
+          console.log(pno+":"+mno);
           
-         
           memopad.focus(function(){
         	  $(memopad).html()
          
@@ -385,11 +413,12 @@
             console.log(saveMemo);
   
         	  $.ajax({
-  				url: "${pageContext.request.contextPath }/project/projectPage.do",
+  				url: "${pageContext.request.contextPath}/project/projectPage.do",
   				dataType: "json",
   				/* contentType: 'application/json; charset=utf-8', */
   				type:"post",
-  				data:{saveMemo:saveMemo},
+  				data:{saveMemo:saveMemo,
+  						pno:pno, mno:mno},
   				success : function(data){
   					// alert(data.msg);
   					$(memopad).reload();
