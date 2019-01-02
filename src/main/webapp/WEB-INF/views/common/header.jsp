@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
@@ -9,24 +9,37 @@
 <meta charset="UTF-8">
 <title></title>
 <!-- Bootstrap 4 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+	integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+	crossorigin="anonymous">
 <!-- fontawesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
 <!-- Bootstrap core CSS-->
-<link href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <!-- Custom fonts for this template-->
-<link href="${pageContext.request.contextPath }/resources/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="${pageContext.request.contextPath }/resources/css/all.min.css"
+	rel="stylesheet" type="text/css">
 
 <!-- Page level plugin CSS-->
-<link href="${pageContext.request.contextPath }/resources/css/dataTables.bootstrap4.css" rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath }/resources/css/dataTables.bootstrap4.css"
+	rel="stylesheet">
 
 <!-- Custom styles for this template-->
-<link href="${pageContext.request.contextPath }/resources/css/sb-admin.css" rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath }/resources/css/sb-admin.css"
+	rel="stylesheet">
 <!-- Logo fonts -->
-<link href="https://fonts.googleapis.com/css?family=Exo+2:300i,800i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Exo+2:300i,800i"
+	rel="stylesheet">
 </head>
-<body id="page-top" >
+<body id="page-top">
 	<div>
 		<nav class="navtop navbar navbar-expand static-top" >
 	      <div class="logo_area " style="width: 200px; height: 60px;">
@@ -127,30 +140,42 @@
 	      </ul>
 	    </nav>
 	</div>
-	
 
 
-<!-- Bootstrap 4 JavaScript -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap 4 JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+		crossorigin="anonymous"></script>
+
+
+
 <!-- Bootstrap core JavaScript-->
-<script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="${pageContext.request.contextPath }/resources/js/jquery.easing.min.js"></script>
+	<!-- Core plugin JavaScript-->
+	<script
+		src="${pageContext.request.contextPath }/resources/js/jquery.easing.min.js"></script>
 
-
-<!-- Custom scripts for all pages-->
-<script src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script
+		src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
 	<script>
-		
-		$('.goPjview').click(function(e) {
-			e.preventDefault();
-			var url = "${pageContext.request.contextPath}/project/projectMain.do";
-			window.open(url, "_self");
-		});
+		$('.goPjview')
+				.click(
+						function(e) {
+							e.preventDefault();
+							var url = "${pageContext.request.contextPath}/project/projectMain.do";
+							window.open(url, "_self");
+						});
 
 		function openChat() {
 			var windowObj = null;
@@ -170,7 +195,7 @@
 			}
 			
 		}
-		
+
 		function openAlert() {
 			alert("프로젝트에 참여한 후 확인 가능합니다.");
 		}
