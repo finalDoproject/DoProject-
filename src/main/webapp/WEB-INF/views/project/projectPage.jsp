@@ -59,6 +59,11 @@
             <i class="fas fa-map-marker-alt"></i>
             <span>일정 작성하기</span>
           </a>
+          <li class="nav-item">
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
+        	<i class="far fa-clock" ></i>
+        	<span id="req">스케줄 매칭 요청</span>
+        	</a>
         </li>
         <hr>
 
@@ -123,6 +128,63 @@
 			</div>
         </li>
       </ul>
+      
+      <!-- 스케줄 매칭 Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px; font-weight: bolder;">
+              스케줄 매칭</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." 
+                                style="width : 100%; border-radius : 1px;" >
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+                                     <c:forEach items="${mArr}" var="m" varStatus="status">
+                                        <option value="${m.mno}">${m.nickName} </option>
+                                     </c:forEach> 
+
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="ok">요청 완료</button>
+            </div>
+                 </form>         
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <!-- invitationModal -->
       <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
               <div class="modal-dialog" role="document">
@@ -218,15 +280,23 @@
       </div>
       <hr>
       <div class="timetable" style="color: #555">
-          <h6>스케줄매칭</h6>
+          <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
-            
+            <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                <a href="#" style="color: #555;">고양이 친목모임 <button class="ongoing">진행중</button></a>
+                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <c:if test="${s.SSNO eq 0}">
+                <button class="request">요청 준비</button>
+                </c:if>
+                <c:if test="${s.SSNO eq 1}">
+                <button class="ongoing">진행중</button>
+                </c:if>
+                <c:if test="${s.SSNO eq 2}">
+                <button class="complete">완료</button>
+                </c:if>
+                </a>
               </li>
-              <li>
-                <a href="#" style="color: #555;">연말 모임<button class="complete">완료</button></a>
-              </li>
+            </c:forEach>
             </ul>
         </div>
         <hr>
@@ -495,6 +565,55 @@
 				showEvents(current);
       }, false);
     });
+     
+    $(function(){
+   	 
+ 	   // 한국어 설정
+ 	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+ 	   
+ 	   // 시작일
+ 	   $('#startdate').datepicker({
+ 		  // 데이터 형식 지정
+ 		  dateFormat : "yy-mm-dd",
+ 		  // 달 / 주 이름 지정
+ 		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+ 		  dayNamesMin : ["일","월","화","수","목","금","토"],
+ 		  // 오늘 날짜 이후로 선택 가능
+ 		  minDate : 1,
+ 		  onClose : function(selectDate) {
+ 			  // 시작일 datepicker가 닫힐 때
+ 			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+ 			  
+ 			  $("#enddate").datepicker("option", "minDate", selectDate);
+ 			  
+ 			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+ 			  var date = $(this).datepicker('getDate');
+ 			  
+ 			  date.setDate(date.getDate()+7);
+ 			  $("#enddate").datepicker("option", "maxDate", date);
+ 		  }
+ 		   
+ 	   });
+ 	   
+ 	   // 종료일
+ 	   $('#enddate').datepicker({
+ 		  dateFormat : "yy-mm-dd",
+  		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+  		  dayNamesMin : ["일","월","화","수","목","금","토"],
+  		  minDate : 0,
+  		  
+  		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+  		  onClose : function(selectDate){
+  			 
+  			  $('#startdate').datepicker("option", "maxDate", selectDate);
+  		  }
+ 	   });
+    });
+    
+       /* $('.ongoing').click(function(){
+    	  
+    	   
+       }); */
 	</script>
     <script>
 	function kick(name, pno, mno){
