@@ -50,13 +50,6 @@ public class SideController {
 			
 		}
 	
-	// 스케줄 참여 버튼 띄우기
-	@RequestMapping("/side/matchingJoin.do")
-	public String matcingJoin() {
-		
-		return "side/join";
-	}
-	
 	// 요일/시간 DB로 향하는 메소드
 	// @ResponseBody와 HttpMessageConverter 활용하기
 	@RequestMapping("/side/matchingDT.do")

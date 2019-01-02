@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
 	
@@ -39,7 +40,35 @@
 .ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 .ok:focus{outline: none;}
 
+.modal-title{
+	margin-left : 180px;
+	color : black;
+		}		
+.schedule {
+	margin-left : auto;
+	margin-right : auto;
+	width : 100%;
+	height : 75%;
+	border : 5px solid black;
+		}
+.store {
+	margin-left : auto;
+	margin-right : auto;
+		}
+
 </style>
+<script>
+var chk = 0;
+function taskToggle(){
+	if(chk == 0){
+		$('#taskForm').css('display', 'block');
+		chk=1;
+	}else{
+		$('#taskForm').css('display', 'none');
+		chk=0;
+	}
+}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -52,7 +81,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="#">
+          <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
             <span>글 작성하기</span>
           </a>
@@ -121,14 +150,15 @@
 				</c:if>
 			</div>
         </li>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/tasktest.jsp"/>
+        </div>
       </ul>
       
       <!-- invitationModal -->
       <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
          <div class="modal-dialog" role="document">
-
           <form id="proejctEnrollFrm">
-
            <div class="modal-content">
              <div class="modal-header">
                <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
@@ -250,16 +280,19 @@
               </div>
             </div>   
       
-         
+
+     
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+         <c:if test="${memo.mmcontent eq null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
+	     </c:if>
+	     <c:if test="${memo.mmcontent ne null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </c:if>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -307,22 +340,267 @@
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                
                 <c:if test="${s.SSNO eq 0}">
-                <button class="request">요청 준비</button>
+                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 1}">
-                <button class="ongoing">진행중</button>
+                <a style="color: #555;">${s.SMCONTENT}
+                <input type="hidden" value="${s.SMNO}" id="smno"/>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
-                <button class="complete">완료</button>
+                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
                 </c:if>
-                </a>
+               
               </li>
             </c:forEach>
             </ul>
         </div>
         <hr>
+
+        <!--스케줄 매칭 요청에 대한 Modal -->
+  <div class="modal fade mod" id="ongoingModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">스케줄 매칭</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered schedule">
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>9</th>
+                        <th id="1" class="select"></th>
+                        <th id="16" class="select"></th>
+                        <th id="31" class="select"></th>
+                        <th id="46" class="select"></th>
+                        <th id="61" class="select"></th>
+                        <th id="76" class="select"></th>
+                        <th id="91" class="select"></th>
+                    </tr>
+                    <tr>
+                         <th>10</th>
+                         <th id="2" class="select"></th>
+                         <th id="17" class="select"></th>
+                         <th id="32" class="select"></th>
+                         <th id="47" class="select"></th>
+                         <th id="62" class="select"></th>
+                         <th id="77" class="select"></th>
+                         <th id="92" class="select"></th>
+                    </tr>
+                    <tr>
+                          <th>11</th>
+                          <th id="3" class="select"></th>
+                          <th id="18" class="select"></th>
+                          <th id="33" class="select"></th>
+                          <th id="48" class="select"></th>
+                          <th id="63" class="select"></th>
+                          <th id="78" class="select"></th>
+                          <th id="93" class="select"></th>
+                    </tr>
+                        <tr>
+                        <th>12</th>
+                        <th id="4" class="select"></th>
+                        <th id="19" class="select"></th>
+                        <th id="34" class="select"></th>
+                        <th id="49" class="select"></th>
+                        <th id="64" class="select"></th>
+                        <th id="79" class="select"></th>
+                        <th id="94" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>13</th>
+                            <th id="5" class="select"></th>
+                            <th id="20" class="select"></th>
+                            <th id="35" class="select"></th>
+                            <th id="50" class="select"></th>
+                            <th id="65" class="select"></th>
+                            <th id="80" class="select"></th>
+                            <th id="95" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>14</th>
+                            <th id="6" class="select"></th>
+                            <th id="21" class="select"></th>
+                            <th id="36" class="select"></th>
+                            <th id="51" class="select"></th>
+                            <th id="66" class="select"></th>
+                            <th id="81" class="select"></th>
+                            <th id="96" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>15</th>
+                            <th id="7" class="select"></th>
+                            <th id="22" class="select"></th>
+                            <th id="37" class="select"></th>
+                            <th id="52" class="select"></th>
+                            <th id="67" class="select"></th>
+                            <th id="82" class="select"></th>
+                            <th id="97" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>16</th>
+                            <th id="8" class="select"></th>
+                            <th id="23" class="select"></th>
+                            <th id="38" class="select"></th>
+                            <th id="53" class="select"></th>
+                            <th id="68" class="select"></th>
+                            <th id="83" class="select"></th>
+                            <th id="98" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>17</th>
+                            <th id="9" class="select"></th>
+                            <th id="24" class="select"></th>
+                            <th id="39" class="select"></th>
+                            <th id="54" class="select"></th>
+                            <th id="69" class="select"></th>
+                            <th id="84" class="select"></th>
+                            <th id="99" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>18</th>
+                            <th id="10" class="select"></th>
+                            <th id="25" class="select"></th>
+                            <th id="40" class="select"></th>
+                            <th id="55" class="select"></th>
+                            <th id="70" class="select"></th>
+                            <th id="85" class="select"></th>
+                            <th id="100" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>19</th>
+                            <th id="11" class="select"></th>
+                            <th id="26" class="select"></th>
+                            <th id="41" class="select"></th>
+                            <th id="56" class="select"></th>
+                            <th id="71" class="select"></th>
+                            <th id="86" class="select"></th>
+                            <th id="101" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>20</th>
+                            <th id="12" class="select"></th>
+                            <th id="27" class="select"></th>
+                            <th id="42" class="select"></th>
+                            <th id="57" class="select"></th>
+                            <th id="72" class="select"></th>
+                            <th id="87" class="select"></th>
+                            <th id="102" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>21</th>
+                            <th id="13" class="select"></th>
+                            <th id="28" class="select"></th>
+                            <th id="43" class="select"></th>
+                            <th id="58" class="select"></th>
+                            <th id="73" class="select"></th>
+                            <th id="88" class="select"></th>
+                            <th id="103" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>22</th>
+                            <th id="14" class="select"></th>
+                            <th id="29" class="select"></th>
+                            <th id="44" class="select"></th>
+                            <th id="59" class="select"></th>
+                            <th id="74" class="select"></th>
+                            <th id="89" class="select"></th>
+                            <th id="104" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>23</th>
+                            <th id="15" class="select"></th>
+                            <th id="30" class="select"></th>
+                            <th id="45" class="select"></th>
+                            <th id="60" class="select"></th>
+                            <th id="75" class="select"></th>
+                            <th id="90" class="select"></th>
+                            <th id="105" class="select"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary store">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+        <!-- Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Schedule Matching</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do" method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%">
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+<%--                                     <c:forEach items="${member}" var="member" varStatus="status">
+                                        <option value="${member.nickName}">${member.nickName} </option>
+                                     </c:forEach> --%>
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right "></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="btn btn-primary">요청 완료</button>
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+                 </form>         
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+      
+
       </div>
       <!-- /right nav -->
 
@@ -370,20 +648,93 @@
         </div>
       </div>
     </div>
+    
+    
 	
 	<!-- right nav-->
     <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- datepicker를 위한 js -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
+	<!-- select2를 위한 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
+    
+	 	// select2 
+	    $('.member-multiple').select2({
+	    	placeholder : "함께할 인원을 선택해주세요."
+	    }); 
+	 	<!-- select 클릭 시 효과  + 아이디 값 가져오기 -->
+	    $(".select").click(function(){
+		    	alert("dd");
+		    	/* var dtNo = $(this).attr("id");
+		    	var smNo = $('#smno').attr("id"); */
+		    	
+		    	
+		    	 /* $.ajax({
+		         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+		         	data : {dtNo : dtNo},
+		         	dataType : "json",
+		         	success : function(data) {
+		         		console.log(data);
+		         		if(data > 0 ){
+		         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+		         		}
+		         
+		         		
+		         	 },error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+		         }); */
+		});
+	    
+	 	$('.select2-search__field').attr("style", "width : 370px");
+	 	
+	 	$(function(){
+	    	$("#findUserBtn").on("click",function(){
+	    		var nickname = $('.nickname').val();
+	    		
+	    		console.log(nickname);
+	    		$.ajax({
+	                url  : "${pageContext.request.contextPath}/project/projectPage",
+	                data: {nickname:nickname},
+	                dataType: "json",
+	                type : "get",
+	                success : function(data){
+	                    console.log(data);
+	                    var html = "<table class=table>";
+	                    html+="<tr><th>이름</th><th>ID</th></tr>";
+		        		if(data==0) alert("해당하는 정보가 없습니다.");
+		        		else{
+		        			 for(var i in data){
+		                     	html += "<tr><td>"+data[i].nickname+"</td>";
+		                     	html += "<td>"+data[i].userId+"</td></tr>";
+		                     }
+		        			 html+="</table>";
+		                     $("#findUser-result").html(html);
+		        		}
+		        	},
+		            error : function(jqxhr, textStatus, errorThrown){
+		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+		            }
+
+	            });
+	    	});
+	    	
+		});
+	 	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
-
         function init() {
             $('#rightNav').BootSideMenu({
                 side: "right",
@@ -394,9 +745,25 @@
         }
         // right nav memopad 
         $(document).ready(function() {
+       	var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
+   			var returnValue; // 현재 URL 가져오기 
+   			var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+   			var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+   			// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return 
+   			for (var i = 0; i < parameters.length; i++) { 
+   				var varName = parameters[i].split('=')[0]; 
+   					if (varName.toUpperCase() == paramName.toUpperCase()) { 
+   						returnValue = parameters[i].split('=')[1]; 
+   						return decodeURIComponent(returnValue);
+   					} 
+   				} 
+   			};
+        	
           var memopad = $('.memopad');
+          var pno = getParameters('pno');
+          var mno = getParameters('mno');
+          console.log(pno+":"+mno);
           
-         
           memopad.focus(function(){
         	  $(memopad).html()
          
@@ -408,11 +775,12 @@
             console.log(saveMemo);
   
         	  $.ajax({
-  				url: "${pageContext.request.contextPath }/project/projectPage.do",
+  				url: "${pageContext.request.contextPath}/project/projectPage.do",
   				dataType: "json",
   				/* contentType: 'application/json; charset=utf-8', */
   				type:"post",
-  				data:{saveMemo:saveMemo},
+  				data:{saveMemo:saveMemo,
+  						pno:pno, mno:mno},
   				success : function(data){
   					// alert(data.msg);
   					$(memopad).reload();
@@ -588,7 +956,6 @@
 				showEvents(current);
       }, false);
     });
-     
     $(function(){
    	 
  	   // 한국어 설정
@@ -656,7 +1023,6 @@
     		return false;
     	}
 	}
-    
 	function kick(name, pno, mno){
 		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
 			if(mno == ${member.mno}){
@@ -718,6 +1084,9 @@
 		});
 	}
 	</script>
+	
+	
+    
 	
 </body>
 

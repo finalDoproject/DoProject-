@@ -19,8 +19,8 @@ public class ProjectServiecImpl implements ProjectService {
 	
 	// ---- 프로젝트 ---- //
 	@Override
-	public List<Map<String, String>> selectProjectList() {
-		 return projectDao.selectProjectList();
+	public List<Map<String, String>> selectProjectList(int mno) {
+		 return projectDao.selectProjectList(mno);
 	}
 
 	@Override
@@ -43,8 +43,13 @@ public class ProjectServiecImpl implements ProjectService {
     }
 
 	@Override
-	public int updateMemo(String saveMemo) {
-		return projectDao.updateMemo(saveMemo);
+	public int updateMemo(Map<String, Object> map) {
+		return projectDao.updateMemo(map);
+	}
+
+	@Override
+	public int insertMemo(Map<String, Object> map) {
+		return projectDao.insertMemo(map);
 	}
 
 	// 프로젝트 참여자 검색

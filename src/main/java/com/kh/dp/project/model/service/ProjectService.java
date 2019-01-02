@@ -9,7 +9,7 @@ import com.kh.dp.project.model.vo.Project;
 
 public interface ProjectService {
 	// ---- 프로젝트 ----//
-	List<Map<String, String>> selectProjectList();
+	List<Map<String, String>> selectProjectList(int mno);
 	int insertProject(Project project);
 
 	Project selectOneProject(int pno);
@@ -17,7 +17,8 @@ public interface ProjectService {
 	
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList(Map<String, Object> map);
-	int updateMemo(String saveMemo);
+	int updateMemo(Map<String, Object> map);
+	int insertMemo(Map<String, Object> map);
 
 	// 프로젝트 참여자 검색
 	List<Map<String, String>> selectProjectIntoMember(int pno);
