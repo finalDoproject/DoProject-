@@ -1,5 +1,6 @@
 package com.kh.dp.project.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
-import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.side.model.service.SideService;
+import com.kh.dp.side.model.vo.MatchingInfo;
 
 @Controller
 public class ProjectController {
@@ -25,12 +27,18 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	MemberService memberService;
+	@Autowired
+	SideService sideService;
 	
 	@RequestMapping("/project/projectMain.do")
-	public String ProjectView(@RequestParam int mno,Model model) {
 
+	public String ProjectView(Model model, @RequestParam("mno") int mno) {
+		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -50,8 +58,14 @@ public class ProjectController {
 	public String ProjectPageView(@RequestParam int pno, @RequestParam int mno, Model model) {
 		
 		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
 		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
 		
+		// 스케줄 매칭 인원 불러오기 메소드
+		List<Member> mArr =  sideService.browseMember(pno);
+		model.addAttribute("project",project).addAttribute("mArr", mArr);
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("pno", pno);
@@ -60,8 +74,15 @@ public class ProjectController {
 		List<Map<String,String>> memoList = projectService.selectMemoList(map);
 		model.addAttribute("memoList",memoList);
 		
-		// 메모가 없을 때 DB에서 메모 새로 만들어줘야함 ㅠㅠ
+
 		// if(memoList==null) memoList = projectService.insertMemo(map);
+
+		// 스케줄 매칭 요청 리스트 불러오기
+		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
+		model.addAttribute("sArr", sArr);
+		
+		model.addAttribute("memberNo", mno);
+
 		
 		return "project/projectPage";
 	}
@@ -95,5 +116,32 @@ public class ProjectController {
 		
 	}
 	
+	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
+	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteLeaveProject(pno, mno);
+		
+		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
+		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
+		
+		return "project/projectMain";
+	}
+	
+	@RequestMapping(value="/project/exile.do", method=RequestMethod.GET)
+	public String deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.deleteMemberFromProject(pno, mno);
+		
+		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
+				
+		return "project/projectPage";
+	}
 
 }

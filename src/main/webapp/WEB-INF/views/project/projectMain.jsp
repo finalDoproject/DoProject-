@@ -237,8 +237,10 @@
 			
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
+
 			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
 			param.pmmno =$(".headerMno").text();
+
 			var jsonStr = JSON.stringify(param);
 			console.log(jsonStr);
 			
@@ -270,6 +272,7 @@
          var mno = $(".headerMno").text();
          //var pno = document.getElementById('pno').val();
          console.log(pno);
+
          console.log("메인"+mno);
          
          location.href = "${pageContext.request.contextPath}/project/projectPage.do?pno="
