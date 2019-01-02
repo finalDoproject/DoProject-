@@ -19,7 +19,7 @@
 	
 	<insert id="insertProject">
 		 INSERT INTO PROJECT VALUES
-		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, 1)
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
 	</insert>
 		
 	<select id="selectProjectIntoMember" resultType="member">

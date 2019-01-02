@@ -12,9 +12,34 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<!-- Select 2 -->
+<link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
+
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<style>
+	
+.ok{
+	float:right;
+	width: 112px;
+	height: 37px;
+	border-radius:5px;
+	background-clip: padding-box;
+	background-color: #F88E6F;
+	border:none;
+	color: #fff;
+	font-weight: bold;
+	margin-left :auto;
+	margin-right : auto;
+}
+
+.ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
+.ok:focus{outline: none;}
+
+</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>

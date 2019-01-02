@@ -5,146 +5,147 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
-	private int tNo; //업무 번호
-	private String tWriter; // 작성자
-	private String tTitle; // 업무명
-	private String tStatus; // 업무상태
-	private String tManager; // 담당자
-	private Date tStartDate; // 시작일
-	private Date tEndDate; // 종료일
-	private String tPriority; // 우선순위
+	
+	private int tno; // 업무 번호
+	private int tlevel; // 업무 상태
+	private int tmno; // 업무 담당자
+	private String tenddate; 
+	private int ttpriority; // 우선 순위
+	private int tbno; // 업무 게시글 번호
+	private String ttitle; //업무명
+	private String tcontent; // 업무내용
+	private String tstartdate; // 업무 시작일
+	private String twriter;
 	//첨부파일
-	private List<Attachment> tFiles = new ArrayList<Attachment>();
+	private List<Attachment> taskFiles = new ArrayList<Attachment>();
 	
 	public Task() {}
-
 	
-	public Task(int tNo, String tWriter, String tTitle, String tStatus, String tManager, Date tStartDate,
-			Date tEndDate, String tPriority) {
+	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
+			String tstartdate, String twriter) {
 		super();
-		this.tNo = tNo;
-		this.tWriter = tWriter;
-		this.tTitle = tTitle;
-		this.tStatus = tStatus;
-		this.tManager = tManager;
-		this.tStartDate = tStartDate;
-		this.tEndDate = tEndDate;
-		this.tPriority = tPriority;
+		this.tno = tno;
+		this.tlevel = tlevel;
+		this.tmno = tmno;
+		this.tenddate = tenddate;
+		this.ttpriority = ttpriority;
+		this.tbno = tbno;
+		this.ttitle = ttitle;
+		this.tcontent = tcontent;
+		this.tstartdate = tstartdate;
+		this.twriter = twriter;
 	}
-
 
 	// 첨부파일 있는 생성자
-	public Task(int tNo, String tWriter, String tTitle, String tStatus, String tManager, Date tStartDate,
-			Date tEndDate, String tPriority, List<Attachment> tFiles) {
+	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
+			String tstartdate, String twriter, List<Attachment> taskFiles) {
 		super();
-		this.tNo = tNo;
-		this.tWriter = tWriter;
-		this.tTitle = tTitle;
-		this.tStatus = tStatus;
-		this.tManager = tManager;
-		this.tStartDate = tStartDate;
-		this.tEndDate = tEndDate;
-		this.tPriority = tPriority;
-		this.tFiles = tFiles;
+		this.tno = tno;
+		this.tlevel = tlevel;
+		this.tmno = tmno;
+		this.tenddate = tenddate;
+		this.ttpriority = ttpriority;
+		this.tbno = tbno;
+		this.ttitle = ttitle;
+		this.tcontent = tcontent;
+		this.tstartdate = tstartdate;
+		this.twriter = twriter;
+		this.taskFiles = taskFiles;
 	}
 
-
-	public int gettNo() {
-		return tNo;
+	public int getTno() {
+		return tno;
 	}
 
-
-	public void settNo(int tNo) {
-		this.tNo = tNo;
+	public void setTno(int tno) {
+		this.tno = tno;
 	}
 
-
-	public String gettWriter() {
-		return tWriter;
+	public int getTlevel() {
+		return tlevel;
 	}
 
-
-	public void settWriter(String tWriter) {
-		this.tWriter = tWriter;
+	public void setTlevel(int tlevel) {
+		this.tlevel = tlevel;
 	}
 
-
-	public String gettTitle() {
-		return tTitle;
+	public int getTmno() {
+		return tmno;
 	}
 
-
-	public void settTitle(String tTitle) {
-		this.tTitle = tTitle;
+	public void setTmno(int tmno) {
+		this.tmno = tmno;
 	}
 
-
-	public String gettStatus() {
-		return tStatus;
+	public String getTenddate() {
+		return tenddate;
 	}
 
-
-	public void settStatus(String tStatus) {
-		this.tStatus = tStatus;
+	public void setTenddate(String tenddate) {
+		this.tenddate = tenddate;
 	}
 
-
-	public String gettManager() {
-		return tManager;
+	public int getTtpriority() {
+		return ttpriority;
 	}
 
-
-	public void settManager(String tManager) {
-		this.tManager = tManager;
+	public void setTtpriority(int ttpriority) {
+		this.ttpriority = ttpriority;
 	}
 
-
-	public Date gettStartDate() {
-		return tStartDate;
+	public int getTbno() {
+		return tbno;
 	}
 
-
-	public void settStartDate(Date tStartDate) {
-		this.tStartDate = tStartDate;
+	public void setTbno(int tbno) {
+		this.tbno = tbno;
 	}
 
-
-	public Date gettEndDate() {
-		return tEndDate;
+	public String getTtitle() {
+		return ttitle;
 	}
 
-
-	public void settEndDate(Date tEndDate) {
-		this.tEndDate = tEndDate;
+	public void setTtitle(String ttitle) {
+		this.ttitle = ttitle;
 	}
 
-
-	public String gettPriority() {
-		return tPriority;
+	public String getTcontent() {
+		return tcontent;
 	}
 
-
-	public void settPriority(String tPriority) {
-		this.tPriority = tPriority;
+	public void setTcontent(String tcontent) {
+		this.tcontent = tcontent;
 	}
 
-
-	public List<Attachment> gettFiles() {
-		return tFiles;
+	public String getTstartdate() {
+		return tstartdate;
 	}
 
-
-	public void settFiles(List<Attachment> tFiles) {
-		this.tFiles = tFiles;
+	public void setTstartdate(String tstartdate) {
+		this.tstartdate = tstartdate;
 	}
 
+	public String getTwriter() {
+		return twriter;
+	}
+
+	public void setTwriter(String twriter) {
+		this.twriter = twriter;
+	}
+
+	public List<Attachment> getTaskFiles() {
+		return taskFiles;
+	}
+
+	public void setTaskFiles(List<Attachment> taskFiles) {
+		this.taskFiles = taskFiles;
+	}
 
 	@Override
 	public String toString() {
-		return "Task [tNo=" + tNo + ", tWriter=" + tWriter + ", tTitle=" + tTitle + ", tStatus=" + tStatus
-				+ ", tManager=" + tManager + ", tStartDate=" + tStartDate + ", tEndDate=" + tEndDate + ", tPriority="
-				+ tPriority + ", tFiles=" + tFiles + "]";
+		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
+				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
+				+ tstartdate + ", twriter=" + twriter + ", taskFiles=" + taskFiles + "]";
 	}
-	
 	
 }

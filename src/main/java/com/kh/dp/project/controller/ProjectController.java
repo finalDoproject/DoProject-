@@ -8,14 +8,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
+import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
 @Controller
@@ -23,6 +25,7 @@ public class ProjectController {
 	
 	@Autowired
 	ProjectService projectService;
+	MemberService memberService;
 	
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
@@ -37,37 +40,45 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
-	public Map<String,String> insertMenu(@RequestBody Project project){
+	public Map<String,String> insertProject(@RequestBody Project project){
+		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
 		
-		//리턴타입도 json변환가능한 map 전송함.
-		//String 전송하면 에러! -> 클라이언트에서 json parse error!
-		Map<String,String> map = new HashMap<>();
-		map.put("msg", msg);
+	
+		Map<String, String> map = new HashMap<>();
+		map.put("msg", msg);	
 		return map;
 	}
 	
-	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
-	public String ProjectPageView(@RequestParam("pno") int pno,Model model) {
+	public String ProjectPageView(@RequestParam int pno, @RequestParam int mno, Model model) {
+		
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
 		
-		return "project/projectPage";
-	}
-	
-	@RequestMapping("/project/projectPage.do")
-	public String ProjectPageMemo(Model model) {
 		
-		List<Map<String,String>> memoList = projectService.selectMemoList();
+		Map<String,Object> map = new HashMap<>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		
+		List<Map<String,String>> memoList = projectService.selectMemoList(map);
 		model.addAttribute("memoList",memoList);
 		
-		
 		return "project/projectPage";
 	}
+
+	
+	@RequestMapping(value="/project/{nickname}", method=RequestMethod.GET)
+	public Member findUserView(@RequestParam String nickname,Model model) {
+		Member m = memberService.selectOneNickname(nickname);
+		model.addAttribute("member", m);
+		if(m==null) m = new Member();
+		return m;
+	}
+	
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.POST)
 	@ResponseBody
@@ -76,9 +87,7 @@ public class ProjectController {
 		String msg  = projectService.updateMemo(saveMemo)>0?"수정 성공":"수정 실패";		
 		//model.addAttribute("msg",msg);
 		Map<String, Object> hmap = new HashMap<>();
-		
 		hmap.put("msg", msg);
-		
 		
 		return hmap;
 		

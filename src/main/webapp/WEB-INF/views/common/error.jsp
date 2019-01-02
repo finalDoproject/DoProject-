@@ -16,12 +16,14 @@ div#error-container{text-align:center;}
 <body>
 	<div id="error-container">
 	<c:import url="../common/introSidebar.jsp"/>
+
 		<h1>Error</h1>
 		<!-- exception객체는 el로 접근할 수 없음. -->
 		<%-- <h2>예외 발생: ${exception.message}</h2> --%>
 		<h2 style="color:red;"><%= exception.getMessage() %></h2>
 		<a href="${pageContext.request.contextPath }">첫페이지로 돌아가기</a>
-		
+		<c:import url="../common/footer.jsp"/>
+
 	</div>
 </body>
 </html>

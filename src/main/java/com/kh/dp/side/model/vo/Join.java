@@ -16,6 +16,13 @@ public class Join implements Serializable{
 		this.sjdtno = sjdtno;
 	}
 
+	public Join(int sjmno, int sjsm) {
+		super();
+		this.sjmno = sjmno;
+		this.sjsm = sjsm;
+	}
+
+
 	public int getSjmno() {
 		return sjmno;
 	}
