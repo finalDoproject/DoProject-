@@ -52,17 +52,6 @@
 			return;
 		}
 	}
-	
-	var chk = 0;
-	function taskToggle(){
-		if(chk == 0){
-			$('#taskForm').css('display', 'block');
-			chk=1;
-		}else{
-			$('#taskForm').css('display', 'none');
-			chk=0;
-		}
-	}
 </script>
 </head>
 <body>
@@ -106,6 +95,7 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
+<<<<<<< HEAD
         
          <li class="nav-item" style="position: absolute; top:720px;">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
@@ -119,7 +109,9 @@
             <span>참여자리스트</span></a>
 		
         <hr />
+=======
         <hr>
+>>>>>>> developer
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
