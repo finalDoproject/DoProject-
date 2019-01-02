@@ -55,7 +55,7 @@
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
 	               <c:if test="${!empty member}">
 
-							<span class="headerMno" name="mno" style="display: none;">${member.mno}</span>
+							<span class="headerMno" id="mnoSession" data-value="@Request.RequestContext.HttpContext.Session['mno']" name="mno" style="display: none;">${member.mno}</span>
 							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
@@ -116,7 +116,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <!-- Bootstrap core JavaScript-->
-<script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -126,6 +125,10 @@
 <!-- Custom scripts for all pages-->
 <script src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
 	<script>
+		/* $(document).ready(function ($) {
+	        var mno =  "<?php echo $_SESSION['mno'] ?>";
+	       console.log(mno);
+	    }); */
 		
 		$('.goPjview').click(function(e) {
 			e.preventDefault();

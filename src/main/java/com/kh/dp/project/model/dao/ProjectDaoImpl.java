@@ -18,8 +18,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	
 	// ---- 프로젝트 ----//
 	@Override
-	public List<Map<String, String>> selectProjectList() {
-		return sqlSession.selectList("project.selectProjectList");
+	public List<Map<String, String>> selectProjectList(int mno) {
+		return sqlSession.selectList("project.selectProjectList", mno);
 	}
 
 	@Override
@@ -39,8 +39,13 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	@Override
-	public int updateMemo(String saveMemo) {
-		return sqlSession.update("memo.updateMemo", saveMemo);
+	public int updateMemo(Map<String, Object> map) {
+		return sqlSession.update("memo.updateMemo", map);
+	}
+
+	@Override
+	public int insertMemo(Map<String, Object> map) {
+		return sqlSession.insert("memo.insertMemo", map);
 	}
 
 	

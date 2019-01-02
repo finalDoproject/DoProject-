@@ -4,9 +4,9 @@
 	<resultMap type="map" id="project"/>
 	
 	
-	<select id="selectProjectList" resultType="project">
-		SELECT *
-		FROM PROJECT  
+	<select id="selectProjectList"  parameterType="_int" resultType="project">
+		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
+		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) 
 		ORDER BY PNO DESC
 	</select>
 	

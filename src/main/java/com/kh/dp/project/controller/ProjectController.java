@@ -27,9 +27,9 @@ public class ProjectController {
 	MemberService memberService;
 	
 	@RequestMapping("/project/projectMain.do")
-	public String ProjectView(Model model) {
-		
-		List<Map<String,String>> projectList = projectService.selectProjectList();
+	public String ProjectView(@RequestParam int mno,Model model) {
+
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		model.addAttribute("projectList",projectList);
 		
 		return "project/projectMain";
@@ -60,6 +60,9 @@ public class ProjectController {
 		List<Map<String,String>> memoList = projectService.selectMemoList(map);
 		model.addAttribute("memoList",memoList);
 		
+		// 메모가 없을 때 DB에서 메모 새로 만들어줘야함 ㅠㅠ
+		// if(memoList==null) memoList = projectService.insertMemo(map);
+		
 		return "project/projectPage";
 	}
 
@@ -75,13 +78,19 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updateMemo(@RequestParam(value="saveMemo", required=false) String saveMemo){
+	public Map<String,String> updateMemo(@RequestParam int pno, @RequestParam int mno,
+										@RequestParam(value="saveMemo", required=false) String saveMemo){
 		System.out.println("메모:" + saveMemo);
-		String msg  = projectService.updateMemo(saveMemo)>0?"수정 성공":"수정 실패";		
-		//model.addAttribute("msg",msg);
-		Map<String, Object> hmap = new HashMap<>();
-		hmap.put("msg", msg);
 		
+		Map<String,Object> map = new HashMap<>();
+		map.put("saveMemo", saveMemo);
+		map.put("pno", pno);
+		map.put("mno", mno);
+		
+		String msg = projectService.updateMemo(map)>0?"메모 저장":"저장 실패";
+
+		Map<String, String> hmap = new HashMap<>();
+		hmap.put("msg", msg);
 		return hmap;
 		
 	}
