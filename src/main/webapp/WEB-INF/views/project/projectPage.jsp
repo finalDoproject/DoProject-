@@ -15,19 +15,6 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-<script>
-	function kick(name, pno, mno){
-		if(confirm(name + " 님을 추방하시겠습니까?") == true){
-			if(mno == ${member.mno}){
-				alert("본인은 추방할 수 없습니다.");
-			}else{
-				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
-			}
-		}else{
-			return;
-		}
-	}
-</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -101,7 +88,7 @@
   				</c:if>
   				</c:forEach>
   				<c:if test="${project.pmno ne member.mno}">
-  				<a class="dropdown-item" href="${pageContext.request.contextPath}/project/leaveProject.do?pno=${project.pno}&mno=${member.mno}"
+  				<a class="dropdown-item" href="#" onclick="leaveProject('${project.pno}', '${member.mno}');"
 				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
 				</c:if>
 				<c:if test="${project.pmno eq member.mno}">
@@ -484,7 +471,26 @@
       }, false);
     });
 	</script>
-    
+    <script>
+	function kick(name, pno, mno){
+		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
+			if(mno == ${member.mno}){
+				alert("본인은 추방할 수 없습니다.");
+			}else{
+				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			}
+		}else{
+			return;
+		}
+	}
+	function leaveProject(pno, mno){
+		if(confirm("프로젝트에서 나가시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+		}else{
+			return false;
+		}
+	}
+	</script>
 	
 </body>
 
