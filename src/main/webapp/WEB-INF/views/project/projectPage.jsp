@@ -40,6 +40,18 @@
 .ok:focus{outline: none;}
 
 </style>
+<script>
+var chk = 0;
+function taskToggle(){
+	if(chk == 0){
+		$('#taskForm').css('display', 'block');
+		chk=1;
+	}else{
+		$('#taskForm').css('display', 'none');
+		chk=0;
+	}
+}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -132,8 +144,8 @@
 				</c:if>
 			</div>
         </li>
-        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:600px; background-color : #F88E6F;">
-        	<c:import url="../intro/tasktest.jsp"/>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/tasktest.jsp"/>
         </div>
       </ul>
       

@@ -6,45 +6,18 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <!-- jQuery UI CSS파일 -->
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
-<!-- jQuery 기본 js파일 -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>    
-<!-- jQuery UI 라이브러리 js파일 -->
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+	<!-- jQuery UI CSS파일 -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="../resources/css/task.css" />
+	<!-- jQuery 기본 js파일 -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>    
+	<!-- jQuery UI 라이브러리 js파일 -->
+	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>  
+
 <style>  
-<body{
-	font-size:14px;color:#505050;
-	font-family:Apple SD Gothic Neo, Malgun Gothic, '돋움', '굴림', Arial, sans-serif;
-	src: url('../font/MalgunGothic.eot');
-	src: url('../font/MalgunGothic.eot?#iefix') format('embedded-opentype'),
-	url('../font/MalgunGothic.woff') format('woff'),
-	url('../font/MalgunGothic.ttf') format('truetype');
-	overflow-y: scroll;
-}
-input,select,textarea,button{
-	margin:0;vertical-align:middle;border:1px solid #e7e7e7;
-	font-family:Apple SD Gothic Neo, Malgun Gothic, '돋움', '굴림', Arial, sans-serif;
-	src: url('../font/MalgunGothic.eot');
-	src: url('../font/MalgunGothic.eot?#iefix') format('embedded-opentype'),
-	url('../font/MalgunGothic.woff') format('woff'),
-	url('../font/MalgunGothic.ttf') format('truetype');
-}
 
 /* input 기본 스타일 초기화 */
-input[type=text],
-input[type=password],
-input[type=number],
-input[type=email],
-input[type=phone],
-button {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	background:none;
-	border:none;
-	font-family:NotoSansCJKkr !important;
-}
 
 
 
@@ -79,26 +52,31 @@ button, a{cursor:pointer;}
 
 .tab1.selected {
     background-color: #4CAF50;
+    border : #4CAF50;
     color: white;
 }
 
 .tab2.selected {
     background-color: #008CBA;
+    border : #008CBA;
     color: white;
 }
 
 
 .tab3.selected {
     background-color: #f44336;
+    border : #f44336;
     color: white;
 }
 
 .tab4.selected {
 	background-color: #e7e7e7;
+	border : #e7e7e7;
 }
 
 .tab5.selected {
     background-color: #555555;
+    border : #555555;
     color: white;
 }
 
@@ -225,7 +203,6 @@ button, a{cursor:pointer;}
 }
 .imptc_ly button:hover, .imptc_ly button:focus{background-color:#f5f5f5;}
 
-input:focus{outline:none;}
 
 </style>
 <script>
@@ -313,32 +290,38 @@ $(function() {
 
 
 </head>
-<body>
-<div class="post_write_wrap" style="text-align : center;">
+<body> 
+<div class="post_write_wrap" style="text-align : center; ">
 		<%-- <c:import url="../common/introSidebar.jsp"/> --%><!-- css적용이 안됌 -->
 		<form name="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
 		<div class="post_write_tab">
-		<ul>
-		<li class="ico4 on"><a>업무</a></li>
-		<li class="ico3 off"><a>일정</a></li>	
-		</ul>
 		</div>
 		
-		<div class="pst_write_bx" id="collabo_427890">	
+		<div class="pst_write_bx" id="collabo_427890" >	
 		<div class="workwriteWrap mgb30" style="min-height: 120px;">
 		<!-- 업무명 -->
-		<div class="titleBx">
-			<input type="text" name="ttitle" id="ttitle" placeholder="업무명을 입력하세요" maxlength="500">
-		</div>
-		<div class="writerBx">
-			작성자 <input type="text" name="twriter" id="twriter" value="유저01" readonly required>
+		<div class="form-group">
+			<label class="col-md-4 " for="ttitle"></label>
+				<div class="col-md-4">
+					<input id="ttitle" name="ttitle" type="text" placeholder="업무명을 입력하세요" class="form-control" style="width:360px; border : 3px solid white; background : white;"
+								required />
+				</div>
+			</div>
+			<!-- 작성자 -->
+		<div class="form-group">
+				<div class="col-md-4">
+					<input id="twriter" name="twriter" type="text" value="${member.nickName }" class="form-control" style="text-align:center; width:150px; margin-left:110px; border : 3px solid white; background : white;"
+								readonly />
+					<input type="hidden" name="mno" value="${member.mno }" />
+					<input type="hidden" name="pno" value="${project.pno }" />
+				</div>
 		</div>
 		
 		<!-- 업무내용 -->
 		<div class="workwriteCont line-fold">
 			<!-- 1. 업무상태 지정 -->
 			<div class="line" >
-				<label class="icon1"><span class="blind">상태</span></label>
+				<label class="icon1"><span class="blind"></span></label>
 				<div class="workTab" name="tLevelSelect">
 					<input type="hidden" name="tlevel" id="tlevel" value="0"/>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab1" value="1">요청</button>
@@ -356,46 +339,39 @@ $(function() {
 				</script>
 			</div>
 			<!-- 2. 담당자 지정 -->
-			<div class="line" id="WORKER_LINE">
-				<label class="icon2" ><span class="blind" >담당자</span></label>
-				<div id="workerTagLayer" class="nameBx" >
-					<span id="workerTagSelected"></span>
-					<button class="namePlus" style="display:none;">담당자 변경</button>
-					<div class="txt_add_nm">
-						<span class="txt_add_nm_in">
-							<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-							<input name="tmanager" type="text" placeholder="담당자 추가" class="ui-autocomplete-input" autocomplete="off">
-						</span>
-						<!-- user layer -->
-						<div id="workerSelectLayer" class="mentions-input" style="top: 21px; left: -1px; min-width: 170px; display: none;"><!-- 20170407 -->
-							<ul tabindex="0" class="user_list sizeSamll ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" style="left: 0px; top: 0px; width: 130% !important; display: block;"><!-- 20170407 -->
-							</ul>
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="담당자 추가">담당자</label>
+							<div class="col-md-4">
+								<select id="tmanager" name="tmanager" class="form-control" style="margin-left:130px;">
+									<option value="1">Option one</option>
+									<option value="2">Option two</option>
+								</select>
+							</div>
 						</div>
-						<!-- //user layer -->		
-					</div>									
-				</div>
-			</div>
 			<!-- 3. 시작일 지정 -->
-			<div class="line" id="START_DT_LINE">
-				<label class="icon3"><span class="blind">시작일</span></label>
-				<div class="workdate" style="display: block;">
-					<input class="START_DT" start_dt="" type="text" name="tstartdate" placeholder="시작일 추가"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+			<div class="line" id="START_DT_LINE" style="display: inline-block;">
+				<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
+				<div class="workdate" >
+					<input class="START_DT"  type="date" name="tstartdate" placeholder="시작일 추가"><button id="START_DT_DEL" style="margin-left: -8px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="START_DT_CNTN" class="c_red" style="display:none;">시작일이 마감일보다 이후 날짜로 되어 있습니다.</span>
 				</div>
 			</div>
 			<!-- 4. 마감일 지정 -->
-			<div class="line" id="END_DT_LINE">
-				<label class="icon4"><span class="blind">마감일</span></label>
-				<div class="workdate" style="display: block;">
-					<input class="END_DT" end_dt="" type="text"  name="tenddate" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
+			&nbsp;~&nbsp; 
+			<div class="line" id="END_DT_LINE" style="display: inline-block;">
+				<label class="icon4" ><span class="blind" >마감일</span></label>
+				<div class="workdate" >
+					<input class="END_DT" type="date"  name="tenddate" placeholder="마감일 추가" id="dp1545179837850"><button id="END_DT_DEL" style="margin-left: -8px; display:none;" class="workdateDel"><span class="blind">삭제</span></button>
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
 			<!-- 5. 진척도 지정 -->
-			<div class="line" id="PROGRESS_LINE" style="display: block;">
-				<label class="icon5"><span class="blind">진척도</span></label>
-				<a class="workPrgrs">
-					<div class="workPrgrs_bg" style="display: inline-block;"><!-- 20170407 수정 -->
+			<br />
+			<br />
+			<div class="line" id="PROGRESS_LINE" >
+				<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
+				<a class="workPrgrs" style="display: inline-block;">
+					<div class="workPrgrs_bg"><!-- 20170407 수정 -->
 						<strong id="PROGRESS_PER" class="txt"></strong>
 						<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
 						<!-- toltip -->
@@ -409,22 +385,16 @@ $(function() {
 				</a>
 			</div>
 			<!-- 6. 우선순위 지정 -->
-			<div class="line" id="PRIORITY_LINE" style="display: inline-block;">
-				<label class="icon6"><span class="blind">우선순위</span></label>
-				<div class="imptc">
-					<input type="number" name="ttpriority" placeholder="우선순위 선택" style="display: block;">
-					
-					<button id="PRIORITY_DEL" style="margin-left:-1px;display:none;" class="workdateDel"><span class="blind">삭제</span></button>
-					<!-- level layerpopup -->
-					<div id="PRIORITY_LAYER" class="imptc_ly" style="display:none; "name="ttpriority">
-						<ul>
-							<li><button class="lv1"  value="0">낮음</button></li>
-							<li><button class="lv2"  value="1">보통</button></li>
-							<li><button class="lv3"  value="2">높음</button></li>
-							<li><button class="lv4"  value="3">긴급</button></li>
-						</ul>
+			<div class="form-group" >
+				우선순위 : 
+					<div class="col-md-4"  style="display: inline-block;">
+						<select id="ttpriority" name="ttpriority" class="form-control">
+							<option value="1">낮음</option>
+							<option value="2" style="color:green;">보통</option>
+							<option value="3"style="color:orange;">높음</option>
+							<option value="4" style="color:red;">긴급</option>
+						</select>
 					</div>
-				</div>
 			</div>
 		</div>
 		</div>
@@ -435,7 +405,9 @@ $(function() {
 		class="mentions input ui-autocomplete-input" 
 		style="line-height: 23px; 
 		background-color: transparent; 
-		height: 76px;" 
+		height: 119px; width:320px;
+		border-radius: 5px;
+		background:white;" 
 		placeholder="글을 작성하세요." 
 		autocomplete="off"></textarea>
 				
@@ -447,7 +419,7 @@ $(function() {
 		</div>
 	
 		<div class="right" style="display: inline-block;">
-			<input type="submit" class="btn_style1" id="insertFlow" value="UPLOAD"/>
+			<input type="submit" class="btn btn-primary" id="insertFlow" value="UPLOAD"/>
 		</div>
 		</form>
 	</div>
