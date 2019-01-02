@@ -308,8 +308,8 @@
             </ul>
         </div>
         <hr>
-
-
+<<<<<<< HEAD
+        
         <!-- Modal -->
       <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -367,7 +367,9 @@
       </div>
       
      
-
+=======
+      
+>>>>>>> developer
       </div>
       <!-- /right nav -->
 
