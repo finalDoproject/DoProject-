@@ -245,7 +245,7 @@
 		</div>	
 		</div>
 	
-		<div class="right">
+		<div class="right" style="display: inline-block;">
 			<input type="submit" class="btn_style1" id="insertFlow" value="UPLOAD"/>
 		</div>
 		</form>

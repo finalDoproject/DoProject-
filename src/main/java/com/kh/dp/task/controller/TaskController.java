@@ -53,7 +53,7 @@ public class TaskController {
 		
 		System.out.println("task manager:" + tmanager);
 		
-		task.setTmno(1);
+		task.setTmno(61);
 		
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성

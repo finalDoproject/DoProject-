@@ -30,7 +30,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="#">
+          <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
             <span>글 작성하기</span>
           </a>
@@ -69,7 +69,7 @@
           <a class="nav-link" href="#">
             <i class="fas fa-user-friends"></i>
             <span>참여자리스트</span></a>
-
+		
         <hr />
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
@@ -102,6 +102,9 @@
   				</div>
 			</div>
         </li>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:600px; background-color : #F88E6F;">
+        	<c:import url="../intro/tasktest.jsp"/>
+        </div>
       </ul>
       <!-- invitationModal -->
       <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
@@ -145,7 +148,8 @@
               </div>
             </div>   
       
-         
+
+     
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
@@ -241,9 +245,9 @@
                                     <select class="member-multiple" name="mNickname" multiple="multiple"
                                     style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
                              		
-                                    <c:forEach items="${member}" var="member" varStatus="status">
+<%--                                     <c:forEach items="${member}" var="member" varStatus="status">
                                         <option value="${member.nickName}">${member.nickName} </option>
-                                     </c:forEach>
+                                     </c:forEach> --%>
                                      </select>
                                 </td>
                               </tr>
@@ -269,8 +273,7 @@
         </div>
       </div>
       
-      
-      
+     
       </div>
       <!-- /right nav -->
 
@@ -318,6 +321,8 @@
         </div>
       </div>
     </div>
+    
+    
 	
 	<!-- right nav-->
     <script src="https://www.w3schools.com/lib/w3.js"></script>

@@ -174,7 +174,9 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
   .form-inline .input-group {
     width: auto;
   }
+  
 }
+
 
 .sidebar {
   z-index: 999999;
@@ -241,6 +243,9 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
 
 }
 @media (max-width: 768px) {
+  .taskForm {
+	left: 90px;
+  }
   .navtop_logo small{
     visibility: hidden;
   }
@@ -255,7 +260,9 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
   #wrapper #content-wrapper {
     padding-left: 200px;
   }
-
+.taskForm {
+	left: 200px;
+}
   .sidebar,.logo_area {
     width: 200px !important;
     
