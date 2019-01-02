@@ -40,19 +40,6 @@
 .ok:focus{outline: none;}
 
 </style>
-<script>
-	function kick(name, pno, mno){
-		if(confirm(name + " 님을 추방하시겠습니까?") == true){
-			if(mno == ${member.mno}){
-				alert("본인은 추방할 수 없습니다.");
-			}else{
-				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
-			}
-		}else{
-			return;
-		}
-	}
-</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -95,7 +82,19 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        <hr>
+        
+         <li class="nav-item" style="position: absolute; top:720px;">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
+            <i class="fas fa-user-friends"></i>
+            <span>초대하기</span></a>
+        </li>
+        
+        <li class="nav-item" style="position: absolute; top:760px;">
+          <a class="nav-link" href="#">
+            <i class="fas fa-user-friends"></i>
+            <span>참여자리스트</span></a>
+
+        <hr />
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
@@ -108,7 +107,6 @@
   				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
     				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
     				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
-
 				</div>
   				</c:if>
   				<c:if test="${project.pmno ne member.mno}">
@@ -120,7 +118,7 @@
   				</c:if>
   				</c:forEach>
   				<c:if test="${project.pmno ne member.mno}">
-  				<a class="dropdown-item" href="${pageContext.request.contextPath}/project/leaveProject.do?pno=${project.pno}&mno=${member.mno}"
+  				<a class="dropdown-item" href="#" onclick="leaveProject('${project.pno}', '${member.mno}');"
 				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
 				</c:if>
 				<c:if test="${project.pmno eq member.mno}">
@@ -188,11 +186,10 @@
       </div>
       
       <!-- invitationModal -->
-      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
               <div class="modal-dialog" role="document">
               
                <form id="proejctEnrollFrm">
-               
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
@@ -202,18 +199,30 @@
                   </div>
                   <div class="modal-body">
                       <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
-                        <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
-                        <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
+                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
+                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
                       </div>
-                      <div class="result" id="findUser-result"></div>                
+                      <div class="form-group">
+                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
+                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
+                      </div>                  
+                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
+                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
+                        <div class="form-group levelbox" style="display: none;">
+                          <hr>
+                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
+                          <button type="button" class="btn plusbtn btn-light">+</button>
+                          <button type="button" class="btn minusbtn btn-light">-</button>
+                          
+                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
+
+                        </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">초대하기</button>
+                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
                   </div>                  
                 </div>
-                
                </form>
               </div>
             </div>   
@@ -222,9 +231,12 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-         <div class="memoBox">
-	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
-	     </div>
+      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
+          <div class="memoBox">
+	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
+	        
+	      </div>
+      <!-- </form> -->
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -288,7 +300,6 @@
             </ul>
         </div>
         <hr>
-      
       </div>
       <!-- /right nav -->
 
@@ -302,7 +313,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-			<a href="#">TEST</a>
+<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
@@ -343,60 +354,9 @@
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    
-    <!-- datepicker를 위한 js -->
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	
-	<!-- select2를 위한 js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
-    
-    
- 	// select2 
-    $('.member-multiple').select2({
-    	placeholder : "함께할 인원을 선택해주세요."
-    }); 
- 
- 	$('.select2-search__field').attr("style", "width : 370px");
-    
-
-    $(function(){
-    	$("#findUserBtn").on("click",function(){
-    		var nickname = $('.nickname').val();
-    		
-    		console.log(nickname);
-    		$.ajax({
-                url  : "${pageContext.request.contextPath}/project/projectPage",
-                data: {nickname:nickname},
-                dataType: "json",
-                type : "get",
-                success : function(data){
-                    console.log(data);
-                    var html = "<table class=table>";
-                    html+="<tr><th>이름</th><th>ID</th></tr>";
-	        		if(data==0) alert("해당하는 정보가 없습니다.");
-	        		else{
-	        			 for(var i in data){
-	                     	html += "<tr><td>"+data[i].nickname+"</td>";
-	                     	html += "<td>"+data[i].userId+"</td></tr>";
-	                     }
-	        			 html+="</table>";
-	                     $("#findUser-result").html(html);
-	        		}
-	        	},
-	            error : function(jqxhr, textStatus, errorThrown){
-	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
-	            }
-
-            });
-    	});
-    	
-	});
-	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -412,11 +372,13 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
+          
          
           memopad.focus(function(){
         	  $(memopad).html()
+         
+         
           });
-          
           memopad.blur(function(){
            var saveMemo = $(memopad).val();
 
@@ -603,7 +565,7 @@
 				showEvents(current);
       }, false);
     });
-    
+     
     $(function(){
    	 
  	   // 한국어 설정
@@ -652,10 +614,27 @@
     	  
     	   
        }); */
-     
-    	
 	</script>
-    
+    <script>
+	function kick(name, pno, mno){
+		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
+			if(mno == ${member.mno}){
+				alert("본인은 추방할 수 없습니다.");
+			}else{
+				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			}
+		}else{
+			return;
+		}
+	}
+	function leaveProject(pno, mno){
+		if(confirm("프로젝트에서 나가시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+		}else{
+			return false;
+		}
+	}
+	</script>
 	
 </body>
 
