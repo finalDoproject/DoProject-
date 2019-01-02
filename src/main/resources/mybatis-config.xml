@@ -15,6 +15,8 @@
 				 alias="Matching"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Join"
 				 alias="Join"/>
+		<typeAlias type="com.kh.dp.side.model.vo.MatchingInfo"
+				 alias="MatchingInfo"/>
 		<typeAlias alias="Memo" type="com.kh.dp.project.model.vo.Memo"/>
 		<typeAlias type="com.kh.dp.chat.model.vo.ChatPtm"
 				alias="ChatPtm" />

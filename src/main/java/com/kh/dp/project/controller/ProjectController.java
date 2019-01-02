@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
-import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.side.model.service.SideService;
+import com.kh.dp.side.model.vo.MatchingInfo;
 
 @Controller
 public class ProjectController {
@@ -26,6 +27,8 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	MemberService memberService;
+	@Autowired
+	SideService sideService;
 	
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
@@ -59,6 +62,9 @@ public class ProjectController {
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
 		
+		// 스케줄 매칭 인원 불러오기 메소드
+		List<Member> mArr =  sideService.browseMember(pno);
+		model.addAttribute("project",project).addAttribute("mArr", mArr);
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("pno", pno);
@@ -67,6 +73,9 @@ public class ProjectController {
 		List<Map<String,String>> memoList = projectService.selectMemoList(map);
 		model.addAttribute("memoList",memoList);
 		
+		// 스케줄 매칭 요청 리스트 불러오기
+		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
+		model.addAttribute("sArr", sArr);
 		return "project/projectPage";
 	}
 
