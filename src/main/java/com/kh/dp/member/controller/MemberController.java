@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class MemberController {
 	// 비밀번호 암호객체
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
+
 	@RequestMapping("/member/join.do")
 	public String MemberView() {
 		
@@ -127,10 +128,16 @@ public class MemberController {
 		return "common/msg";
 	}
 	
-/*	@RequestMapping(value="/member/findPw.do")
-	public String findPw() throws Exception{
-		return "/member/foundPw";
-	}*/
+	@RequestMapping(value="/member/findPw.do", method = RequestMethod.POST)
+	public String searchPw(@RequestParam String userId,
+			               @RequestParam String email,
+			               HttpServletRequest request) throws Exception{
+		
+		
+		memberService.mailSendWithPassword(userId, email, request);
+		
+		return "/member/findPw";
+	}
 	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(

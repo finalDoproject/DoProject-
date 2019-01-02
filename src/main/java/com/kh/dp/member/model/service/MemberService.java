@@ -3,6 +3,8 @@ package com.kh.dp.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.kh.dp.member.model.vo.Member;
 
 public interface MemberService {
@@ -18,5 +20,7 @@ public interface MemberService {
 	int selectMemberTotalContents();
 	
 	int deleteMember(int mno);
+
+	Object mailSendWithPassword(String userId, String email, HttpServletRequest request);
 
 }

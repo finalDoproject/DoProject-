@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.kh.dp.member.model.vo.Member;
 
 public interface MemberDao {
@@ -19,4 +21,6 @@ public interface MemberDao {
 	int selectMemberTotalContents();
 
 	int deleteMember(int mno);
+
+	Member searchPw(String userId, String email);
 }

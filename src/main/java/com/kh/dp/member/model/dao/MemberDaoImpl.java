@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,15 @@ public class MemberDaoImpl implements MemberDao {
 	public int deleteMember(int mno) {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("member.deleteMember", mno);
+	}
+
+	@Override
+	public Member searchPw(String userId, String email) {
+		
+		
+		
+		/*return sqlSession.update("member.searchPw",email);*/
+		return null;
 	}
 
 }
