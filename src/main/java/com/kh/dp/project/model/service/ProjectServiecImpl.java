@@ -67,5 +67,10 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.selectAlarmList(mno);
   }
 
+	@Override
+	public int deleteProject(int pno) {
+		return projectDao.deleteProject(pno);
+	}
+
 	
 }

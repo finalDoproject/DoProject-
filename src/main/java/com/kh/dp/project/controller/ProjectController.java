@@ -59,8 +59,10 @@ public class ProjectController {
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
+		model.addAttribute("alarmList", alarmList);
 		
 		// 스케줄 매칭 인원 불러오기 메소드
 		List<Member> mArr =  sideService.browseMember(pno);
@@ -106,7 +108,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
-	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+	public String leaveProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
 		
 		projectService.deleteLeaveProject(pno, mno);
 		
@@ -131,6 +133,20 @@ public class ProjectController {
 		model.addAttribute("memberList", memberList);
 				
 		return "project/projectPage";
+	}
+	
+	@RequestMapping(value="/project/deleteProject.do", method=RequestMethod.GET)
+	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		System.out.println(projectService.deleteProject(pno));
+		
+		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
+		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
+		
+		return "project/projectMain";
 	}
 
 }

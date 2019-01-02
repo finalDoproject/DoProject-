@@ -45,7 +45,7 @@
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 	<div id="wrapper" >
-
+	<span id="pno" style="display: none;">${member.mno}</span>
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
@@ -122,8 +122,8 @@
 				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
 				</c:if>
 				<c:if test="${project.pmno eq member.mno}">
-  				<a class="dropdown-item" onclick="alert('팀장은 나갈수 없습니다.')"
-				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+  				<a class="dropdown-item" onclick="deleteProject('${project.pno}', '${member.mno}')"
+				style="text-align:center; font-weight:bolder;">프로젝트 지우기</a>
 				</c:if>
 			</div>
         </li>
@@ -630,6 +630,13 @@
 	function leaveProject(pno, mno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
 			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+		}else{
+			return false;
+		}
+	}
+	function deleteProject(pno, mno){
+		if(confirm("프로젝트를 제거하시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
 		}else{
 			return false;
 		}

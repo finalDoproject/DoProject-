@@ -35,5 +35,8 @@
 		SELECT * FROM ALARM WHERE AMNO = #{mno} AND ACONDITION = 'Y'
 	</select>
 
+	<delete id="deleteProject">
+		DELETE FROM PROJECT WHERE PNO = #{pno}
+	</delete>
 	
 </mapper>

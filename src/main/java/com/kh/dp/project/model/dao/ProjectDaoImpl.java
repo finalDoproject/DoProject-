@@ -71,6 +71,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.selectList("project.selectAlarmList", mno);
 	}
 
+	@Override
+	public int deleteProject(int pno) {
+		return sqlSession.delete("project.deleteProject", pno);
+	}
+
 	
 
 	
