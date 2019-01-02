@@ -133,7 +133,7 @@
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matching.do?pno=${project.pno}"  method="post">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
                     <table class="table">
                             <thead>
                               <tr>
@@ -258,7 +258,7 @@
       </div>
       <hr>
       <div class="timetable" style="color: #555">
-          <h6>스케줄매칭</h6>
+          <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
