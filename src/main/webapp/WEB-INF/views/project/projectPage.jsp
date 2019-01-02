@@ -40,6 +40,18 @@
 .ok:focus{outline: none;}
 
 </style>
+<script>
+var chk = 0;
+function taskToggle(){
+	if(chk == 0){
+		$('#taskForm').css('display', 'block');
+		chk=1;
+	}else{
+		$('#taskForm').css('display', 'none');
+		chk=0;
+	}
+}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -49,7 +61,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="#">
+          <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
             <span>글 작성하기</span>
           </a>
@@ -82,7 +94,21 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
+         <li class="nav-item" style="position: absolute; top:720px;">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
+            <i class="fas fa-user-friends"></i>
+            <span>초대하기</span></a>
+        </li>
+        
+        <li class="nav-item" style="position: absolute; top:760px;">
+          <a class="nav-link" href="#">
+            <i class="fas fa-user-friends"></i>
+            <span>참여자리스트</span></a>
+		
+        <hr />
+
         <hr>
+
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
@@ -118,6 +144,9 @@
 				</c:if>
 			</div>
         </li>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/tasktest.jsp"/>
+        </div>
       </ul>
       
       <!-- invitationModal -->
@@ -250,7 +279,8 @@
               </div>
             </div>   
       
-         
+
+     
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
@@ -325,6 +355,64 @@
             </ul>
         </div>
         <hr>
+        
+        <!-- Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Schedule Matching</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do" method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%">
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+<%--                                     <c:forEach items="${member}" var="member" varStatus="status">
+                                        <option value="${member.nickName}">${member.nickName} </option>
+                                     </c:forEach> --%>
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right "></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="btn btn-primary">요청 완료</button>
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+                 </form>         
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+      
+     
       </div>
       <!-- /right nav -->
 
@@ -372,6 +460,8 @@
         </div>
       </div>
     </div>
+    
+    
 	
 	<!-- right nav-->
     <script src="https://www.w3schools.com/lib/w3.js"></script>
