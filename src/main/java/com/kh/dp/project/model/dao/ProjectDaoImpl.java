@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
@@ -74,6 +75,24 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Map<String, String>> selectAlarmList(int mno) {
 		return sqlSession.selectList("project.selectAlarmList", mno);
+	}
+
+	@Override
+	public int deleteProject(int pno) {
+		return sqlSession.delete("project.deleteProject", pno);
+	}
+
+	@Override
+	public List<Member> selectSearchMember(String userNick) {
+		return sqlSession.selectList("project.selectSearchMember", userNick);
+	}
+
+	@Override
+	public int insertInviteProject(int pno, int mno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		return sqlSession.insert("project.insertInviteProject", map);
 	}
 
 	

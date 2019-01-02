@@ -1,9 +1,12 @@
 package com.kh.dp.project.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
@@ -61,8 +66,10 @@ public class ProjectController {
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
+		model.addAttribute("alarmList", alarmList);
 		
 		// 스케줄 매칭 인원 불러오기 메소드
 		List<Member> mArr =  sideService.browseMember(pno);
@@ -117,7 +124,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
-	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+	public String leaveProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
 		
 		projectService.deleteLeaveProject(pno, mno);
 		
@@ -143,5 +150,44 @@ public class ProjectController {
 				
 		return "project/projectPage";
 	}
+	
+	@RequestMapping(value="/project/deleteProject.do", method=RequestMethod.GET)
+	public String deleteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		System.out.println(projectService.deleteProject(pno));
+		
+		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
+		model.addAttribute("projectList",projectList);
+		model.addAttribute("alarmList", alarmList);
+		
+		return "project/projectMain";
+	}
 
+	@RequestMapping(value="/project/searchMember.do", method=RequestMethod.GET)
+	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) String userNick, HttpServletResponse response) throws Exception {
+		
+		List<Member> m = projectService.selectSearchMember(userNick);
+		
+		return m;
+		
+	}
+	/*inviteProject.do?pno="+pno+"&mno="+mno;*/
+	@RequestMapping(value="/project/inviteProject.do", method=RequestMethod.GET)
+	public String insertInviteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+		
+		projectService.insertInviteProject(pno, mno);
+		
+		Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		model.addAttribute("alarmList", alarmList);
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);
+				
+		return "project/projectPage";
+	}
+	
 }
