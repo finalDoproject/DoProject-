@@ -47,7 +47,7 @@ public class ProjectServiecImpl implements ProjectService {
 	}
 
 	@Override
-	public int insertMeno(Map<String, Object> map) {
+	public int insertMemo(Map<String, Object> map) {
 		return projectDao.insertMemo(map);
 	}
 
