@@ -15,9 +15,108 @@
 	href="${pageContext.request.contextPath}/resources/css/chat.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto"
 	rel="stylesheet">
-<script src="https://use.fontawesome.com/1c6f725ec5.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <script>
+var sock;
+//웹소켓 객체 생성하기
+sock=new SockJS("<c:url value='/chat'/>");
+//console.log("소켓 : " + sock);
+sock.onopen=onOpen;
+sock.onmessage=onMessage;
+sock.onclose=onClose;
+var today=null;
 
+// 웹소켓으로 데이터 추가하기
+$(function(){
+	$("#submit").click(function(){
+		sendMessage();
+		$("#chatContent").val('');
+	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+	});
+	$("#chatContent").keyup(function(event){
+		if (event.shiftKey && event.keyCode == 13) {
+	    } else if (event.keyCode == 13) {
+	    	sendMessage();
+			$("#chatContent").val('');
+		    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+	    }
+	});
+});
+
+function sendMessage(){
+	console.log("채팅 내용 : " + $("#chatContent").val());
+	sock.send($("#chatContent").val());
+	$("#chatContent").focus();
+};
+
+function onOpen(){
+	/* var chatMtmJson = {
+		"mno" : $("#mno").text(),
+		"userId" : $("#userId").text(),
+		"nickName" : $("#nickName").text(),
+		"pno" : $("#pno").text()
+	};
+	sock.send(chatMtmJson.mno);
+	sock.send(chatMtmJson.userId);
+	sock.send(chatMtmJson.nickName);
+	sock.send(chatMtmJson.pno); */
+}
+
+function onMessage(evt){
+	var data=evt.data;//new text객체로 보내준 값을 받아옴.
+	var host=null;//메세지를 보낸 사용자 ip저장
+	var strArray=data.split("|");//데이터 파싱처리하기
+	var userName=null;//대화명 저장
+	console.log("메시지 작성자 : " + data.split("|")[3]); //회원 아이디
+	//console.log("data : " + data);
+	
+	if(strArray.length>1)
+	{
+		sessionId=strArray[0];
+		message=strArray[1];
+		host=strArray[2].substr(1,strArray[2].indexOf(":")-1);
+		//host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
+		userName=strArray[3];
+		today=new Date();
+		
+		/* console.log("strArray[0] : " + strArray[0]);
+		console.log("strArray[1] : " + strArray[1]);
+		console.log("strArray[2] : " + strArray[2]);
+		console.log("strArray[3] : " + strArray[3]); */
+		
+		if(userName == $("#nickName").text())
+		{
+			var printHTML="<div style='clear:both;'></div>";
+			printHTML+="<div class='chat-bubble me' id='myChat'>";
+			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+			printHTML+=ConvertSystemSourcetoHtml(message);
+			printHTML+="</div><div class='time'>";
+			printHTML+=sockformatAMPM(today)+"</div></div>";
+			$('#chatList').append(printHTML);
+			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		}
+		else{
+			var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+			printHTML+="<div class='chat-bubble you' style='float: left;'>";
+			printHTML+="<div class='content'>";
+			printHTML+=ConvertSystemSourcetoHtml(message);
+			printHTML+="</div><div class='time'>";
+			printHTML+=sockformatAMPM(today)+"</div></div></div>";
+			printHTML+="<div style='clear: both;'></div>";
+			$('#chatList').append(printHTML);
+			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
+		}
+
+	}
+	
+};
+
+$(".contact").click(function(){
+	sock.close();
+});
+
+function onClose(evt){
+};
 $(document).ready(function(){
 	window.addEventListener('resize', resizeTest);
 	
@@ -52,108 +151,6 @@ function formatAMPM(hour, minute) {
     return strTime;
 }
 
-var sock=new SockJS("<c:url value='/chat'/>");
-sock.onmessage=onMessage;
-sock.onclose=onClose;
-var today=null;
-
-$(function(){
-	$("#submit").click(function(){
-		sendMessage();
-		$("#chatContent").val('');
-	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-	});
-});
-
-function keyUp() {
-    if (event.shiftKey && event.keyCode == 13) {
-    } else if (event.keyCode == 13) {
-    	sendMessage();
-		$("#chatContent").val('');
-	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-    }
-}
-
-function sendMessage(){
-	sock.send($("#chatContent").val());
-};
-
-function onMessage(evt){
-	var data=evt.data;//new text객체로 보내준 값을 받아옴.
-	var host=null;//메세지를 보낸 사용자 ip저장
-	var strArray=data.split("|");//데이터 파싱처리하기
-	var userName=null;//대화명 저장
-	console.log("data : " + data.split("|")[3].substr(5,4));
-	console.log("data : " + data);
-	if(strArray.length>1)
-	{
-		sessionId=strArray[0];
-		message=strArray[1];
-		host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
-		userName=strArray[3];
-		today=new Date();
-		
-		console.log("strArray[0] : " + strArray[0]);
-		console.log("strArray[1] : " + strArray[1]);
-		console.log("strArray[2] : " + strArray[2]);
-		console.log("strArray[3] : " + strArray[3]);
-
-		var ck_host='${host}';
-		if(host==ck_host||(host==0&&ck_host.includes('0:0:')))
-		{
-			var printHTML="<div style='clear:both;'></div>";
-			printHTML+="<div class='chat-bubble me' id='myChat'>";
-			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-		}
-		else{
-			var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
-			printHTML+="<div class='chat-bubble you' style='float: left;'>";
-			printHTML+="<div class='content'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div></div>";
-			printHTML+="<div style='clear: both;'></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
-		}
-
-	}
-	else
-	{
-		today=new Date();
-		printDate=today.getFullYear()+"/"+today.getMonth()+"/"+today.getDate()+" "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
-		message=strArray[0];
-		var printHTML="<div style='clear:both;'></div>";
-		printHTML+="<div class='chat-bubble me' id='myChat'>";
-		printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-		printHTML+=ConvertSystemSourcetoHtml(message);
-		printHTML+="</div><div class='time'>";
-		printHTML+=sockformatAMPM(today)+"</div></div>";
-		$('#chatList').append(printHTML);	
-		
-	}
-};
-
-function onClose(evt){
-	location.href='${pageContext.request.contextPath};';
-};
-
-function inputMsg(){
-	var date = formatAMPM(new Date());
-
-    $("<div style='clear:both;'></div>" + "<div class='chat-bubble me' id='myChat'>" +
-        "<div class='content' id='content' style='word-break:break-all;'>" + ConvertSystemSourcetoHtml($('#chatContent').val()) +
-        "</div><div class='time'>" + date + "</div></div>"
-    ).appendTo($('#chatList'));
-    $('#chatContent').val("");
-    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-}
-
 function ConvertSystemSourcetoHtml(str){
 	 str = str.replace(/</g,"&lt;");
 	 str = str.replace(/>/g,"&gt;");
@@ -176,16 +173,24 @@ function dateDiff(_date1, _date2) {
     return diff;
 }
 
-function chatMtm(me, you){
+function chatMtm(me, you, yourNick){
+	/* location.href = "/chatOne.ch?pno="+$("#pno").text()+"&chWriter="+me+"&chReader="+you; */
+	$("#chatContent").val('');
+	$("#chatContent").focus();
+	$("#chatNickName").text(yourNick);
+	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/chatOne.ch",
+		url : "${pageContext.request.contextPath}/chatOne.ch?me="+me+"&you="+you,
 		type : "GET",
-		data : { "chWriter" : me, "chReader" : you},
+		data : { "chWriter" : me, "chReader" : you, "pno" : $("#pno").text()},
 		success : function(responseData){
+			// 데이터 불러오기
 			var data = responseData.chatOneList;
+			var roomNameOne = responseData.roomNameOne;
+			var roomNameTwo = responseData.roomNameTwo;
+			//console.log("방이름 : " + roomName)
 			if(data.length == 0){
 				$("#chatList").empty();
-				$('#chatList').append("<span>채팅 기록이 없습니다.</span>");
 			} else {
 				var today = new Date();
 				var dd = today.getDate();
@@ -235,6 +240,8 @@ function chatMtm(me, you){
 }
 
 function chatPtm(me, pno){
+	$("#chatContent").val('');
+	$("#chatContent").focus();
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chatProject.ch",
 		type : "GET",
@@ -243,7 +250,6 @@ function chatPtm(me, pno){
 			var data = responseData.chatProjectList;
 			if(data.length == 0){
 				$("#chatList").empty();
-				$('#chatList').append("<span>채팅 기록이 없습니다.</span>");
 			} else {
 				var today = new Date();
 				var dd = today.getDate();
@@ -313,6 +319,7 @@ function searchRoom() {
 </head>
 
 <body>
+	<div style="display:none;" id="mno">${member.mno}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
 	<div style="display:none;" id="userId">${member.userId}</div>
 	<div style="display:none;" id="password">${member.password}</div>
@@ -321,6 +328,7 @@ function searchRoom() {
 	<div style="display:none;" id="mCondition">${member.mCondition}</div>
 	<div style="display:none;" id="mDate">${member.mDate}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
+	<div style="display:none;" id="pno">${project.pno}</div>
 	<div class="wrap">
 		<section class="left" style="background: #f98d70">
 			<!-- 대화방 검색 -->
@@ -347,8 +355,8 @@ function searchRoom() {
 				</div>
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
-							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno});">
-								<img src="resources/images/profile/${member.mProfile}" alt="profilpicture">
+							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno}, '${sl.nickName}');">
+								<img src="resources/images/profile/${sl.mProfile}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">
 										<h1 class="font-name">${sl.nickName}</h1>
@@ -369,7 +377,7 @@ function searchRoom() {
 				<img src="https://bootdey.com/img/Content/avatar/avatar1.png"
 					alt="profilpicture">
 				<div class="chat-name">
-					<h1 class="font-name">홍길동</h1>
+					<h1 class="font-name" id="chatNickName">홍길동</h1>
 					<p class="font-online">온라인</p>
 				</div>
 			</div>
@@ -405,7 +413,7 @@ function searchRoom() {
 			<div class="wrap-message">
 				<div class="message">
 					<textarea class="input-message" name="chatContent" id="chatContent"
-						cols="30" rows="10" onkeyup="keyUp();" placeholder="내용을 입력해주세요"
+						cols="30" rows="10" placeholder="메시지를 입력하세요.&#13;&#10;(Enter로 전달, Shift-Enter로 줄바꿈)"
 						style="resize: none;"></textarea>
 				</div>
 				<i class="fa fa-paper-plane" aria-hidden="true" id="submit"></i>
