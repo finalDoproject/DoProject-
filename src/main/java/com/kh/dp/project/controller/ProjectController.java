@@ -36,7 +36,6 @@ public class ProjectController {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		
 
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
@@ -76,8 +75,10 @@ public class ProjectController {
 		model.addAttribute("memoList",memoList);
 		
 
+
 		// 메모가 없을 때 DB에서 메모 새로 만들어줘야함 ㅠㅠ
 		// if(memoList==null) memoList = projectService.insertMemo(map);
+
 		// 스케줄 매칭 요청 리스트 불러오기
 		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
 		model.addAttribute("sArr", sArr);

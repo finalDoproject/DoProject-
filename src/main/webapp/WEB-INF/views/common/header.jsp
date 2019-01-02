@@ -169,11 +169,7 @@
 	<script
 		src="${pageContext.request.contextPath }/resources/js/sb-admin.min.js"></script>
 	<script>
-		/* $(document).ready(function ($) {
-	        var mno =  "<?php echo $_SESSION['mno'] ?>";
-	       console.log(mno);
-	    }); */
-		
+
 		$('.goPjview').click(function(e) {
 			e.preventDefault();
 			var url = "${pageContext.request.contextPath}/project/projectMain.do";
