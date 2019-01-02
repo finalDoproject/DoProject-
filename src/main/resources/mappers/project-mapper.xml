@@ -38,5 +38,12 @@
 	<delete id="deleteProject">
 		DELETE FROM PROJECT WHERE PNO = #{pno}
 	</delete>
+
+	<select id="selectSearchMember" resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+	</select>
 	
+	<insert id="insertInviteProject">
+		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno},DEFAULT)
+	</insert>
 </mapper>
