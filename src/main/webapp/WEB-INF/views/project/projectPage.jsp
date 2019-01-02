@@ -20,18 +20,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script>
-var chk = 0;
-	function taskToggle(){
-		if(chk == 0){
-			$('#taskForm').css('display', 'block');
-			chk=1;
-		}else{
-			$('#taskForm').css('display', 'none');
-			chk=0;
-		}
-	}
-</script>
+
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
