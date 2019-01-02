@@ -20,8 +20,8 @@
 				alias="ChatPtm" />
 		<typeAlias type="com.kh.dp.chat.model.vo.ChatMtm"
 				alias="ChatMtm" />
-		<typeAlias type="com.kh.dp.project.model.vo.Project"
-				alias="Project" />
+		<typeAlias type="com.kh.dp.project.model.vo.Alarm"
+				alias="Alarm" />
     <typeAlias type="com.kh.dp.task.model.vo.Task" 
 				 alias="Task"/>
 		<typeAlias type="com.kh.dp.task.model.vo.Attachment" 
@@ -30,9 +30,6 @@
 	
 	
 </configuration>
-
-
-
 
 
 

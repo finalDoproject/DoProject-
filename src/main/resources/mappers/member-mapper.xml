@@ -40,6 +40,7 @@
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 
 		SET NICKNAME = #{nickName},
@@ -53,5 +54,12 @@
 	</delete>
 	
 	
+
+	<select id="selectOneNickname" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER 
+		WHERE NICKNAME = #{nickname}
+
+	</select>
+
 	
 </mapper>

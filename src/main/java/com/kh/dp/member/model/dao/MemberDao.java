@@ -19,8 +19,13 @@ public interface MemberDao {
 	int selectMemberTotalContents();
 
 	int deleteMember(int mno);
+
 	
 	int withdrawMember(String userId);
 	
 	int updateMember(Member member);
+
+
+	Member selectOneNickname(String nickname);
+
 }

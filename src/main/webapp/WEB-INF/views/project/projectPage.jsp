@@ -18,11 +18,10 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
-
+	
 .ok{
 	float:right;
 	width: 112px;
@@ -41,7 +40,19 @@
 .ok:focus{outline: none;}
 
 </style>
-
+<script>
+	function kick(name, pno, mno){
+		if(confirm(name + " 님을 추방하시겠습니까?") == true){
+			if(mno == ${member.mno}){
+				alert("본인은 추방할 수 없습니다.");
+			}else{
+				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			}
+		}else{
+			return;
+		}
+	}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -86,32 +97,31 @@
     			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
+  				<c:forEach items="${memberList}" var="mList">
+  				<c:if test="${project.pmno eq member.mno}">
   				<div>
-				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
+  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
+    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
+
 				</div>
+  				</c:if>
+  				<c:if test="${project.pmno ne member.mno}">
   				<div>
-    			<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-    				<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">홍길동</span></a>
+  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;">
+    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
+    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
 				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">신사임당</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">김유신</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">고길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
-  				</div>
+  				</c:if>
+  				</c:forEach>
+  				<c:if test="${project.pmno ne member.mno}">
+  				<a class="dropdown-item" href="${pageContext.request.contextPath}/project/leaveProject.do?pno=${project.pno}&mno=${member.mno}"
+				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+				</c:if>
+				<c:if test="${project.pmno eq member.mno}">
+  				<a class="dropdown-item" onclick="alert('팀장은 나갈수 없습니다.')"
+				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+				</c:if>
 			</div>
         </li>
       </ul>
@@ -131,10 +141,10 @@
                   <div class="modal-body">
                       <div class="form-group">
                         <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
-                        <input type="text" class="form-control" name="memberName" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
-                        <button type="button" class="btn btn-outline-warning">검색</button>
+                        <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                        <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
                       </div>
-                                      
+                      <div class="result" id="findUser-result"></div>                
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
@@ -150,12 +160,9 @@
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -285,7 +292,7 @@
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-<a href="#">TEST</a>
+			<a href="#">TEST</a>
         </div>
         <!-- /.container-fluid -->
 
@@ -337,7 +344,7 @@
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
-
+    
     
  	// select2 
     $('.member-multiple').select2({
@@ -348,10 +355,38 @@
     
 
     $(function(){
-		var mno = $(".headerMno").text();		
-		console.log(mno);
-	});
+    	$("#findUserBtn").on("click",function(){
+    		var nickname = $('.nickname').val();
+    		
+    		console.log(nickname);
+    		$.ajax({
+                url  : "${pageContext.request.contextPath}/project/projectPage",
+                data: {nickname:nickname},
+                dataType: "json",
+                type : "get",
+                success : function(data){
+                    console.log(data);
+                    var html = "<table class=table>";
+                    html+="<tr><th>이름</th><th>ID</th></tr>";
+	        		if(data==0) alert("해당하는 정보가 없습니다.");
+	        		else{
+	        			 for(var i in data){
+	                     	html += "<tr><td>"+data[i].nickname+"</td>";
+	                     	html += "<td>"+data[i].userId+"</td></tr>";
+	                     }
+	        			 html+="</table>";
+	                     $("#findUser-result").html(html);
+	        		}
+	        	},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
 
+            });
+    	});
+    	
+	});
+	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -367,12 +402,9 @@
         // right nav memopad 
         $(document).ready(function() {
           var memopad = $('.memopad');
-          
          
           memopad.focus(function(){
         	  $(memopad).html()
-         
-         
           });
           
           memopad.blur(function(){

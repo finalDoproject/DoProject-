@@ -68,4 +68,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMember(member);
 	}
 
+	@Override
+	public Member selectOneNickname(String nickname) {
+		return memberDao.selectOneNickname(nickname);
+	}
+
 }

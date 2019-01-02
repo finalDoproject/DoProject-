@@ -237,8 +237,10 @@
 			
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
+
 			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
 			param.pmmno =$(".headerMno").text();
+
 			var jsonStr = JSON.stringify(param);
 			console.log(jsonStr);
 			
@@ -267,13 +269,14 @@
         /*  var url = "${pageContext.request.contextPath}/project/projectPage.do";  
          window.open(url, "_self");   */
          var pno = $(this).children("#pno").text();
-         //var mno = $(".headerMno").text();
+         var mno = $(".headerMno").text();
          //var pno = document.getElementById('pno').val();
          console.log(pno);
-         //console.log("메인"+mno);
-         
-         window.location.href="<c:url value='projectPage.do' />?pno="+pno;/* +"?mno="+mno; */
 
+         console.log("메인"+mno);
+         
+         location.href = "${pageContext.request.contextPath}/project/projectPage.do?pno="
+             +pno+"&mno="+mno;
          
      }); 
 	 

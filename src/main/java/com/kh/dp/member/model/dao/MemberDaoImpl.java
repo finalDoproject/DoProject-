@@ -55,6 +55,7 @@ public class MemberDaoImpl implements MemberDao {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("member.deleteMember", mno);
 	}
+
 	
 	@Override
 	public int withdrawMember(String userId) {
@@ -67,4 +68,12 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return sqlSession.update("member.updateMember", member);
 	}
+
+
+	@Override
+	public Member selectOneNickname(String nickname) {
+		return sqlSession.selectOne("member.selectOneNickname", nickname);
+	}
+
+
 }

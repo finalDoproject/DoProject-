@@ -15,9 +15,14 @@ public interface ProjectService {
 	
 	
 	// ---- 메모 ---- //
-	List<Map<String, String>> selectMemoList();
+	List<Map<String, String>> selectMemoList(Map<String, Object> map);
 	int updateMemo(String saveMemo);
 
+	// 프로젝트 참여자 검색
+	List<Map<String, String>> selectProjectIntoMember(int pno);
+	int deleteLeaveProject(int pno, int mno);
+	int deleteMemberFromProject(int pno, int mno);
+	List<Map<String, String>> selectAlarmList(int mno);
 
 
 }
