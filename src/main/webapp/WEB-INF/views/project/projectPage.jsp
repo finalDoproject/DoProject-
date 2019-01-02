@@ -57,6 +57,18 @@
 		}
 
 </style>
+<script>
+var chk = 0;
+function taskToggle(){
+	if(chk == 0){
+		$('#taskForm').css('display', 'block');
+		chk=1;
+	}else{
+		$('#taskForm').css('display', 'none');
+		chk=0;
+	}
+}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -66,7 +78,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="#">
+          <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
             <span>글 작성하기</span>
           </a>
@@ -99,7 +111,6 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        
          <li class="nav-item" style="position: absolute; top:720px;">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
             <i class="fas fa-user-friends"></i>
@@ -110,14 +121,20 @@
           <a class="nav-link" href="#">
             <i class="fas fa-user-friends"></i>
             <span>참여자리스트</span></a>
-
+		
         <hr />
+
+        <hr>
+
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
+  				<div>
+				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
+				</div>
   				<c:forEach items="${memberList}" var="mList">
   				<c:if test="${project.pmno eq member.mno}">
   				<div>
@@ -144,7 +161,42 @@
 				</c:if>
 			</div>
         </li>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/tasktest.jsp"/>
+        </div>
       </ul>
+      
+      <!-- invitationModal -->
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+         <div class="modal-dialog" role="document">
+         
+          <form id="proejctEnrollFrm">
+          
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+                 <div class="form-group">
+                   <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
+                   <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                   <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
+                 </div>
+                 <div class="result" id="findUser-result"></div>                
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">초대하기</button>
+             </div>                  
+           </div>
+           
+          </form>
+         </div>
+       </div>   
+      
       
       <!-- 스케줄 매칭 Modal -->
       <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -244,16 +296,19 @@
               </div>
             </div>   
       
-         
+
+     
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+         <c:if test="${memo.mmcontent eq null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
+	     </c:if>
+	     <c:if test="${memo.mmcontent ne null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </c:if>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -319,6 +374,7 @@
             </ul>
         </div>
         <hr>
+
         <!--스케줄 매칭 요청에 대한 Modal -->
   <div class="modal fade mod" id="ongoingModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -503,6 +559,64 @@
       </div>
     </div>
   </div>
+        
+        <!-- Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Schedule Matching</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do" method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%">
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+<%--                                     <c:forEach items="${member}" var="member" varStatus="status">
+                                        <option value="${member.nickName}">${member.nickName} </option>
+                                     </c:forEach> --%>
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right "></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="btn btn-primary">요청 완료</button>
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+                 </form>         
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+      
+
       </div>
       <!-- /right nav -->
 
@@ -550,6 +664,8 @@
         </div>
       </div>
     </div>
+    
+    
 	
 	<!-- right nav-->
     <script src="https://www.w3schools.com/lib/w3.js"></script>
@@ -645,9 +761,25 @@
         }
         // right nav memopad 
         $(document).ready(function() {
+       	var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
+   			var returnValue; // 현재 URL 가져오기 
+   			var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+   			var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+   			// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return 
+   			for (var i = 0; i < parameters.length; i++) { 
+   				var varName = parameters[i].split('=')[0]; 
+   					if (varName.toUpperCase() == paramName.toUpperCase()) { 
+   						returnValue = parameters[i].split('=')[1]; 
+   						return decodeURIComponent(returnValue);
+   					} 
+   				} 
+   			};
+        	
           var memopad = $('.memopad');
+          var pno = getParameters('pno');
+          var mno = getParameters('mno');
+          console.log(pno+":"+mno);
           
-         
           memopad.focus(function(){
         	  $(memopad).html()
          
@@ -659,11 +791,12 @@
             console.log(saveMemo);
   
         	  $.ajax({
-  				url: "${pageContext.request.contextPath }/project/projectPage.do",
+  				url: "${pageContext.request.contextPath}/project/projectPage.do",
   				dataType: "json",
   				/* contentType: 'application/json; charset=utf-8', */
   				type:"post",
-  				data:{saveMemo:saveMemo},
+  				data:{saveMemo:saveMemo,
+  						pno:pno, mno:mno},
   				success : function(data){
   					// alert(data.msg);
   					$(memopad).reload();

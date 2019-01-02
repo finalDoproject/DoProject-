@@ -6,21 +6,15 @@
 		where mmpno = #{pno} and mmmno = #{mno}
 	</select>
 	
-<!-- 	<select id="selectOneMemo" resultType="memo">
-		select mmcontent from memo where mmpno = #{mmpno} and mmmno = #{mmno}
-		select mmcontent from memo where mmpno = #{pno} and mmmno = #{mno}
-	</select>
-	 -->
 	<update id="updateMemo">
 		update memo set mmcontent = #{saveMemo}
 		where mmpno = #{pno} and mmmno = #{mno}
-		<!-- where mmpno = #{mmpno} and mmmno = #{mmmno} -->
 	</update>
-	<!-- <insert id="insertMemo">
-		insert into memo values(seq_memono.nextval, #{memo}, #{password}, default)
+	<insert id="insertMemo">
+		insert into memo values(#{pno}, #{mno}, #{mmcontent})
 	</insert>
 	
 	<delete id="deleteMemo">
-  		delete from memo where memono = #{no} and password = #{password}
- 	</delete> -->
+  		delete from memo where mmpno = #{pno} and mmmno = #{mno}
+ 	</delete>
 </mapper>

@@ -33,10 +33,7 @@ public class TaskServiceImpl implements TaskService {
 	public int insertTask(Task task, List<Attachment> attachList) {
 		int result = 0;
 		int taskNo = 0;
-		/*
-		task.setTstartdate(startdate);
-		task.setTenddate(enddate);
-		*/
+
 		System.out.println("확인 : " + task);
 		try {
 			result = taskDao.insertTask(task);

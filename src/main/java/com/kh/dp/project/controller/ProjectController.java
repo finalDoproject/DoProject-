@@ -31,11 +31,12 @@ public class ProjectController {
 	SideService sideService;
 	
 	@RequestMapping("/project/projectMain.do")
+
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
-		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		
+
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
 		
@@ -43,6 +44,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,String> insertProject(@RequestBody Project project){
 		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
@@ -73,6 +75,7 @@ public class ProjectController {
 		List<Map<String,String>> memoList = projectService.selectMemoList(map);
 		model.addAttribute("memoList",memoList);
 		
+
 		// 스케줄 매칭 요청 리스트 불러오기
 		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
 		model.addAttribute("sArr", sArr);
@@ -92,15 +95,23 @@ public class ProjectController {
 	}
 	
 	
+	
+	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updateMemo(@RequestParam(value="saveMemo", required=false) String saveMemo){
+	public Map<String,String> updateMemo(@RequestParam int pno, @RequestParam int mno,
+										@RequestParam(value="saveMemo", required=false) String saveMemo){
 		System.out.println("메모:" + saveMemo);
-		String msg  = projectService.updateMemo(saveMemo)>0?"수정 성공":"수정 실패";		
-		//model.addAttribute("msg",msg);
-		Map<String, Object> hmap = new HashMap<>();
-		hmap.put("msg", msg);
 		
+		Map<String,Object> map = new HashMap<>();
+		map.put("saveMemo", saveMemo);
+		map.put("pno", pno);
+		map.put("mno", mno);
+		
+		String msg = projectService.updateMemo(map)>0?"메모 저장":"저장 실패";
+
+		Map<String, String> hmap = new HashMap<>();
+		hmap.put("msg", msg);
 		return hmap;
 		
 	}
@@ -110,7 +121,7 @@ public class ProjectController {
 		
 		projectService.deleteLeaveProject(pno, mno);
 		
-		List<Map<String,String>> projectList = projectService.selectProjectList();
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		
 		model.addAttribute("projectList",projectList);
