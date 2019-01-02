@@ -74,7 +74,10 @@ function taskToggle(){
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 	<div id="wrapper" >
-
+	<span id="mno" style="display: none;">${member.mno}</span>
+	<span id="pno" style="display: none;">${project.pno}</span>
+	<c:set value="${member.mno}" var="mno"/>
+	<c:set value="#{project.pno}" var="pno"/>
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
@@ -111,21 +114,7 @@ function taskToggle(){
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-         <li class="nav-item" style="position: absolute; top:720px;">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#invitationModal">
-            <i class="fas fa-user-friends"></i>
-            <span>초대하기</span></a>
-        </li>
-        
-        <li class="nav-item" style="position: absolute; top:760px;">
-          <a class="nav-link" href="#">
-            <i class="fas fa-user-friends"></i>
-            <span>참여자리스트</span></a>
-		
-        <hr />
-
-        <hr>
-
+		<hr />
         <li class="nav-item">
           <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     			<i class="fas fa-user-friends"></i>
@@ -156,8 +145,8 @@ function taskToggle(){
 				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
 				</c:if>
 				<c:if test="${project.pmno eq member.mno}">
-  				<a class="dropdown-item" onclick="alert('팀장은 나갈수 없습니다.')"
-				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
+  				<a class="dropdown-item" onclick="deleteProject('${project.pno}', '${member.mno}')"
+				style="text-align:center; font-weight:bolder;">프로젝트 지우기</a>
 				</c:if>
 			</div>
         </li>
@@ -169,9 +158,7 @@ function taskToggle(){
       <!-- invitationModal -->
       <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
          <div class="modal-dialog" role="document">
-         
           <form id="proejctEnrollFrm">
-          
            <div class="modal-content">
              <div class="modal-header">
                <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
@@ -182,21 +169,18 @@ function taskToggle(){
              <div class="modal-body">
                  <div class="form-group">
                    <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
-                   <input type="text" class="nickname" name="nickname" placeholder="이름 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
-                   <button type="button" id="findUserBtn" class="btn btn-outline-warning">검색</button>
+                   <input type="text" class="nickname" name="nickname" id="nickname" placeholder="닉네임 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                   <button type="button" id="findUserBtn" onclick="findUser();" class="btn btn-outline-warning">검색</button>
+                 </div>
+                 <div class="form-group" id="searchMemberList">
                  </div>
                  <div class="result" id="findUser-result"></div>                
-             </div>
-             <div class="modal-footer">
-               <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-               <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">초대하기</button>
-             </div>                  
+             </div>                 
            </div>
-           
+
           </form>
          </div>
-       </div>   
-      
+       </div>
       
       <!-- 스케줄 매칭 Modal -->
       <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -1015,7 +999,30 @@ function taskToggle(){
   		  }
  	   });
     });
-	
+    
+       /* $('.ongoing').click(function(){
+    	  
+    	   
+       }); */
+	</script>
+    <script>
+    $('input[type="text"]').keydown(function() {
+	    if (event.keyCode === 13) {
+	        event.preventDefault();
+	    }
+	});
+    function inviteProject(mno, nickName, pno){
+    	if(confirm("[" + nickName + "] 님을 초대하시겠습니까?") == true){
+    		// 알림내용 추가, 알림 선택시 초대 수락(알림 테이블에 상태 변경 필요?)
+    		if(mno != ${mno}){
+    			location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    		}else{
+    			alert("본인은 초대할 수 없습니다.");
+    		}
+    	}else{
+    		return false;
+    	}
+	}
 	function kick(name, pno, mno){
 		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
 			if(mno == ${member.mno}){
@@ -1033,6 +1040,48 @@ function taskToggle(){
 		}else{
 			return false;
 		}
+	}
+	function deleteProject(pno, mno){
+		if(confirm("프로젝트를 제거하시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+		}else{
+			return false;
+		}
+	}
+	function findUser(){
+		$("#searchMemberList").empty();
+		$.ajax({
+			url: "${pageContext.request.contextPath }/project/searchMember.do",
+			dataType : "json",
+			type : "GET",
+			data : {userNick:$("#nickname").val()},
+			success : function(response){
+				var printHTML = "";
+				if(response.length == 0){
+					// 존재하지 않음
+					printHTML+="<div>";
+					printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+					printHTML+="&nbsp;<span style='vertical-align:middle;'>존재하지 않는 아이디 또는 닉네임 입니다.</span></a>";
+					printHTML+="</div>";
+					$('#searchMemberList').append(printHTML);
+					printHTML = "";
+				}else{
+					// 존재함
+					for(var i=0; i<response.length;i++){
+						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
+						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
+						printHTML+="</div>";
+						$('#searchMemberList').append(printHTML);
+						printHTML = "";
+					}
+				}
+			},
+		    error:function(request,status,error){
+		    	alert("code:"+request.status+"\n"+"error:"+error);
+		    }
+		});
 	}
 	</script>
 	
