@@ -363,7 +363,7 @@ function taskToggle(){
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMNO}" id="smno"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="dd();">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
@@ -688,8 +688,13 @@ function taskToggle(){
 	    	placeholder : "함께할 인원을 선택해주세요."
 	    }); 
 	 	<!-- select 클릭 시 효과  + 아이디 값 가져오기 -->
-	    $(".select").click(function(){
-		    	alert("dd");
+	    function dd(){
+		    	//alert("dd");
+		    	
+		    	$(".select").click(function(){
+		    		console.log("clicked it!");
+		    	});
+		    	
 		    	/* var dtNo = $(this).attr("id");
 		    	var smNo = $('#smno').attr("id"); */
 		    	
@@ -711,7 +716,7 @@ function taskToggle(){
 		      					  + error);
 		         	}
 		         }); */
-		});
+		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
 	 	
