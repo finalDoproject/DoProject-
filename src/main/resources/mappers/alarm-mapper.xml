@@ -17,4 +17,8 @@
 		WHERE A.AMNO = #{mno} AND A.ACONDITION = 'Y'
 	</select>
 	
+	<!-- <select id="selectCountAlarm" parameterType="_int" resultType="Alarm">
+		SELECT COUNT(*) FROM ALARM WHERE AMNO = #{MNO}
+	</select> -->
+	
 </mapper>
