@@ -1,5 +1,6 @@
 package com.kh.dp.alarm.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,11 @@ public class AlarmDaoImpl implements AlarmDao{
 	}
 
 	@Override
-	public List<Alarm> selectSearchAlarm(int mno) {
-		return sqlSession.selectList("alarm.selectAlarmList", mno);
+	public List<Alarm> selectSearchAlarm(int mno, int loginmno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mno", mno);
+		map.put("loginmno", loginmno);
+		return sqlSession.selectList("alarm.selectAlarmList", map);
 	}
 
 }

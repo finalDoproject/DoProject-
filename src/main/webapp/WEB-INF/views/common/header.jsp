@@ -76,7 +76,7 @@
 	              </a>
 	            </li>
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno});" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno}, 1);" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger" id="alarmCount"></span>
 	          </a>
@@ -188,13 +188,14 @@
 			});
 		}
 		
-		function alarmList(mNo){
+		function alarmList(mNo, loginMno){
+			console.log(loginMno);
 			$("#alarmList").empty();
 			$.ajax({
 				url:"${pageContext.request.contextPath}/alarm/alarmList.al",
 				dataType:"json",
 				type : "GET",
-				data : {mno:mNo},
+				data : {mno:mNo, loginmno:loginMno},
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){
@@ -209,17 +210,17 @@
 							if(response[i].atype == 1){
 								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
 							}else if(response[i].atype == 2){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].apno+"]</span>에 초대되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
 							}else if(response[i].atype == 3){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].apno+"]</span>에서 <span style='font-weight:bold'>["+response[i].amno+"]</span>님이 나갔습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
 							}else if(response[i].atype == 4){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].apno+"]</span>에서 추방당했습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
 							}else if(response[i].atype == 5){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].atno+"]</span>에서 담당자로 지명되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
 							}else if(response[i].atype == 6){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[스케줄매칭명]</span> 새로운 요청이 있습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
 							}else if(response[i].atype == 7){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[스케줄매칭명]</span>이 종료되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
 							}
 							$('#alarmList').append(printHTML);
 							printHTML = "";					

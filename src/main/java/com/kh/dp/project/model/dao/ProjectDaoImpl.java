@@ -96,6 +96,36 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 	}
 
+	@Override
+	public List<Member> selectSearchMember(int pno) {
+		return sqlSession.selectList("project.searchMemberList", pno);
+	}
+
+	@Override
+	public Object selectSearchPM(int pno, int mno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		return sqlSession.selectOne("project.selectSearchPM", map);
+	}
+
+	@Override
+	public int insertExileAlarm(int pno, int mno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		return sqlSession.insert("project.insertExileAlarm", map);
+	}
+
+	@Override
+	public int insertLeaveAlarm(int pno, int mno, int apmno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pno", pno);
+		map.put("mno", mno);
+		map.put("apmno", apmno);
+		return sqlSession.insert("project.insertLeaveAlarm", map);
+	}
+
 	
 
 	
