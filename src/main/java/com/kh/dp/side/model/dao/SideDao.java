@@ -19,4 +19,8 @@ public interface SideDao {
 
 	public List<MatchingInfo> browseMatchingInfo(int mno);
 
+	public List browseDT(int mNo, int requestNo);
+
+	public int insertMySelf(int mno);
+
 }

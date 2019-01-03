@@ -304,5 +304,19 @@ a:hover{ text-decoration:none; color: #555; }
 .datepicker {
     	width : 180px;
     }
-
+.modal-title{
+	margin-left : 180px;
+	color : black;
+		}		
+.schedule {
+	margin-left : auto;
+	margin-right : auto;
+	width : 100%;
+	height : 75%;
+	border : 5px solid black;
+		}
+.store {
+	margin-left : auto;
+	margin-right : auto;
+		}
 

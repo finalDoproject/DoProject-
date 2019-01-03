@@ -18,8 +18,12 @@
 	  INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
 	 </insert>
 	 
+	 <insert parameterType="_int" id="insertMySelf">
+	 INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
+	 </insert>
+	 
 	 <insert parameterType="Join" id="insertMatchingDT">
-	  INSERT INTO MEMBER_MATCHGIN VALUES (#{sjmno}, #{sjsm}, #{sjdtno})
+	  INSERT INTO MEMBER_MATCHING VALUES (#{sjmno}, #{sjsm}, #{sjdtno})
 	 </insert>
 	 
 	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
@@ -28,6 +32,14 @@
 	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
 	 WHERE SJMNO = #{mno}
 	 </select>
+	 
+	 <select id="browseDT" resultType="Join">
+	 SELECT MMDTNO FROM MEMBER_MATCHING
+	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo}
+	 </select>
+	 
+	 
+	 
 </mapper>
 
 
