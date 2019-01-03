@@ -30,6 +30,9 @@ public interface ProjectDao {
 	List<Member> selectSearchMember(String userNick);
 	int insertInviteProject(int pno, int mno);
 	List<Member> selectSearchMember(int pno);
+	Object selectSearchPM(int pno, int mno);
+	int insertExileAlarm(int pno, int mno);
+	int insertLeaveAlarm(int pno, int mno, int apmno);
 
 
 }

@@ -29,6 +29,9 @@ public interface ProjectService {
 	List<Member> selectSearchMember(String userNick);
 	int insertInviteProject(int pno, int mno);
 	List<Member> selectSearchMember(int pno);
+	Object selectSearchPM(int pno, int mno);
+	int insertExileAlarm(int mno, int pno);
+	int insertLeaveAlarm(int mno, int pno, int apmno);
 
 
 }

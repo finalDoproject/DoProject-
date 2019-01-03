@@ -136,7 +136,7 @@ function taskToggle(){
            <div class="modal-content">
              <div class="modal-header">
                <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">&times;</span>
                </button>
              </div>
@@ -147,8 +147,7 @@ function taskToggle(){
                    <button type="button" id="findUserBtn" onclick="findUser();" class="btn btn-outline-warning">검색</button>
                  </div>
                  <div class="form-group" id="searchMemberList">
-                 </div>
-                 <div class="result" id="findUser-result"></div>                
+                 </div>              
              </div>                 
            </div>
 
@@ -672,40 +671,7 @@ function taskToggle(){
 		});
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
-	 	
-	 	$(function(){
-	    	$("#findUserBtn").on("click",function(){
-	    		var nickname = $('.nickname').val();
-	    		
-	    		console.log(nickname);
-	    		$.ajax({
-	                url  : "${pageContext.request.contextPath}/project/projectPage",
-	                data: {nickname:nickname},
-	                dataType: "json",
-	                type : "get",
-	                success : function(data){
-	                    console.log(data);
-	                    var html = "<table class=table>";
-	                    html+="<tr><th>이름</th><th>ID</th></tr>";
-		        		if(data==0) alert("해당하는 정보가 없습니다.");
-		        		else{
-		        			 for(var i in data){
-		                     	html += "<tr><td>"+data[i].nickname+"</td>";
-		                     	html += "<td>"+data[i].userId+"</td></tr>";
-		                     }
-		        			 html+="</table>";
-		                     $("#findUser-result").html(html);
-		        		}
-		        	},
-		            error : function(jqxhr, textStatus, errorThrown){
-		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
-		            }
-
-	            });
-	    	});
-	    	
-		});
-	 	
+	 		 	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -985,11 +951,25 @@ function taskToggle(){
 	        event.preventDefault();
 	    }
 	});
-    function inviteProject(mno, nickName, pno){
+    
+    function inviteProject(mNo, nickName, pNo){
     	if(confirm("[" + nickName + "] 님을 초대하시겠습니까?") == true){
     		// 알림내용 추가, 알림 선택시 초대 수락(알림 테이블에 상태 변경 필요?)
-    		if(mno != ${mno}){
-    			location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    		if(mNo != $("#mno").text()){
+    			// ajax로 해당 회원 초대만 하면 됨
+    			//location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    			$.ajax({
+    				url:"${pageContext.request.contextPath}/project/inviteProject.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
     		}else{
     			alert("본인은 초대할 수 없습니다.");
     		}
@@ -997,20 +977,33 @@ function taskToggle(){
     		return false;
     	}
 	}
-	function kick(name, pno, mno, mmno){
+	function kick(name, pNo, mNo, mMno){
+		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
 		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
-			if(mno == ${member.mno}){
+			if(mNo == $("#mno").text()){
 				alert("본인은 추방할 수 없습니다.");
 			}else{
-				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno+"&mmno="+mmno;
+				//location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno+"&mmno="+mmno;
+				$.ajax({
+    				url:"${pageContext.request.contextPath}/project/exile.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo, mmno:mMno},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
 			}
 		}else{
 			return;
 		}
 	}
-	function leaveProject(pno, mno){
+	function leaveProject(pno, mno, pmno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
-			location.href="${pageContext.request.contextPath}/project/leaveProject.do?pno="+pno+"&mno="+mno;
+			location.href="${pageContext.request.contextPath}/project/leaveProject.do?pno="+pno+"&mno="+mno+"&pmno="+pmno;
 		}else{
 			return false;
 		}
@@ -1088,7 +1081,7 @@ function taskToggle(){
 						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
-					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;);'";
+					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
 					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 나가기</a>";
 					$('#projectIntoMemberList').append(printHTML);
 					printHTML="";

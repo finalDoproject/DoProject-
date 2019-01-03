@@ -20,8 +20,8 @@ public class AlarmServiceImpl implements AlarmService{
 	}
 
 	@Override
-	public List<Alarm> selectSearchAlarm(int mno) {
-		return alarmDao.selectSearchAlarm(mno);
+	public List<Alarm> selectSearchAlarm(int mno, int loginmno) {
+		return alarmDao.selectSearchAlarm(mno, loginmno);
 	}
 	
 

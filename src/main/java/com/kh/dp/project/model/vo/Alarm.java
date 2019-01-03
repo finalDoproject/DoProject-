@@ -14,12 +14,13 @@ public class Alarm {
 	private String ptitle;
 	private String ttitle;
 	private String smcontent;
+	private String nickname;
 	
 	public Alarm() {
 		super();
 	}
 	public Alarm(int ano, String acontent, String acondition, int atype, int amno, int apno, int atno, int asmno,
-			String ptitle, String ttitle, String smcontent) {
+			String ptitle, String ttitle, String smcontent, String nickname) {
 		super();
 		this.ano = ano;
 		this.acontent = acontent;
@@ -32,6 +33,7 @@ public class Alarm {
 		this.ptitle = ptitle;
 		this.ttitle = ttitle;
 		this.smcontent = smcontent;
+		this.nickname = nickname;
 	}
 	public int getAno() {
 		return ano;
@@ -99,11 +101,17 @@ public class Alarm {
 	public void setSmcontent(String smcontent) {
 		this.smcontent = smcontent;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	@Override
 	public String toString() {
 		return "Alarm [ano=" + ano + ", acontent=" + acontent + ", acondition=" + acondition + ", atype=" + atype
 				+ ", amno=" + amno + ", apno=" + apno + ", atno=" + atno + ", asmno=" + asmno + ", ptitle=" + ptitle
-				+ ", ttitle=" + ttitle + ", smcontent=" + smcontent + "]";
+				+ ", ttitle=" + ttitle + ", smcontent=" + smcontent + ", nickname=" + nickname + "]";
 	}
 	
 }
