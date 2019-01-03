@@ -106,7 +106,7 @@ var eventId = 0;
 	            // Show Modal
 	            $("#myCalendarModal").modal('show');
 			},
-			events: [
+			/*events: [
 				{
 					id: ++eventId,
 					title: 'All Day Event',
@@ -148,7 +148,7 @@ var eventId = 0;
 					end: new Date(y, m, 21, 22, 30),
 					allDay: false,
 				}
-			],			
+			],	*/		
 		});
 		
 		
