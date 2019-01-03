@@ -93,6 +93,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		map.put("pno", pno);
 		map.put("mno", mno);
 		return sqlSession.insert("project.insertInviteProject", map);
+		
 	}
 
 	

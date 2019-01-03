@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="alarm">
+	<resultMap type="map" id="alarm"/>	
+	
+	<update id="deleteAlarmList" parameterType="Alarm">
+		UPDATE ALARM SET ACONDITION = 'N' WHERE ANO = #{ano}
+	</update>
+	
+	<select id="selectAlarmList" resultType="alarm">
+		SELECT * FROM ALARM WHERE AMNO = #{mno} AND ACONDITION = 'Y'
+	</select>
+	
+</mapper>
