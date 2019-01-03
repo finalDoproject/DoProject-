@@ -15,7 +15,7 @@
 	 </insert>
 	 
 	 <insert parameterType="_int" id="insertMember">
-	  INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
+	 INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
 	 </insert>
 	 
 	 <insert parameterType="_int" id="insertMySelf">

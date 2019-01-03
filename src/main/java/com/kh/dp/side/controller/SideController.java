@@ -73,7 +73,8 @@ public class SideController {
 	
 	@RequestMapping("/project/browseDT.do")
 	@ResponseBody
-	public List<Join> browseDT(@RequestParam int requestNo,
+	public List<Join> browseDT(
+						@RequestParam int requestNo,
 						@RequestParam int mNo) {
 		
 		List DateTime = sideService.browseDT(mNo, requestNo);
@@ -81,6 +82,11 @@ public class SideController {
 		System.out.println(DateTime+", requestNo : " + requestNo + ", mNo : " + mNo);
 		return DateTime;
 	}
+	
+	
+	
+	
+	
 	
 	
 	

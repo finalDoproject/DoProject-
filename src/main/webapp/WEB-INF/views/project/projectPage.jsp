@@ -337,6 +337,8 @@ function taskToggle(){
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMNO}" id="smno"/>
+                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
+                <input type="hidden" value="${s.SMENDDATE }" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
@@ -364,165 +366,165 @@ function taskToggle(){
                 <thead>
                     <tr >
                         <th></th>
-                        <th class="1">일</th>
-                        <th class="2">월</th>
-                        <th class="3">화</th>
-                        <th class="4">수</th>
-                        <th class="5">목</th>
-                        <th class="6">금</th>
-                        <th class="7">토</th>
+                        <th class="select 1">일</th>
+                        <th class="select 2">월</th>
+                        <th class="select 3">화</th>
+                        <th class="select 4">수</th>
+                        <th class="select 5">목</th>
+                        <th class="select 6">금</th>
+                        <th class="select 7">토</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <th>9</th>
-                        <th id="1" class="select 1"></th>
-                        <th id="16" class="select 2"></th>
-                        <th id="31" class="select 3"></th>
-                        <th id="46" class="select 4"></th>
-                        <th id="61" class="select 5"></th>
-                        <th id="76" class="select 6"></th>
-                        <th id="91" class="select 7"></th>
+                        <td id="1" class="select 1"></td>
+                        <td id="16" class="select 2"></td>
+                        <td id="31" class="select 3"></td>
+                        <td id="46" class="select 4"></td>
+                        <td id="61" class="select 5"></td>
+                        <td id="76" class="select 6"></td>
+                        <td id="91" class="select 7"></td>
                     </tr>
                     <tr>
                          <th>10</th>
-                         <th id="2" class="select 1"></th>
-                         <th id="17" class="select 2"></th>
-                         <th id="32" class="select 3"></th>
-                         <th id="47" class="select 4"></th>
-                         <th id="62" class="select 5"></th>
-                         <th id="77" class="select 6"></th>
-                         <th id="92" class="select 7"></th>
+                         <td id="2" class="select 1"></td>
+                         <td id="17" class="select 2"></td>
+                         <td id="32" class="select 3"></td>
+                         <td id="47" class="select 4"></td>
+                         <td id="62" class="select 5"></td>
+                         <td id="77" class="select 6"></td>
+                         <td id="92" class="select 7"></td>
                     </tr>
                     <tr>
                           <th>11</th>
-                          <th id="3" class="select 1"></th>
-                          <th id="18" class="select 2"></th>
-                          <th id="33" class="select 3"></th>
-                          <th id="48" class="select 4"></th>
-                          <th id="63" class="select 5"></th>
-                          <th id="78" class="select 6"></th>
-                          <th id="93" class="select 7"></th>
+                          <td id="3" class="select 1"></td>
+                          <td id="18" class="select 2"></td>
+                          <td id="33" class="select 3"></td>
+                          <td id="48" class="select 4"></td>
+                          <td id="63" class="select 5"></td>
+                          <td id="78" class="select 6"></td>
+                          <td id="93" class="select 7"></td>
                     </tr>
                         <tr>
                         <th>12</th>
-                        <th id="4" class="select 1"></th>
-                        <th id="19" class="select 2"></th>
-                        <th id="34" class="select 3"></th>
-                        <th id="49" class="select 4"></th>
-                        <th id="64" class="select 5"></th>
-                        <th id="79" class="select 6"></th>
-                        <th id="94" class="select 7"></th>
+                        <td id="4" class="select 1"></td>
+                        <td id="19" class="select 2"></td>
+                        <td id="34" class="select 3"></td>
+                        <td id="49" class="select 4"></td>
+                        <td id="64" class="select 5"></td>
+                        <td id="79" class="select 6"></td>
+                        <td id="94" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>13</th>
-                            <th id="5" class="select 1"></th>
-                            <th id="20" class="select 2"></th>
-                            <th id="35" class="select 3"></th>
-                            <th id="50" class="select 4"></th>
-                            <th id="65" class="select 5"></th>
-                            <th id="80" class="select 6"></th>
-                            <th id="95" class="select 7"></th>
+                            <td id="5" class="select 1"></td>
+                            <td id="20" class="select 2"></td>
+                            <td id="35" class="select 3"></td>
+                            <td id="50" class="select 4"></td>
+                            <td id="65" class="select 5"></td>
+                            <td id="80" class="select 6"></td>
+                            <td id="95" class="select 7"></td>
                     </tr>
                     <tr>
-                            <th>14</th>
-                            <th id="6" class="select 1"></th>
-                            <th id="21" class="select 2"></th>
-                            <th id="36" class="select 3"></th>
-                            <th id="51" class="select 4"></th>
-                            <th id="66" class="select 5"></th>
-                            <th id="81" class="select 6"></th>
-                            <th id="96" class="select 7"></th>
+                            <td>14</th>
+                            <td id="6" class="select 1"></td>
+                            <td id="21" class="select 2"></td>
+                            <td id="36" class="select 3"></td>
+                            <td id="51" class="select 4"></td>
+                            <td id="66" class="select 5"></td>
+                            <td id="81" class="select 6"></td>
+                            <td id="96" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>15</th>
-                            <th id="7" class="select 1"></th>
-                            <th id="22" class="select 2"></th>
-                            <th id="37" class="select 3"></th>
-                            <th id="52" class="select 4"></th>
-                            <th id="67" class="select 5"></th>
-                            <th id="82" class="select 6"></th>
-                            <th id="97" class="select 7"></th>
+                            <td id="7" class="select 1"></td>
+                            <td id="22" class="select 2"></td>
+                            <td id="37" class="select 3"></td>
+                            <td id="52" class="select 4"></td>
+                            <td id="67" class="select 5"></td>
+                            <td id="82" class="select 6"></td>
+                            <td id="97" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>16</th>
-                            <th id="8" class="select 1"></th>
-                            <th id="23" class="select 2"></th>
-                            <th id="38" class="select 3"></th>
-                            <th id="53" class="select 4"></th>
-                            <th id="68" class="select 5"></th>
-                            <th id="83" class="select 6"></th>
-                            <th id="98" class="select 7"></th>
+                            <td id="8" class="select 1"></td>
+                            <td id="23" class="select 2"></td>
+                            <td id="38" class="select 3"></td>
+                            <td id="53" class="select 4"></td>
+                            <td id="68" class="select 5"></td>
+                            <td id="83" class="select 6"></td>
+                            <td id="98" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>17</th>
-                            <th id="9" class="select 1"></th>
-                            <th id="24" class="select 2"></th>
-                            <th id="39" class="select 3"></th>
-                            <th id="54" class="select 4"></th>
-                            <th id="69" class="select 5"></th>
-                            <th id="84" class="select 6"></th>
-                            <th id="99" class="select 7"></th>
+                            <td id="9" class="select 1"></td>
+                            <td id="24" class="select 2"></td>
+                            <td id="39" class="select 3"></td>
+                            <td id="54" class="select 4"></td>
+                            <td id="69" class="select 5"></td>
+                            <td id="84" class="select 6"></td>
+                            <td id="99" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>18</th>
-                            <th id="10" class="select 1"></th>
-                            <th id="25" class="select 2"></th>
-                            <th id="40" class="select 3"></th>
-                            <th id="55" class="select 4"></th>
-                            <th id="70" class="select 5"></th>
-                            <th id="85" class="select 6"></th>
-                            <th id="100" class="select 7"></th>
+                            <td id="10" class="select 1"></td>
+                            <td id="25" class="select 2"></td>
+                            <td id="40" class="select 3"></td>
+                            <td id="55" class="select 4"></td>
+                            <td id="70" class="select 5"></td>
+                            <td id="85" class="select 6"></td>
+                            <td id="100" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>19</th>
-                            <th id="11" class="select 1"></th>
-                            <th id="26" class="select 2"></th>
-                            <th id="41" class="select 3"></th>
-                            <th id="56" class="select 4"></th>
-                            <th id="71" class="select 5"></th>
-                            <th id="86" class="select 6"></th>
-                            <th id="101" class="select 7"></th>
+                            <td id="11" class="select 1"></td>
+                            <td id="26" class="select 2"></td>
+                            <td id="41" class="select 3"></td>
+                            <td id="56" class="select 4"></td>
+                            <td id="71" class="select 5"></td>
+                            <td id="86" class="select 6"></td>
+                            <td id="101" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>20</th>
-                            <th id="12" class="select 1"></th>
-                            <th id="27" class="select 2"></th>
-                            <th id="42" class="select 3"></th>
-                            <th id="57" class="select 4"></th>
-                            <th id="72" class="select 5"></th>
-                            <th id="87" class="select 6"></th>
-                            <th id="102" class="select 7"></th>
+                            <td id="12" class="select 1"></td>
+                            <td id="27" class="select 2"></td>
+                            <td id="42" class="select 3"></td>
+                            <td id="57" class="select 4"></td>
+                            <td id="72" class="select 5"></td>
+                            <td id="87" class="select 6"></td>
+                            <td id="102" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>21</th>
-                            <th id="13" class="select 1"></th>
-                            <th id="28" class="select 2"></th>
-                            <th id="43" class="select 3"></th>
-                            <th id="58" class="select 4"></th>
-                            <th id="73" class="select 5"></th>
-                            <th id="88" class="select 6"></th>
-                            <th id="103" class="select 7"></th>
+                            <td id="13" class="select 1"></td>
+                            <td id="28" class="select 2"></td>
+                            <td id="43" class="select 3"></td>
+                            <td id="58" class="select 4"></td>
+                            <td id="73" class="select 5"></td>
+                            <td id="88" class="select 6"></td>
+                            <td id="103" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>22</th>
-                            <th id="14" class="select 1"></th>
-                            <th id="29" class="select 2"></th>
-                            <th id="44" class="select 3"></th>
-                            <th id="59" class="select 4"></th>
-                            <th id="74" class="select 5"></th>
-                            <th id="89" class="select 6"></th>
-                            <th id="104" class="select 7"></th>
+                            <td id="14" class="select 1"></td>
+                            <td id="29" class="select 2"></td>
+                            <td id="44" class="select 3"></td>
+                            <td id="59" class="select 4"></td>
+                            <td id="74" class="select 5"></td>
+                            <td id="89" class="select 6"></td>
+                            <td id="104" class="select 7"></td>
                     </tr>
                     <tr>
                             <th>23</th>
-                            <th id="15" class="select 1"></th>
-                            <th id="30" class="select 2"></th>
-                            <th id="45" class="select 3"></th>
-                            <th id="60" class="select 4"></th>
-                            <th id="75" class="select 5"></th>
-                            <th id="90" class="select 6"></th>
-                            <th id="105" class="select 7"></th>
+                            <td id="15" class="select 1"></td>
+                            <td id="30" class="select 2"></td>
+                            <td id="45" class="select 3"></td>
+                            <td id="60" class="select 4"></td>
+                            <td id="75" class="select 5"></td>
+                            <td id="90" class="select 6"></td>
+                            <td id="105" class="select 7"></td>
                     </tr>
                 </tbody>
             </table>
@@ -607,25 +609,52 @@ function taskToggle(){
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
 	    function selectId(){
 	 		
+	 		// dateTime 번호
 	    	var dtNo = $(this).attr("id");
+	 		// 요청 번호
 	    	var requestNo = $('#smno').val();
+	 		// 회원 번호
 	    	var mNo = ${member.mno};
+	    	// 요청 시작일
+	    	var smdate = $('#smdate').val();
+	    	// 요청 종료일
+	    	var smenddate = $('#smenddate').val();
 	    	
-	 		 $.ajax({
+	    	var week = ['1','2','3','4','5','6','7'];
+	    	var startDayOfWeek = week[new Date(smdate).getDay()];
+	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
+	    	
+	    	if(startDayOfWeek < endDayOfWeek) {
+	    		
+	    	}
+	    	$('.'+startDayOfWeek).css("background-color", "lightgray");
+	    	
+	    	/* $.ajax({
+	    		url : '${pageContext.request.contextPath}/project/getDay.do',
+	    		data : {requestNo : requestNo},
+	    		dataType : "json",
+	    		success : function(data){
+	    			alert(data);
+	    		},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	};
+	    	}); */
+	    	
+	 		 /* $.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
 	 			data : {requestNo : requestNo,
 	 				    mNo : mNo},
 	 			dataType : "json",
 	 			success : function(data){
-	 				 for(var i in data){
-	                     	alert(data[i].mmdtno);
-	                     }
+	 				
 	 			},error : function(request, status, error){
 	      			alert(request + "\n"
 	      					  + status + "\n"
 	      					  + error);
 	         	}
-	 		}); 
+	 		});  */
 		    	
 		    	/* $(".select").click(function(){
 			    	
