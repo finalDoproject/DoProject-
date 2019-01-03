@@ -88,5 +88,10 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.insertInviteProject(pno, mno);
 	}
 
+	@Override
+	public List<Member> selectSearchMember(int pno) {
+		return projectDao.selectSearchMember(pno);
+	}
+
 	
 }

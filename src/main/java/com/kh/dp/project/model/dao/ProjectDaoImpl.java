@@ -96,6 +96,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 	}
 
+	@Override
+	public List<Member> selectSearchMember(int pno) {
+		return sqlSession.selectList("project.searchMemberList", pno);
+	}
+
 	
 
 	

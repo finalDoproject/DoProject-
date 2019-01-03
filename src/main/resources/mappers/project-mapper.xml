@@ -43,4 +43,8 @@
 	<insert id="insertInviteProject">
 		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno},DEFAULT)
 	</insert>
+	
+	<select id="searchMemberList" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
 </mapper>

@@ -1,7 +1,6 @@
 package com.kh.dp.alarm.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.dp.alarm.model.service.AlarmService;
 import com.kh.dp.alarm.model.vo.Alarm;
-import com.kh.dp.member.model.vo.Member;
 
 @Controller
 public class AlarmController {

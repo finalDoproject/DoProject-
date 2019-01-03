@@ -127,19 +127,29 @@ public class ProjectController {
 	public String leaveProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
 		
 		projectService.deleteLeaveProject(pno, mno);
+		// 프로젝트 추방됬을 때 성공적으로 나갔으면, alarm 테이블에 데이터 추가
 		
-		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		
-		model.addAttribute("projectList",projectList);
+		//model.addAttribute("projectList",projectList);
 		//model.addAttribute("alarmList", alarmList);
 		
+		//return "project/projectMain";
+		/*Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);*/
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		model.addAttribute("projectList",projectList);
+				
 		return "project/projectMain";
 	}
 	
 	@RequestMapping(value="/project/exile.do", method=RequestMethod.GET)
 	public String deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
-		
+		// 프로젝트 나갔을 때
 		projectService.deleteMemberFromProject(pno, mno);
 		
 		Project project = projectService.selectOneProject(pno);
@@ -188,6 +198,15 @@ public class ProjectController {
 		model.addAttribute("memberList", memberList);
 				
 		return "project/projectPage";
+	}
+	
+	@RequestMapping(value="/project/searchMemberList.do", method=RequestMethod.GET)
+	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
+		
+		List<Member> m = projectService.selectSearchMember(pno);
+		
+		return m;
+		
 	}
 	
 }

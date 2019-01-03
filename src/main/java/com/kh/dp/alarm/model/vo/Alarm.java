@@ -9,11 +9,17 @@ public class Alarm {
 	private int amno;	 
 	private int apno;	 
 	private int atno;
+	private int asmno;
+	
+	private String ptitle;
+	private String ttitle;
+	private String smcontent;
 	
 	public Alarm() {
 		super();
 	}
-	public Alarm(int ano, String acontent, String acondition, int atype, int amno, int apno, int atno) {
+	public Alarm(int ano, String acontent, String acondition, int atype, int amno, int apno, int atno, int asmno,
+			String ptitle, String ttitle, String smcontent) {
 		super();
 		this.ano = ano;
 		this.acontent = acontent;
@@ -22,6 +28,10 @@ public class Alarm {
 		this.amno = amno;
 		this.apno = apno;
 		this.atno = atno;
+		this.asmno = asmno;
+		this.ptitle = ptitle;
+		this.ttitle = ttitle;
+		this.smcontent = smcontent;
 	}
 	public int getAno() {
 		return ano;
@@ -65,10 +75,35 @@ public class Alarm {
 	public void setAtno(int atno) {
 		this.atno = atno;
 	}
+	public int getAsmno() {
+		return asmno;
+	}
+	public void setAsmno(int asmno) {
+		this.asmno = asmno;
+	}
+	public String getPtitle() {
+		return ptitle;
+	}
+	public void setPtitle(String ptitle) {
+		this.ptitle = ptitle;
+	}
+	public String getTtitle() {
+		return ttitle;
+	}
+	public void setTtitle(String ttitle) {
+		this.ttitle = ttitle;
+	}
+	public String getSmcontent() {
+		return smcontent;
+	}
+	public void setSmcontent(String smcontent) {
+		this.smcontent = smcontent;
+	}
 	@Override
 	public String toString() {
 		return "Alarm [ano=" + ano + ", acontent=" + acontent + ", acondition=" + acondition + ", atype=" + atype
-				+ ", amno=" + amno + ", apno=" + apno + ", atno=" + atno + "]";
+				+ ", amno=" + amno + ", apno=" + apno + ", atno=" + atno + ", asmno=" + asmno + ", ptitle=" + ptitle
+				+ ", ttitle=" + ttitle + ", smcontent=" + smcontent + "]";
 	}
 	
 }
