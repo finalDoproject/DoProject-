@@ -121,9 +121,11 @@ function taskToggle(){
     			<span>참여자 목록</span>
   			</a>
   			<div class="dropdown-menu">
+  				<c:if test="${project.pmno eq member.mno}">
   				<div>
 				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
 				</div>
+				</c:if>
   				<c:forEach items="${memberList}" var="mList">
   				<c:if test="${project.pmno eq member.mno}">
   				<div>
@@ -1043,7 +1045,11 @@ function taskToggle(){
 	}
 	function deleteProject(pno, mno){
 		if(confirm("프로젝트를 제거하시겠습니까?") == true){
-			location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+			if(confirm("한번 제거하시면 복구할 수 없습니다.") == true){
+				location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}

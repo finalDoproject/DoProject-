@@ -40,10 +40,10 @@ public class ProjectController {
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 
 		model.addAttribute("projectList",projectList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -66,10 +66,10 @@ public class ProjectController {
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		// 스케줄 매칭 인원 불러오기 메소드
 		List<Member> mArr =  sideService.browseMember(pno);
@@ -129,10 +129,10 @@ public class ProjectController {
 		projectService.deleteLeaveProject(pno, mno);
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		
 		model.addAttribute("projectList",projectList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -156,11 +156,11 @@ public class ProjectController {
 		
 		System.out.println(projectService.deleteProject(pno));
 		
-		List<Map<String,String>> projectList = projectService.selectProjectList();
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		
 		model.addAttribute("projectList",projectList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -182,8 +182,8 @@ public class ProjectController {
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		model.addAttribute("alarmList", alarmList);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//model.addAttribute("alarmList", alarmList);
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
 				
