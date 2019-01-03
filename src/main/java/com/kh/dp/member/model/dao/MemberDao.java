@@ -22,5 +22,12 @@ public interface MemberDao {
 
 	int deleteMember(int mno);
 
-	Member searchPw(String userId, String email);
+	
+
+	int updateNewPw(String email);
+	
+	
+	
+
+	
 }

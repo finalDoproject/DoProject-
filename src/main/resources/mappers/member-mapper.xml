@@ -38,5 +38,11 @@
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+	<update id="member.memberNewPw" parameterType="int">
+		UPDATE MEMBER
+		SET PASSWORD = #{password}
+		WHERE EMAIL = #{email}
+	</update>
+	
 	
 </mapper>

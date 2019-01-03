@@ -136,7 +136,7 @@ color:#F88E6F;
 
 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>search password</title>
 </head>
 <body>
 
@@ -171,19 +171,13 @@ color:#F88E6F;
 		
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
-		<input type="submit" id="findId" class="login pull-right" value="가입완료">
+		<input type="submit" id="findId" class="login pull-right" value="비밀번호 찾기">
 		<br />
 		<!-- <div class="clear-fix"></div>  -->
 	    </div>
 	
 	
 	</form>
-	
-	
-	
-	
-
-	
 	
 		
 </div>
@@ -209,6 +203,11 @@ $(document).ready(function(){
 	$('p.formLabel').click(function(){
 		 $(this).parent().children('.form-style').focus();
 	});
+});
+
+
+$("findId").submit(function(){
+	alert("임시 비밀번호가 입력하신 이메일로 전송되었습니다. 임시 비밀번호로 로그인 하신 후 꼭 비밀번호 변경을 하시기 바랍니다.");
 });
 
 </script>

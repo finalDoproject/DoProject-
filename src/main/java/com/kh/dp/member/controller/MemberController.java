@@ -128,16 +128,56 @@ public class MemberController {
 		return "common/msg";
 	}
 	
+
 	@RequestMapping(value="/member/findPw.do", method = RequestMethod.POST)
-	public String searchPw(@RequestParam String userId,
-			               @RequestParam String email,
-			               HttpServletRequest request) throws Exception{
+	public ModelAndView findPw1(@RequestParam String userId,  @RequestParam String email) {
 		
+		ModelAndView mv = new ModelAndView();
 		
-		memberService.mailSendWithPassword(userId, email, request);
+		Member m = memberService.selectOne(userId);
 		
-		return "/member/findPw";
+		String loc = "/";
+		String msg = "";
+		
+		if( m.getUserId() == null ) {
+			msg = "존재하지 않는 아이디입니다.";
+		} else if( m.getEmail() == null) {
+			
+			msg = "존재하지 않는 이메일입니다.";
+			
+		} else {
+			loc="/member/findPw2.do";
+		}
+		
+		mv.addObject("loc", loc).addObject("msg", msg);
+		mv.setViewName("common/msg");
+
+		return mv;
+		
 	}
+	
+	@RequestMapping(value="/member/findPw2.do", method = RequestMethod.POST)
+	public ModelAndView newPw(@RequestParam String email) {
+		
+		ModelAndView mv = new ModelAndView();
+		int result = memberService.updateNewPw(email);
+		
+		String loc = "/";
+		String msg ="";
+		
+	   if(result > 0) {
+			
+			msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
+			mv.addObject("member", email);
+			
+		} else msg = "임시 비밀번호 발급을 실패했습니다.";
+		
+		mv.addObject("loc", loc).addObject("msg", msg)
+		.setViewName("common/msg");
+		
+		return mv;
+	}
+	
 	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(

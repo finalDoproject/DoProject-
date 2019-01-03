@@ -58,13 +58,16 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.delete("member.deleteMember", mno);
 	}
 
+
+
 	@Override
-	public Member searchPw(String userId, String email) {
-		
-		
-		
-		/*return sqlSession.update("member.searchPw",email);*/
-		return null;
+	public int updateNewPw(String email) {
+	
+		return sqlSession.update("member.memberNewPw", email);
 	}
+
+
+
+
 
 }

@@ -21,6 +21,18 @@ public interface MemberService {
 	
 	int deleteMember(int mno);
 
-	Object mailSendWithPassword(String userId, String email, HttpServletRequest request);
+	
 
+	int updateNewPw(String email);
+
+	
+
+	
+	
+	
+	
+
+	/*Object mailSendWithPassword(String userId, String email, HttpServletRequest request);*/
+
+	
 }
