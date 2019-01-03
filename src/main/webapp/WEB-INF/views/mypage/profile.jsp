@@ -84,13 +84,14 @@
                 <div class="row">
                     <!-- Column -->
                     <div class="col-lg-4 col-xlg-3 col-md-5">
+                    <form class="form-horizontal form-material" id="update" name="MemberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
                         <div class="card">
                             <div class="card-body">
                              <div class="text-center">
                                     <center class="m-t-30 profile-pic"> 
-                                        <img src="${pageContext.request.contextPath }/resources/images/mypage/users/4.jpg" class="rounded-circle" width="150">
+                                        <img src="${pageContext.request.contextPath }/resources/images/profile/default.png" class="rounded-circle" width="150">
                                         <a href="javascript:;" class="pic-change" align="center">
-                                            <!-- <i class="fas fa-camera"></i> -->
+                                             <i class="fa fa-2x fa-camera upload-button"></i>
                                             <input class="file-upload" type="file" accept="image/*"/>
                                         </a>
                                     </center>
@@ -109,35 +110,35 @@
                     <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card">
                             <div class="card-body" align="left">
-                                <form class="form-horizontal form-material" name="MemberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
+                                
                                     <div class="form-group">
                                         <label class="col-md-12">아이디</label>
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="" class="form-control form-control-line" value="${member.userId}" readonly required>
+                                            <input type="text" name="userId" class="form-control form-control-line" required="required" value="${member.userId}" readonly required>
                                         </div>
                                         <br>
                                         <label class="col-md-12">이름</label>
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="" class="form-control form-control-line" value="${member.nickName}">
+                                            <input type="text" required="required" class="form-control form-control-line" name="nickName" value="${member.nickName}">
                                         </div>
                                         
                                     </div>
                                     <div class="form-group">
-                                        <label for="example-email" class="col-md-12">이메일</label>
+                                        <label for="example-email" class="col-md-12" required="required">이메일</label>
                                         <div class="col-md-12">
-                                            <input type="email" placeholder="" class="form-control form-control-line" name="example-email" id="example-email" value="${member.email}" >
+                                            <input type="email" class="form-control form-control-line" name="email" id="example-email" value="${member.email}" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-12">새 비밀번호</label>
                                         <div class="col-md-12">
-                                            <input type="password" value="" class="form-control form-control-line">
+                                            <input type="password" id="new1" name="password" required="required" class="form-control form-control-line" placeholder="새 비밀번호">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-12">비밀번호 확인</label>
                                         <div class="col-md-12">
-                                            <input type="password"class="form-control form-control-line">
+                                            <input type="password" id="new2" required="required" class="form-control form-control-line" placeholder="새 비밀번호 확인">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -178,7 +179,13 @@
          var url = "${pageContext.request.contextPath}/project/projectPage.do";  
          window.open(url, "_self");  
      });  
-	
+	 
+	 $("#update").submit(function(event){
+			
+			if($('#new1').val() != $('#new2').val()) alert("비밀번호 확인 값과 다릅니다.");
+			else return;
+			event.preventDefault();
+		});
 	</script>
 	
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"

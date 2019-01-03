@@ -53,7 +53,6 @@
 		DELETE FROM MEMBER WHERE USERID = #{userId}
 	</delete>
 	
-	
 
 	<select id="selectOneNickname" parameterType="string" resultType="Member">
 		SELECT * FROM MEMBER 

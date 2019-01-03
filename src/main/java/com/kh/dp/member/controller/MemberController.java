@@ -186,6 +186,15 @@ public class MemberController {
 	public ModelAndView memberUpdate(Member member) {
 		
 		
+		System.out.println("수정 : "+member);
+		
+		
+		// 원래비번
+		String newPwd = member.getPassword();
+		System.out.println("암호화 전 비번 : "+newPwd);
+		
+		member.setPassword(bcryptPasswordEncoder.encode(newPwd));
+		System.out.println("암호화된 비번 : "+member.getPassword());
 		
 		ModelAndView mv = new ModelAndView();
 		
