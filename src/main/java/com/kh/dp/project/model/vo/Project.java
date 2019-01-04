@@ -9,8 +9,9 @@ public class Project {
 	private int pmpno; //프로젝트 번호
 	private int pmmno; //회원 번호
 	private String pmtype; //프로젝트/회원 팀장 여부
-	private int plno; //프로젝트 단계 번호
-	private String plname; //프로젝트 단계 이름
+	private int lpno; // level 프로젝트 번호
+	private int lno; // 프로젝트 단계 번호
+	private String lname; //프로젝트 단계별 이름
 	
 	public Project() {
 		super();
@@ -43,7 +44,7 @@ public class Project {
 	}
 
 	public Project(int pno, String ptitle, String psummary, int plevel, int pmno, int pmpno, int pmmno, String pmtype,
-			int plno, String plname) {
+			int lpno,int lno, String lname) {
 		super();
 		this.pno = pno;
 		this.ptitle = ptitle;
@@ -53,8 +54,9 @@ public class Project {
 		this.pmpno = pmpno;
 		this.pmmno = pmmno;
 		this.pmtype = pmtype;
-		this.plno = plno;
-		this.plname = plname;
+		this.lpno = lpno;
+		this.lno = lno;
+		this.lname = lname;
 	}
 
 	public int getPno() {
@@ -121,28 +123,39 @@ public class Project {
 		this.pmtype = pmtype;
 	}
 
-	public int getPlno() {
-		return plno;
+	
+
+	public int getLpno() {
+		return lpno;
 	}
 
-	public void setPlno(int plno) {
-		this.plno = plno;
+	public void setLpno(int lpno) {
+		this.lpno = lpno;
 	}
 
-	public String getPlname() {
-		return plname;
+	public int getLno() {
+		return lno;
 	}
 
-	public void setPlname(String plname) {
-		this.plname = plname;
+	public void setLno(int lno) {
+		this.lno = lno;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	public void setLname(String lname) {
+		this.lname = lname;
 	}
 
 	@Override
 	public String toString() {
 		return "Project [pno=" + pno + ", ptitle=" + ptitle + ", psummary=" + psummary + ", plevel=" + plevel
-				+ ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype=" + pmtype + ", plno=" + plno
-				+ ", plname=" + plname + "]";
+				+ ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype=" + pmtype + ", lpno=" + lpno
+				+ ", lno=" + lno + ", lname=" + lname + "]";
 	}
+
 	
 	
 	

@@ -5,21 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class ProjectController {
@@ -36,23 +43,37 @@ public class ProjectController {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-
+		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
+		//List<Project> OneProject = projectService.selectOneProject(pno);
+		
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("OneProjectLv", OneProjectLv);
 		
 		return "project/projectMain";
 	}
 	
-	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
+	
+	
+	@RequestMapping(value="/project/projectMainLv", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> insertProject(@RequestBody Project project){
+	public Map<String,String> insertProject(
+			@RequestParam(value="jsonStr", required=false) String projectStr,
+			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
+		
+		Project project = new Gson().fromJson(projectStr, Project.class);
+		List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+		
 		System.out.println("project값 : " +project);
+		System.out.println("pjLevel값 : " +pjLevel);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
+		String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
 		
 	
-		Map<String, String> map = new HashMap<>();
-		map.put("msg", msg);	
-		return map;
+		Map<String, String> hmap = new HashMap<>();
+		hmap.put("msg", msg);	
+		hmap.put("msg1", msg1);	
+		return hmap;
 	}
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)

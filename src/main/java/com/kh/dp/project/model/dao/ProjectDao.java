@@ -11,6 +11,8 @@ public interface ProjectDao {
 	List<Map<String, String>> selectProjectList(int mno);
 	Project selectOneProject(int no);
 	int insertProject(Project project);
+	int insertProjectLv(List<Project> pjLevel);
+	List<Project> selectOneProjectLv(int pno);
 	
 	
 	// ---- 메모 ---- //

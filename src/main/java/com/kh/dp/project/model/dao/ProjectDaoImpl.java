@@ -29,9 +29,21 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 	
 	@Override
+	public int insertProjectLv(List<Project> pjLevel) {
+		return sqlSession.insert("project.insertProjectLv", pjLevel);
+	}
+	
+	@Override
 	public Project selectOneProject(int pno) {
 		return sqlSession.selectOne("project.selectOneProject", pno);
 	}
+
+	@Override
+	public List<Project> selectOneProjectLv(int pno) {
+		return sqlSession.selectList("project.selectOneProjectLv", pno);
+	}
+	
+	
 	
 	// ---- 메모 ----//
 	@Override
@@ -75,6 +87,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Map<String, String>> selectAlarmList(int mno) {
 		return sqlSession.selectList("project.selectAlarmList", mno);
 	}
+
+
+	
 
 	
 
