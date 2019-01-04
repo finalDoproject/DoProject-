@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="alarm">
-	<resultMap type="map" id="alarm"/>	
+	<resultMap type="map" id="Alarm"/>	
 	
 	<update id="deleteAlarmList" parameterType="Alarm">
 		UPDATE ALARM SET ACONDITION = 'N' WHERE ANO = #{ano}
@@ -17,8 +17,9 @@
 		WHERE A.AMNO = #{mno} AND A.ACONDITION = 'Y'
 	</select>
 	
-	<!-- <select id="selectCountAlarm" parameterType="_int" resultType="Alarm">
-		SELECT COUNT(*) FROM ALARM WHERE AMNO = #{MNO}
-	</select> -->
-	
+	<select id="selectCountAlarm" resultType="string">
+		SELECT COUNT(A.ANO) FROM ALARM A
+		JOIN MEMBER M ON(A.AMNO = M.MNO)
+		WHERE M.NICKNAME = #{payload} AND ACONDITION = 'Y'
+	</select>	
 </mapper>

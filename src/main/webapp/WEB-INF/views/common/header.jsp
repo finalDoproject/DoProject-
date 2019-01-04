@@ -69,6 +69,7 @@
 	               <c:if test="${!empty member}">
 
 							<span class="headerMno" id="mnoSession" data-value="@Request.RequestContext.HttpContext.Session['mno']" name="mno" style="display: none;">${member.mno}</span>
+							<span id="nick" style="display: none;">${member.nickName}</span>
 							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
@@ -180,12 +181,14 @@
 				dataType:"json",
 				type : "GET",
 				data : {ano:aNo},
+				async : false,
 				success : function(response){
 				},
 				error:function(request,status,error){
 			    	alert("code:"+request.status+"\n"+"error:"+error);
 			    }
 			});
+			send_message();
 		}
 		
 		function alarmList(mNo, loginMno){
@@ -232,6 +235,39 @@
 			    }
 			});
 		}
+		
+		var wsUri = "ws://localhost/count";
+		function send_message() {
+	        websocket = new WebSocket(wsUri);
+	        websocket.onopen = function(evt) {
+	            onOpen(evt);
+	        };
+	        websocket.onmessage = function(evt) {
+	            onMessage(evt);
+	        };
+	        websocket.onerror = function(evt) {
+	            onError(evt);
+	        };
+	    }
+		
+		function onOpen(evt) {
+	       websocket.send($('#nick').text());
+	    }
+	    function onMessage(evt) {
+	    	var data=evt.data;
+	    	if(data!=0){
+	    		$("#alarmCount").empty();
+	    		$('#alarmCount').append(data);
+	    	}else{
+	    		$("#alarmCount").empty();
+	    	}
+	    }
+	    function onError(evt) {
+	    }
+	    
+	    $(document).ready(function(){
+	    	send_message();
+	    });
 	</script>
 </body>
 </html>

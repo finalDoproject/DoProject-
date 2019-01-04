@@ -88,11 +88,11 @@
 		<websocket:sockjs />
 	</websocket:handlers>
 	
-	<!-- <websocket:handlers>
-		<websocket:mapping handler="alarmWebSocketHandler" path="/common" />
-	</websocket:handlers> -->
+	<websocket:handlers>
+		<websocket:mapping handler="alarmHandler" path="/count" />
+	</websocket:handlers>
 
-	<!-- <beans:bean id="alarmWebSocketHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" /> -->
+	<beans:bean id="alarmHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" />
 	<beans:bean id="chatWebSocketHandler" class="com.kh.dp.chat.common.ChatWebSocketHandler" />
 	
 	<context:component-scan base-package="com.kh.dp" />	

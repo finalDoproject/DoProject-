@@ -29,4 +29,10 @@ public class AlarmDaoImpl implements AlarmDao{
 		return sqlSession.selectList("alarm.selectAlarmList", map);
 	}
 
+	/*@Override
+	public String countAlarm(String payload) {
+		System.out.println(payload);
+		return sqlSession.selectOne("alarm.selectCountAlarm", payload);
+	}*/
+
 }
