@@ -62,10 +62,23 @@ var chk = 0;
 function taskToggle(){
 	if(chk == 0){
 		$('#taskForm').css('display', 'block');
+		$('#scheduleForm').css('display', 'none');
 		chk=1;
 	}else{
 		$('#taskForm').css('display', 'none');
 		chk=0;
+	}
+}
+
+var chk2 = 0;
+function scheduleToggle(){
+	if(chk2 == 0){
+		$('#scheduleForm').css('display', 'block');
+		$('#taskForm').css('display', 'none');
+		chk2 = 1;
+	}else{
+		$('#scheduleForm').css('display', 'none');
+		chk2 = 0;
 	}
 }
 </script>
@@ -88,7 +101,7 @@ function taskToggle(){
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#" >
+          <a class="nav-link" onclick="scheduleToggle();" >
             <i class="fas fa-map-marker-alt"></i>
             <span>일정 작성하기</span>
           </a>
@@ -126,6 +139,9 @@ function taskToggle(){
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
         	<c:import url="../task/tasktest.jsp"/>
+        </div>
+        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/schedule.jsp"/>
         </div>
       </ul>
       
@@ -1091,6 +1107,32 @@ function taskToggle(){
 		});
 		
 	}
+	$(function(){
+		var pNo = ${pno};
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno: pNo},
+			success:function(response){
+				if($("#pmno").text() == $("#mno").text()){
+					for(var i=0; i<response.length; i++){
+						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						console.log(response[i].mno);
+					}
+				}else{
+					for(var i=0; i<response.length; i++){
+
+					}
+
+				}
+				
+			}
+		});
+	})
+	
+	
+
 	</script>
 	
 </body>
