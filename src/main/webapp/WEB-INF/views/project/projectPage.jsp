@@ -40,7 +40,6 @@
 .ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 .ok:focus{outline: none;}
 
-
 </style>
 <script>
 var chk = 0;
@@ -338,7 +337,7 @@ function taskToggle(){
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMNO}" id="smno"/>
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
-                <input type="hidden" value="${s.SMENDDATE }" id="smenddate"/>
+                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
@@ -366,13 +365,13 @@ function taskToggle(){
                 <thead>
                     <tr >
                         <th></th>
-                        <th class="select 1">일</th>
-                        <th class="select 2">월</th>
-                        <th class="select 3">화</th>
-                        <th class="select 4">수</th>
-                        <th class="select 5">목</th>
-                        <th class="select 6">금</th>
-                        <th class="select 7">토</th>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -427,7 +426,7 @@ function taskToggle(){
                             <td id="95" class="select 7"></td>
                     </tr>
                     <tr>
-                            <td>14</th>
+                            <th>14</th>
                             <td id="6" class="select 1"></td>
                             <td id="21" class="select 2"></td>
                             <td id="36" class="select 3"></td>
@@ -609,8 +608,7 @@ function taskToggle(){
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
 	    function selectId(){
 	 		
-	 		// dateTime 번호
-	    	var dtNo = $(this).attr("id");
+	 		
 	 		// 요청 번호
 	    	var requestNo = $('#smno').val();
 	 		// 회원 번호
@@ -620,65 +618,77 @@ function taskToggle(){
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
 	    	
+	    	// 요일 값 가져오기
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
 	    	
-	    	if(startDayOfWeek < endDayOfWeek) {
+	    	 $(".select").click(function(){
+	    		// dateTime 번호
+	 	    	var dtNo = $(this).attr("id");
 	    		
-	    	}
-	    	$('.'+startDayOfWeek).css("background-color", "lightgray");
-	    	
-	    	/* $.ajax({
-	    		url : '${pageContext.request.contextPath}/project/getDay.do',
-	    		data : {requestNo : requestNo},
-	    		dataType : "json",
-	    		success : function(data){
-	    			alert(data);
-	    		},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	};
-	    	}); */
-	    	
-	 		 /* $.ajax({
-	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
-	 			data : {requestNo : requestNo,
-	 				    mNo : mNo},
-	 			dataType : "json",
-	 			success : function(data){
-	 				
-	 			},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	}
-	 		});  */
-		    	
-		    	/* $(".select").click(function(){
-			    	
-			    	$.ajax({
+			    	 $.ajax({
 			         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
 			         	data : {dtNo : dtNo,
 			         		    requestNo : requestNo,
 			         		    mNo : mNo},
 			         	dataType : "json",
 			         	success : function(data) {
-			         		console.log(data);
-			         		if(data > 0 ){
 			         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-			         		}
-			         
+			         		
 			         		
 			         	 },error : function(request, status, error){
 			      			alert(request + "\n"
 			      					  + status + "\n"
 			      					  + error);
 			         	}
-			         }); 
+			         });  
 			    	
-		    	}); */
+		    	}); 
+	    	 
+	    	// 시작 요일이 끝나는 요일의 숫자보다 클 때
+	    	if(startDayOfWeek > endDayOfWeek) {
+	    		
+	    		for(var i=1; i<8; i++){
+	    			
+	    			if(i <startDayOfWeek && i> endDayOfWeek){
+	    				
+	    				$('.'+i).css({
+		    				"cursor" : "not-allowed",
+		    				"background-color" : "lightgray"
+		    			});
+	    			};
+	    		};
+	    	}else{
+				for(var i=1; i<8; i++){
+	    			
+	    			if(i <startDayOfWeek || i> endDayOfWeek){
+	    				
+	    				$('.'+i).css({
+		    				"cursor" : "not-allowed",
+		    				"background-color" : "lightgray"
+		    			});
+	    			};
+	    		};
+	    	};
+	    	
+	 		  $.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
+	 			data : {requestNo : requestNo,
+	 				    mNo : mNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				for(var i in data ) {
+	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
+	         		}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
+		    	
+		    	
 		    	  
 		};
 	    

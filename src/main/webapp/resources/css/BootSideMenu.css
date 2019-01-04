@@ -282,14 +282,14 @@ a:hover{ text-decoration:none; color: #555; }
     margin-left: 3px;
     font-size: 10px;
     border-radius: 50px;
-    background-color: rgb(224, 224, 224);
+    background-color: rgb(255, 154, 87);
     border: 0;
 }
 .complete{
     margin-left: 3px;
     font-size: 10px;
     border-radius: 50px;
-    background-color: rgb(255, 154, 87);
+    background-color: rgb(224, 224, 224);
     color: #fff;
     border: 0;
 }

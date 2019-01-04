@@ -51,6 +51,11 @@ public class Join implements Serializable{
 	public void setSjdtno(int sjdtno) {
 		this.sjdtno = sjdtno;
 	}
+
+	@Override
+	public String toString() {
+		return "Join [sjmno=" + sjmno + ", sjsm=" + sjsm + ", sjdtno=" + sjdtno + "]";
+	}
 	
 	
 	

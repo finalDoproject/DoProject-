@@ -52,7 +52,7 @@ public class SideServiceImpl implements SideService {
 		
 		return sideDao.browseDT(mNo, requestNo);
 	}
-
+	
 	@Override
 	public int insertMySelf(int mno) {
 		

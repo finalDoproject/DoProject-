@@ -23,7 +23,5 @@ public interface SideService {
 
 	public int insertMySelf(int mno);
 
-	
-
 
 }

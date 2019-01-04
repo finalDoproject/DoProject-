@@ -56,13 +56,11 @@ public class SideDaoImpl implements SideDao {
 		
 		return sqlSession.selectList("matching.browseDT", map);
 	}
-
+	
 	@Override
 	public int insertMySelf(int mno) {
 		
 		return sqlSession.insert("matching.insertMySelf", mno);
 	}
-	
-	
 
 }

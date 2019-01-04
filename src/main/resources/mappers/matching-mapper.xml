@@ -4,6 +4,12 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="matching">
 
+	<resultMap id="resultJoin" type="Join">
+		<id property="sjmno" column="MMMNO" />
+		<result property="sjsm" column="MMSMNO" />
+		<result property="sjdtno" column="MMDTNO" />
+	</resultMap>
+
 	<select resultType="Member" parameterType="_int" id="browseMember"> 
 	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
 	WHERE PMPNO = #{pno} 
@@ -33,10 +39,12 @@
 	 WHERE SJMNO = #{mno}
 	 </select>
 	 
-	 <select id="browseDT" resultType="Join">
+	 <select id="browseDT" resultMap="resultJoin">
 	 SELECT MMDTNO FROM MEMBER_MATCHING
 	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo}
 	 </select>
+	 
+	 
 	 
 	 
 	 

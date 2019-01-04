@@ -43,8 +43,9 @@ public class SideController {
 			
 			for(int i=0; i<mNickname.length; i++) {
 			int reulst2 = sideService.insertMember(Integer.parseInt(mNickname[i]));
-			int result3 = sideService.insertMySelf(mno);
 			}
+			
+			int result3 = sideService.insertMySelf(mno);
 			
 			mv.addObject("loc", loc).addObject("msg", msg);
 			mv.setViewName("common/msg");
@@ -80,7 +81,9 @@ public class SideController {
 		List DateTime = sideService.browseDT(mNo, requestNo);
 		
 		System.out.println(DateTime+", requestNo : " + requestNo + ", mNo : " + mNo);
+		
 		return DateTime;
+		
 	}
 	
 	
