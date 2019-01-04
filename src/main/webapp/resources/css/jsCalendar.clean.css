@@ -1,0 +1,208 @@
+
+
+/* Clean Theme */
+	.jsCalendar.clean-theme table {
+		background-color: transparent;
+		box-shadow: none;
+		color: #000000;
+		font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	}
+	.jsCalendar.clean-theme thead .jsCalendar-title-name {
+		font-weight: bold;
+	}
+	.jsCalendar.clean-theme thead .jsCalendar-nav-left,
+	.jsCalendar.clean-theme thead .jsCalendar-nav-right {
+		color: #AFAFAF;
+	}
+	.jsCalendar.clean-theme thead .jsCalendar-nav-left:hover,
+	.jsCalendar.clean-theme thead .jsCalendar-nav-right:hover {
+		background-color: transparent;
+		color: #000000;
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme thead .jsCalendar-week-days th {
+		font-weight: bold;
+	}
+	.jsCalendar.clean-theme thead .jsCalendar-week-days th,
+	.jsCalendar.clean-theme tbody td {
+		border-radius: unset;
+		font-size: 12px;
+		height: 22px;
+		line-height: 24px;
+		/* margin: 2px 2px; */
+		width: 22px;
+		border-radius: 30px;
+
+	}
+	.jsCalendar.clean-theme tbody td:hover {
+		background-color: rgb(240, 230, 220);
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-selected {
+		border: unset;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-current {
+		background-color: rgb(248, 143, 111) !important;
+		border-radius: 30px;
+		color: #FFFFFF;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-selected {
+		background-color: rgb(240, 230, 220);
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-current:hover {
+		background-color: rgb(240, 230, 220);
+		border-radius: 30px;
+		color:#333;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-previous,
+	.jsCalendar.clean-theme tbody td.jsCalendar-next {
+		color: transparent;
+		opacity: 0;
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-previous:hover,
+	.jsCalendar.clean-theme tbody td.jsCalendar-next:hover {
+		color: transparent;
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme ::-moz-selection {
+		background: #AFAFAF;
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme ::selection {
+		background: #AFAFAF;
+		border-radius: 30px;
+	}
+	.jsCalendar.clean-theme tbody td.jsCalendar-previous, .jsCalendar.clean-theme tbody td.jsCalendar-next {
+		color: #000;
+		opacity: 0.2;
+	}
+	#calWrapper {
+		margin: 0 auto;
+		width: 200px;
+	}
+	#calWrapper .jsCalendar table {
+		box-shadow: none;
+	}
+	.clear {
+		clear: both;
+	}
+	
+	#events .list {
+		height: 50px;
+		overflow-y: auto;
+	}
+	#events .list .event-item {
+		line-height: 24px;
+		min-height: 24px;
+		padding: 2px 5px;
+	}
+	#events .list .event-item .close {
+		font-family: Tahoma, Geneva, sans-serif;
+		font-weight: bold;
+		font-size: 12px;
+		color: #fff;
+		border-radius: 8px;
+		height: 14px;
+		width: 14px;
+		line-height: 12px;
+		text-align: center;
+		float: right;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		padding: 0px;
+		margin: 5px;
+		display: block;
+		overflow: hidden;
+		background: #F44336;
+		cursor: pointer;
+	}
+		#events .action {
+		text-align: right;
+	}
+	#events .action input {
+		padding: 0px 5px;
+		font-size: 12px;
+		margin: 10px 5px;
+		border: 1px solid #999999;
+		height: 28px;
+		line-height: 28px;
+		width: 120px;
+		background: #f8f8f8;
+		color: black;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	#events .action input:hover {
+		background: rgb(175, 107, 107);
+		border: 1px solid #222;
+		box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+	} 
+
+
+/* main style */
+
+	.jsCalendar.clean-theme tbody td.jsCalendar-previous, .jsCalendar.clean-theme tbody td.jsCalendar-next {
+		color: #000;
+		opacity: 0.2;
+	}
+	#calWrapper {
+		margin: 0 auto;
+		width: 200px;
+	}
+	#calWrapper .jsCalendar table {
+		box-shadow: none;
+	}
+	.clear {
+		clear: both;
+	}
+	
+	#events .list {
+		height: 50px;
+		overflow-y: auto;
+	}
+	#events .list .event-item {
+		line-height: 24px;
+		min-height: 24px;
+		padding: 2px 5px;
+	}
+	#events .list .event-item .close {
+		font-family: Tahoma, Geneva, sans-serif;
+		font-weight: bold;
+		font-size: 12px;
+		color: #fff;
+		border-radius: 8px;
+		height: 14px;
+		width: 14px;
+		line-height: 12px;
+		text-align: center;
+		float: right;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		padding: 0px;
+		margin: 5px;
+		display: block;
+		overflow: hidden;
+		background: #F44336;
+		cursor: pointer;
+	}
+		#events .action {
+		text-align: right;
+	}
+	#events .action input {
+		padding: 0px 5px;
+		font-size: 12px;
+		margin: 10px 5px;
+		border: 1px solid #999999;
+		height: 28px;
+		line-height: 28px;
+		width: 120px;
+		background: #f8f8f8;
+		color: black;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	#events .action input:hover {
+		background: rgb(175, 107, 107);
+		border: 1px solid #222;
+		box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+	} 

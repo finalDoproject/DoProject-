@@ -3,12 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
+
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -21,8 +23,96 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.kh.dp" />
+	<!-- viewResolver : 특정 객체나 경로를 서버가 제공하는 환경에 맞게 변환해주는 클래스 -->
+	<!-- 
+		<bean id="아이디" class="클래스명">
+			<property name="viewClass" value="OOOO"/>
+			<property name="prefix" value="/WEB-INF/views" />
+			<property name="suffix">
+				<value>.jsp</value>
+			</property>
+		</bean>
+	 -->
+	 
+	 <!-- JSON 데이터를 전송할 때 사용할 viewResolver 등록하기 -->
+	 <!-- 요청한 viewName과 실제 사용하는 Bean 객체를 연결해주는 BeanNameViewResolver와 
+	 	  JSON 데이터를 전달하기 위한 JsonView 작성하기 -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="1"/>
+	</beans:bean>
+	
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
 	
 	
+	<!-- @ResponseBody 어노테이션을 제공하여 자바 객체를 자동으로 JSON 타입으로 변환해 주는 객체 -->
+	<beans:bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	
+	<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="jacksonMessageConverter"/>
+			</beans:list>
+		</beans:property>
+	</beans:bean>	
+	
+	<!--  interceptor 태그를 사용하여 dispatcherServlet이 동작 시에 
+		   함께 엮여서 동작하도록 작성한 클래스를 등록할 수 있다. -->
+		   
+	<interceptors>
+		<interceptor>
+			<!-- 모든 url 경로에 대해 동작 시키겠다. -->
+			<mapping path="/**" />
+			<beans:bean id="loggerInterceptor" class="com.kh.dp.common.interceptor.LoggerInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/member/memberView.do" />
+			<mapping path="/member/memberUpdate.do" />
+			<mapping path="/board/**/*.do" />
+			<!-- 스프링 3.2버전 부터 exclude라는 태그가 도입되어 특정 url 경로를 등록하여
+				 제외시킬 수 있게 되었다. -->
+			<exclude-mapping path="/board/boardList.do"/>
+			<beans:bean id="loginCheckInterceptor" class="com.kh.dp.common.interceptor.LogincheckInterceptor" />
+		</interceptor>
+	</interceptors>
+	
+	<!-- 파일업로드 시에 사용할 MultipartResolver 등록하기 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760" /> <!-- value는 10메가바이트 -->
+	</beans:bean>
+	
+	<websocket:handlers>
+		<websocket:mapping handler="chatWebSocketHandler" path="/chat" />
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+		<websocket:sockjs />
+	</websocket:handlers>
+	
+	<websocket:handlers>
+		<websocket:mapping handler="alarmHandler" path="/count" />
+	</websocket:handlers>
+
+	<beans:bean id="alarmHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" />
+	<beans:bean id="chatWebSocketHandler" class="com.kh.dp.chat.common.ChatWebSocketHandler" />
+	
+	<context:component-scan base-package="com.kh.dp" />	
+	
+	
+	<!-- 메일  -->
+	<beans:bean id="mailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="smtp.gmail.com" />
+		<beans:property name="port" value="587" /><!-- 465 or 25 -->
+		<beans:property name="username" value="ddProjectbb@gmail.com" />
+		<beans:property name="password" value="test^^123" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.transport.protocol">smtp</beans:prop>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+				<beans:prop key="mail.debug">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
 	
 </beans:beans>

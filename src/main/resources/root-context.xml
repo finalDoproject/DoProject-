@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- Root Context : 웹 서버 전체 설정과 관련된 내용을 작성하는 XML 파일 -->
+	<!-- DataSource : 연결하고자 하는 DB 설정을 담당하는 객체 -->
+	<bean id="realDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+      <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+      <property name="username" value="DOPROJECT"/>
+      <property name="password" value="DOPROJECT"/>
+    </bean>
+    
+  
+     <!-- Mybatis 연동 설정 -->
+   <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+   		<!-- dataSource : 마이바티스 빈 객체에 사용할 DB 설정 객체 참조 -->
+	   <property name="dataSource" ref="dataSource"/>
+	   <!-- mybatis-config에 작성하였던 mapper 파일들을 한번에 불러오기 위한 설정 -->
+	   <property name="mapperLocations" value="classpath*:mappers/*.xml"/>
+	   <!-- mybatis-config 설정을 읽어 오기 위한 속성 -->
+	   <property name="configLocation" value="classpath:mybatis-config.xml"/>
+   </bean>
+   
+   <!-- log4jdbc용 연결 객체 -->
+   <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="realDataSource"/>
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+			<property name="loggingType" value="MULTI_LINE"/>
+			<property name="sqlPrefix" value="[SQL] "/>
+			</bean>
+		</property>
+	</bean>
+   
+   <!-- Mybatis 사용과 관련된 sqlSessionTemplate 등록하기 -->
+   <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+   	<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+   </bean>
+
+   <!-- 트랜잭션 처리와 관련된 매니저 객체 설정 -->
+   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource" />
+   </bean>
+   
+   <!-- 트랜잭션 처리 방식 -->
+   <!-- 프로그래밍적 방식은 여러 메소드나 클래스에 대해서 다중으로 선언해야 하며,
+   		데이터를 관리하는 측면에서 어떤 트랜잭션 속성이 적용되었는지 찾기 힘들기 때문에
+   		일반적으로 선언적 방식을 선호한다. -->
+   		
+   <!-- 선언적(XML) 방식 -->
+   
+   <tx:advice id="txAdvice" transaction-manager="transactionManager">
+   		<tx:attributes>
+   			<!-- 트랜잭션을 처리할 메소드 정의 -->
+   			<tx:method name="select*" rollback-for="Exception" read-only="true" />
+   			<tx:method name="insert*" rollback-for="Exception" />
+   			<tx:method name="update*" rollback-for="Exception" />
+   			<tx:method name="delete*" rollback-for="Exception" />
+   		</tx:attributes>
+   </tx:advice>
+   
+    <aop:config proxy-target-class="true">
+   		<aop:pointcut expression="execution(* com.kh.spring..*ServiceImpl.*(..))" id="servicePc"/>
+   		<aop:advisor id="transactionAdvisor" advice-ref="txAdvice" pointcut-ref="servicePc"/>
+   		
+   </aop:config> 
+	
+</beans>

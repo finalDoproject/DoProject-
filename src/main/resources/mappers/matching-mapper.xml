@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matching">
+
+	<resultMap id="resultJoin" type="Join">
+		<id property="sjmno" column="MMMNO" />
+		<result property="sjsm" column="MMSMNO" />
+		<result property="sjdtno" column="MMDTNO" />
+	</resultMap>
+
+	<select resultType="Member" parameterType="_int" id="browseMember"> 
+	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
+	WHERE PMPNO = #{pno} 
+	</select>
+	
+	<insert parameterType="Matching" id="insertMatching">
+	 INSERT INTO SCHEDULE_MATCHING VALUES 
+	 (SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
+	 </insert>
+	 
+	 <insert parameterType="_int" id="insertMember">
+	 INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
+	 </insert>
+	 
+	 <insert parameterType="_int" id="insertMySelf">
+	 INSERT INTO SCHEDULE_JOIN VALUES (#{mno} ,SEQ_SMNO.CURRVAL)
+	 </insert>
+	 
+	 <insert parameterType="Join" id="insertMatchingDT">
+	  INSERT INTO MEMBER_MATCHING VALUES (#{sjmno}, #{sjsm}, #{sjdtno})
+	 </insert>
+	 
+	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
+	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
+	 FROM SCHEDULE_MATCHING
+	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
+	 WHERE SJMNO = #{mno}
+	 </select>
+	 
+	 <select id="browseDT" resultMap="resultJoin">
+	 SELECT MMDTNO FROM MEMBER_MATCHING
+	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo}
+	 </select>
+	 
+	 
+	 
+	 
+	 
+</mapper>
+
+
+
+
+
