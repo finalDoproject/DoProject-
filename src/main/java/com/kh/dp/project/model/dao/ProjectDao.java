@@ -10,9 +10,9 @@ import com.kh.dp.project.model.vo.Project;
 public interface ProjectDao {
 	// ---- 프로젝트 ----//
 	List<Map<String, String>> selectProjectList(int mno);
-	Project selectOneProject(int no);
 	int insertProject(Project project);
 	int insertProjectLv(List<Project> pjLevel);
+	Project selectOneProject(int no);
 	List<Project> selectOneProjectLv(int pno);
 	
 	
