@@ -9,6 +9,11 @@ public class Join implements Serializable{
 	private int sjsm;        // 스케줄참여 요청 번호
 	private int sjdtno;      // 스케줄참여 날짜/요일 번호
 	
+	public Join() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Join(int sjmno, int sjsm, int sjdtno) {
 		super();
 		this.sjmno = sjmno;
@@ -45,6 +50,11 @@ public class Join implements Serializable{
 
 	public void setSjdtno(int sjdtno) {
 		this.sjdtno = sjdtno;
+	}
+
+	@Override
+	public String toString() {
+		return "Join [sjmno=" + sjmno + ", sjsm=" + sjsm + ", sjdtno=" + sjdtno + "]";
 	}
 	
 	

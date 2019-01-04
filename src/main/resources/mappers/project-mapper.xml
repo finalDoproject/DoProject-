@@ -51,5 +51,31 @@
 		SELECT * FROM ALARM WHERE AMNO = #{mno} AND ACONDITION = 'Y'
 	</select>
 
+	<delete id="deleteProject">
+		DELETE FROM PROJECT WHERE PNO = #{pno}
+	</delete>
+
+	<select id="selectSearchMember" resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+	</select>
 	
+	<insert id="insertInviteProject">
+		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno}, 'N')
+	</insert>
+	
+	<select id="searchMemberList" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<select id="selectSearchPM" parameterType="_int" resultType="ProjectMember">
+		SELECT * FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</select>
+	
+	<insert id="insertExileAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 추방당했습니다.', DEFAULT, 4, #{mno}, #{pno}, NULL, NULL, NULL)
+	</insert>
+	
+	<insert id="insertLeaveAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
+	</insert>
 </mapper>

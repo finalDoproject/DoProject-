@@ -3,6 +3,7 @@ package com.kh.dp.project.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 
@@ -25,6 +26,13 @@ public interface ProjectService {
 	int deleteLeaveProject(int pno, int mno);
 	int deleteMemberFromProject(int pno, int mno);
 	List<Map<String, String>> selectAlarmList(int mno);
+	int deleteProject(int pno);
+	List<Member> selectSearchMember(String userNick);
+	int insertInviteProject(int pno, int mno);
+	List<Member> selectSearchMember(int pno);
+	Object selectSearchPM(int pno, int mno);
+	int insertExileAlarm(int mno, int pno);
+	int insertLeaveAlarm(int mno, int pno, int apmno);
 
 
 }
