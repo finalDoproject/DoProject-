@@ -58,12 +58,13 @@
 
 </style>
 <script>
-var chk = 0;
+ var chk = 0;
 function taskToggle(){
 	if(chk == 0){
 		$('#taskForm').css('display', 'block');
 		$('#scheduleForm').css('display', 'none');
-		chk=1;
+		chk = 1;
+		chk2 = 0;
 	}else{
 		$('#taskForm').css('display', 'none');
 		chk=0;
@@ -76,11 +77,19 @@ function scheduleToggle(){
 		$('#scheduleForm').css('display', 'block');
 		$('#taskForm').css('display', 'none');
 		chk2 = 1;
-	}else{
+		chk=0;
+	}else {
 		$('#scheduleForm').css('display', 'none');
 		chk2 = 0;
 	}
 }
+
+$(function(){
+	$('#taskForm').focusout(function() {
+		  $('#taskForm').css('display', 'none');
+		  console.log("gg");
+		});	
+})
 </script>
 </head>
 <body>
@@ -992,6 +1001,7 @@ function scheduleToggle(){
     	}else{
     		return false;
     	}
+    	tmanager();
 	}
 	function kick(name, pNo, mNo, mMno){
 		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
@@ -1016,6 +1026,7 @@ function scheduleToggle(){
 		}else{
 			return;
 		}
+		tmanager();
 	}
 	function leaveProject(pno, mno, pmno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
@@ -1068,6 +1079,7 @@ function scheduleToggle(){
 		    error:function(request,status,error){
 		    	alert("code:"+request.status+"\n"+"error:"+error);
 		    }
+		
 		});
 	}
 	
@@ -1103,11 +1115,17 @@ function scheduleToggle(){
 					printHTML="";
 				}
 				
+				tmanager();
 			}
 		});
 		
 	}
 	$(function(){
+		tmanager();	
+	})
+	
+		function tmanager(){
+		$("#tmno").empty();
 		var pNo = ${pno};
 		$.ajax({
 			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
@@ -1117,19 +1135,14 @@ function scheduleToggle(){
 			success:function(response){
 				if($("#pmno").text() == $("#mno").text()){
 					for(var i=0; i<response.length; i++){
-						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
 						console.log(response[i].mno);
 					}
-				}else{
-					for(var i=0; i<response.length; i++){
-
-					}
-
-				}
-				
+				}				
 			}
 		});
-	})
+		}
+	
 	
 	
 

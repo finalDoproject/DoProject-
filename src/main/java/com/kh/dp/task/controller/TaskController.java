@@ -52,7 +52,6 @@ public class TaskController {
 		
 		
 		System.out.println("pno, mno : " +pno+", " + mno);
-		task.setTmno(mno);
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");

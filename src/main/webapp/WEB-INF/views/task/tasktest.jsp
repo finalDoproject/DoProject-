@@ -295,7 +295,7 @@ $(function() {
 <body> 
 <div class="post_write_wrap" style="text-align : center; ">
 		<%-- <c:import url="../common/introSidebar.jsp"/> --%><!-- css적용이 안됌 -->
-		<form name="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
+		<form name="taskForm" id="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
 		<div class="post_write_tab">
 		</div>
 		
@@ -344,7 +344,7 @@ $(function() {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="담당자 추가">담당자</label>
 							<div class="col-md-4">
-								<select id="tmanager" name="tmanager" class="form-control" style="margin-left:130px;">
+								<select id="tmno" name="tmno" class="form-control" style="margin-left:130px;">
 								</select>
 				
 							</div>
@@ -424,5 +424,40 @@ $(function() {
 		</div>
 		</form>
 	</div>
+	<script>
+			
+	
+	function validate(){
+		if($("#ttitle").val() == ""){
+			alert("업무 제목을 입력해주세요.");
+			return false;
+		}
+		console.log($("#tlevel").val());
+		
+		if($("#tlevel").val() == 0){
+			alert("업무 단계를 입력해주세요.");
+			return false;
+		}
+		
+		if($("#tmno").val() == ""){
+			alert("업무 담당자를 지정해주세요.");
+			event.preventDefault();
+			return false;
+		}
+		
+		if($("#dp1545179837850").val() == ""){
+			alert("업무 종료일을 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+		
+		if($("#ttpriority").val() == ""){
+			alert("업무 우선 순위를 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	</script>
 </body>
 </html>
