@@ -61,9 +61,9 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public int updateNewPw(String email) {
+	public int updateNewPw(Member m) {
 	
-		return sqlSession.update("member.memberNewPw", email);
+		return sqlSession.update("member.memberNewPw", m);
 	}
 
 

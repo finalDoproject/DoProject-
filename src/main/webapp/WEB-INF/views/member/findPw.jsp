@@ -131,10 +131,6 @@ color:#F88E6F;
 
 
 
-
-
-
-
 <meta charset="UTF-8">
 <title>search password</title>
 </head>
@@ -159,8 +155,8 @@ color:#F88E6F;
 
 <form id="findPw" name="findPw" action = "findPw.do" method="post">
  		<div class="form-item">
-			<p class="formLabel">이름</p>
-			<input type="text" name="userName" id="userName" class="form-style" autocomplete="off"/>
+			<p class="formLabel">아이디</p>
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off"/>
 		</div>
 		
 		<div class="form-item">

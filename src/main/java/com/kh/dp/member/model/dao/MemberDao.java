@@ -24,7 +24,7 @@ public interface MemberDao {
 
 	
 
-	int updateNewPw(String email);
+	int updateNewPw(Member m);
 	
 	
 	

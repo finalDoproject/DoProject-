@@ -22,17 +22,12 @@ public interface MemberService {
 	int deleteMember(int mno);
 
 	
-
-	int updateNewPw(String email);
-
-	
-
-	
 	
 	
 	
 
-	/*Object mailSendWithPassword(String userId, String email, HttpServletRequest request);*/
+	int updateNewPw(Member m);
+
 
 	
 }

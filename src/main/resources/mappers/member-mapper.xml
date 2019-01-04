@@ -38,7 +38,7 @@
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
-	<update id="member.memberNewPw" parameterType="int">
+	<update id="memberNewPw" parameterType="Member" >
 		UPDATE MEMBER
 		SET PASSWORD = #{password}
 		WHERE EMAIL = #{email}

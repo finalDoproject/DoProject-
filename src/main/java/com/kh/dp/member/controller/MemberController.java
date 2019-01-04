@@ -41,6 +41,11 @@ public class MemberController {
 		return null;
 	}
 	
+	@RequestMapping("member/toFindFw.do")
+	public String toFindFw() {
+		return "/member/findPw";
+	}
+	
 	// 로그인 버튼 클릭시 로그인페이지 이동
 	@RequestMapping("/member/login.do")
 	public String Memberlogin() {
@@ -139,25 +144,35 @@ public class MemberController {
 		String loc = "/";
 		String msg = "";
 		
-		if( m.getUserId() == null ) {
+		if( m == null ) {
 			msg = "존재하지 않는 아이디입니다.";
-		} else if( m.getEmail() == null) {
 			
-			msg = "존재하지 않는 이메일입니다.";
+		} else if( m.getEmail() == email) {
+			
+			msg = "가입한 아이디와 일치하지 않는 이메일입니다.";
 			
 		} else {
-			loc="/member/findPw2.do";
+			
+			int result = memberService.updateNewPw(m);
+			
+			if(result >0) {
+				loc="/member/memberLogin.do";
+				msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
+			}else {
+				 msg = "임시 비밀번호 발급을 실패했습니다.";
+			}
+			
 		}
 		
-		mv.addObject("loc", loc).addObject("msg", msg);
+		mv.addObject("/member/findFw", loc).addObject("msg", msg);
 		mv.setViewName("common/msg");
 
 		return mv;
 		
 	}
 	
-	@RequestMapping(value="/member/findPw2.do", method = RequestMethod.POST)
-	public ModelAndView newPw(@RequestParam String email) {
+/*	@RequestMapping(value="/member/findPw2.do", method = RequestMethod.POST)
+	public ModelAndView newPw(@RequestParam String email, @RequestParam String userId ,@RequestParam nickName, @RequestParam String password ) {
 		
 		ModelAndView mv = new ModelAndView();
 		int result = memberService.updateNewPw(email);
@@ -176,7 +191,7 @@ public class MemberController {
 		.setViewName("common/msg");
 		
 		return mv;
-	}
+	}*/
 	
 	
 	@RequestMapping("/member/MemberList.do")
