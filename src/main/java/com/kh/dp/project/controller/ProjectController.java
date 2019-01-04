@@ -62,20 +62,37 @@ public class ProjectController {
 			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
 		
 		Project project = new Gson().fromJson(projectStr, Project.class);
-		List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
-		
 		System.out.println("project값 : " +project);
-		System.out.println("pjLevel값 : " +pjLevel);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
-		String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
 		
-	
 		Map<String, String> hmap = new HashMap<>();
 		hmap.put("msg", msg);	
-		hmap.put("msg1", msg1);	
+
+		if(pjLevelStr != null) {
+			List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("pjLevel값 : " +pjLevel);
+			String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
+			hmap.put("msg1", msg1);	
+		}
+		
 		return hmap;
 	}
-	
+	@RequestMapping(value="/project/projectMainDetail", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> ProjectModalDetail(Model model, @RequestParam int pno) {
+		
+		List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
+		Project OneProject = projectService.selectOneProject(pno);
+		System.out.println("pno : " + pno);
+		System.out.println("OneProject : " + OneProject);
+		System.out.println("OneProjectLv : " + OneProjectLv);
+		Map<String,Object> resultMap = new HashMap<>();
+		resultMap.put("OneProjectLv", OneProjectLv);
+		resultMap.put("OneProject", OneProject);
+		
+		return resultMap;
+	}
+
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
 	public String ProjectPageView(@RequestParam int pno, @RequestParam int mno, Model model) {
 		

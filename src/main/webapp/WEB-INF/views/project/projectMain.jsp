@@ -67,7 +67,7 @@
 						         <td height="25">
 						           <table id="addTable" width="400" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
 						            <tr>
-						              <td><input type="text" name="lname" class="form-control firstLname" style="width: 90% !important; display: inline-block; margin-bottom: 5px;"></td>
+						              <!-- <td><input type="text" name="lname" class="form-control firstLname" style="width: 90% !important; display: inline-block; margin-bottom: 5px;"></td> -->
 						              <td align="left"></td>
 						            </tr>
 						          </table></td>
@@ -98,10 +98,11 @@
         <div class="container-fluid">
 
           <!-- Page Content --> 
+          
           <c:forEach items="${projectList}" var="project" varStatus="vs">
           <c:if test="${project.plevel >0}">
             <div class="pj_folder" style="background: rgba(255, 220, 205, 1);">
-                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
+                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno})">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
             		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
@@ -121,7 +122,7 @@
             
             <c:if test="${project.plevel<1}">
               <div class="pj_folder" style="background: rgb(252, 247, 204);">
-                  <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
+                  <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal"  onclick="optionModalClk(${project.pno})">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
                   <div class="pj_folder_in">
                   		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
@@ -162,26 +163,22 @@
                           <div class="form-group col-md-6" style="border: 0px solid black; background-color: rgb(245, 245, 245); display: inline-block; position: absolute; right: 30px; padding: 5px">
                             <label for="message-text" class="form-control-label">목표단계</label>
                             <div class="checkLevel" style="text-align: left; padding-left: 8px">
-                              <c:forEach items="${projectList}" var="pj"> 
+                              <c:forEach items="${OneProjectLv}" var="pjLv"> 
 	                             <input type="checkbox" name="levelCk" value="ck1" id="ck1">
-	                             <label for="ck1">${pj.lname}</label><br>
+	                             <label for="ck1">${pjLv.lname}</label><br>
                               </c:forEach>
                             </div>
                           </div>
                         </div>                  
                           <hr>
                           
-                          <c:forEach items="${projectList}" var="pj" varStatus="vs"> 
-                          <%-- <c:if test="${pj.pno eq rePno}"> --%>
-                          <div style="text-align: left">
+                       	<div style="text-align: left">
                             <small>프로젝트 명</small>
-                            <h4>${pj.ptitle} ${pj.pno}</h4>
+                            <h4>${ptitle} ${pno}</h4>
                             <small>프로젝트 개요</small> 
-                            <p>${pj.psummary}</p>                           
-                          </div>
-                          <%-- </c:if> --%>
-                        </c:forEach>
-                        </div>
+                            <p>${psummary}</p>                           
+                         </div>
+                       </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-light btn-sm updateModal" data-toggle="modal" data-target="#updateModal">수정</button>
                           <button type="button" class="btn btn-sm" style="background-color: coral; color: white" data-dismiss="modal">확인</button>
@@ -254,6 +251,7 @@
     
 	
 <script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
+	
 	<script>
 	    // level checkBox 
 	    var oTbl;
@@ -261,7 +259,7 @@
 	    
 	    //Row 추가
 	    function insRow() {
-	    	if(count<=5){
+	    	if(count<=6){
 		      oTbl = document.getElementById("addTable");
 		      var oRow = oTbl.insertRow();
 		      oRow.onmouseover=function(){oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
@@ -291,7 +289,7 @@
 			
 			var frm = document.proejctEnrollFrm;
 		      
-		      /* for( var i = 0; i <= frm.elements.length - 1; i++ ){
+		      for( var i = 0; i <= frm.elements.length - 1; i++ ){
 		         if( frm.elements[i].name == "lname" )
 		         {
 		             if( !frm.elements[i].value ){
@@ -300,47 +298,45 @@
 		    	 return;
 		              }
 		          }
-		       } */
+		       } 
 			
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
-
 			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
 			param.pmmno =$(".headerMno").text();
 			param.plevel =$("#proejctEnrollFrm [name=lname]").length;
-			// 여기 수정해야함
 			
 			var larr = new Array();
 			
 			for (var i=0; i<$("#proejctEnrollFrm [name=lname]").length; i++){
+				if($("#proejctEnrollFrm [name=lname]").val ==null){
+					param.plevel = 0;
+				}else{
 				var lobj = new Object();
 				lobj.lno = i+1;
 				lobj.lname = $("#proejctEnrollFrm [name=lname]").eq(i).val();
-				larr.push(lobj);
+				larr.push(lobj);					
+				var jsonArr = JSON.stringify(larr);
+				console.log(jsonArr);
+				}
 			}
-			//console.log(larr);
-			//param.larr= larr;
 			var jsonStr = JSON.stringify(param);
-			var jsonArr = JSON.stringify(larr);
 			console.log(jsonStr);
-			console.log(jsonArr);
-			//allData= {"project":jsonStr, "jsonArr":jsonArr}
+
 			 $.ajax({
 	            url  : "${pageContext.request.contextPath}/project/projectMainLv",
 	            data : {jsonStr:jsonStr, jsonArr:jsonArr},
 	            dataType: "json",
-	            /* contentType: "application/json; charset=utf-8", */
 	            type : "post",
 	            success : function(data){
 	                console.log(data);
-	                
+	                location.reload();
 	               
 	            },
 	            error : function(jqxhr, textStatus, errorThrown){
 	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
 	            }
-	        });
-			 location.reload();
+	        });				
 		});
 
 
@@ -374,6 +370,10 @@
           $(".delLevel").hide();  
           $(".levelbox").hide(); 
           $("#addTable").hide();
+          for(var i=count; i>-1; i--){
+	          oTbl.deleteRow(oTbl.clickedRowIndex);
+	          count--;
+          }
         });
         $(".updateModal").click(function(){
             $("#updateModal").modal('show'); 
@@ -381,6 +381,29 @@
           });
       });
 	  
+	 // 상세 불러오는 모달
+	 
+	 function optionModalClk(pno){
+		 var pno = pno;
+		 console.log(pno);
+		$.ajax({
+            url  :"${pageContext.request.contextPath}/project/projectMainDetail",
+            data : {pno:pno},
+            dataType: "json",
+            type : "get",
+            success : function(data) {
+            	var oneProject = data.OneProject;
+            	var oneProjectLv = data.OneProjectLv;
+            	
+            	console.log(oneProject);
+            	console.log(oneProjectLv);
+                
+            },
+            error : function(jqxhr, textStatus, errorThrown){
+                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+            }
+	     });
+	 };
 	</script>
 	
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

@@ -11,7 +11,7 @@
 	
 	<select id="selectOneProjectLv"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT_LEVEL WHERE PNO = #{pno}
+		SELECT * FROM PROJECT_LEVEL WHERE LPNO = #{pno}+1
 	</select>
 	
 	<select id="selectOneProject" parameterType="_int" resultType="project">
