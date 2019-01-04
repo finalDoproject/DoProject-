@@ -47,4 +47,16 @@ public class SideServiceImpl implements SideService {
 		return sideDao.browseMatchingInfo(mno);
 	}
 
+	@Override
+	public List browseDT(int mNo, int requestNo) {
+		
+		return sideDao.browseDT(mNo, requestNo);
+	}
+	
+	@Override
+	public int insertMySelf(int mno) {
+		
+		return sideDao.insertMySelf(mno);
+	}
+
 }

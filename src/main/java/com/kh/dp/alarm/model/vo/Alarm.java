@@ -1,4 +1,4 @@
-package com.kh.dp.project.model.vo;
+package com.kh.dp.alarm.model.vo;
 
 public class Alarm {
 

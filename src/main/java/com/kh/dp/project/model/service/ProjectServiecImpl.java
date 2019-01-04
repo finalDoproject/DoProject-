@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.dao.ProjectDao;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
@@ -80,7 +81,41 @@ public class ProjectServiecImpl implements ProjectService {
   }
 
 
-	
+	@Override
+	public int deleteProject(int pno) {
+		return projectDao.deleteProject(pno);
+	}
+
+	@Override
+	public List<Member> selectSearchMember(String userNick) {
+		return projectDao.selectSearchMember(userNick);
+	}
+
+	@Override
+	public int insertInviteProject(int pno, int mno) {
+		return projectDao.insertInviteProject(pno, mno);
+	}
+
+	@Override
+	public List<Member> selectSearchMember(int pno) {
+		return projectDao.selectSearchMember(pno);
+	}
+
+	@Override
+	public Object selectSearchPM(int pno, int mno) {
+		return projectDao.selectSearchPM(pno, mno);
+	}
+
+	@Override
+	public int insertExileAlarm(int mno, int pno) {
+		return projectDao.insertExileAlarm(pno, mno);
+	}
+
+	@Override
+	public int insertLeaveAlarm(int mno, int pno, int apmno) {
+		return projectDao.insertLeaveAlarm(pno, mno, apmno);
+	}
+
 
 	
 }

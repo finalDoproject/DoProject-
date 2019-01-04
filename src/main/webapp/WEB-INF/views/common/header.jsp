@@ -69,6 +69,7 @@
 	               <c:if test="${!empty member}">
 
 							<span class="headerMno" id="mnoSession" data-value="@Request.RequestContext.HttpContext.Session['mno']" name="mno" style="display: none;">${member.mno}</span>
+							<span id="nick" style="display: none;">${member.nickName}</span>
 							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
@@ -76,40 +77,13 @@
 	              </a>
 	            </li>
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	          <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno}, 1);" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <span class="badge badge-danger">9+</span>
+	            <span class="badge badge-danger" id="alarmCount"></span>
 	          </a>
-	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-	            <!-- c:for 알람 내용 읽어오기 -->
-	            <c:forEach items="${alarmList}" var="al">
-	            <c:if test="${al.atype eq 1}">
-	            	<a class="dropdown-item" href="${pageContext.request.contextPath}/project/updateAlarm.do?ano=${al.ano}&mno=${member.mno}">[${member.nickName}]님 ${al.acontent}</a>
-	            </c:if>
-	            <c:if test="${al.atype eq 2}">
-	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
-	            </c:if>
-	            <c:if test="${al.atype eq 3}">
-	            	<a class="dropdown-item" href="#">[스케줄요청 명] ${al.acontent}</a>
-	            </c:if>
-	            <c:if test="${al.atype eq 4}">
-	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
-	            </c:if>
-	            <c:if test="${al.atype eq 5}">
-	            	<a class="dropdown-item" href="#">[일정 명] ${al.acontent}</a>
-	            </c:if>
-	            <c:if test="${al.atype eq 6}">
-	            	<a class="dropdown-item" href="#">[업무 명] ${al.acontent}</a>
-	            </c:if>
-	            <!-- <a class="dropdown-item" href="#">[프로젝트 명] '제목' 에서 담당자로 지정되었습니다.</a>
-	            <a class="dropdown-item" href="#">[스케줄요청 명]이 종료 되었습니다.</a>
-	            <a class="dropdown-item" href="#">[스케줄요청 명]이 요청 되었습니다.</a>
-	            <a class="dropdown-item" href="#">[업무 명] 새 업무가 있습니다.</a>
-	            <a class="dropdown-item" href="#">[일정 명] 새 일정이 있습니다.</a> -->
-	            </c:forEach>
+	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown" id="alarmList">
 	          </div>
 	        </li>
-	
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
 	        <!-- c:if 부분 조건식 수정해서 프로젝트 메인인지 상세인지로 구분, chat 표현방식 바꾸기 -->
 	        <c:set var="pno" value="${param.pno}" />
@@ -134,7 +108,7 @@
 	            <a class="dropdown-item" href="#">Settings</a>
 	            <a class="dropdown-item" href="#">Activity Log</a>
 	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">Logout</a>
 	          </div>
 	        </li>
 	      </ul>
@@ -193,6 +167,101 @@
 		function openAlert() {
 			alert("프로젝트에 참여한 후 확인 가능합니다.");
 		}
+		
+		function deleteAlarmList(aNo){
+			$.ajax({
+				type: "GET",
+				url:"${pageContext.request.contextPath}/alarm/delete.al",
+				dataType:"json",
+				type : "GET",
+				data : {ano:aNo},
+				async : false,
+				success : function(response){
+				},
+				error:function(request,status,error){
+			    	alert("code:"+request.status+"\n"+"error:"+error);
+			    }
+			});
+			send_message();
+		}
+		
+		function alarmList(mNo, loginMno){
+			console.log(loginMno);
+			$("#alarmList").empty();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/alarm/alarmList.al",
+				dataType:"json",
+				type : "GET",
+				data : {mno:mNo, loginmno:loginMno},
+				success:function(response){
+					var printHTML = "";
+					if(response.length == 0){
+						//존재하지 않음
+						printHTML+="<a style='display: block;width: 100%;padding: 0.25rem 1.5rem;clear: both;font-weight: 400;color: #a0a0a0;";
+						printHTML+="text-align: inherit;white-space: nowrap;border: 0'>알림 내역이 없습니다.</a>";
+						$('#alarmList').append(printHTML);
+						printHTML = "";
+					}else{
+						//존재함
+						for(var i=0; i<response.length;i++){
+							if(response[i].atype == 1){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
+							}else if(response[i].atype == 2){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
+							}else if(response[i].atype == 3){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
+							}else if(response[i].atype == 4){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
+							}else if(response[i].atype == 5){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
+							}else if(response[i].atype == 6){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
+							}else if(response[i].atype == 7){
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
+							}
+							$('#alarmList').append(printHTML);
+							printHTML = "";					
+						}						
+					}
+				},
+				error:function(request,status,error){
+			    	alert("code:"+request.status+"\n"+"error:"+error);
+			    }
+			});
+		}
+		
+		var wsUri = "ws://localhost/count";
+		function send_message() {
+	        websocket = new WebSocket(wsUri);
+	        websocket.onopen = function(evt) {
+	            onOpen(evt);
+	        };
+	        websocket.onmessage = function(evt) {
+	            onMessage(evt);
+	        };
+	        websocket.onerror = function(evt) {
+	            onError(evt);
+	        };
+	    }
+		
+		function onOpen(evt) {
+	       websocket.send($('#nick').text());
+	    }
+	    function onMessage(evt) {
+	    	var data=evt.data;
+	    	if(data!=0){
+	    		$("#alarmCount").empty();
+	    		$('#alarmCount').append(data);
+	    	}else{
+	    		$("#alarmCount").empty();
+	    	}
+	    }
+	    function onError(evt) {
+	    }
+	    
+	    $(document).ready(function(){
+	    	send_message();
+	    });
 	</script>
 </body>
 </html>

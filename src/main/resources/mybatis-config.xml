@@ -24,10 +24,12 @@
 				alias="ChatMtm" />
 		<typeAlias type="com.kh.dp.project.model.vo.Alarm"
 				alias="Alarm" />
-    <typeAlias type="com.kh.dp.task.model.vo.Task" 
+    	<typeAlias type="com.kh.dp.task.model.vo.Task" 
 				 alias="Task"/>
 		<typeAlias type="com.kh.dp.task.model.vo.Attachment" 
 				 alias="Attachment"/>
+		<typeAlias type="com.kh.dp.project.model.vo.ProjectMember" 
+				 alias="ProjectMember"/>
 	</typeAliases>
 	
 	

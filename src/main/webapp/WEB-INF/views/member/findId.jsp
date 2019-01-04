@@ -155,10 +155,10 @@ input[type="radio"]:checked:after {
 		
 </div>
 
-
+<form id="findId" name="findId" action = "findId.do" method="post">
  		<div class="form-item">
 			<p class="formLabel">이름</p>
-			<input type="text" name="userName" id="userName" class="form-style" autocomplete="off"/>
+			<input type="text" name="nickName" id="nickName" class="form-style" autocomplete="off"/>
 		</div>
 		
 		<div class="form-item">
@@ -169,20 +169,14 @@ input[type="radio"]:checked:after {
 		
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
-		<input type="submit" class="login pull-right" value="가입완료">
+		<input type="submit" class="login pull-right" value="아이디 찾기">
 		<br />
 		<!-- <div class="clear-fix"></div>  -->
 	    </div>
 	
-	
-	
-	
-	
-	
+	</form>
 	
 
-	
-	
 		
 </div>
 </div>
@@ -209,6 +203,35 @@ $(document).ready(function(){
 	});
 });
 
+
+$(document).on('click','.login pull-right',function(){
+	
+	var nickName = $("#nickName").val();
+	var email = $("#email").val();
+	var postData = {'nickName' : nickName, 'email' : email};
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/member/findId.do",
+		data: postData,
+		dataType: "json",
+		success:function(data){
+			if(data = null){
+			    alert("가입 시 작성한 이름과 이메일에 따른 아이디가 존재하지 않습니다. ");
+			}else {
+				
+			alert("가입하신 아이디는"+userId+"입니다.");
+			
+		}, error : function(jqxhr, textStatus, errorThrown){
+            console.log("ajax 처리 실패");
+            //에러로그
+            console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+		
+	});
+	
+});
 </script>
 
 
