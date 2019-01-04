@@ -11,8 +11,9 @@ public interface ProjectService {
 	// ---- 프로젝트 ----//
 	List<Map<String, String>> selectProjectList(int mno);
 	int insertProject(Project project);
-
+	int insertProjectLv(List<Project> pjLevel);
 	Project selectOneProject(int pno);
+	List<Project> selectOneProjectLv(int pno);
 	
 	
 	// ---- 메모 ---- //
