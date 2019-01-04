@@ -23,5 +23,10 @@ public interface SideDao {
 	
 	public int insertMySelf(int mno);
 
+	public int isClicked(int mNo,int requestNo,int dtNo);
+
+	public int deleteDT(int mNo, int requestNo, int dtNo);
+	
+	
 
 }

@@ -86,7 +86,6 @@ public class ProjectController {
 		// 스케줄 매칭 요청 리스트 불러오기
 		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
 		model.addAttribute("sArr", sArr);
-		
 		model.addAttribute("memberNo", mno);
 		
 		return "project/projectPage";

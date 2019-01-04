@@ -22,6 +22,12 @@ public interface SideService {
 	public List browseDT(int mNo, int requestNo);
 
 	public int insertMySelf(int mno);
+	
+	public int isClicked(int mNo,int requestNo,int dtNo);
+
+	public int deleteDT(int mNo, int requestNo, int dtNo);
+	
+	
 
 
 }
