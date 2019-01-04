@@ -10,8 +10,8 @@
 	<insert id="insertTask">
 		INSERT INTO TASK(TNO, TLEVEL, TMNO, TENDDATE, TTPRIORITY,
 			TTITLE, TCONTENT, TSTARTDATE, TWRITER)
-		VALUES (SEQ_TNO.NEXTVAL, #{tlevel}, #{tmno}, #{tenddate}, #{ttpriority},
-		#{ttitle}, #{tcontent}, #{tstartdate}, #{twriter})
+		VALUES (SEQ_TNO.NEXTVAL, #{tlevel}, #{tmno}, TO_DATE(#{tenddate},'MM/DD/RRRR'), #{ttpriority},
+		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter})
 		<selectKey keyProperty="tno" resultType="_int"
 			order="AFTER">
 			SELECT SEQ_TNO.CURRVAL FROM DUAL

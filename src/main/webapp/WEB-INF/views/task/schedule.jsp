@@ -305,7 +305,7 @@ $(function() {
 		<div class="form-group">
 			<label class="col-md-4 " for="ttitle"></label>
 				<div class="col-md-4">
-					<input id="ttitle" name="ttitle" type="text" placeholder="업무명을 입력하세요" class="form-control" style="width:360px; border : 3px solid white; background : white;"
+					<input id="ttitle" name="ttitle" type="text" placeholder="일정명을 입력하세요" class="form-control" style="width:360px; border : 3px solid white; background : white;"
 								required />
 				</div>
 			</div>
@@ -319,37 +319,7 @@ $(function() {
 				</div>
 		</div>
 		
-		<!-- 업무내용 -->
-		<div class="workwriteCont line-fold">
-			<!-- 1. 업무상태 지정 -->
-			<div class="line" >
-				<label class="icon1"><span class="blind"></span></label>
-				<div class="workTab" name="tLevelSelect">
-					<input type="hidden" name="tlevel" id="tlevel" value="0"/>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab1" value="1">요청</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab2" value="2">진행</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="3">피드백</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="4">완료</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="5">보류</button>
-				</div>
-				<script>
-					$(".tLevelSelect").each(function(){
-						$(this).click(function(){
-							$('#tlevel').val($(this).val());
-						});
-					});
-				</script>
-			</div>
-			<!-- 2. 담당자 지정 -->
-						<div class="form-group">
-							<label class="col-md-4 control-label" for="담당자 추가">담당자</label>
-							<div class="col-md-4">
-								<select id="tmanager" name="tmanager" class="form-control" style="margin-left:130px;">
-								</select>
-				
-							</div>
-						</div>
-			<!-- 3. 시작일 지정 -->
+		<!-- 3. 시작일 지정 -->
 			<div class="line" id="START_DT_LINE" style="display: inline-block;">
 				<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 				<div class="workdate" >
@@ -366,39 +336,13 @@ $(function() {
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
-			<!-- 5. 진척도 지정 -->
-			<br />
-			<br />
-			<div class="line" id="PROGRESS_LINE" >
-				<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
-				<a class="workPrgrs" style="display: inline-block;">
-					<div class="workPrgrs_bg"><!-- 20170407 수정 -->
-						<strong id="PROGRESS_PER" class="txt"></strong>
-						<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
-						<!-- toltip -->
-						<div class="pcnt0" style="width:5%;display:block"><span class="pcnt"><button>0%</button></span></div>
-						<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div><!-- bar style="right:80%;" -->
-						<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div><!-- bar style="right:60%;" -->
-						<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div><!-- bar style="right:40%;" -->
-						<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div><!-- bar style="right:20%;" -->
-						<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div><!-- bar style="right:0;" -->
-					</div><!-- 20170407 수정 -->
-				</a>
-			</div>
-			<!-- 6. 우선순위 지정 -->
+			<!-- 장소 지정 -->
 			<div class="form-group" >
-				우선순위 : 
+				장소
 					<div class="col-md-4"  style="display: inline-block;">
-						<select id="ttpriority" name="ttpriority" class="form-control">
-							<option value="1">낮음</option>
-							<option value="2" style="color:green;">보통</option>
-							<option value="3"style="color:orange;">높음</option>
-							<option value="4" style="color:red;">긴급</option>
-						</select>
+						<input type="text" />
 					</div>
-			</div>
-		</div>
-		</div>
+			</div>	
 		
 		<!-- 최초화면툴팁layer -->	
 		
@@ -411,14 +355,7 @@ $(function() {
 		background:white;" 
 		placeholder="글을 작성하세요." 
 		autocomplete="off"></textarea>
-				
-		<div class="pst_btn_bx" >	
-			<span class="btn app_addfile">		
-			<input type="file" name="upFile" id="upFile1" multiple/>
-			</span>		
-		</div>	
-		</div>
-	
+
 		<div class="right" style="display: inline-block;">
 			<input type="submit" class="btn btn-primary" id="insertFlow" value="UPLOAD"/>
 		</div>
