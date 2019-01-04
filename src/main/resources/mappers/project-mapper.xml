@@ -56,7 +56,9 @@
 	</delete>
 
 	<select id="selectSearchMember" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE NICKNAME LIKE '%' || #{userNick} || '%'
 	</select>
 	
 	<insert id="insertInviteProject">
@@ -64,7 +66,9 @@
 	</insert>
 	
 	<select id="searchMemberList" resultType="member">
-		SELECT * FROM MEMBER WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
 	</select>
 	
 	<select id="selectSearchPM" parameterType="_int" resultType="ProjectMember">

@@ -1050,7 +1050,7 @@ function scheduleToggle(){
 					for(var i=0; i<response.length;i++){
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1077,7 +1077,7 @@ function scheduleToggle(){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1087,7 +1087,7 @@ function scheduleToggle(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
