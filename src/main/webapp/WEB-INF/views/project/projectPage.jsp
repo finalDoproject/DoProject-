@@ -12,29 +12,104 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<!-- Select 2 -->
+<link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
+
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
+<style>
+	
+.ok{
+	float:right;
+	width: 112px;
+	height: 37px;
+	border-radius:5px;
+	background-clip: padding-box;
+	background-color: #F88E6F;
+	border:none;
+	color: #fff;
+	font-weight: bold;
+	margin-left :auto;
+	margin-right : auto;
+}
+
+.ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
+.ok:focus{outline: none;}
+
+.modal-title{
+	margin-left : 180px;
+	color : black;
+		}		
+.schedule {
+	margin-left : auto;
+	margin-right : auto;
+	width : 100%;
+	height : 75%;
+	border : 5px solid black;
+		}
+.store {
+	margin-left : auto;
+	margin-right : auto;
+		}
+
+</style>
+<script>
+var chk = 0;
+function taskToggle(){
+	if(chk == 0){
+		$('#taskForm').css('display', 'block');
+		$('#scheduleForm').css('display', 'none');
+		chk=1;
+	}else{
+		$('#taskForm').css('display', 'none');
+		chk=0;
+	}
+}
+
+var chk2 = 0;
+function scheduleToggle(){
+	if(chk2 == 0){
+		$('#scheduleForm').css('display', 'block');
+		$('#taskForm').css('display', 'none');
+		chk2 = 1;
+	}else{
+		$('#scheduleForm').css('display', 'none');
+		chk2 = 0;
+	}
+}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 	<div id="wrapper" >
-
+	<span id="mno" style="display: none;">${member.mno}</span>
+	<span id="pno" style="display: none;">${project.pno}</span>
+	<span id="pmno" style="display: none;">${project.pmno}</span>
+	<c:set value="${member.mno}" var="mno"/>
+	<c:set value="#{project.pno}" var="pno"/>
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="#">
+          <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
             <span>글 작성하기</span>
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#" >
+          <a class="nav-link" onclick="scheduleToggle();" >
             <i class="fas fa-map-marker-alt"></i>
             <span>일정 작성하기</span>
           </a>
+          <li class="nav-item">
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
+        	<i class="far fa-clock" ></i>
+        	<span id="req">스케줄 매칭 요청</span>
+        	</a>
         </li>
         <hr>
 
@@ -53,49 +128,160 @@
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
-        <hr />
+		<hr />
         <li class="nav-item">
-          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="searchMemberList(${project.pno});">
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
-  			<div class="dropdown-menu">
-  				<div>
-    			<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-    				<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">홍길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">신사임당</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">김유신</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick();">
-					<img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-					&nbsp;<span style="vertical-align:middle;">고길동</span></a>
-				</div>
-				<div>
-				<a class="dropdown-item" href="#" style="text-align:center; font-weight:bolder;" onclick="out();">프로젝트 나가기</a>
-  				</div>
+  			<div class="dropdown-menu" id="projectIntoMemberList">
 			</div>
         </li>
+        <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/tasktest.jsp"/>
+        </div>
+        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/schedule.jsp"/>
+        </div>
       </ul>
-         
+      
+      <!-- invitationModal -->
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+         <div class="modal-dialog" role="document">
+          <form id="proejctEnrollFrm">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
+               <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+                 <div class="form-group">
+                   <label for="recipient-name" class="form-control-label">프로젝트 초대하기</label><br />
+                   <input type="text" class="nickname" name="nickname" id="nickname" placeholder="닉네임 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
+                   <button type="button" id="findUserBtn" onclick="findUser();" class="btn btn-outline-warning">검색</button>
+                 </div>
+                 <div class="form-group" id="searchMemberList">
+                 </div>              
+             </div>                 
+           </div>
+
+          </form>
+         </div>
+       </div>
+      
+      <!-- 스케줄 매칭 Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px; font-weight: bolder;">
+              스케줄 매칭</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." 
+                                style="width : 100%; border-radius : 1px;" >
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+                                     <c:forEach items="${mArr}" var="m" varStatus="status">
+                                        <option value="${m.mno}">${m.nickName} </option>
+                                     </c:forEach> 
+
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="ok">요청 완료</button>
+            </div>
+                 </form>         
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- invitationModal -->
+      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
+              <div class="modal-dialog" role="document">
+              
+               <form id="proejctEnrollFrm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
+                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
+                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
+                      </div>                  
+                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
+                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
+                        <div class="form-group levelbox" style="display: none;">
+                          <hr>
+                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
+                          <button type="button" class="btn plusbtn btn-light">+</button>
+                          <button type="button" class="btn minusbtn btn-light">-</button>
+                          
+                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
+
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
+                  </div>                  
+                </div>
+               </form>
+              </div>
+            </div>   
+      
+
+     
       <!-- right nav --> 
       <div id="rightNav">
       <c:forEach items="${memoList}" var="memo" varStatus="vs">
-      <%-- <form action="${pageContext.request.contextPath}/memo/insertMemo.do" class="form-inline"> --%>
-          <div class="memoBox">
-	            <textarea class="memopad" id="" cols="22" rows="9" <%-- onclick="this.value='${memo.mmcontent}'" --%>>${memo.mmcontent}</textarea>
-	        
-	      </div>
-      <!-- </form> -->
+         <div class="memoBox">
+         <c:if test="${memo.mmcontent eq null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" placeholder="메모를 작성하세요!"></textarea>
+	     </c:if>
+	     <c:if test="${memo.mmcontent ne null}">
+	     	<textarea class="memopad" id="" cols="22" rows="9" >${memo.mmcontent}</textarea>
+	     </c:if>
+	     </div>
       </c:forEach>
       <hr>
       <div class="cal" style="color: #555">
@@ -139,18 +325,271 @@
       </div>
       <hr>
       <div class="timetable" style="color: #555">
-          <h6>스케줄매칭</h6>
+          <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
-            
+            <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                <a href="#" style="color: #555;">고양이 친목모임 <button class="ongoing">진행중</button></a>
+                
+                <c:if test="${s.SSNO eq 0}">
+                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
+                </c:if>
+                <c:if test="${s.SSNO eq 1}">
+                <a style="color: #555;">${s.SMCONTENT}
+                <input type="hidden" value="${s.SMNO}" id="smno"/>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter">진행중</button> </a>
+                </c:if>
+                <c:if test="${s.SSNO eq 2}">
+                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
+                </c:if>
+               
               </li>
-              <li>
-                <a href="#" style="color: #555;">연말 모임<button class="complete">완료</button></a>
-              </li>
+            </c:forEach>
             </ul>
         </div>
         <hr>
+
+        <!--스케줄 매칭 요청에 대한 Modal -->
+  <div class="modal fade mod" id="ongoingModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">스케줄 매칭</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered schedule">
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>9</th>
+                        <th id="1" class="select"></th>
+                        <th id="16" class="select"></th>
+                        <th id="31" class="select"></th>
+                        <th id="46" class="select"></th>
+                        <th id="61" class="select"></th>
+                        <th id="76" class="select"></th>
+                        <th id="91" class="select"></th>
+                    </tr>
+                    <tr>
+                         <th>10</th>
+                         <th id="2" class="select"></th>
+                         <th id="17" class="select"></th>
+                         <th id="32" class="select"></th>
+                         <th id="47" class="select"></th>
+                         <th id="62" class="select"></th>
+                         <th id="77" class="select"></th>
+                         <th id="92" class="select"></th>
+                    </tr>
+                    <tr>
+                          <th>11</th>
+                          <th id="3" class="select"></th>
+                          <th id="18" class="select"></th>
+                          <th id="33" class="select"></th>
+                          <th id="48" class="select"></th>
+                          <th id="63" class="select"></th>
+                          <th id="78" class="select"></th>
+                          <th id="93" class="select"></th>
+                    </tr>
+                        <tr>
+                        <th>12</th>
+                        <th id="4" class="select"></th>
+                        <th id="19" class="select"></th>
+                        <th id="34" class="select"></th>
+                        <th id="49" class="select"></th>
+                        <th id="64" class="select"></th>
+                        <th id="79" class="select"></th>
+                        <th id="94" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>13</th>
+                            <th id="5" class="select"></th>
+                            <th id="20" class="select"></th>
+                            <th id="35" class="select"></th>
+                            <th id="50" class="select"></th>
+                            <th id="65" class="select"></th>
+                            <th id="80" class="select"></th>
+                            <th id="95" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>14</th>
+                            <th id="6" class="select"></th>
+                            <th id="21" class="select"></th>
+                            <th id="36" class="select"></th>
+                            <th id="51" class="select"></th>
+                            <th id="66" class="select"></th>
+                            <th id="81" class="select"></th>
+                            <th id="96" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>15</th>
+                            <th id="7" class="select"></th>
+                            <th id="22" class="select"></th>
+                            <th id="37" class="select"></th>
+                            <th id="52" class="select"></th>
+                            <th id="67" class="select"></th>
+                            <th id="82" class="select"></th>
+                            <th id="97" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>16</th>
+                            <th id="8" class="select"></th>
+                            <th id="23" class="select"></th>
+                            <th id="38" class="select"></th>
+                            <th id="53" class="select"></th>
+                            <th id="68" class="select"></th>
+                            <th id="83" class="select"></th>
+                            <th id="98" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>17</th>
+                            <th id="9" class="select"></th>
+                            <th id="24" class="select"></th>
+                            <th id="39" class="select"></th>
+                            <th id="54" class="select"></th>
+                            <th id="69" class="select"></th>
+                            <th id="84" class="select"></th>
+                            <th id="99" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>18</th>
+                            <th id="10" class="select"></th>
+                            <th id="25" class="select"></th>
+                            <th id="40" class="select"></th>
+                            <th id="55" class="select"></th>
+                            <th id="70" class="select"></th>
+                            <th id="85" class="select"></th>
+                            <th id="100" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>19</th>
+                            <th id="11" class="select"></th>
+                            <th id="26" class="select"></th>
+                            <th id="41" class="select"></th>
+                            <th id="56" class="select"></th>
+                            <th id="71" class="select"></th>
+                            <th id="86" class="select"></th>
+                            <th id="101" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>20</th>
+                            <th id="12" class="select"></th>
+                            <th id="27" class="select"></th>
+                            <th id="42" class="select"></th>
+                            <th id="57" class="select"></th>
+                            <th id="72" class="select"></th>
+                            <th id="87" class="select"></th>
+                            <th id="102" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>21</th>
+                            <th id="13" class="select"></th>
+                            <th id="28" class="select"></th>
+                            <th id="43" class="select"></th>
+                            <th id="58" class="select"></th>
+                            <th id="73" class="select"></th>
+                            <th id="88" class="select"></th>
+                            <th id="103" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>22</th>
+                            <th id="14" class="select"></th>
+                            <th id="29" class="select"></th>
+                            <th id="44" class="select"></th>
+                            <th id="59" class="select"></th>
+                            <th id="74" class="select"></th>
+                            <th id="89" class="select"></th>
+                            <th id="104" class="select"></th>
+                    </tr>
+                    <tr>
+                            <th>23</th>
+                            <th id="15" class="select"></th>
+                            <th id="30" class="select"></th>
+                            <th id="45" class="select"></th>
+                            <th id="60" class="select"></th>
+                            <th id="75" class="select"></th>
+                            <th id="90" class="select"></th>
+                            <th id="105" class="select"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary store">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+        <!-- Modal -->
+      <div class="modal fade mod" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Schedule Matching</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form name="requestForm" action="matching.do" method="post">
+                    <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" colspan="4">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요." style="width : 100%">
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"><i class="fas fa-user fa-2x"></i></th>
+                                <td colspan="3">
+                                	
+                                    <select class="member-multiple" name="mNickname" multiple="multiple"
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                             		
+<%--                                     <c:forEach items="${member}" var="member" varStatus="status">
+                                        <option value="${member.nickName}">${member.nickName} </option>
+                                     </c:forEach> --%>
+                                     </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row"><i class="far fa-calendar fa-2x"></i></th>
+                                <td colspan="3">
+                                        <input type="text" class="datepicker" name="startDate" id="startdate" placeholder="시작 날짜 선택"/>  
+                                        <i class="fas fa-long-arrow-alt-right "></i>
+                                        <input type="text" class="datepicker" name="endDate" id="enddate" placeholder="종료 날짜 선택" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="modal-footer" >
+                <button type="submit" class="btn btn-primary">요청 완료</button>
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+                 </form>         
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+      
+
       </div>
       <!-- /right nav -->
 
@@ -198,20 +637,60 @@
         </div>
       </div>
     </div>
+    
+    
 	
 	<!-- right nav-->
     <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- datepicker를 위한 js -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
+	<!-- select2를 위한 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     
     <script type="text/javascript">
+    
+	 	// select2 
+	    $('.member-multiple').select2({
+	    	placeholder : "함께할 인원을 선택해주세요."
+	    }); 
+	 	<!-- select 클릭 시 효과  + 아이디 값 가져오기 -->
+	    $(".select").click(function(){
+		    	alert("dd");
+		    	/* var dtNo = $(this).attr("id");
+		    	var smNo = $('#smno').attr("id"); */
+		    	
+		    	
+		    	 /* $.ajax({
+		         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+		         	data : {dtNo : dtNo},
+		         	dataType : "json",
+		         	success : function(data) {
+		         		console.log(data);
+		         		if(data > 0 ){
+		         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+		         		}
+		         
+		         		
+		         	 },error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+		         }); */
+		});
+	    
+	 	$('.select2-search__field').attr("style", "width : 370px");
+	 		 	
         $(document).ready(function () {
             w3.includeHTML(init);
         });
-
         function init() {
             $('#rightNav').BootSideMenu({
                 side: "right",
@@ -222,9 +701,25 @@
         }
         // right nav memopad 
         $(document).ready(function() {
+       	var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
+   			var returnValue; // 현재 URL 가져오기 
+   			var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+   			var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+   			// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return 
+   			for (var i = 0; i < parameters.length; i++) { 
+   				var varName = parameters[i].split('=')[0]; 
+   					if (varName.toUpperCase() == paramName.toUpperCase()) { 
+   						returnValue = parameters[i].split('=')[1]; 
+   						return decodeURIComponent(returnValue);
+   					} 
+   				} 
+   			};
+        	
           var memopad = $('.memopad');
+          var pno = getParameters('pno');
+          var mno = getParameters('mno');
+          console.log(pno+":"+mno);
           
-         
           memopad.focus(function(){
         	  $(memopad).html()
          
@@ -236,11 +731,12 @@
             console.log(saveMemo);
   
         	  $.ajax({
-  				url: "${pageContext.request.contextPath }/project/projectPage.do",
+  				url: "${pageContext.request.contextPath}/project/projectPage.do",
   				dataType: "json",
   				/* contentType: 'application/json; charset=utf-8', */
   				type:"post",
-  				data:{saveMemo:saveMemo},
+  				data:{saveMemo:saveMemo,
+  						pno:pno, mno:mno},
   				success : function(data){
   					// alert(data.msg);
   					$(memopad).reload();
@@ -416,8 +912,228 @@
 				showEvents(current);
       }, false);
     });
-	</script>
+    $(function(){
+   	 
+ 	   // 한국어 설정
+ 	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+ 	   
+ 	   // 시작일
+ 	   $('#startdate').datepicker({
+ 		  // 데이터 형식 지정
+ 		  dateFormat : "yy-mm-dd",
+ 		  // 달 / 주 이름 지정
+ 		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+ 		  dayNamesMin : ["일","월","화","수","목","금","토"],
+ 		  // 오늘 날짜 이후로 선택 가능
+ 		  minDate : 1,
+ 		  onClose : function(selectDate) {
+ 			  // 시작일 datepicker가 닫힐 때
+ 			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+ 			  
+ 			  $("#enddate").datepicker("option", "minDate", selectDate);
+ 			  
+ 			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+ 			  var date = $(this).datepicker('getDate');
+ 			  
+ 			  date.setDate(date.getDate()+7);
+ 			  $("#enddate").datepicker("option", "maxDate", date);
+ 		  }
+ 		   
+ 	   });
+ 	   
+ 	   // 종료일
+ 	   $('#enddate').datepicker({
+ 		  dateFormat : "yy-mm-dd",
+  		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+  		  dayNamesMin : ["일","월","화","수","목","금","토"],
+  		  minDate : 0,
+  		  
+  		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+  		  onClose : function(selectDate){
+  			 
+  			  $('#startdate').datepicker("option", "maxDate", selectDate);
+  		  }
+ 	   });
+    });
     
+       /* $('.ongoing').click(function(){
+    	  
+    	   
+       }); */
+	</script>
+    <script>
+    $('input[type="text"]').keydown(function() {
+	    if (event.keyCode === 13) {
+	        event.preventDefault();
+	    }
+	});
+    
+    function inviteProject(mNo, nickName, pNo){
+    	if(confirm("[" + nickName + "] 님을 초대하시겠습니까?") == true){
+    		// 알림내용 추가, 알림 선택시 초대 수락(알림 테이블에 상태 변경 필요?)
+    		if(mNo != $("#mno").text()){
+    			// ajax로 해당 회원 초대만 하면 됨
+    			//location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    			$.ajax({
+    				url:"${pageContext.request.contextPath}/project/inviteProject.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
+    		}else{
+    			alert("본인은 초대할 수 없습니다.");
+    		}
+    	}else{
+    		return false;
+    	}
+	}
+	function kick(name, pNo, mNo, mMno){
+		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
+		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
+			if(mNo == $("#mno").text()){
+				alert("본인은 추방할 수 없습니다.");
+			}else{
+				//location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno+"&mmno="+mmno;
+				$.ajax({
+    				url:"${pageContext.request.contextPath}/project/exile.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo, mmno:mMno},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
+			}
+		}else{
+			return;
+		}
+	}
+	function leaveProject(pno, mno, pmno){
+		if(confirm("프로젝트에서 나가시겠습니까?") == true){
+			location.href="${pageContext.request.contextPath}/project/leaveProject.do?pno="+pno+"&mno="+mno+"&pmno="+pmno;
+		}else{
+			return false;
+		}
+	}
+	function deleteProject(pno, mno){
+		if(confirm("프로젝트를 제거하시겠습니까?") == true){
+			if(confirm("한번 제거하시면 복구할 수 없습니다.") == true){
+				location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	function findUser(){
+		$("#searchMemberList").empty();
+		$.ajax({
+			url: "${pageContext.request.contextPath }/project/searchMember.do",
+			dataType : "json",
+			type : "GET",
+			data : {userNick:$("#nickname").val()},
+			success : function(response){
+				var printHTML = "";
+				if(response.length == 0){
+					// 존재하지 않음
+					printHTML+="<div>";
+					printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+					printHTML+="&nbsp;<span style='vertical-align:middle;'>존재하지 않는 아이디 또는 닉네임 입니다.</span></a>";
+					printHTML+="</div>";
+					$('#searchMemberList').append(printHTML);
+					printHTML = "";
+				}else{
+					// 존재함
+					for(var i=0; i<response.length;i++){
+						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
+						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
+						printHTML+="</div>";
+						$('#searchMemberList').append(printHTML);
+						printHTML = "";
+					}
+				}
+			},
+		    error:function(request,status,error){
+		    	alert("code:"+request.status+"\n"+"error:"+error);
+		    }
+		});
+	}
+	
+	function searchMemberList(pNo){
+		$("#projectIntoMemberList").empty();
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno:pNo},
+			success:function(response){
+				var printHTML = "";
+				if($("#pmno").text() == $("#mno").text()){
+					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 지우기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}else{
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 나가기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}
+				
+			}
+		});
+		
+	}
+	$(function(){
+		var pNo = ${pno};
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno: pNo},
+			success:function(response){
+				if($("#pmno").text() == $("#mno").text()){
+					for(var i=0; i<response.length; i++){
+						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						console.log(response[i].mno);
+					}
+				}else{
+					for(var i=0; i<response.length; i++){
+
+					}
+
+				}
+				
+			}
+		});
+	})
+	
+	
+
+	</script>
 	
 </body>
 

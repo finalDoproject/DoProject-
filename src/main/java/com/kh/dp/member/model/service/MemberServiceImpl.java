@@ -71,6 +71,23 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.deleteMember(mno);
 	}
+	
+	@Override
+	public int withdrawMember(String userId) {
+		
+		return memberDao.withdrawMember(userId);
+	}
+	
+	@Override
+	public int updateMember(Member member) {
+		
+		return memberDao.updateMember(member);
+	}
+
+	@Override
+	public Member selectOneNickname(String nickname) {
+		return memberDao.selectOneNickname(nickname);
+	}
 
 	
 	

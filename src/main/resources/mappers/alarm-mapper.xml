@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="alarm">
+	<resultMap type="map" id="alarm"/>	
+	
+	<update id="deleteAlarmList" parameterType="Alarm">
+		UPDATE ALARM SET ACONDITION = 'N' WHERE ANO = #{ano}
+	</update>
+	
+	<select id="selectAlarmList" parameterType="Alarm" resultType="Alarm">
+		SELECT A.*, P.PTITLE, T.TTITLE, S.SMCONTENT, M.NICKNAME
+		FROM ALARM A
+		LEFT OUTER JOIN PROJECT P ON (A.APNO = P.PNO)
+		LEFT OUTER JOIN TASK T ON (A.ATNO = T.TNO)
+		LEFT OUTER JOIN SCHEDULE_MATCHING S ON (A.ASMNO = S.SMNO)
+		LEFT OUTER JOIN MEMBER M ON (A.APMNO = M.MNO)
+		WHERE A.AMNO = #{mno} AND A.ACONDITION = 'Y'
+	</select>
+	
+	<!-- <select id="selectCountAlarm" parameterType="_int" resultType="Alarm">
+		SELECT COUNT(*) FROM ALARM WHERE AMNO = #{MNO}
+	</select> -->
+	
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project">
+	<resultMap type="map" id="project"/>
+	
+	
+	<select id="selectProjectList"  parameterType="_int" resultType="project">
+		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
+		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) 
+	</select>
+
+	
+	<select id="selectOneProject" parameterType="_int" resultType="project">
+		SELECT * FROM PROJECT WHERE PNO = #{pno}
+	</select>
+	
+	<insert id="insertProject">
+		 INSERT INTO PROJECT VALUES
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
+	</insert>
+		
+	<select id="selectProjectIntoMember" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (
+    		SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<delete id="deleteLeaveProject">
+		DELETE FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</delete>
+	
+	<select id="selectAlarmList" resultType="alarm">
+		SELECT * FROM ALARM WHERE AMNO = #{mno} AND ACONDITION = 'Y'
+	</select>
+
+	<delete id="deleteProject">
+		DELETE FROM PROJECT WHERE PNO = #{pno}
+	</delete>
+
+	<select id="selectSearchMember" resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+	</select>
+	
+	<insert id="insertInviteProject">
+		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno}, 'N')
+	</insert>
+	
+	<select id="searchMemberList" resultType="member">
+		SELECT * FROM MEMBER WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<select id="selectSearchPM" parameterType="_int" resultType="ProjectMember">
+		SELECT * FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</select>
+	
+	<insert id="insertExileAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 추방당했습니다.', DEFAULT, 4, #{mno}, #{pno}, NULL, NULL, NULL)
+	</insert>
+	
+	<insert id="insertLeaveAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
+	</insert>
+</mapper>

@@ -6,10 +6,8 @@
 <meta charset="UTF-8">
 <title>Do Project!</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.css">
-   <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.print.min.css" media="print">
+
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -17,9 +15,9 @@
 	<div id="wrapper" >
 
       <!-- Sidebar -->
-      <ul class="sidebar navbar-nav">
+       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypage.do">
+          <a class="nav-link" href="#" onclick="return false;" style="cursor:default">
             <i class="fas fa-user"></i>
             <span>My Page</span>
           </a>
@@ -57,12 +55,12 @@
         <div class="container-fluid">
 
 
-          <!-- Page Content -->
+         <!-- Page Content -->
              <div class="page-wrapper">
             <div class="page-breadcrumb" align="left">
                 <div class="row">
                     <div class="col-5 align-self-center">
-                        <h4 class="page-title">내 캘린더</h4>
+                        <h4 class="page-title">My Page</h4>
                     </div>
                     <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
@@ -71,7 +69,7 @@
                                     <li class="breadcrumb-item">
                                         <a href="#">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">내 캘린더</li>
+                                    <li class="breadcrumb-item active" aria-current="page">My Page</li>
                                 </ol>
                             </nav>
                         </div>
@@ -84,7 +82,7 @@
             <!-- ============================================================== -->
             <div class="container-fluid">
                 <div class="card">
-                    <div id="calendar"></div>
+               	My Page!
                 </div>
             </div>
         </div>
@@ -109,21 +107,6 @@
      });  
 	
 	</script>
-	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/fullcalendar/moment.min.js"></script>
-     <script src="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/fullcalendar/locale/ko.js"></script>
-    <script>
-    
-      $(function() {
-    
-        $('#calendar').fullCalendar({
-        });
-    
-      });
-    
-    </script>
 </body>
 
 </html>

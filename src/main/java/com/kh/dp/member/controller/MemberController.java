@@ -38,7 +38,7 @@ public class MemberController {
 	@RequestMapping("/member/join.do")
 	public String MemberView() {
 		
-		return null;
+		return "/member/join";
 	}
 	
 	@RequestMapping("member/toFindFw.do")
@@ -107,7 +107,7 @@ public class MemberController {
 			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
 				msg="로그인에 성공했습니다.";
 				mv.addObject("member", m);
-				loc="/project/projectMain.do";
+				loc="/";
 			} else {
 				msg = "비밀번호를 다시 확인해주세요.";
 			}
@@ -240,6 +240,64 @@ public class MemberController {
 		
 		return "common/msg";
 		
+	}
+	
+	@RequestMapping("/member/withdrawMember.do")
+	public String withdrawMember(SessionStatus sessionStatus, 
+			Member member, Model model) {
+		
+		int result = memberService.withdrawMember(member.getUserId());
+		
+		String loc = "/";
+		String msg = "";
+		
+		if(result > 0) {
+			msg = "회원 탈퇴 성공!";
+			sessionStatus.setComplete();
+		} else {
+			msg = "회원 탈퇴 실패!";
+		}
+		
+		model.addAttribute("loc", loc)
+		.addAttribute("msg", msg);
+		
+		return "common/msg";
+		
+		
+	}
+	
+	@RequestMapping("/member/memberUpdate.do")
+	public ModelAndView memberUpdate(Member member) {
+		
+		
+		System.out.println("수정 : "+member);
+		
+		
+		// 원래비번
+		String newPwd = member.getPassword();
+		System.out.println("암호화 전 비번 : "+newPwd);
+		
+		member.setPassword(bcryptPasswordEncoder.encode(newPwd));
+		System.out.println("암호화된 비번 : "+member.getPassword());
+		
+		ModelAndView mv = new ModelAndView();
+		
+		int result = memberService.updateMember(member);
+		
+		String loc = "/";
+		String msg ="";
+		
+		if(result > 0) {
+			
+			msg="회원 정보 수정 성공!";
+			mv.addObject("member", member);
+			
+		} else msg = "회원 정보 수정 실패!";
+		
+		mv.addObject("loc", loc).addObject("msg", msg)
+		.setViewName("common/msg");
+		
+		return mv;
 	}
 
 }

@@ -6,8 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.dao.ProjectDao;
 import com.kh.dp.project.model.vo.Memo;
+import com.kh.dp.project.model.vo.Project;
 
 @Service
 public class ProjectServiecImpl implements ProjectService {
@@ -15,14 +17,96 @@ public class ProjectServiecImpl implements ProjectService {
 	@Autowired
 	private ProjectDao projectDao;
 	
+	// ---- 프로젝트 ---- //
 	@Override
-    public List<Map<String, String>> selectMemoList() {
-        return projectDao.selectMemoList();
+	public List<Map<String, String>> selectProjectList(int mno) {
+		 return projectDao.selectProjectList(mno);
+	}
+
+	@Override
+	public int insertProject(Project project) {
+		return projectDao.insertProject(project);
+	}
+	
+	
+	@Override
+	public Project selectOneProject(int pno) {
+		return projectDao.selectOneProject(pno);
+	}
+
+	
+	
+	// ---- 메모 ---- //
+	@Override
+    public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
+        return projectDao.selectMemoList(map);
     }
 
 	@Override
-	public int updateMemo(String saveMemo) {
-		return projectDao.updateMemo(saveMemo);
+	public int updateMemo(Map<String, Object> map) {
+		return projectDao.updateMemo(map);
 	}
 
+	@Override
+	public int insertMemo(Map<String, Object> map) {
+		return projectDao.insertMemo(map);
+	}
+
+	// 프로젝트 참여자 검색
+	@Override
+	public List<Map<String, String>> selectProjectIntoMember(int pno) {
+		return projectDao.selectProjectIntoMember(pno);
+	}
+
+	@Override
+	public int deleteLeaveProject(int pno, int mno) {
+		return projectDao.deleteLeaveProject(pno, mno);
+	}
+
+	@Override
+	public int deleteMemberFromProject(int pno, int mno) {
+		return projectDao.deleteMemberFromProject(pno, mno);
+	}
+
+	@Override
+	public List<Map<String, String>> selectAlarmList(int mno) {
+		return projectDao.selectAlarmList(mno);
+  }
+
+	@Override
+	public int deleteProject(int pno) {
+		return projectDao.deleteProject(pno);
+	}
+
+	@Override
+	public List<Member> selectSearchMember(String userNick) {
+		return projectDao.selectSearchMember(userNick);
+	}
+
+	@Override
+	public int insertInviteProject(int pno, int mno) {
+		return projectDao.insertInviteProject(pno, mno);
+	}
+
+	@Override
+	public List<Member> selectSearchMember(int pno) {
+		return projectDao.selectSearchMember(pno);
+	}
+
+	@Override
+	public Object selectSearchPM(int pno, int mno) {
+		return projectDao.selectSearchPM(pno, mno);
+	}
+
+	@Override
+	public int insertExileAlarm(int mno, int pno) {
+		return projectDao.insertExileAlarm(pno, mno);
+	}
+
+	@Override
+	public int insertLeaveAlarm(int mno, int pno, int apmno) {
+		return projectDao.insertLeaveAlarm(pno, mno, apmno);
+	}
+
+	
 }
