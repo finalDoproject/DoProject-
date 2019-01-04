@@ -1,10 +1,16 @@
 package com.kh.dp.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
 
 import com.kh.dp.member.model.vo.Member;
+import com.kh.dp.member.model.vo.Attachment;
 
 @SessionAttributes(value= {"member"})
 @Controller
@@ -267,7 +275,53 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberUpdate.do")
-	public ModelAndView memberUpdate(Member member) {
+	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
+			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
+		
+		// 1. 파일을 저장할 경로 생성
+				String saveDir = session.getServletContext().getRealPath("/resources/upload/profile");
+				List<Attachment> attachList = new ArrayList<Attachment>();
+
+				
+				// 2. 폴더 유무 확인 후 생성
+				File dir = new File(saveDir);
+				
+				System.out.println("폴더가 있나요? "+ dir.exists());
+				
+				if(dir.exists() == false) dir.mkdirs();
+				
+				// 3. 파일 업로드 시작
+				
+				for(MultipartFile f : upFile) {
+					if(!f.isEmpty()) {
+						// 원본 이름 가져오기
+						String originName = f.getOriginalFilename();
+						String ext = originName.substring(originName.lastIndexOf(".")+1);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+						
+						int rnNum = (int)(Math.random() * 1000);
+						
+						// 서버에서 저장 후 관리할 파일 명
+						String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+						
+						// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
+						try {
+							f.transferTo(new File(saveDir + "/" + renamedName));
+						} catch (IllegalStateException | IOException e) {
+							
+							e.printStackTrace();
+						} 
+						
+						Attachment at = new Attachment();
+						at.setOriginalFileName(originName);
+						at.setRenamedFileName(renamedName);
+
+						
+						attachList.add(at);
+					}
+				}
+		
+		
 		
 		
 		System.out.println("수정 : "+member);
