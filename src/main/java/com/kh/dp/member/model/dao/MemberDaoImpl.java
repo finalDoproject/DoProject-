@@ -66,6 +66,12 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update("member.memberNewPw", m);
 	}
 
+	@Override
+	public Member searchId(String email) {
+		
+		return sqlSession.selectOne("member.searchId", email);
+	}
+
 
 
 

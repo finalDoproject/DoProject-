@@ -22,9 +22,9 @@ public interface MemberDao {
 
 	int deleteMember(int mno);
 
-	
-
 	int updateNewPw(Member m);
+
+	Member searchId(String email);
 	
 	
 	

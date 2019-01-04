@@ -15,18 +15,17 @@ public interface MemberService {
 
 	Member selectOne(String userId);
 	
+	Member searchId(String email);
+	
 	List<Map<String, String>> selectMemberList(int cPage, int numPerPage);
 
 	int selectMemberTotalContents();
 	
 	int deleteMember(int mno);
 
-	
-	
-	
-	
-
 	int updateNewPw(Member m);
+
+	
 
 
 	

@@ -150,7 +150,7 @@ input[type="submit"].login:focus{outline: none;}
 
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
-		 <p align="center"><a href="#">아이디 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/join.do">회원가입</a></p>
+		 <p align="center"><a href="${pageContext.request.contextPath}/member/toFindId.do">아이디 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/join.do">회원가입</a></p>
 			<br />
 		<input type="submit" class="login pull-right" value="Log In">
 		<br />
