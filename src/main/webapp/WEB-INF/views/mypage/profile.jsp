@@ -83,8 +83,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <!-- Column -->
-                    <div class="col-lg-4 col-xlg-3 col-md-5">
                     <form class="form-horizontal form-material" id="update" name="MemberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                    
                         <div class="card">
                             <div class="card-body">
                              <div class="text-center">
