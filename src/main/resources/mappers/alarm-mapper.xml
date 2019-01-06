@@ -14,7 +14,7 @@
 		LEFT OUTER JOIN TASK T ON (A.ATNO = T.TNO)
 		LEFT OUTER JOIN SCHEDULE_MATCHING S ON (A.ASMNO = S.SMNO)
 		LEFT OUTER JOIN MEMBER M ON (A.APMNO = M.MNO)
-		WHERE A.AMNO = #{mno} AND A.ACONDITION = 'Y'
+		WHERE A.AMNO = #{mno} AND A.ACONDITION = 'Y' ORDER BY A.ANO
 	</select>
 	
 	<select id="selectCountAlarm" resultType="string">

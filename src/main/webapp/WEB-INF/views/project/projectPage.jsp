@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Do Project!</title>
-
+<!-- stylesheet -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
@@ -527,17 +528,21 @@ function scheduleToggle(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-
-        <div class="container-fluid" style="height: 2000px">
-
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-<a href="#">TEST</a>
+      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        <div id="donut" class="container-fluid collapse show in">
+        	<div id="piechart" style="display:inline-block;"></div>
+        	<div>
+        	<ul class="circle_chart_list">
+				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>피드백&nbsp;<strong>N건</strong></li>
+				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+			</ul>
+			</div>
+			<!-- <div style="text-align:center; float:left;"></div> -->
         </div>
+        
         <!-- /.container-fluid -->
 
         
@@ -1126,6 +1131,36 @@ function scheduleToggle(){
 	
 	
 
+	</script>
+	<!-- javascript -->
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+	<script>
+	$(document).ready(function () {
+		donutPie();
+    });
+	function donutPie(){
+		var pieData = {
+			요청: 11,
+			진행: 3,
+			피드백: 3,
+			완료: 10,
+			보류: 7
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
 	</script>
 	
 </body>

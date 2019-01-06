@@ -95,7 +95,7 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <span class="badge badge-danger">7</span>
+	            <!-- <span class="badge badge-danger">7</span> -->
 	          </a>
 	          </c:if>
 	        </li>
