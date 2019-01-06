@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class ChatController {
 	private ChatService chatService;
 	
 	@RequestMapping(value="/chat.ch", method=RequestMethod.GET)
-	public String selectProjectChatList(Model model, HttpServletRequest req,
+	public String selectProjectChatList(Model model, HttpSession session, HttpServletRequest req,
 			@RequestParam("pno") int pno) {	
 		// 해당 프로젝트 번호 가져와 그 프로젝트 내의 채팅 내역 불러오기 | 처음 실행 화면
 		// 프로젝트 번호
@@ -50,7 +51,7 @@ public class ChatController {
 		// 해당 프로젝트 불러오기
 		Project p = chatService.selectProject(pno);
 		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
-		
+		session.setAttribute("project", p);
 		/*System.out.println("list1 : " + list);
 		System.out.println("list2 : " + secondList);
 		System.out.println("project : " + p);*/
@@ -85,6 +86,7 @@ public class ChatController {
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
 		mv.addObject("chatOneList", list).addObject("roomNameOne", roomNameOne).addObject("roomNameTwo", roomNameTwo);
+		mv.addObject("you", chReader);
 		mv.setViewName("jsonView");
 		/*System.out.println("ajax 채팅 : " + list);*/
 

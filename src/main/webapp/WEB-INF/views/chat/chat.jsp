@@ -17,99 +17,11 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <script>
-var sock;
-//웹소켓 객체 생성하기
-sock=new SockJS("<c:url value='/chat'/>");
-//console.log("소켓 : " + sock);
-sock.onopen=onOpen;
-sock.onmessage=onMessage;
-sock.onclose=onClose;
-var today=null;
 
-// 웹소켓으로 데이터 추가하기
-$(function(){
-	$("#submit").click(function(){
-		sendMessage();
-		$("#chatContent").val('');
-	    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-	});
-	$("#chatContent").keyup(function(event){
-		if (event.shiftKey && event.keyCode == 13) {
-	    } else if (event.keyCode == 13) {
-	    	sendMessage();
-			$("#chatContent").val('');
-		    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-	    }
-	});
+$(document).ready(function(){
+	chatPtm($("#mno").text(), $("#pno").text());
 });
-
-function sendMessage(){
-	console.log("채팅 내용 : " + $("#chatContent").val());
-	sock.send($("#chatContent").val());
-	$("#chatContent").focus();
-};
-
-function onOpen(){
-	/* var chatMtmJson = {
-		"mno" : $("#mno").text(),
-		"userId" : $("#userId").text(),
-		"nickName" : $("#nickName").text(),
-		"pno" : $("#pno").text()
-	};
-	sock.send(chatMtmJson.mno);
-	sock.send(chatMtmJson.userId);
-	sock.send(chatMtmJson.nickName);
-	sock.send(chatMtmJson.pno); */
-}
-
-function onMessage(evt){
-	var data=evt.data;//new text객체로 보내준 값을 받아옴.
-	var host=null;//메세지를 보낸 사용자 ip저장
-	var strArray=data.split("|");//데이터 파싱처리하기
-	var userName=null;//대화명 저장
-	console.log("메시지 작성자 : " + data.split("|")[3]); //회원 아이디
-	//console.log("data : " + data);
-	
-	if(strArray.length>1)
-	{
-		sessionId=strArray[0];
-		message=strArray[1];
-		host=strArray[2].substr(1,strArray[2].indexOf(":")-1);
-		//host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
-		userName=strArray[3];
-		today=new Date();
-		
-		/* console.log("strArray[0] : " + strArray[0]);
-		console.log("strArray[1] : " + strArray[1]);
-		console.log("strArray[2] : " + strArray[2]);
-		console.log("strArray[3] : " + strArray[3]); */
-		
-		if(userName == $("#nickName").text())
-		{
-			var printHTML="<div style='clear:both;'></div>";
-			printHTML+="<div class='chat-bubble me' id='myChat'>";
-			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-		}
-		else{
-			var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
-			printHTML+="<div class='chat-bubble you' style='float: left;'>";
-			printHTML+="<div class='content'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div></div>";
-			printHTML+="<div style='clear: both;'></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
-		}
-
-	}
-	
-};
+var sock;
 
 $(".contact").click(function(){
 	sock.close();
@@ -219,7 +131,7 @@ function chatMtm(me, you, yourNick){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedfilename + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
@@ -237,6 +149,99 @@ function chatMtm(me, you, yourNick){
 			}
 		}
 	});
+	
+	//웹소켓 객체 생성하기
+	sock=new SockJS("<c:url value='/chat'/>");
+	//console.log("소켓 : " + sock);
+	sock.onopen=onOpen;
+	sock.onmessage=onMessage;
+	sock.onclose=onClose;
+	var today=null;
+
+	// 웹소켓으로 데이터 추가하기
+	$(function(){
+		$("#submit").click(function(){
+			sendMessage();
+			$("#chatContent").val('');
+		    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		});
+		$("#chatContent").keyup(function(event){
+			if (event.shiftKey && event.keyCode == 13) {
+		    } else if (event.keyCode == 13) {
+		    	sendMessage();
+				$("#chatContent").val('');
+			    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+		    }
+		});
+	});
+
+	function sendMessage(){
+		console.log("채팅 내용 : " + $("#chatContent").val());
+		sock.send($("#chatContent").val());
+		$("#chatContent").focus();
+	};
+
+	function onOpen(){
+		/* var chatMtmJson = {
+			"mno" : $("#mno").text(),
+			"userId" : $("#userId").text(),
+			"nickName" : $("#nickName").text(),
+			"pno" : $("#pno").text()
+		};
+		sock.send(chatMtmJson.mno);
+		sock.send(chatMtmJson.userId);
+		sock.send(chatMtmJson.nickName);
+		sock.send(chatMtmJson.pno); */
+	}
+
+	function onMessage(evt){
+		var data=evt.data;//new text객체로 보내준 값을 받아옴.
+		var host=null;//메세지를 보낸 사용자 ip저장
+		var strArray=data.split("|");//데이터 파싱처리하기
+		var userName=null;//대화명 저장
+		console.log("메시지 작성자 : " + data.split("|")[3]); //회원 아이디
+		//console.log("data : " + data);
+		
+		if(strArray.length>1)
+		{
+			sessionId=strArray[0];
+			message=strArray[1];
+			host=strArray[2].substr(1,strArray[2].indexOf(":")-1);
+			//host=String(strArray[2]).substr(1,String(strArray[2]).indexOf(":")-1);
+			userName=strArray[3];
+			today=new Date();
+			
+			/* console.log("strArray[0] : " + strArray[0]);
+			console.log("strArray[1] : " + strArray[1]);
+			console.log("strArray[2] : " + strArray[2]);
+			console.log("strArray[3] : " + strArray[3]); */
+			
+			if(userName == $("#nickName").text())
+			{
+				var printHTML="<div style='clear:both;'></div>";
+				printHTML+="<div class='chat-bubble me' id='myChat'>";
+				printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+			}
+			else{
+				var printHTML="<div><img src='resources/images/profile/" + $("#renamedfilename").text() + "' alt='profilpicture' style='float: left;'>";
+				printHTML+="<div class='chat-bubble you' style='float: left;'>";
+				printHTML+="<div class='content'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div></div>";
+				printHTML+="<div style='clear: both;'></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);						
+			}
+
+		}
+		
+	};
 }
 
 function chatPtm(me, pno){
@@ -278,7 +283,7 @@ function chatPtm(me, pno){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						var printHTML="<div><img src='resources/images/profile/" + $("#mProfile").text() + "' alt='profilpicture' style='float: left;'>";
+						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedfilename + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
@@ -320,7 +325,6 @@ function searchRoom() {
 
 <body>
 	<div style="display:none;" id="mno">${member.mno}</div>
-	<div style="display:none;" id="mProfile">${member.mProfile}</div>
 	<div style="display:none;" id="userId">${member.userId}</div>
 	<div style="display:none;" id="password">${member.password}</div>
 	<div style="display:none;" id="email">${member.email}</div>
@@ -328,6 +332,7 @@ function searchRoom() {
 	<div style="display:none;" id="mCondition">${member.mCondition}</div>
 	<div style="display:none;" id="mDate">${member.mDate}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
+	<div style="display:none;" id="renamedfilename">${member.renamedfilename}</div>
 	<div style="display:none;" id="pno">${project.pno}</div>
 	<div class="wrap">
 		<section class="left" style="background: #f98d70">
@@ -343,7 +348,7 @@ function searchRoom() {
 			<div class="contact-list">
 				<!-- 프로젝트 단체방 -->
 				<div class="contact" onclick="chatPtm(${member.mno}, ${project.pno});">
-					<img src="" alt="logo">
+					<img src="resources/images/profile/dope2.png" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text">
 							<h1 class="font-name">${project.ptitle}</h1>
@@ -356,11 +361,16 @@ function searchRoom() {
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
 							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno}, '${sl.nickName}');">
-								<img src="resources/images/profile/${sl.mProfile}" alt="profilpicture">
+								<img src="resources/images/profile/${sl.renamedfilename}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">
 										<h1 class="font-name">${sl.nickName}</h1>
-										<p class="font-preview">온/오프라인</p>
+										<c:if test="${sl.nickName eq member.nickName}">
+										<p class="font-preview">온라인</p>
+										</c:if>
+										<c:if test="${sl.nickName ne member.nickName}">
+										<p class="font-preview">오프라인</p>
+										</c:if>
 									</div>
 								</div>
 								<div class="contact-time">
@@ -373,39 +383,17 @@ function searchRoom() {
 		</section>
 
 		<section class="right">
-			<div class="chat-head">
+			<div class="chat-head" id="chatHead">
 				<img src="https://bootdey.com/img/Content/avatar/avatar1.png"
 					alt="profilpicture">
 				<div class="chat-name">
-					<h1 class="font-name" id="chatNickName">홍길동</h1>
-					<p class="font-online">온라인</p>
+					<h1 class="font-name" id="chatNickName">${project.ptitle}</h1>
+					<!-- <p class="font-online" id="checkLogin">온라인</p> -->
 				</div>
 			</div>
 			<div class="wrap-chat">
 				<!-- 채팅 내용 화면 -->
 				<div class="chat" id="chatList">
-					<c:forEach items="${list}" var="c">
-						<c:if test="${c.chWriter ne member.mno}">
-						<div>
-						<img src="resources/images/profile/${member.mProfile}"
-							alt="profilpicture" style="float: left;">
-						<div class="chat-bubble you" style="float: left;">
-							<div class="content">
-								${c.chContent}
-							</div>
-							<div class="time">${c.chDate}</div>
-						</div>
-						</div>
-						<div style="clear: both;"></div>
-						</c:if>
-						<c:if test="${c.chWriter eq member.mno}">
-						<div class="chat-bubble me" id="myChat">
-							<div class="content">${c.chContent}</div>
-							<div class="time">${c.chDate}</div>
-						</div>
-						<div style="clear: both;"></div>
-						</c:if>
-					</c:forEach>
 				</div>
 				<div class="information"></div>
 			</div>
