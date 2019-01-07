@@ -334,10 +334,9 @@ $(function(){
                 </c:if>
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <input type="hidden" value="${s.SMNO}" id="smno"/>
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
@@ -539,7 +538,7 @@ $(function(){
       <div id="content-wrapper" >
       	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
         <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart" style="display:inline-block;"></div>
+        	<div id="piechart"></div>
         	<div>
         	<ul class="circle_chart_list">
 				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
@@ -609,43 +608,98 @@ $(function(){
 	    }); 
 	 	
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
-	    function selectId(){
-	 		
+	    function selectId(A){
 	 		
 	 		// 요청 번호
-	    	var requestNo = $('#smno').val();
+	    	var requestNo = A;
+	 		
 	 		// 회원 번호
 	    	var mNo = ${member.mno};
 	    	// 요청 시작일
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	
+	    	alert(requestNo + ", " + smdate + ", " + smenddate);
 	    	// 요일 값 가져오기
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
 	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
+	 			data : {requestNo : requestNo,
+	 				    mNo : mNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				if(data != null){
+	 				for(var i in data ) {
+	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
+	 				}
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
+	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
 	 	    	var dtNo = $(this).attr("id");
 	    		
-			    	 $.ajax({
-			         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
-			         	data : {dtNo : dtNo,
-			         		    requestNo : requestNo,
-			         		    mNo : mNo},
-			         	dataType : "json",
-			         	success : function(data) {
-			         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-			         		
-			         		
-			         	 },error : function(request, status, error){
-			      			alert(request + "\n"
-			      					  + status + "\n"
-			      					  + error);
-			         	}
-			         });  
+	    		$.ajax({
+	    			url : '${pageContext.request.contextPath}/project/isClicked.do',
+	    			data : {
+	    				requestNo : requestNo,
+	 				    mNo : mNo,
+	 				    dtNo : dtNo},
+	 				dataType : "json",
+	 				success : function(data) {
+	 					if(data == 0){
+	 		
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 					}else{
+	 						
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/deleteDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "white");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 						
+	 					}
+	 				},error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+	    		});
+			    	
 			    	
 		    	}); 
 	    	 
@@ -675,24 +729,6 @@ $(function(){
 	    		};
 	    	};
 	    	
-	 		  $.ajax({
-	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
-	 			data : {requestNo : requestNo,
-	 				    mNo : mNo},
-	 			dataType : "json",
-	 			success : function(data){
-	 				for(var i in data ) {
-	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
-	         		}
-	 			},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	}
-	 		});  
-		    	
-		    	
-		    	  
 		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");

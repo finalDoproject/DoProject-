@@ -93,6 +93,14 @@ public class MatchingInfo implements Serializable {
 	public void setSSNO(int sSNO) {
 		SSNO = sSNO;
 	}
+
+
+	@Override
+	public String toString() {
+		return "MatchingInfo [SMNO=" + SMNO + ", SMCONTENT=" + SMCONTENT + ", SMDATE=" + SMDATE + ", SMENDDATE="
+				+ SMENDDATE + ", SSNO=" + SSNO + "]";
+	}
+	
 	
 	
 	

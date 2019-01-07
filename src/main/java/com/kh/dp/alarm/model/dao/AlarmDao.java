@@ -8,7 +8,7 @@ public interface AlarmDao {
 
 	int updateAlarm(Alarm al);
 
-	List<Alarm> selectSearchAlarm(int mno, int loginmno);
+	List<Alarm> selectSearchAlarm(int mno);
 
 	/*String countAlarm(String payload);*/
 	

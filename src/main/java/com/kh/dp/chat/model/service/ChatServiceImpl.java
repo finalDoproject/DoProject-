@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dp.chat.model.dao.ChatDao;
-import com.kh.dp.chat.model.vo.ChatPtm;
 import com.kh.dp.project.model.vo.Project;
 
 @Service
