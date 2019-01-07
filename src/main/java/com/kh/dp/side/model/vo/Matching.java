@@ -98,6 +98,14 @@ public class Matching implements Serializable {
 	public void setSsno(int ssno) {
 		this.ssno = ssno;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Matching [smno=" + smno + ", smcontent=" + smcontent + ", smdate=" + smdate + ", smenddate=" + smenddate
+				+ ", smmno=" + smmno + ", ssno=" + ssno + "]";
+	}
+	
 	
 	 
 	
