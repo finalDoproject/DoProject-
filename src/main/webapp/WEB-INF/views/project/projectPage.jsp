@@ -529,7 +529,7 @@ function scheduleToggle(){
       <div id="content-wrapper" >
       	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
         <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart" style="display:inline-block;"></div>
+        	<div id="piechart"></div>
         	<div>
         	<ul class="circle_chart_list">
 				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>

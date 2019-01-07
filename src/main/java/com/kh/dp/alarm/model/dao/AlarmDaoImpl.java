@@ -22,11 +22,8 @@ public class AlarmDaoImpl implements AlarmDao{
 	}
 
 	@Override
-	public List<Alarm> selectSearchAlarm(int mno, int loginmno) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("mno", mno);
-		map.put("loginmno", loginmno);
-		return sqlSession.selectList("alarm.selectAlarmList", map);
+	public List<Alarm> selectSearchAlarm(int mno) {
+		return sqlSession.selectList("alarm.selectAlarmList", mno);
 	}
 
 	/*@Override
