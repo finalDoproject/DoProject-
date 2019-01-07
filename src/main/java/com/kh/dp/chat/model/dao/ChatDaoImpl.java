@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.dp.chat.model.vo.ChatPtm;
 import com.kh.dp.project.model.vo.Project;
 
 @Repository

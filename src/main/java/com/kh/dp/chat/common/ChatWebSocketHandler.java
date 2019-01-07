@@ -22,7 +22,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	SqlSessionTemplate sqlsession;
 	
 	//private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
+	// 프로젝트별 접속자
 	private Map<String, Map<String, WebSocketSession>> projectMap = new HashMap<String, Map<String, WebSocketSession>>();
+	
+	// 접속자 전체
 	private Map<String, WebSocketSession> projectSessionList = new HashMap<String, WebSocketSession>();
 	
 	@Override
@@ -30,18 +33,20 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		/*System.out.println("채팅방 입장자 :"+session.getId());*/
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
-		int you = (int) session.getAttributes().get("you");
-		System.out.println("your mno : " + you);
+		
 		// 프로젝트 이름
 		String pNo = "p" + p.getPno();
-		// 회원 이름
+		// 송신자
 		String mNo = "m" + m.getMno();
-		projectSessionList.put(pNo + mNo, session);
+		// 수신자
+		String mNo2 = "m";
 		
+		projectSessionList.put(pNo + mNo, session);
+
 		projectMap.put(pNo, projectSessionList);
-		/*for(String key : projectMap.keySet()) {
+		for(String key : projectMap.keySet()) {
 			System.out.println(String.format("[접속 후 세션 리스트 : " + key + " : " + projectMap.get(key) + " ]"));
-		}*/
+		}
 	}
 
 	@Override
@@ -49,15 +54,30 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 		
+		String[] msg = message.getPayload().split("_");
+		String[] chatRoom = msg[0].split(":");
+		
+		int chatTarget = Integer.parseInt(chatRoom[0]);
+		int chatMe = Integer.parseInt(chatRoom[1]);
+	
+		String realMsg = msg[1];
+		
+		System.out.println("payLoad : " + message.getPayload());
+		System.out.println("chatTarget : " + chatTarget);
+		System.out.println("realMsg : " + realMsg);
+
+		// 프로젝트 접속자 전체
 		for(String key : projectMap.keySet()) {
-			/*String msg = (key.contains("p" + p.getPno())) ? "true" : "false";
-			System.out.println("key : " + key + ", pno : " + p.getPno() + " | " + msg);*/
+			// 해당 프로젝트만
 			if(key.contains("p" + p.getPno())) {
+				// 해당 프로젝트에 접속한 접속자 전체
 				for(String realKey : projectMap.get(key).keySet()) {
+					// 해당 프로젝트 번호가 포함된 회원들에게만
 					if(realKey.contains("p" + p.getPno())) {
-						projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + message.getPayload() + "|" + session.getRemoteAddress() + "|" + m.getNickName()));
-						/*System.out.println("realKey : " + projectMap.get(key).get(realKey));
-						System.out.println("session : " + session.getId());*/
+						// 해당 회원 번호가 포함된 회원에게만
+						if(realKey.contains("m" + m.getMno())) {
+							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()));
+						}
 					}
 				}			
 			}
@@ -66,7 +86,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		/*System.out.println("채팅방 퇴장자 :"+session.getId());*/
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 		// 프로젝트 이름
@@ -74,9 +93,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 회원 이름
 		String mNo = "m" + m.getMno();
 		projectSessionList.remove(pNo + mNo);
-		/*for(String key : projectMap.keySet()) {
+		for(String key : projectMap.keySet()) {
 			System.out.println(String.format("[종료 후 세션 리스트 : " + projectMap.get(key) + " ]"));
-		}*/
+		}
 	}
 	
 }
