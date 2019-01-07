@@ -26,8 +26,11 @@ public interface MemberDao {
 
 	Member searchId(String email);
 	
+	int withdrawMember(String userId);
 	
-	
+	int updateMember(Member member);
 
-	
+	Member selectOneNickname(String nickname);
+
+
 }

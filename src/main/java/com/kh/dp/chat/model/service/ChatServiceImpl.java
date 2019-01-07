@@ -1,12 +1,14 @@
 package com.kh.dp.chat.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dp.chat.model.dao.ChatDao;
-import com.kh.dp.chat.model.vo.Chat;
+import com.kh.dp.chat.model.vo.ChatPtm;
+import com.kh.dp.project.model.vo.Project;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -15,23 +17,30 @@ public class ChatServiceImpl implements ChatService{
 	ChatDao chatDao;
 	
 	@Override
-	public List<Chat> selectProjectChatList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectProjectChatList(int pno) {
+		return chatDao.selectProjectChatList(pno);
 	}
 
 	@Override
-	public List<Chat> selectChatRoomList(int pno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectChatRoomList(int pno) {
+		return chatDao.selectChatRoomList(pno);
+	}
+	
+	@Override
+	public Project selectProject(int pno) {
+		return chatDao.selectProject(pno);
 	}
 
 	@Override
-	public List<Chat> selectOneChatList(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
+		return chatDao.selectOneChatList(pno, chWriter, chReader);
 	}
-
+	
+	@Override
+	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
+		return chatDao.selectSearchChatRoom(roomName);
+	}
+	
 	@Override
 	public int insertChat(int pno, int mno) {
 		// TODO Auto-generated method stub
@@ -42,12 +51,6 @@ public class ChatServiceImpl implements ChatService{
 	public int updateChat(int pno, int mno) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public List<Chat> selectSearchChatRoom(String roomName) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

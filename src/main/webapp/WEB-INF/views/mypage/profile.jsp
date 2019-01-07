@@ -17,7 +17,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypage.do">
+          <a class="nav-link" href="#" onclick="return false;" style="cursor:default">
             <i class="fas fa-user"></i>
             <span>My Page</span>
           </a>
@@ -83,14 +83,16 @@
             <div class="container-fluid">
                 <div class="row">
                     <!-- Column -->
+                    <form class="form-horizontal form-material" id="update" name="MemberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
                     <div class="col-lg-4 col-xlg-3 col-md-5">
+                    
                         <div class="card">
                             <div class="card-body">
                              <div class="text-center">
                                     <center class="m-t-30 profile-pic"> 
-                                        <img src="${pageContext.request.contextPath }/resources/images/mypage/users/4.jpg" class="rounded-circle" width="150">
+                                        <img src="${pageContext.request.contextPath }/resources/images/profile/default.png" class="rounded-circle" width="150">
                                         <a href="javascript:;" class="pic-change" align="center">
-                                            <!-- <i class="fas fa-camera"></i> -->
+                                             <i class="fa fa-2x fa-camera upload-button"></i>
                                             <input class="file-upload" type="file" accept="image/*"/>
                                         </a>
                                     </center>
@@ -109,47 +111,47 @@
                     <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card">
                             <div class="card-body" align="left">
-                                <form class="form-horizontal form-material">
+                                
                                     <div class="form-group">
-                                        <label class="col-md-12">이름</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="" class="form-control form-control-line">
-                                        </div>
-                                        <br>
                                         <label class="col-md-12">아이디</label>
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="" class="form-control form-control-line">
+                                            <input type="text" name="userId" class="form-control form-control-line" required="required" value="${member.userId}" readonly required>
+                                        </div>
+                                        <br>
+                                        <label class="col-md-12">이름</label>
+                                        <div class="col-md-12">
+                                            <input type="text" required="required" class="form-control form-control-line" name="nickName" value="${member.nickName}">
                                         </div>
                                         
                                     </div>
                                     <div class="form-group">
-                                        <label for="example-email" class="col-md-12">이메일</label>
+                                        <label for="example-email" class="col-md-12" required="required">이메일</label>
                                         <div class="col-md-12">
-                                            <input type="email" placeholder="" class="form-control form-control-line" name="example-email" id="example-email">
+                                            <input type="email" class="form-control form-control-line" name="email" id="example-email" value="${member.email}" >
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-12">비밀번호</label>
+                                        <label class="col-md-12">새 비밀번호</label>
                                         <div class="col-md-12">
-                                            <input type="password" value="" class="form-control form-control-line">
+                                            <input type="password" id="new1" name="password" required="required" class="form-control form-control-line" placeholder="새 비밀번호">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-12">비밀번호 확인</label>
                                         <div class="col-md-12">
-                                            <input type="password" placeholder="" class="form-control form-control-line">
+                                            <input type="password" id="new2" required="required" class="form-control form-control-line" placeholder="새 비밀번호 확인">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <button class="btn">프로필 수정</button>
+                                            <input type="submit" class="btn" value="프로필 수정" >
                                         </div>
                                         
                                     </div>
                                 </form>
                                 <br><br>
                                 <div class="col-sm-12">
-                                    <button class="btn">회원 탈퇴</button>
+                                    <input type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/member/withdrawMember.do'" value="회원탈퇴">
                                 </div>
                             </div>
                         </div>
@@ -178,7 +180,13 @@
          var url = "${pageContext.request.contextPath}/project/projectPage.do";  
          window.open(url, "_self");  
      });  
-	
+	 
+	 $("#update").submit(function(event){
+			
+			if($('#new1').val() != $('#new2').val()) alert("비밀번호 확인 값과 다릅니다.");
+			else return;
+			event.preventDefault();
+		});
 	</script>
 	
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"

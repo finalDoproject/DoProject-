@@ -17,7 +17,7 @@
       <!-- Sidebar -->
        <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypage.do">
+          <a class="nav-link" href="#" onclick="return false;" style="cursor:default">
             <i class="fas fa-user"></i>
             <span>My Page</span>
           </a>
@@ -56,7 +56,7 @@
 
 
           <!-- Page Content -->
-                <div class="page-wrapper">
+          <div class="page-wrapper">
             <div class="page-breadcrumb" align="left">
                 <div class="row">
                     <div class="col-5 align-self-center">

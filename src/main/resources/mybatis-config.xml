@@ -9,18 +9,31 @@
 		         alias="Member"/>
 		<typeAlias type="com.kh.dp.intro.board.model.vo.Board"
 		         alias="Board"/>
+        <typeAlias type="com.kh.dp.project.model.vo.Project"
+				alias="Project"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Matching"
 				 alias="Matching"/>
 		<typeAlias type="com.kh.dp.side.model.vo.Join"
 				 alias="Join"/>
+		<typeAlias type="com.kh.dp.side.model.vo.MatchingInfo"
+				 alias="MatchingInfo"/>
 		<typeAlias alias="Memo" type="com.kh.dp.project.model.vo.Memo"/>
+		<typeAlias type="com.kh.dp.chat.model.vo.ChatPtm"
+				alias="ChatPtm" />
+		<typeAlias type="com.kh.dp.chat.model.vo.ChatMtm"
+				alias="ChatMtm" />
+		<typeAlias type="com.kh.dp.project.model.vo.Alarm"
+				alias="Alarm" />
+    <typeAlias type="com.kh.dp.task.model.vo.Task" 
+				 alias="Task"/>
+		<typeAlias type="com.kh.dp.task.model.vo.Attachment" 
+				 alias="Attachment"/>
+		<typeAlias type="com.kh.dp.project.model.vo.ProjectMember" 
+				 alias="ProjectMember"/>
 	</typeAliases>
 	
 	
 </configuration>
-
-
-
 
 
 

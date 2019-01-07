@@ -1,10 +1,16 @@
 package com.kh.dp.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
 
 import com.kh.dp.member.model.vo.Member;
+import com.kh.dp.member.model.vo.Attachment;
 
 @SessionAttributes(value= {"member"})
 @Controller
@@ -38,7 +46,7 @@ public class MemberController {
 	@RequestMapping("/member/join.do")
 	public String MemberView() {
 		
-		return null;
+		return "/member/join";
 	}
 	
 	@RequestMapping("/member/toFindId.do")
@@ -112,7 +120,7 @@ public class MemberController {
 			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
 				msg="로그인에 성공했습니다.";
 				mv.addObject("member", m);
-				loc="/project/projectMain.do";
+				loc="/";
 			} else {
 				msg = "비밀번호를 다시 확인해주세요.";
 			}
@@ -236,6 +244,110 @@ public class MemberController {
 		
 		return "common/msg";
 		
+	}
+	
+	@RequestMapping("/member/withdrawMember.do")
+	public String withdrawMember(SessionStatus sessionStatus, 
+			Member member, Model model) {
+		
+		int result = memberService.withdrawMember(member.getUserId());
+		
+		String loc = "/";
+		String msg = "";
+		
+		if(result > 0) {
+			msg = "회원 탈퇴 성공!";
+			sessionStatus.setComplete();
+		} else {
+			msg = "회원 탈퇴 실패!";
+		}
+		
+		model.addAttribute("loc", loc)
+		.addAttribute("msg", msg);
+		
+		return "common/msg";
+		
+		
+	}
+	
+	@RequestMapping("/member/memberUpdate.do")
+	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
+			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
+		
+		// 1. 파일을 저장할 경로 생성
+				String saveDir = session.getServletContext().getRealPath("/resources/upload/profile");
+				List<Attachment> attachList = new ArrayList<Attachment>();
+
+				
+				// 2. 폴더 유무 확인 후 생성
+				File dir = new File(saveDir);
+				
+				System.out.println("폴더가 있나요? "+ dir.exists());
+				
+				if(dir.exists() == false) dir.mkdirs();
+				
+				// 3. 파일 업로드 시작
+				
+				for(MultipartFile f : upFile) {
+					if(!f.isEmpty()) {
+						// 원본 이름 가져오기
+						String originName = f.getOriginalFilename();
+						String ext = originName.substring(originName.lastIndexOf(".")+1);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+						
+						int rnNum = (int)(Math.random() * 1000);
+						
+						// 서버에서 저장 후 관리할 파일 명
+						String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+						
+						// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
+						try {
+							f.transferTo(new File(saveDir + "/" + renamedName));
+						} catch (IllegalStateException | IOException e) {
+							
+							e.printStackTrace();
+						} 
+						
+						Attachment at = new Attachment();
+						at.setOriginalFileName(originName);
+						at.setRenamedFileName(renamedName);
+
+						
+						attachList.add(at);
+					}
+				}
+		
+		
+		
+		
+		System.out.println("수정 : "+member);
+		
+		
+		// 원래비번
+		String newPwd = member.getPassword();
+		System.out.println("암호화 전 비번 : "+newPwd);
+		
+		member.setPassword(bcryptPasswordEncoder.encode(newPwd));
+		System.out.println("암호화된 비번 : "+member.getPassword());
+		
+		ModelAndView mv = new ModelAndView();
+		
+		int result = memberService.updateMember(member);
+		
+		String loc = "/";
+		String msg ="";
+		
+		if(result > 0) {
+			
+			msg="회원 정보 수정 성공!";
+			mv.addObject("member", member);
+			
+		} else msg = "회원 정보 수정 실패!";
+		
+		mv.addObject("loc", loc).addObject("msg", msg)
+		.setViewName("common/msg");
+		
+		return mv;
 	}
 
 }

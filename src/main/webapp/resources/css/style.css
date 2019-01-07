@@ -346,7 +346,7 @@ h1, h2, h3, h4, h5, h6, label {
 *   page-wrapper
 */
 .page-wrapper{
-    margin-left: 250px;
+    
     background: #f2f4f5;
     position: relative;
     transition: .2s ease-in;
@@ -493,7 +493,7 @@ h1, h2, h3, h4, h5, h6, label {
     display: block;
     padding: 10px;
     border-radius: 4px;
-    background: #233242;
+    background: #F88E6F;
     color: #fff;
     text-align: center;
 }
