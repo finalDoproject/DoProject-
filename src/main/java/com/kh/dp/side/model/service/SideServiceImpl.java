@@ -1,6 +1,7 @@
 package com.kh.dp.side.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,18 @@ public class SideServiceImpl implements SideService {
 	public int deleteDT(int mNo, int requestNo, int dtNo) {
 		
 		return sideDao.deleteDT(mNo, requestNo, dtNo);
+	}
+
+	@Override
+	public int browseResult(int requestNo, int i) {
+		
+		return sideDao.browseResult(requestNo, i);
+	}
+	
+	@Override
+	public int countMember(int requestNo) {
+		
+		return sideDao.countMember(requestNo);
 	}
 
 }

@@ -113,7 +113,7 @@ $(function(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
@@ -339,7 +339,10 @@ $(function(){
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
+                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
+                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
+                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
                 </c:if>
                
               </li>
@@ -732,7 +735,71 @@ $(function(){
 		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
-	 		 	
+	 	
+	 	function result(a){
+	    	
+	 		   for(i=1; i<106; i++){
+	 		 $.ajax({
+	 			url :'${pageContext.request.contextPath}/project/resultTable.do',
+	 			data : {requestNo : a,
+	 					i : i},
+	 			dataType : "json",
+	 			type : "get",
+	 			success : function(data){
+	 				
+	 				 if((data.result/data.totalMember)*100 <= 25){
+	 					$('#'+data.i).css("background-color", "black");
+	 				}else if((data.result/data.totalMember)*100 > 25 && (data.result/data.totalMember)*100 <= 50) {
+	 					$('#'+data.i).css("background-color", "gray");
+	 				}else if((data.result/data.totalMember)*100 > 50 && (data.result/data.totalMember)*100 <= 75){
+	 					$('#'+data.i).css("background-color", "orange");
+	 				}else{
+	 					$('#'+data.i).css("background-color", "coral");
+	 				} 
+	 				
+	 				
+	 				},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+	 		}); 
+	 		 }  
+	 	};
+	 	
+	 	$(function(){
+	    	$("#findUserBtn").on("click",function(){
+	    		var nickname = $('.nickname').val();
+	    		
+	    		console.log(nickname);
+	    		$.ajax({
+	                url  : "${pageContext.request.contextPath}/project/projectPage",
+	                data: {nickname:nickname},
+	                dataType: "json",
+	                type : "get",
+	                success : function(data){
+	                    console.log(data);
+	                    var html = "<table class=table>";
+	                    html+="<tr><th>이름</th><th>ID</th></tr>";
+		        		if(data==0) alert("해당하는 정보가 없습니다.");
+		        		else{
+		        			 for(var i in data){
+		                     	html += "<tr><td>"+data[i].nickname+"</td>";
+		                     	html += "<td>"+data[i].userId+"</td></tr>";
+		                     }
+		        			 html+="</table>";
+		                     $("#findUser-result").html(html);
+		        		}
+		        	},
+		            error : function(jqxhr, textStatus, errorThrown){
+		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+		            }
+
+	            });
+	    	});
+	    	
+		});
+	 	
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
