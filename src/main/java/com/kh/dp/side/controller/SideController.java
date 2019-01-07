@@ -1,7 +1,9 @@
 package com.kh.dp.side.controller;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,13 +110,29 @@ public class SideController {
 		return result;
 	}
 	
+	// 결과 불러오는 테이블
+	@RequestMapping("/project/resultTable.do")
+	@ResponseBody
+	public Map<String, Integer> browseResult(@RequestParam int requestNo, @RequestParam int i) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		int result = sideService.browseResult(requestNo, i);
+		int totalMember = sideService.countMember(requestNo);
+		map.put("result", result);
+		map.put("i", i);
+		map.put("totalMember", totalMember);
+		
+		return map;
+		
+		
+		}
 	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping("/project/totalCalendar.do")
+	public String totalCalendar(@RequestParam int pno,
+								@RequestParam int mno) {
+		
+		return "side/totalCalPage";
+	}
 	
 }
