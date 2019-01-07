@@ -14,6 +14,7 @@ public interface ProjectDao {
 	int insertProjectLv(List<Project> pjLevel);
 	Project selectOneProject(int no);
 	List<Project> selectOneProjectLv(int pno);
+	int updateLevelCk(Project project);
 	
 	
 	// ---- 메모 ---- //
@@ -35,6 +36,7 @@ public interface ProjectDao {
 	Object selectSearchPM(int pno, int mno);
 	int insertExileAlarm(int pno, int mno);
 	int insertLeaveAlarm(int pno, int mno, int apmno);
+	
 
 
 }

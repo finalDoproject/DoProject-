@@ -10,12 +10,60 @@
 <title>Do Project!</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
+<script>
+// 상세 불러오는 모달
+
+function optionModalClk(pno){
+	 var pno = pno;
+	 console.log(pno);
+	$.ajax({
+       url  :"${pageContext.request.contextPath}/project/projectMainDetail",
+       data : {pno:pno},
+       dataType: "json",
+       type : "get",
+       success : function(data) {
+       	var oneProject = data.OneProject;
+       	var OneProjectLvList = data.OneProjectLvList;
+
+    	console.log(oneProject);
+       	console.log(OneProjectLvList);
+       	
+       	var printHTML = "";
+       	printHTML+='<small>프로젝트명</small>';
+       	printHTML+='<input name="thisPno" style="display: none;" value="'+oneProject.pno+'" ></input>';
+       	printHTML+='<h4>'+oneProject.ptitle+'</h4>';
+       	printHTML+='<small>프로젝트 개요</small>';
+       	printHTML+='<p>'+oneProject.psummary+'</p>';
+       	
+       	$('#onePj').append(printHTML);
+       	printHTML = "";   
+       	var printListHTML = "";
+		for(var i=0; i<OneProjectLvList.length;i++){
+			printListHTML+='<input type="checkbox" name="levelCk" onClick="LevelSum(this.form);" id="ck">';
+			printListHTML+='<input name="thisLno" style="display: none; value="'+OneProjectLvList[i].lno+'" ></input>';
+			printListHTML+='<label for="ck">&nbsp'+OneProjectLvList[i].lname+'</label><br>';
+			//printListHTML+='<label for="ck1">설정된 레벨이 없습니다.</label><br>';
+			
+			 
+		}
+		$('#checkLevel').append(printListHTML);
+		printListHTML = ""; 
+       },
+       error : function(jqxhr, textStatus, errorThrown){
+           console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+       }
+    });
+	
+	
+};
+
+</script>
 </head>
+
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
 	
 	  <div id="wrapper" >
-
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
@@ -112,7 +160,9 @@
                       <small>진행률</small>
                       <div class="progress">
                         <div class="progress-bar bg-success" role="progressbar" 
-                        style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">75%</div>
+                        style="width: 0%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
+                        
+                        0%</div>
                       </div>
                       <p>AA님 외 N명 참여중</p>
                     </div>       
@@ -143,45 +193,41 @@
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
-                      <form id="optionFrm" method="post">
+                      <form id="optionFrm" name="optionFrm">
                       
                       
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">프로젝트 상세</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                          <button type="button" class="close detailmodalClose" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" >&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
                           <div style="position: relative; height:160px;">
-                            <div class="form-group col-md-4" style="border: 0px solid black; display: inline-block; position: absolute; left: 30px; padding-top: 10px">
+                            <div class="form-group col-md-4 formPer" style="border: 0px solid black; display: inline-block; position: absolute; left: 20px; padding-top: 10px">
                               <label for="recipient-name" class="form-control-label">진행률</label>
-                              <p class="btn btn-light" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">
-                                60<small>%</small>
+                              <p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">
+                                
                               </p>
                             </div>
-                          <div class="form-group col-md-6" style="border: 0px solid black; background-color: rgb(245, 245, 245); display: inline-block; position: absolute; right: 30px; padding: 5px">
+                          <div class="form-group col-md-6 formLv" style="border: 0px solid black; background-color: rgb(245, 245, 245); display: inline-block; position: absolute; right: 30px; padding: 5px; height: 160px;">
                             <label for="message-text" class="form-control-label">목표단계</label>
-                            <div class="checkLevel" style="text-align: left; padding-left: 8px">
-                              <c:forEach items="${OneProjectLv}" var="pjLv"> 
-	                             <input type="checkbox" name="levelCk" value="ck1" id="ck1">
-	                             <label for="ck1">${pjLv.lname}</label><br>
-                              </c:forEach>
+                            <div id="checkLevel" style="text-align: left; padding-left: 8px">
+                              
                             </div>
+                            
                           </div>
                         </div>                  
                           <hr>
                           
-                       	<div style="text-align: left">
-                            <small>프로젝트 명</small>
-                            <h4>${ptitle} ${pno}</h4>
-                            <small>프로젝트 개요</small> 
-                            <p>${psummary}</p>                           
+                       	<div id="onePj" style="text-align: left">
+                       	                      
                          </div>
                        </div>
+                       
                         <div class="modal-footer">
                           <button type="button" class="btn btn-light btn-sm updateModal" data-toggle="modal" data-target="#updateModal">수정</button>
-                          <button type="button" class="btn btn-sm" style="background-color: coral; color: white" data-dismiss="modal">확인</button>
+                          <button type="button" class="btn btn-sm detailmodalClose" style="background-color: coral; color: white" data-dismiss="modal">확인</button>
                         </div>
                        
                         </form>
@@ -253,7 +299,50 @@
 <script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 	
 	<script>
-	    // level checkBox 
+	
+	function LevelSum(frm){
+		   var sum = 0;
+		   var count = frm.levelCk.length;
+		   for(var i=0; i < count; i++ ){
+		       if( frm.levelCk[i].checked == true ){
+			    sum ++;
+		       }
+		   }
+		  
+		  console.log("선택되어진 체크박스의 갯수는 " + sum + "개입니다." );
+		 var param = {}; 
+		 
+		 param.plevelck = sum;
+		 param.pno = $("#onePj [name=thisPno]").val();
+		 
+		 var jsonStr = JSON.stringify(param);
+		 console.log(jsonStr);
+		
+			 
+		$.ajax({
+	       url  :"${pageContext.request.contextPath}/project/projectLevelCk.do",
+	       data : jsonStr,
+	       dataType: "json",
+	       contentType: 'application/json; charset=utf-8',
+	       type : "post",
+	       success : function(data) {
+	    	   console.log(data);
+	       	
+	       },
+	       error : function(jqxhr, textStatus, errorThrown){
+	           console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	       }
+	   }); 
+	};
+	
+	$('.detailmodalClose').click(function () { 
+		 // location.reload();
+		$('#onePj').empty();
+		$('#checkLevel').empty();
+	});
+
+	
+		// level checkBox 
 	    var oTbl;
 	  	var count = 2;
 	    
@@ -381,29 +470,7 @@
           });
       });
 	  
-	 // 상세 불러오는 모달
-	 
-	 function optionModalClk(pno){
-		 var pno = pno;
-		 console.log(pno);
-		$.ajax({
-            url  :"${pageContext.request.contextPath}/project/projectMainDetail",
-            data : {pno:pno},
-            dataType: "json",
-            type : "get",
-            success : function(data) {
-            	var oneProject = data.OneProject;
-            	var oneProjectLv = data.OneProjectLv;
-            	
-            	console.log(oneProject);
-            	console.log(oneProjectLv);
-                
-            },
-            error : function(jqxhr, textStatus, errorThrown){
-                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
-            }
-	     });
-	 };
+	
 	</script>
 	
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

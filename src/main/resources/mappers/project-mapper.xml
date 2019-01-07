@@ -20,9 +20,11 @@
 	
 	<insert id="insertProject">
 		 INSERT INTO PROJECT VALUES
-		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, DEFAULT, #{pmmno})
 	</insert>
-	
+	<update id="updateLevelCk">
+		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
+	</update>
 	
 	
 	<insert id="insertProjectLv" parameterType="java.util.List">
