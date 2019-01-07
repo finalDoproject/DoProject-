@@ -1,8 +1,17 @@
 package com.kh.dp.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
+
 import com.kh.dp.member.model.vo.Member;
+import com.kh.dp.member.model.vo.Attachment;
 
 @SessionAttributes(value= {"member"})
 @Controller
@@ -30,11 +42,16 @@ public class MemberController {
 	// 비밀번호 암호객체
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
+
 	@RequestMapping("/member/join.do")
 	public String MemberView() {
 		
 		return "/member/join";
+	}
+	
+	@RequestMapping("member/toFindFw.do")
+	public String toFindFw() {
+		return "/member/findPw";
 	}
 	
 	// 로그인 버튼 클릭시 로그인페이지 이동
@@ -110,6 +127,81 @@ public class MemberController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/member/memberLogout.do")
+	public String memberLogout(SessionStatus sessionStatus, HttpSession session, Model model) {
+		
+		if( !sessionStatus.isComplete()) sessionStatus.setComplete();
+		
+		String loc = "/";
+		String msg = "로그아웃에 성공했습니다.";
+		
+		model.addAttribute("loc", loc);
+		model.addAttribute("msg", msg);
+		
+		return "common/msg";
+	}
+	
+
+	@RequestMapping(value="/member/findPw.do", method = RequestMethod.POST)
+	public ModelAndView findPw1(@RequestParam String userId,  @RequestParam String email) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		Member m = memberService.selectOne(userId);
+		
+		String loc = "/";
+		String msg = "";
+		
+		if( m == null ) {
+			msg = "존재하지 않는 아이디입니다.";
+			
+		} else if( m.getEmail() == email) {
+			
+			msg = "가입한 아이디와 일치하지 않는 이메일입니다.";
+			
+		} else {
+			
+			int result = memberService.updateNewPw(m);
+			
+			if(result >0) {
+				loc="/member/memberLogin.do";
+				msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
+			}else {
+				 msg = "임시 비밀번호 발급을 실패했습니다.";
+			}
+			
+		}
+		
+		mv.addObject("/member/findFw", loc).addObject("msg", msg);
+		mv.setViewName("common/msg");
+
+		return mv;
+		
+	}
+	
+/*	@RequestMapping(value="/member/findPw2.do", method = RequestMethod.POST)
+	public ModelAndView newPw(@RequestParam String email, @RequestParam String userId ,@RequestParam nickName, @RequestParam String password ) {
+		
+		ModelAndView mv = new ModelAndView();
+		int result = memberService.updateNewPw(email);
+		
+		String loc = "/";
+		String msg ="";
+		
+	   if(result > 0) {
+			
+			msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
+			mv.addObject("member", email);
+			
+		} else msg = "임시 비밀번호 발급을 실패했습니다.";
+		
+		mv.addObject("loc", loc).addObject("msg", msg)
+		.setViewName("common/msg");
+		
+		return mv;
+	}*/
+	
+	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(
 			@RequestParam(value="cPage", required=false, defaultValue="1")
@@ -183,9 +275,64 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberUpdate.do")
-	public ModelAndView memberUpdate(Member member) {
+	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
+			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
+		
+		// 1. 파일을 저장할 경로 생성
+				String saveDir = session.getServletContext().getRealPath("/resources/upload/profile");
+				List<Attachment> attachList = new ArrayList<Attachment>();
+
+				
+				// 2. 폴더 유무 확인 후 생성
+				File dir = new File(saveDir);
+				
+				System.out.println("폴더가 있나요? "+ dir.exists());
+				
+				if(dir.exists() == false) dir.mkdirs();
+				
+				// 3. 파일 업로드 시작
+				
+				for(MultipartFile f : upFile) {
+					if(!f.isEmpty()) {
+						// 원본 이름 가져오기
+						String originName = f.getOriginalFilename();
+						String ext = originName.substring(originName.lastIndexOf(".")+1);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+						
+						int rnNum = (int)(Math.random() * 1000);
+						
+						// 서버에서 저장 후 관리할 파일 명
+						String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+						
+						// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
+						try {
+							f.transferTo(new File(saveDir + "/" + renamedName));
+						} catch (IllegalStateException | IOException e) {
+							
+							e.printStackTrace();
+						} 
+						
+						Attachment at = new Attachment();
+						at.setOriginalFileName(originName);
+						at.setRenamedFileName(renamedName);
+
+						
+						attachList.add(at);
+					}
+				}
 		
 		
+		
+		
+		System.out.println("수정 : "+member);
+		
+		
+		// 원래비번
+		String newPwd = member.getPassword();
+		System.out.println("암호화 전 비번 : "+newPwd);
+		
+		member.setPassword(bcryptPasswordEncoder.encode(newPwd));
+		System.out.println("암호화된 비번 : "+member.getPassword());
 		
 		ModelAndView mv = new ModelAndView();
 		

@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Do Project!</title>
-
+<!-- stylesheet -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
@@ -46,10 +47,23 @@ var chk = 0;
 function taskToggle(){
 	if(chk == 0){
 		$('#taskForm').css('display', 'block');
+		$('#scheduleForm').css('display', 'none');
 		chk=1;
 	}else{
 		$('#taskForm').css('display', 'none');
 		chk=0;
+	}
+}
+
+var chk2 = 0;
+function scheduleToggle(){
+	if(chk2 == 0){
+		$('#scheduleForm').css('display', 'block');
+		$('#taskForm').css('display', 'none');
+		chk2 = 1;
+	}else{
+		$('#scheduleForm').css('display', 'none');
+		chk2 = 0;
 	}
 }
 </script>
@@ -60,6 +74,7 @@ function taskToggle(){
 	<div id="wrapper" >
 	<span id="mno" style="display: none;">${member.mno}</span>
 	<span id="pno" style="display: none;">${project.pno}</span>
+	<span id="pmno" style="display: none;">${project.pmno}</span>
 	<c:set value="${member.mno}" var="mno"/>
 	<c:set value="#{project.pno}" var="pno"/>
       <!-- Sidebar -->
@@ -71,7 +86,7 @@ function taskToggle(){
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#" >
+          <a class="nav-link" onclick="scheduleToggle();" >
             <i class="fas fa-map-marker-alt"></i>
             <span>일정 작성하기</span>
           </a>
@@ -100,42 +115,18 @@ function taskToggle(){
         </li>
 		<hr />
         <li class="nav-item">
-          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="searchMemberList(${project.pno});">
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
-  			<div class="dropdown-menu">
-  				<div>
-				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
-				</div>
-  				<c:forEach items="${memberList}" var="mList">
-  				<c:if test="${project.pmno eq member.mno}">
-  				<div>
-  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
-    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
-				</div>
-  				</c:if>
-  				<c:if test="${project.pmno ne member.mno}">
-  				<div>
-  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;">
-    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
-				</div>
-  				</c:if>
-  				</c:forEach>
-  				<c:if test="${project.pmno ne member.mno}">
-  				<a class="dropdown-item" href="#" onclick="leaveProject('${project.pno}', '${member.mno}');"
-				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
-				</c:if>
-				<c:if test="${project.pmno eq member.mno}">
-  				<a class="dropdown-item" onclick="deleteProject('${project.pno}', '${member.mno}')"
-				style="text-align:center; font-weight:bolder;">프로젝트 지우기</a>
-				</c:if>
+  			<div class="dropdown-menu" id="projectIntoMemberList">
 			</div>
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
         	<c:import url="../task/tasktest.jsp"/>
+        </div>
+        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
+        	<c:import url="../task/schedule.jsp"/>
         </div>
       </ul>
       
@@ -146,7 +137,7 @@ function taskToggle(){
            <div class="modal-content">
              <div class="modal-header">
                <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">&times;</span>
                </button>
              </div>
@@ -157,8 +148,7 @@ function taskToggle(){
                    <button type="button" id="findUserBtn" onclick="findUser();" class="btn btn-outline-warning">검색</button>
                  </div>
                  <div class="form-group" id="searchMemberList">
-                 </div>
-                 <div class="result" id="findUser-result"></div>                
+                 </div>              
              </div>                 
            </div>
 
@@ -540,17 +530,21 @@ function taskToggle(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-
-        <div class="container-fluid" style="height: 2000px">
-
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-<a href="#">TEST</a>
+      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        <div id="donut" class="container-fluid collapse show in">
+        	<div id="piechart"></div>
+        	<div>
+        	<ul class="circle_chart_list">
+				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>피드백&nbsp;<strong>N건</strong></li>
+				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+			</ul>
+			</div>
+			<!-- <div style="text-align:center; float:left;"></div> -->
         </div>
+        
         <!-- /.container-fluid -->
 
         
@@ -796,6 +790,7 @@ function taskToggle(){
 	    	
 		});
 	 	
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -1073,11 +1068,25 @@ function taskToggle(){
 	        event.preventDefault();
 	    }
 	});
-    function inviteProject(mno, nickName, pno){
+    
+    function inviteProject(mNo, nickName, pNo){
     	if(confirm("[" + nickName + "] 님을 초대하시겠습니까?") == true){
     		// 알림내용 추가, 알림 선택시 초대 수락(알림 테이블에 상태 변경 필요?)
-    		if(mno != ${mno}){
-    			location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    		if(mNo != $("#mno").text()){
+    			// ajax로 해당 회원 초대만 하면 됨
+    			//location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    			$.ajax({
+    				url:"${pageContext.request.contextPath}/project/inviteProject.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
     		}else{
     			alert("본인은 초대할 수 없습니다.");
     		}
@@ -1085,27 +1094,44 @@ function taskToggle(){
     		return false;
     	}
 	}
-	function kick(name, pno, mno){
+	function kick(name, pNo, mNo, mMno){
+		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
 		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
-			if(mno == ${member.mno}){
+			if(mNo == $("#mno").text()){
 				alert("본인은 추방할 수 없습니다.");
 			}else{
-				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+				//location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno+"&mmno="+mmno;
+				$.ajax({
+    				url:"${pageContext.request.contextPath}/project/exile.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo, mmno:mMno},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
 			}
 		}else{
 			return;
 		}
 	}
-	function leaveProject(pno, mno){
+	function leaveProject(pno, mno, pmno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
-			location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+			location.href="${pageContext.request.contextPath}/project/leaveProject.do?pno="+pno+"&mno="+mno+"&pmno="+pmno;
 		}else{
 			return false;
 		}
 	}
 	function deleteProject(pno, mno){
 		if(confirm("프로젝트를 제거하시겠습니까?") == true){
-			location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+			if(confirm("한번 제거하시면 복구할 수 없습니다.") == true){
+				location.href="${pageContext.request.contextPath}/project/deleteProject.do?pno="+pno+"&mno="+mno;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
@@ -1132,7 +1158,7 @@ function taskToggle(){
 					for(var i=0; i<response.length;i++){
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1145,10 +1171,100 @@ function taskToggle(){
 		    }
 		});
 	}
+	
+	function searchMemberList(pNo){
+		$("#projectIntoMemberList").empty();
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno:pNo},
+			success:function(response){
+				var printHTML = "";
+				if($("#pmno").text() == $("#mno").text()){
+					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 지우기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}else{
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 나가기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}
+				
+			}
+		});
+		
+	}
+	$(function(){
+		var pNo = ${pno};
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno: pNo},
+			success:function(response){
+				if($("#pmno").text() == $("#mno").text()){
+					for(var i=0; i<response.length; i++){
+						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						console.log(response[i].mno);
+					}
+				}else{
+					for(var i=0; i<response.length; i++){
+
+					}
+
+				}
+				
+			}
+		});
+	})
+	
+	
+
 	</script>
-	
-	
-    
+	<!-- javascript -->
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+	<script>
+	$(document).ready(function () {
+		donutPie();
+    });
+	function donutPie(){
+		var pieData = {
+			요청: 11,
+			진행: 3,
+			피드백: 3,
+			완료: 10,
+			보류: 7
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
+	</script>
 	
 </body>
 

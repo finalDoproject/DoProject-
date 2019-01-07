@@ -12,6 +12,8 @@ public interface ProjectDao {
 	List<Map<String, String>> selectProjectList(int mno);
 	Project selectOneProject(int no);
 	int insertProject(Project project);
+	int insertProjectLv(List<Project> pjLevel);
+	List<Project> selectOneProjectLv(int pno);
 	
 	
 	// ---- 메모 ---- //
@@ -29,6 +31,10 @@ public interface ProjectDao {
 	int deleteProject(int pno);
 	List<Member> selectSearchMember(String userNick);
 	int insertInviteProject(int pno, int mno);
+	List<Member> selectSearchMember(int pno);
+	Object selectSearchPM(int pno, int mno);
+	int insertExileAlarm(int pno, int mno);
+	int insertLeaveAlarm(int pno, int mno, int apmno);
 
 
 }

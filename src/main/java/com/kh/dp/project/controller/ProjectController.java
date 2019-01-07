@@ -11,20 +11,28 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class ProjectController {
@@ -40,24 +48,40 @@ public class ProjectController {
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 
+		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
+		//List<Project> OneProject = projectService.selectOneProject(pno);
+		
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("OneProjectLv", OneProjectLv);
+
 		
 		return "project/projectMain";
 	}
 	
-	@RequestMapping(value="/project/projectMain", method=RequestMethod.POST)
+	
+	
+	@RequestMapping(value="/project/projectMainLv", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> insertProject(@RequestBody Project project){
+	public Map<String,String> insertProject(
+			@RequestParam(value="jsonStr", required=false) String projectStr,
+			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
+		
+		Project project = new Gson().fromJson(projectStr, Project.class);
+		List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+		
 		System.out.println("project값 : " +project);
+		System.out.println("pjLevel값 : " +pjLevel);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
+		String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
 		
 	
-		Map<String, String> map = new HashMap<>();
-		map.put("msg", msg);	
-		return map;
+		Map<String, String> hmap = new HashMap<>();
+		hmap.put("msg", msg);	
+		hmap.put("msg1", msg1);	
+		return hmap;
 	}
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
@@ -66,10 +90,10 @@ public class ProjectController {
 		Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		model.addAttribute("project",project);
 		model.addAttribute("memberList", memberList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		// 스케줄 매칭 인원 불러오기 메소드
 		List<Member> mArr =  sideService.browseMember(pno);
@@ -92,13 +116,14 @@ public class ProjectController {
 	}
 
 	
-	@RequestMapping(value="/project/{nickname}", method=RequestMethod.GET)
+	/*@RequestMapping(value="/project/{nickname}", method=RequestMethod.GET)
 	public Member findUserView(@RequestParam String nickname,Model model) {
+		System.out.println("nickname:" + nickname);
 		Member m = memberService.selectOneNickname(nickname);
 		model.addAttribute("member", m);
 		if(m==null) m = new Member();
 		return m;
-	}
+	}*/
 	
 	
 	
@@ -123,31 +148,58 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/project/leaveProject.do", method=RequestMethod.GET)
-	public String leaveProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+	public String leaveProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno,@RequestParam("pmno") int pmno) {
 		
-		projectService.deleteLeaveProject(pno, mno);
+		int result = projectService.deleteLeaveProject(pno, mno); 
+		if(result > 0) {
+			projectService.insertLeaveAlarm(pmno, pno, mno);
+		}
+		// 프로젝트 추방됬을 때 성공적으로 나갔으면, alarm 테이블에 데이터 추가
 		
+		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		
+		//model.addAttribute("projectList",projectList);
+		//model.addAttribute("alarmList", alarmList);
+		
+		//return "project/projectMain";
+		/*Project project = projectService.selectOneProject(pno);
+		ArrayList<Map<String, String>> memberList =
+				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
+		model.addAttribute("project",project);
+		model.addAttribute("memberList", memberList);*/
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		
 		model.addAttribute("projectList",projectList);
-		model.addAttribute("alarmList", alarmList);
-		
+				
 		return "project/projectMain";
 	}
 	
 	@RequestMapping(value="/project/exile.do", method=RequestMethod.GET)
-	public String deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+	public @ResponseBody Map<String, String> deleteMemberFromProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno,@RequestParam("mmno") int mmno) {
+
+		int result = projectService.deleteMemberFromProject(pno, mno);
+		String msg = "";
 		
-		projectService.deleteMemberFromProject(pno, mno);
+		if(result > 0) {
+			// 성공
+			// 알림에 데이터 삽입
+			if(projectService.insertExileAlarm(mno, pno) > 0) {
+				msg += "성공적으로 추방했습니다.";				
+			}
+		}else {
+			msg += "추방에 실패했습니다. 관리자에게 문의하세요.";
+		}
 		
-		Project project = projectService.selectOneProject(pno);
+		/*Project project = projectService.selectOneProject(pno);
 		ArrayList<Map<String, String>> memberList =
 				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
 		model.addAttribute("project",project);
-		model.addAttribute("memberList", memberList);
-				
-		return "project/projectPage";
+		model.addAttribute("memberList", memberList);*/
+		
+		Map<String, String> msgMap = new HashMap<String, String>();
+		msgMap.put("msg", msg);
+		
+		return msgMap;
 	}
 	
 	@RequestMapping(value="/project/deleteProject.do", method=RequestMethod.GET)
@@ -155,11 +207,11 @@ public class ProjectController {
 		
 		System.out.println(projectService.deleteProject(pno));
 		
-		List<Map<String,String>> projectList = projectService.selectProjectList();
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		
 		model.addAttribute("projectList",projectList);
-		model.addAttribute("alarmList", alarmList);
+		//model.addAttribute("alarmList", alarmList);
 		
 		return "project/projectMain";
 	}
@@ -174,19 +226,37 @@ public class ProjectController {
 	}
 	/*inviteProject.do?pno="+pno+"&mno="+mno;*/
 	@RequestMapping(value="/project/inviteProject.do", method=RequestMethod.GET)
-	public String insertInviteProject(Model model, @RequestParam("pno") int pno,@RequestParam("mno") int mno) {
+	public @ResponseBody Map<String, String> insertInviteProject(@RequestParam("pno") int pno,@RequestParam("mno") int mno) {
 		
-		projectService.insertInviteProject(pno, mno);
+		int result = 0;
+		String msg = "";
 		
-		Project project = projectService.selectOneProject(pno);
-		ArrayList<Map<String, String>> memberList =
-				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
-		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		model.addAttribute("alarmList", alarmList);
-		model.addAttribute("project",project);
-		model.addAttribute("memberList", memberList);
-				
-		return "project/projectPage";
+		if(projectService.selectSearchPM(pno, mno) != null) {
+		// pno, mno를 통해 project_member 테이블에 값이 있으면(!=null) 초대 불가능
+			msg += "이미 프로젝트에 참여중인 회원입니다.";
+		}else {
+		// 없으면 projectService.insertInviteProject(pno, mno); 실행
+			result = projectService.insertInviteProject(pno, mno);
+			if(result != 0) {
+				msg += "성공적으로 초대했습니다.";
+			} else {
+				msg += "초대에 실패했습니다. 관리자에게 문의하세요.";
+			}
+		}
+		
+		Map<String, String> msgMap = new HashMap<String, String>();
+		msgMap.put("msg", msg);
+		
+		return msgMap;
+	}
+	
+	@RequestMapping(value="/project/searchMemberList.do", method=RequestMethod.GET)
+	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
+		
+		List<Member> m = projectService.selectSearchMember(pno);
+		
+		return m;
+		
 	}
 	
 	

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import com.kh.dp.member.model.vo.Member;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
+	
+	@Autowired
+	SqlSessionTemplate sqlSession;
 	
 	@Override
 	public int insertMember(Member member) {
@@ -34,9 +39,6 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	
-	@Autowired
-	SqlSessionTemplate sqlSession;
-
 	@Override
 	public List<Map<String, String>> selectMemberList(int cPage, int numPerPage) {
 		// TODO Auto-generated method stub
@@ -56,7 +58,15 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.delete("member.deleteMember", mno);
 	}
 
+
+	@Override
+	public int updateNewPw(Member m) {
 	
+		return sqlSession.update("member.memberNewPw", m);
+	}
+
+
+
 	@Override
 	public int withdrawMember(String userId) {
 		// TODO Auto-generated method stub
@@ -74,6 +84,7 @@ public class MemberDaoImpl implements MemberDao {
 	public Member selectOneNickname(String nickname) {
 		return sqlSession.selectOne("member.selectOneNickname", nickname);
 	}
+
 
 
 }

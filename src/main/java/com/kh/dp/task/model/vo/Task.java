@@ -16,13 +16,16 @@ public class Task {
 	private String tcontent; // 업무내용
 	private String tstartdate; // 업무 시작일
 	private String twriter;
+	private int tpno;
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
+	
+	private int count;
 	
 	public Task() {}
 	
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter) {
+			String tstartdate, String twriter, int tpno, int count) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
@@ -34,11 +37,13 @@ public class Task {
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
 		this.twriter = twriter;
+		this.tpno = tpno;
+		this.count = count;
 	}
 
 	// 첨부파일 있는 생성자
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, List<Attachment> taskFiles) {
+			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
@@ -50,7 +55,9 @@ public class Task {
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
 		this.twriter = twriter;
+		this.tpno = tpno;
 		this.taskFiles = taskFiles;
+		this.count = count;
 	}
 
 	public int getTno() {
@@ -141,11 +148,27 @@ public class Task {
 		this.taskFiles = taskFiles;
 	}
 
+	public int getTpno() {
+		return tpno;
+	}
+
+	public void setTpno(int tpno) {
+		this.tpno = tpno;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
 				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
-				+ tstartdate + ", twriter=" + twriter + ", taskFiles=" + taskFiles + "]";
+				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", taskFiles=" + taskFiles + "]";
 	}
 	
 }

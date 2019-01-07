@@ -12,6 +12,8 @@ public class ChatMtm {
 	private int chReader;
 	private int chPno;
 	
+	private String renamedfilename;
+	
 	public ChatMtm() {
 		super();
 	}
@@ -24,6 +26,24 @@ public class ChatMtm {
 		this.chWriter = chWriter;
 		this.chReader = chReader;
 		this.chPno = chPno;
+	}
+	public ChatMtm(int chNo, String chContent, Date chDate, String chCondition, int chWriter, int chReader, int chPno,
+			String renamedfilename) {
+		super();
+		this.chNo = chNo;
+		this.chContent = chContent;
+		this.chDate = chDate;
+		this.chCondition = chCondition;
+		this.chWriter = chWriter;
+		this.chReader = chReader;
+		this.chPno = chPno;
+		this.renamedfilename = renamedfilename;
+	}
+	public String getRenamedfilename() {
+		return renamedfilename;
+	}
+	public void setRenamedfilename(String renamedfilename) {
+		this.renamedfilename = renamedfilename;
 	}
 	public int getChNo() {
 		return chNo;
@@ -70,7 +90,8 @@ public class ChatMtm {
 	@Override
 	public String toString() {
 		return "ChatMtm [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
-				+ chCondition + ", chWriter=" + chWriter + ", chReader=" + chReader + ", chPno=" + chPno + "]";
+				+ chCondition + ", chWriter=" + chWriter + ", chReader=" + chReader + ", chPno=" + chPno
+				+ ", renamedfilename=" + renamedfilename + "]";
 	}
 		
 }

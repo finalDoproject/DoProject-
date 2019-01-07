@@ -30,7 +30,7 @@
           <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
               <div class="modal-dialog" role="document">
               
-               <form id="proejctEnrollFrm">
+               <form id="proejctEnrollFrm" name="proejctEnrollFrm" method="post">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="projectModalLabel">프로젝트 생성</h5>
@@ -50,19 +50,44 @@
                         <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
                         <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
                         <div class="form-group levelbox" style="display: none;">
-                          <hr>
-                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-                          <button type="button" class="btn minusbtn btn-light">-</button>
-                          
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-
+                        <hr>
+						<table width="400" border="0" cellspacing="0" cellpadding="0">
+						  <tr>
+						    <td colspan="2" align="left" bgcolor="#FFFFFF">
+						      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+						        <tr>
+						         <td colspan="5" bgcolor="#FFFFFF" height="25" align="left">
+						         
+						         <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
+						         <button type="button" class="btn plusbtn btn-light" onClick="insRow()">+</button>
+						        </td>
+						        
+						        </tr>
+						        <tr>
+						         <td height="25">
+						           <table id="addTable" width="400" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
+						            <tr>
+						              <td><input type="text" name="lname" class="form-control firstLname" style="width: 90% !important; display: inline-block; margin-bottom: 5px;"></td>
+						              <td align="left"></td>
+						            </tr>
+						          </table></td>
+						        </tr>
+						       </table>
+						      </td>
+						   </tr>
+						 </table>
+						 <table width="460" border="0" cellspacing="0" cellpadding="0">
+						    <tr>
+						      <td height="10">
+						      </td>
+						    </tr>
+						 </table>
                         </div>
+                        <div class="modal-footer" style="display: flex; flex-direction: row; justify-content: center; align-items: center;" >
+		                  <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+		                  <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
+		                </div>                 
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
-                  </div>                  
                 </div>
                </form>
               </div>
@@ -72,7 +97,6 @@
 
         <div class="container-fluid">
 
-
           <!-- Page Content --> 
           <c:forEach items="${projectList}" var="project" varStatus="vs">
           <c:if test="${project.plevel >0}">
@@ -80,7 +104,7 @@
                 <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
-            		<span id="pno" style="display: none;">${project.pno}</span>
+            		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
                     <h5>${project.ptitle}</h5>
                     <p>${project.psummary}</p>
                     <div class="progress_area">
@@ -100,7 +124,7 @@
                   <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
                   <div class="pj_folder_in">
-                  		<span id="pno" style="display: none;">${project.pno}</span>
+                  		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
                         <h5>${project.ptitle}</h5>
                         <p>${project.psummary}</p>
                         <div class="users_area">
@@ -113,12 +137,16 @@
                 </div>
 			</c:if>
 			</c:forEach>
+			
                 <!-- optionModal -->
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
+                      <form id="optionFrm" method="post">
+                      
+                      
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">프로젝트 생성</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">프로젝트 상세</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -131,35 +159,35 @@
                                 60<small>%</small>
                               </p>
                             </div>
-                         
                           <div class="form-group col-md-6" style="border: 0px solid black; background-color: rgb(245, 245, 245); display: inline-block; position: absolute; right: 30px; padding: 5px">
                             <label for="message-text" class="form-control-label">목표단계</label>
                             <div class="checkLevel" style="text-align: left; padding-left: 8px">
-                              <input type="checkbox" name="levelCk" value="ck1" id="ck1">
-                              <label for="ck1">목표 설정 1</label><br>
-                              <input type="checkbox" name="levelCk" value="ck2" id="ck2">
-                              <label for="ck2">목표 설정 2</label><br>
-                              <input type="checkbox" name="levelCk" value="ck3" id="ck3">
-                              <label for="ck3">목표 설정 3</label><br>
-                              <input type="checkbox" name="levelCk" value="ck4" id="ck4">
-                              <label for="ck4">목표 설정 4</label><br>
-                              <input type="checkbox" name="levelCk" value="ck5" id="ck5">
-                              <label for="ck5">목표 설정 5</label>
+                              <c:forEach items="${projectList}" var="pj"> 
+	                             <input type="checkbox" name="levelCk" value="ck1" id="ck1">
+	                             <label for="ck1">${pj.lname}</label><br>
+                              </c:forEach>
                             </div>
                           </div>
                         </div>                  
                           <hr>
+                          
+                          <c:forEach items="${projectList}" var="pj" varStatus="vs"> 
+                          <%-- <c:if test="${pj.pno eq rePno}"> --%>
                           <div style="text-align: left">
                             <small>프로젝트 명</small>
-                            <h4>프로젝트 테스트 1</h4>
+                            <h4>${pj.ptitle} ${pj.pno}</h4>
                             <small>프로젝트 개요</small> 
-                            <p>전인 유소년에게서 구하지 못할 바이며 시들어 가는 노년에게서 구하지 못할 바이며 오직 우리 청춘에서만 구할 수 있는 것이다</p>                           
+                            <p>${pj.psummary}</p>                           
                           </div>
+                          <%-- </c:if> --%>
+                        </c:forEach>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-light btn-sm updateModal" data-toggle="modal" data-target="#updateModal">수정</button>
                           <button type="button" class="btn btn-sm" style="background-color: coral; color: white" data-dismiss="modal">확인</button>
                         </div>
+                       
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -227,26 +255,81 @@
 	
 <script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 	<script>
+	    // level checkBox 
+	    var oTbl;
+	  	var count = 2;
+	    
+	    //Row 추가
+	    function insRow() {
+	    	if(count<=5){
+		      oTbl = document.getElementById("addTable");
+		      var oRow = oTbl.insertRow();
+		      oRow.onmouseover=function(){oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
+		      var oCell = oRow.insertCell();
+		    	//삽입될 Form Tag
+		        var frmTag = "<input type='text' name='lname' class='form-control' style='width: 90% !important; display: inline-block; margin-bottom: 5px;'> ";
+		        frmTag += "<button type='button' class='btn plusbtn btn-light' onClick='removeRow()' >-</button>";
+		        
+		      oCell.innerHTML = frmTag;
+		      count++;
+	    	}else{
+	    		alert("최대 5단계를 초과할 수 없습니다.");
+	    	}
+	    }
+	    //Row 삭제
+	    function removeRow(thisCount) {
+	    	if(count>1){
+		      oTbl.deleteRow(oTbl.clickedRowIndex);
+		      count--;
+	    	}
+	    }	
 	
 		$("#proejctEnrollFrm .btn-send").on("click",function(){
 			//파라미터를 post방식으로 전송 -> message body에 씀
 			//json문자열로 처리해야 컨트롤러에서 @RequestBody가 처리함(HttpMessageConverter에 의해 커맨트객체 매핑)
 			//ajax요청 필수속성  => contentType: 'application/json; charset=utf-8' 
 			
+			var frm = document.proejctEnrollFrm;
+		      
+		      /* for( var i = 0; i <= frm.elements.length - 1; i++ ){
+		         if( frm.elements[i].name == "lname" )
+		         {
+		             if( !frm.elements[i].value ){
+		                 alert("단계설정을 입력하세요!");
+		                     frm.elements[i].focus();
+		    	 return;
+		              }
+		          }
+		       } */
+			
 			var param = {};
 			param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
 
 			param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
 			param.pmmno =$(".headerMno").text();
-
-			var jsonStr = JSON.stringify(param);
-			console.log(jsonStr);
+			param.plevel =$("#proejctEnrollFrm [name=lname]").length;
+			// 여기 수정해야함
 			
-			$.ajax({
-	            url  : "${pageContext.request.contextPath}/project/projectMain",
-	            data : jsonStr,
+			var larr = new Array();
+			
+			for (var i=0; i<$("#proejctEnrollFrm [name=lname]").length; i++){
+				var lobj = new Object();
+				lobj.lno = i+1;
+				lobj.lname = $("#proejctEnrollFrm [name=lname]").eq(i).val();
+				larr.push(lobj);
+			}
+			//console.log(larr);
+			//param.larr= larr;
+			var jsonStr = JSON.stringify(param);
+			var jsonArr = JSON.stringify(larr);
+			console.log(jsonStr);
+			console.log(jsonArr);
+			//allData= {"project":jsonStr, "jsonArr":jsonArr}
+			 $.ajax({
+	            url  : "${pageContext.request.contextPath}/project/projectMainLv",
+	            data : {jsonStr:jsonStr, jsonArr:jsonArr},
 	            dataType: "json",
-	            contentType: 'application/json; charset=utf-8',
+	            /* contentType: "application/json; charset=utf-8", */
 	            type : "post",
 	            success : function(data){
 	                console.log(data);
@@ -283,29 +366,21 @@
         $(".addLevel").click(function(){
           $(".addLevel").hide();
           $(".delLevel").show();  
-          $(".levelbox").show();                                  
+          $(".levelbox").show();  
+          $("#addTable").show();
         });
         $(".delLevel").click(function(){
           $(".addLevel").show();
           $(".delLevel").hide();  
-          $(".levelbox").hide();  
+          $(".levelbox").hide(); 
+          $("#addTable").hide();
         });
         $(".updateModal").click(function(){
             $("#updateModal").modal('show'); 
             $("#optionModal").modal('hide');
           });
       });
-
-      // level checkBox 
-      $(document).ready(function() { 
-          $("input:checkbox").on('click', function() {
-              if ( $(this).prop('checked') ) {
-                    $(this).next().addClass("selected");
-                    
-              } else { $(this).next().removeClass("selected");
-              } 
-          }); 
-      });
+	  
 	</script>
 	
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

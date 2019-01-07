@@ -46,16 +46,13 @@ public class TaskController {
 	public String insertTask(Task task, Model model, HttpSession session,
 			HttpServletRequest request,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile,
-			@RequestParam String tmanager, @RequestParam int mno, @RequestParam int pno 
+			@RequestParam int mno, @RequestParam int pno 
 			/*@RequestParam(value="startdate", required=false) String startdate,
 			@RequestParam(value="enddate", required=false) String enddate*/) {
 		
 		
-		System.out.println("task manager:" + tmanager);
 		System.out.println("pno, mno : " +pno+", " + mno);
-		
 		task.setTmno(mno);
-		
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");

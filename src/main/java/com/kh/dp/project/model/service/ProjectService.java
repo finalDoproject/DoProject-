@@ -11,8 +11,9 @@ public interface ProjectService {
 	// ---- 프로젝트 ----//
 	List<Map<String, String>> selectProjectList(int mno);
 	int insertProject(Project project);
-
+	int insertProjectLv(List<Project> pjLevel);
 	Project selectOneProject(int pno);
+	List<Project> selectOneProjectLv(int pno);
 	
 	
 	// ---- 메모 ---- //
@@ -28,6 +29,10 @@ public interface ProjectService {
 	int deleteProject(int pno);
 	List<Member> selectSearchMember(String userNick);
 	int insertInviteProject(int pno, int mno);
+	List<Member> selectSearchMember(int pno);
+	Object selectSearchPM(int pno, int mno);
+	int insertExileAlarm(int mno, int pno);
+	int insertLeaveAlarm(int mno, int pno, int apmno);
 
 
 }

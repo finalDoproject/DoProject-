@@ -6,9 +6,13 @@
 	
 	<select id="selectProjectList"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) 
+		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) ORDER BY pno DESC
 	</select>
-
+	
+	<select id="selectOneProjectLv"  parameterType="_int" resultType="project">
+		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
+		SELECT * FROM PROJECT_LEVEL WHERE PNO = #{pno}
+	</select>
 	
 	<select id="selectOneProject" parameterType="_int" resultType="project">
 		SELECT * FROM PROJECT WHERE PNO = #{pno}
@@ -18,6 +22,21 @@
 		 INSERT INTO PROJECT VALUES
 		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
 	</insert>
+	
+	
+	
+	<insert id="insertProjectLv" parameterType="java.util.List">
+	INSERT ALL
+		<if test="list != null">
+			<foreach collection="list" item="item">		 
+			 INTO PROJECT_LEVEL VALUES
+			(SEQ_PNO.NEXTVAL, #{item.lno}, #{item.lname})	
+			</foreach>
+		</if>
+	SELECT * FROM DUAL
+	</insert>
+		
+	
 		
 	<select id="selectProjectIntoMember" resultType="member">
 		SELECT * FROM MEMBER WHERE MNO IN (
@@ -37,10 +56,30 @@
 	</delete>
 
 	<select id="selectSearchMember" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE NICKNAME LIKE '%' || #{userNick} || '%'
 	</select>
 	
 	<insert id="insertInviteProject">
-		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno},DEFAULT)
+		 INSERT INTO PROJECT_MEMBER VALUES(#{pno},#{mno}, 'N')
+	</insert>
+	
+	<select id="searchMemberList" resultType="member">
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+	</select>
+	
+	<select id="selectSearchPM" parameterType="_int" resultType="ProjectMember">
+		SELECT * FROM PROJECT_MEMBER WHERE PMPNO = #{pno} AND PMMNO = #{mno}
+	</select>
+	
+	<insert id="insertExileAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 추방당했습니다.', DEFAULT, 4, #{mno}, #{pno}, NULL, NULL, NULL)
+	</insert>
+	
+	<insert id="insertLeaveAlarm">
+		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
 	</insert>
 </mapper>

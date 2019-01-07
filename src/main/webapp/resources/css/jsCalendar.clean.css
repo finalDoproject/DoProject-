@@ -35,7 +35,7 @@
 
 	}
 	.jsCalendar.clean-theme tbody td:hover {
-		background-color: rgb(243, 243, 243);
+		background-color: rgb(240, 230, 220);
 		border-radius: 30px;
 	}
 	.jsCalendar.clean-theme tbody td.jsCalendar-selected {
@@ -47,11 +47,11 @@
 		color: #FFFFFF;
 	}
 	.jsCalendar.clean-theme tbody td.jsCalendar-selected {
-		background-color: rgb(243, 243, 243);
+		background-color: rgb(240, 230, 220);
 		border-radius: 30px;
 	}
 	.jsCalendar.clean-theme tbody td.jsCalendar-current:hover {
-		background-color: rgb(243, 243, 243);
+		background-color: rgb(240, 230, 220);
 		border-radius: 30px;
 		color:#333;
 	}

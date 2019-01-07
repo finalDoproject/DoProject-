@@ -21,7 +21,6 @@
 	<select id="loginMember" parameterType="string" resultType="Member">
 		SELECT * FROM MEMBER 
 		WHERE USERID = #{userId}
-
 	</select>
 	
 	<select id="selectMemberList" resultType="member">
@@ -30,16 +29,20 @@
 		ORDER BY MNO
 	</select>
 	
-	
 	<select id="selectMemberTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM MEMBER
 	</select>
 
-	
 	<delete id="deleteMember" parameterType="_int">
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+
+	<update id="memberNewPw" parameterType="Member" >
+		UPDATE MEMBER
+		SET PASSWORD = #{password}
+		WHERE EMAIL = #{email}
+	</update>
 
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 
@@ -52,7 +55,6 @@
 	<delete id="withdrawMember" parameterType="string">
 		DELETE FROM MEMBER WHERE USERID = #{userId}
 	</delete>
-	
 	
 
 	<select id="selectOneNickname" parameterType="string" resultType="Member">
