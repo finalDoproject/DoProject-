@@ -69,6 +69,7 @@
 	               <c:if test="${!empty member}">
 
 							<span class="headerMno" id="mnoSession" data-value="@Request.RequestContext.HttpContext.Session['mno']" name="mno" style="display: none;">${member.mno}</span>
+							<span id="nick" style="display: none;">${member.nickName}</span>
 							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
@@ -94,7 +95,7 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <span class="badge badge-danger">7</span>
+	            <!-- <span class="badge badge-danger">7</span> -->
 	          </a>
 	          </c:if>
 	        </li>
@@ -107,7 +108,7 @@
 	            <a class="dropdown-item" href="#">Settings</a>
 	            <a class="dropdown-item" href="#">Activity Log</a>
 	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">Logout</a>
 	          </div>
 	        </li>
 	      </ul>
@@ -117,17 +118,11 @@
 
 
 	<!-- Bootstrap 4 JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-		crossorigin="anonymous"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-		crossorigin="anonymous"></script>
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 
 
 
@@ -180,12 +175,14 @@
 				dataType:"json",
 				type : "GET",
 				data : {ano:aNo},
+				async : false,
 				success : function(response){
 				},
 				error:function(request,status,error){
 			    	alert("code:"+request.status+"\n"+"error:"+error);
 			    }
 			});
+			send_message();
 		}
 		
 		function alarmList(mNo, loginMno){
@@ -232,6 +229,39 @@
 			    }
 			});
 		}
+		
+		var wsUri = "ws://localhost/count";
+		function send_message() {
+	        websocket = new WebSocket(wsUri);
+	        websocket.onopen = function(evt) {
+	            onOpen(evt);
+	        };
+	        websocket.onmessage = function(evt) {
+	            onMessage(evt);
+	        };
+	        websocket.onerror = function(evt) {
+	            onError(evt);
+	        };
+	    }
+		
+		function onOpen(evt) {
+	       websocket.send($('#nick').text());
+	    }
+	    function onMessage(evt) {
+	    	var data=evt.data;
+	    	if(data!=0){
+	    		$("#alarmCount").empty();
+	    		$('#alarmCount').append(data);
+	    	}else{
+	    		$("#alarmCount").empty();
+	    	}
+	    }
+	    function onError(evt) {
+	    }
+	    
+	    $(document).ready(function(){
+	    	send_message();
+	    });
 	</script>
 </body>
 </html>

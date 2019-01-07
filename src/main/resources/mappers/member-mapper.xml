@@ -30,16 +30,20 @@
 		ORDER BY MNO
 	</select>
 	
-	
 	<select id="selectMemberTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM MEMBER
 	</select>
 
-	
 	<delete id="deleteMember" parameterType="_int">
 		DELETE FROM MEMBER WHERE MNO = #{mno}
 	</delete>
 	
+
+	<update id="memberNewPw" parameterType="Member" >
+		UPDATE MEMBER
+		SET PASSWORD = #{password}
+		WHERE EMAIL = #{email}
+	</update>
 
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 

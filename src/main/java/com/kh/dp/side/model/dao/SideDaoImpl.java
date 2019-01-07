@@ -1,5 +1,7 @@
 package com.kh.dp.side.model.dao;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,21 @@ public class SideDaoImpl implements SideDao {
 		
 		return sqlSession.selectList("matching.browseMatchingInfo", mno);
 	}
+
+	@Override
+	public List browseDT(int mNo, int requestNo) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mNo", mNo);
+		map.put("requestNo", requestNo);
+		
+		return sqlSession.selectList("matching.browseDT", map);
+	}
 	
-	
+	@Override
+	public int insertMySelf(int mno) {
+		
+		return sqlSession.insert("matching.insertMySelf", mno);
+	}
 
 }

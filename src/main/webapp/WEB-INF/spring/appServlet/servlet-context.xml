@@ -88,13 +88,31 @@
 		<websocket:sockjs />
 	</websocket:handlers>
 	
-	<!-- <websocket:handlers>
-		<websocket:mapping handler="alarmWebSocketHandler" path="/common" />
-	</websocket:handlers> -->
+	<websocket:handlers>
+		<websocket:mapping handler="alarmHandler" path="/count" />
+	</websocket:handlers>
 
-	<!-- <beans:bean id="alarmWebSocketHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" /> -->
+	<beans:bean id="alarmHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" />
 	<beans:bean id="chatWebSocketHandler" class="com.kh.dp.chat.common.ChatWebSocketHandler" />
 	
 	<context:component-scan base-package="com.kh.dp" />	
+	
+	
+	<!-- 메일  -->
+	<beans:bean id="mailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="smtp.gmail.com" />
+		<beans:property name="port" value="587" /><!-- 465 or 25 -->
+		<beans:property name="username" value="ddProjectbb@gmail.com" />
+		<beans:property name="password" value="test^^123" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.transport.protocol">smtp</beans:prop>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+				<beans:prop key="mail.debug">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
 	
 </beans:beans>
