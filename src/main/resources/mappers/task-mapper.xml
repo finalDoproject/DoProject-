@@ -9,9 +9,9 @@
 	
 	<insert id="insertTask">
 		INSERT INTO TASK(TNO, TLEVEL, TMNO, TENDDATE, TTPRIORITY,
-			TTITLE, TCONTENT, TSTARTDATE, TWRITER)
+			TTITLE, TCONTENT, TSTARTDATE, TWRITER, TPNO, TWRITEDATE)
 		VALUES (SEQ_TNO.NEXTVAL, #{tlevel}, #{tmno}, TO_DATE(#{tenddate},'MM/DD/RRRR'), #{ttpriority},
-		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter})
+		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter}, #{tpno},SYSDATE)
 		<selectKey keyProperty="tno" resultType="_int"
 			order="AFTER">
 			SELECT SEQ_TNO.CURRVAL FROM DUAL
@@ -28,4 +28,13 @@
 			SELECT SEQ_FNO.CURRVAL FROM DUAL
 		</selectKey> -->
 	</insert>
+	
+	
+	<select id="selectTaskList" resultMap="task">
+		SELECT *
+		FROM TASK
+		WHERE TPNO = #{pno}
+		ORDER BY TWRITEDATE DESC
+	</select>
+	
 </mapper>

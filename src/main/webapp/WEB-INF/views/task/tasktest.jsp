@@ -286,14 +286,12 @@ $(function() {
     });
 });
 
-
-
 </script>
 
 
 </head>
 <body> 
-<div class="post_write_wrap" style="text-align : center; ">
+<div class="post_write_wrap" style="text-align : center;" id="taskside">
 		<%-- <c:import url="../common/introSidebar.jsp"/> --%><!-- css적용이 안됌 -->
 		<form name="taskForm" id="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
 		<div class="post_write_tab">
@@ -434,10 +432,10 @@ $(function() {
 		}
 		console.log($("#tlevel").val());
 		
-		if($("#tlevel").val() == 0){
+/* 		if($("#tlevel").val() == 0){
 			alert("업무 단계를 입력해주세요.");
 			return false;
-		}
+		} */
 		
 		if($("#tmno").val() == ""){
 			alert("업무 담당자를 지정해주세요.");

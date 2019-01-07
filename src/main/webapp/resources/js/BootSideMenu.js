@@ -19,7 +19,7 @@
         var $DOMBody = $("body", document);
 
         var defaults = {
-            side: "left",
+            side: "right",
             duration: 500,
             remember: true,
             autoClose: false,

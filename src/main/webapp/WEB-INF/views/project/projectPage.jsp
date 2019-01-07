@@ -554,7 +554,7 @@ $(function(){
         
         <!-- /.container-fluid -->
 
-        
+        <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
       

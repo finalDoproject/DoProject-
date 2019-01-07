@@ -43,7 +43,7 @@
 	<div>
 		<nav class="navtop navbar navbar-expand static-top" >
 	      <div class="logo_area " style="width: 200px; height: 60px;">
-	        <a class="navtop_logo"  href="index.html">
+	        <a class="navtop_logo"  href="/dp">
 	        	<b style="font-family:'Exo 2', sans-serif; font-size: 26px">DOPE</b>
 	        	<small style="font-family:'Exo 2', sans-serif; font-size: 17px">Do Project!</small></a>
 	      </div>

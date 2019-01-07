@@ -31,6 +31,7 @@ import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.service.TaskService;
 
 import net.sf.json.JSONArray;
 
@@ -42,6 +43,9 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
+	
+	@Autowired
+	private TaskService taskService;
 	
 	@RequestMapping("/project/projectMain.do")
 
@@ -112,6 +116,13 @@ public class ProjectController {
 		model.addAttribute("sArr", sArr);
 		
 		model.addAttribute("memberNo", mno);
+		
+		
+		// task List
+		ArrayList<Map<String, String>> tasklist = 
+				new ArrayList<Map<String, String>>(taskService.selectListTask(pno));
+		System.out.println("tasklist"+ tasklist);
+		model.addAttribute("tasklist", tasklist);
 		
 		return "project/projectPage";
 	}
