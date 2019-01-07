@@ -77,7 +77,7 @@
 	              </a>
 	            </li>
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno}, 1);" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno});" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger" id="alarmCount"></span>
 	          </a>
@@ -95,7 +95,7 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <span class="badge badge-danger">7</span>
+	            <!-- <span class="badge badge-danger">7</span> -->
 	          </a>
 	          </c:if>
 	        </li>
@@ -185,14 +185,13 @@
 			send_message();
 		}
 		
-		function alarmList(mNo, loginMno){
-			console.log(loginMno);
+		function alarmList(mNo){
 			$("#alarmList").empty();
 			$.ajax({
 				url:"${pageContext.request.contextPath}/alarm/alarmList.al",
 				dataType:"json",
 				type : "GET",
-				data : {mno:mNo, loginmno:loginMno},
+				data : {mno:mNo},
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){

@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Do Project!</title>
-
+<!-- stylesheet -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
@@ -324,10 +325,9 @@ function scheduleToggle(){
                 </c:if>
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <input type="hidden" value="${s.SMNO}" id="smno"/>
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
@@ -527,17 +527,21 @@ function scheduleToggle(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-
-        <div class="container-fluid" style="height: 2000px">
-
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-<a href="#">TEST</a>
+      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        <div id="donut" class="container-fluid collapse show in">
+        	<div id="piechart"></div>
+        	<div>
+        	<ul class="circle_chart_list">
+				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>피드백&nbsp;<strong>N건</strong></li>
+				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+			</ul>
+			</div>
+			<!-- <div style="text-align:center; float:left;"></div> -->
         </div>
+        
         <!-- /.container-fluid -->
 
         
@@ -595,43 +599,98 @@ function scheduleToggle(){
 	    }); 
 	 	
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
-	    function selectId(){
-	 		
+	    function selectId(A){
 	 		
 	 		// 요청 번호
-	    	var requestNo = $('#smno').val();
+	    	var requestNo = A;
+	 		
 	 		// 회원 번호
 	    	var mNo = ${member.mno};
 	    	// 요청 시작일
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	
+	    	alert(requestNo + ", " + smdate + ", " + smenddate);
 	    	// 요일 값 가져오기
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
 	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
+	 			data : {requestNo : requestNo,
+	 				    mNo : mNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				if(data != null){
+	 				for(var i in data ) {
+	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
+	 				}
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
+	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
 	 	    	var dtNo = $(this).attr("id");
 	    		
-			    	 $.ajax({
-			         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
-			         	data : {dtNo : dtNo,
-			         		    requestNo : requestNo,
-			         		    mNo : mNo},
-			         	dataType : "json",
-			         	success : function(data) {
-			         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-			         		
-			         		
-			         	 },error : function(request, status, error){
-			      			alert(request + "\n"
-			      					  + status + "\n"
-			      					  + error);
-			         	}
-			         });  
+	    		$.ajax({
+	    			url : '${pageContext.request.contextPath}/project/isClicked.do',
+	    			data : {
+	    				requestNo : requestNo,
+	 				    mNo : mNo,
+	 				    dtNo : dtNo},
+	 				dataType : "json",
+	 				success : function(data) {
+	 					if(data == 0){
+	 		
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 					}else{
+	 						
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/deleteDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "white");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 						
+	 					}
+	 				},error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+	    		});
+			    	
 			    	
 		    	}); 
 	    	 
@@ -661,24 +720,6 @@ function scheduleToggle(){
 	    		};
 	    	};
 	    	
-	 		  $.ajax({
-	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
-	 			data : {requestNo : requestNo,
-	 				    mNo : mNo},
-	 			dataType : "json",
-	 			success : function(data){
-	 				for(var i in data ) {
-	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
-	         		}
-	 			},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	}
-	 		});  
-		    	
-		    	
-		    	  
 		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
@@ -1050,7 +1091,7 @@ function scheduleToggle(){
 					for(var i=0; i<response.length;i++){
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1077,7 +1118,7 @@ function scheduleToggle(){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1087,7 +1128,7 @@ function scheduleToggle(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
@@ -1126,6 +1167,36 @@ function scheduleToggle(){
 	
 	
 
+	</script>
+	<!-- javascript -->
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+	<script>
+	$(document).ready(function () {
+		donutPie();
+    });
+	function donutPie(){
+		var pieData = {
+			요청: 11,
+			진행: 3,
+			피드백: 3,
+			완료: 10,
+			보류: 7
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
 	</script>
 	
 </body>

@@ -59,4 +59,16 @@ public class SideServiceImpl implements SideService {
 		return sideDao.insertMySelf(mno);
 	}
 
+	@Override
+	public int isClicked(int mNo,int requestNo,int dtNo) {
+		
+		return sideDao.isClicked(mNo, requestNo, dtNo);
+	}
+
+	@Override
+	public int deleteDT(int mNo, int requestNo, int dtNo) {
+		
+		return sideDao.deleteDT(mNo, requestNo, dtNo);
+	}
+
 }
