@@ -12,6 +12,8 @@ public interface MemberService {
 	int insertMember(Member member);
 
 	int checkIdDuplicate(String userId);
+	
+	int checkEamilDuplicate(String email);
 
 	Member selectOne(String userId);
 	
@@ -30,6 +32,8 @@ public interface MemberService {
 	Member selectOneNickname(String nickname);
 
 	int updateNewPw(Member m);
+
+	
 
 	
 

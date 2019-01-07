@@ -17,7 +17,7 @@
 <style>
 
 body{
-	 background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed; 
+	/*  background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed;  */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -61,7 +61,7 @@ div#form{
 	border-radius: 5px;
 	padding:20px;
 	left:50%;
-	top:50%;
+	top:46%;
 	margin-left:-180px;
 	margin-top:-200px;
 }

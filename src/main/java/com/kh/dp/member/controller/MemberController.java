@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
-
 import com.kh.dp.member.model.vo.Member;
-import com.kh.dp.member.model.vo.Attachment;
 
 @SessionAttributes(value= {"member"})
 @Controller
@@ -103,6 +99,21 @@ public class MemberController {
 		return map;
 	}
 	
+	@RequestMapping("/member/checkEmailDuplicate.do")
+	@ResponseBody
+	public Map<String, Object> checkEamilDuplicate(@RequestParam String email){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean isUsable2 = memberService.checkEamilDuplicate(email) == 0? true : false;
+		
+		map.put("isUsable2", isUsable2);
+		
+		System.out.println("이메일 확인 결과값 : " + isUsable2);
+		
+		return map;
+		
+	}
+	
 	@RequestMapping(value="/member/memberLogin.do", method = RequestMethod.POST)
 	public ModelAndView memberLogin(@RequestParam String userId, @RequestParam String password) {
 		
@@ -147,11 +158,25 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/findId")
-	public ModelAndView findId(@RequestParam String nickName, @RequestParam String email) {
+	public ModelAndView findId(@RequestParam String email) {
+	
 		ModelAndView mv = new ModelAndView();
 		
 		Member m = memberService.searchId(email);
 		
+		String loc = "/";
+		String msg = "";
+		
+		if( m == null) {
+			msg = "존재하는 회원이 없습니다.";
+			loc = "/member/toFindId.do";
+		} else {
+			msg = "회원님의 아이디는 "+ m.getUserId()+" 입니다!";
+			loc = "/member/login.do";
+		}
+		
+		mv.addObject("loc", loc).addObject("msg", msg);
+		mv.setViewName("common/msg");
 		
 		return mv;
 		
@@ -267,10 +292,9 @@ public class MemberController {
 		
 		return "common/msg";
 		
-		
 	}
 	
-	@RequestMapping("/member/memberUpdate.do")
+	/*@RequestMapping("/member/memberUpdate.do")
 	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
 		
@@ -348,6 +372,6 @@ public class MemberController {
 		.setViewName("common/msg");
 		
 		return mv;
-	}
+	}*/
 
 }

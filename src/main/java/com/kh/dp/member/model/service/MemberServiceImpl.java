@@ -47,6 +47,15 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.checkIdDuplicate(hmap);
 	}
+	
+	@Override
+	public int checkEamilDuplicate(String email) {
+		
+		HashMap<String, Object> hmap = new HashMap<String, Object>();
+		hmap.put("email", email);
+		
+		return memberDao.checkEamilDuplicate(hmap);
+	}
 
 	@Override
 	public Member selectOne(String userId) {
@@ -89,10 +98,6 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneNickname(String nickname) {
 		return memberDao.selectOneNickname(nickname);
 	}
-
-	
-	
-
 	
 	@Override
 	public Member searchId(String email) {
@@ -145,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
 				+ "<img width='500' height='280' src='http://192.168.20.41/dp/resources/images/mypage/users/friends.jpg'/>"
 				+ "<h3>안녕하세요 '"+ m.getNickName()+"' 님</h3><br>"
 				+ "<p>비밀번호 찾기를 신청해주셔서 임시 비밀번호를 발급해드렸습니다.</p>"
-				+ "<p>임시 비밀번호 : <h2 style='color : #F88E6F'>'" + newPwd +"'</h2><br> 로그인 후 마이페이지에서 비밀번호를 변경해주시기 바랍니다.<br></p>"
+				+ "<p>임시 비밀번호 : <h2 style='color : #F88E6F'>'" + newPwd +"'</h2><br> 로그인 후 마이페이지에서 비밀번호 변경을 꼭 해주시기 바랍니다.</p>"
 				+ "<p>오늘도 DOPROJECT와 멋진 프로젝트를 만들어보세요:D - 두플드림</p><br></div><br>"
 				+ "※ 비밀번호를 바꾸신 적이 없으시면 ddProjectbb@gmail.com로 문의 바랍니다.";
 		try {
@@ -159,6 +164,8 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+
 
 	
 }
