@@ -2,10 +2,9 @@ package com.kh.dp.task.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dp.task.model.exception.TaskException;
@@ -130,6 +131,18 @@ public class TaskController {
 		addAttribute("attachmentList", taskService.selectAttachmentList(no));
 		
 		return "task/taskView";
+	}
+	
+	@RequestMapping(value="/task/taskUpdate.do", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> updateTask(@RequestParam("tno") String tno) {
+		System.out.println("tpno: " + tno);
+		int tno1 = Integer.parseInt(tno);
+		System.out.println("tpno: " + tno1);
+		Map<String, Object> map = new HashMap<>();
+		Task task = taskService.selectOneTask(tno1);
+		map.put("task", task);
+		return map;
 	}
 	
 }

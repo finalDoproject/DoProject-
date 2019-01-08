@@ -32,8 +32,8 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	@Override
-	public Task selectOneTask(int taskNo) {
-		return sqlSession.selectOne("task.selectOneTask",taskNo);
+	public Task selectOneTask(int tno) {
+		return sqlSession.selectOne("task.selectOneTask",tno);
 	}
 	
 	@Override

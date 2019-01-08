@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +17,8 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>    
 	<!-- jQuery UI 라이브러리 js파일 -->
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>  
-
+	
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSep_oACVc__OknKvoBB2SN9ndH85aTLE&libraries=places"></script>
 <style>  
 
 /* input 기본 스타일 초기화 */
@@ -364,8 +368,20 @@ $(function() {
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
-			<!-- 5. 진척도 지정 -->
 			<br />
+	
+<!--         <label for="locationTextField">Location</label>
+        <input id="locationTextField" type="text" size="50"> -->
+<%--          <c:import url="../task/searchLoc.jsp"/> --%>
+<!--         <script>
+            function init() {
+                var input = document.getElementById('locationTextField');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+            }
+ 
+            google.maps.event.addDomListener(window, 'load', init);
+        </script> -->
+			<!-- 5. 진척도 지정 -->
 			<br />
 			<div class="line" id="PROGRESS_LINE" >
 				<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>

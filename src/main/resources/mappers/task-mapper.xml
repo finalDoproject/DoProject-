@@ -37,4 +37,10 @@
 		ORDER BY TWRITEDATE DESC
 	</select>
 	
+	<select id="selectOneTask" resultType="Task">
+		SELECT *
+		FROM TASK
+		WHERE TNO = #{tno}
+	</select>
+	
 </mapper>
