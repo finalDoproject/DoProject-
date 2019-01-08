@@ -53,33 +53,44 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
-		
+
 		String[] msg = message.getPayload().split("_");
 		String[] chatRoom = msg[0].split(":");
 		
 		int chatTarget = Integer.parseInt(chatRoom[0]);
 		int chatMe = Integer.parseInt(chatRoom[1]);
-	
-		String realMsg = msg[1];
-		
-		System.out.println("payLoad : " + message.getPayload());
-		System.out.println("chatTarget : " + chatTarget);
-		System.out.println("realMsg : " + realMsg);
 
-		// 프로젝트 접속자 전체
-		for(String key : projectMap.keySet()) {
-			// 해당 프로젝트만
-			if(key.contains("p" + p.getPno())) {
-				// 해당 프로젝트에 접속한 접속자 전체
-				for(String realKey : projectMap.get(key).keySet()) {
-					// 해당 프로젝트 번호가 포함된 회원들에게만
-					if(realKey.contains("p" + p.getPno())) {
+		// 프로젝트 이름
+		String pNo = "p" + p.getPno();
+		// 송신자
+		String mNo = "m" + chatMe;
+		// 수신자 or 프로젝트 번호
+		String mNo2 = "m" + chatTarget;
+		projectSessionList.put(pNo + mNo + "TO" + mNo2, session);
+		
+		String realMsg = msg[1];
+
+		if(chatRoom[0].charAt(0) == 0) {
+			for(String key : projectMap.keySet()) {
+				if(key.contains("p" + p.getPno())) {
+					for(String realKey : projectMap.get(key).keySet()) {
+						projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+					}
+				}
+			}
+		} else {
+			// 프로젝트 접속자 전체
+			for(String key : projectMap.keySet()) {
+				// 해당 프로젝트만
+				if(key.contains("p" + p.getPno())) {
+					// 해당 프로젝트에 접속한 접속자 전체
+					for(String realKey : projectMap.get(key).keySet()) {
 						// 해당 회원 번호가 포함된 회원에게만
-						if(realKey.contains("m" + m.getMno())) {
-							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()));
+						if(realKey.contains("p" + p.getPno()) && (realKey.contains(pNo + mNo + "TO" + mNo2) || realKey.contains(pNo + mNo2 + "TO" + mNo))) {
+							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 						}
 					}
-				}			
+				}
 			}
 		}
 	}
