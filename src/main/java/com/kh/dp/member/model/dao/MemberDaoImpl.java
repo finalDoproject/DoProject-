@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 
@@ -85,6 +86,18 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.selectOne("member.selectOneNickname", nickname);
 	}
 
+	@Override
+	public Attachment selectAttach(int mno) {
+		
+		return sqlSession.selectOne("member.selectAttach", mno);
+	}
 
+	@Override
+	public int updateAttachment(Attachment a) {
+	
+		return sqlSession.update("member.updateAttachment", a);
+	}
+
+	
 
 }

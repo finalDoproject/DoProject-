@@ -41,7 +41,7 @@
             <span>담아둔 글</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do">
+          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do?mno=${member.mno}">
             
             <span>정보 수정</span></a>
         </li>
