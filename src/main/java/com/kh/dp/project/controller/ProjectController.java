@@ -98,13 +98,28 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> updateLevelCk(@RequestBody Project project) {
-		System.out.println("pj:"+project);
+	public Map<String,String> updateLevelCk(@RequestBody Project project
+			/*@RequestParam(value="jsonStr", required=false) String projectStr*/
+			) {
 		
+		//Project project = new Gson().fromJson(projectStr, Project.class);
+		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
+		
+		String msg1  = projectService.updateOneLevelCk(project)>0?"2체크 완료":"2체크 실패";
+		
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("msg", msg);	
+		map.put("msg1", msg1);	
+		
+		/*if(pjLevelStr != null) {
+			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("oneLevel값 : " +oneLevel);
+			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
+			map.put("msg1", msg1);	
+		}*/
+		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
 		
 		return map;
 	}

@@ -15,6 +15,7 @@
 
 function optionModalClk(pno){
 	 var pno = pno;
+
 	 console.log(pno);
 	$.ajax({
        url  :"${pageContext.request.contextPath}/project/projectMainDetail",
@@ -24,36 +25,53 @@ function optionModalClk(pno){
        success : function(data) {
        	var oneProject = data.OneProject;
        	var OneProjectLvList = data.OneProjectLvList;
-
     	console.log(oneProject);
        	console.log(OneProjectLvList);
        	
+       	var persent = oneProject.plevelck/oneProject.plevel*100;
+   		console.log(persent);
+       	
+   		var printPer ="";
+   		printPer+='<label for="recipient-name" class="form-control-label">진행률</label>';       
+   		printPer+='<p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">'+persent.toFixed(0);+'% </p>';
+   		printPer+=
+   		$('.formPer').append(printPer);
+   		printPer = "";   
+   		
        	var printHTML = "";
        	printHTML+='<small>프로젝트명</small>';
        	printHTML+='<input name="thisPno" style="display: none;" value="'+oneProject.pno+'" ></input>';
        	printHTML+='<h4>'+oneProject.ptitle+'</h4>';
        	printHTML+='<small>프로젝트 개요</small>';
        	printHTML+='<p>'+oneProject.psummary+'</p>';
-       	
        	$('#onePj').append(printHTML);
        	printHTML = "";   
+       	
        	var printListHTML = "";
 		for(var i=0; i<OneProjectLvList.length;i++){
-			printListHTML+='<input type="checkbox" name="levelCk" onClick="LevelSum(this.form);" id="ck">';
-			printListHTML+='<input name="thisLno" style="display: none; value="'+OneProjectLvList[i].lno+'" ></input>';
+			printListHTML+='<input type="checkbox" name="levelCk" onClick="LevelSum(this.form);" id="'+OneProjectLvList[i].lno+'" class="'+oneProject.pno+'">';
+			printListHTML+='<input id="thisLck" name="thisLck" style="display: none; value="'+OneProjectLvList[i].lcheck+'"></input>';
 			printListHTML+='<label for="ck">&nbsp'+OneProjectLvList[i].lname+'</label><br>';
 			//printListHTML+='<label for="ck1">설정된 레벨이 없습니다.</label><br>';
 			
-			 
+			// 체크값 Y 일 때 자동으로 체크하기 < 하는중
+			if(OneProjectLvList[i].lcheck =='Y'){
+				 $('input [type=checkbox]'+[i]).prop( "checked", true );
+				 alert("Y값");
+			}
+				 
 		}
+		
 		$('#checkLevel').append(printListHTML);
 		printListHTML = ""; 
+		
        },
        error : function(jqxhr, textStatus, errorThrown){
            console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
        }
     });
 	
+	 
 	
 };
 
@@ -149,7 +167,7 @@ function optionModalClk(pno){
           
           <c:forEach items="${projectList}" var="project" varStatus="vs">
           <c:if test="${project.plevel >0}">
-            <div class="pj_folder" style="background: rgba(255, 220, 205, 1);">
+            <div class="pj_folder" id="pj_folder" style="background: rgba(255, 220, 205, 1);">
                 <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno})">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
@@ -159,10 +177,12 @@ function optionModalClk(pno){
                     <div class="progress_area">
                       <small>진행률</small>
                       <div class="progress">
+                        <fmt:parseNumber var="num1" value="${project.plevel}"/>
+                        <fmt:parseNumber var="num2" value="${project.plevelck}"/>
+                        <fmt:parseNumber var="persent" value="${num2/num1*100}"/>
                         <div class="progress-bar bg-success" role="progressbar" 
-                        style="width: 0%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
-                        
-                        0%</div>
+                        style="width: ${persent}%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
+                        <b id="per">${persent}%</b></div>
                       </div>
                       <p>AA님 외 N명 참여중</p>
                     </div>       
@@ -205,10 +225,7 @@ function optionModalClk(pno){
                         <div class="modal-body">
                           <div style="position: relative; height:160px;">
                             <div class="form-group col-md-4 formPer" style="border: 0px solid black; display: inline-block; position: absolute; left: 20px; padding-top: 10px">
-                              <label for="recipient-name" class="form-control-label">진행률</label>
-                              <p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">
-                                
-                              </p>
+                              
                             </div>
                           <div class="form-group col-md-6 formLv" style="border: 0px solid black; background-color: rgb(245, 245, 245); display: inline-block; position: absolute; right: 30px; padding: 5px; height: 160px;">
                             <label for="message-text" class="form-control-label">목표단계</label>
@@ -229,7 +246,7 @@ function optionModalClk(pno){
                           <button type="button" class="btn btn-light btn-sm updateModal" data-toggle="modal" data-target="#updateModal">수정</button>
                           <button type="button" class="btn btn-sm detailmodalClose" style="background-color: coral; color: white" data-dismiss="modal">확인</button>
                         </div>
-                       
+                        
                         </form>
                       </div>
                     </div>
@@ -299,26 +316,28 @@ function optionModalClk(pno){
 <script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 	
 	<script>
-	
+
+
 	function LevelSum(frm){
 		   var sum = 0;
 		   var count = frm.levelCk.length;
+		   var param = {}; 
 		   for(var i=0; i < count; i++ ){
 		       if( frm.levelCk[i].checked == true ){
-			    sum ++;
+			    	sum ++;	
+		   			param.lpno = $(frm.levelCk[i]).prop('class');
+					param.lno = $(frm.levelCk[i]).prop('id');
+
 		       }
 		   }
 		  
 		  console.log("선택되어진 체크박스의 갯수는 " + sum + "개입니다." );
-		 var param = {}; 
 		 
-		 param.plevelck = sum;
-		 param.pno = $("#onePj [name=thisPno]").val();
+		param.plevelck = sum;
+		param.pno = $("#onePj [name=thisPno]").val();
+		var jsonStr = JSON.stringify(param);
+		 console.log("jsonStr:"+jsonStr);
 		 
-		 var jsonStr = JSON.stringify(param);
-		 console.log(jsonStr);
-		
-			 
 		$.ajax({
 	       url  :"${pageContext.request.contextPath}/project/projectLevelCk.do",
 	       data : jsonStr,
@@ -327,7 +346,8 @@ function optionModalClk(pno){
 	       type : "post",
 	       success : function(data) {
 	    	   console.log(data);
-	       	
+	    	   
+	    	   
 	       },
 	       error : function(jqxhr, textStatus, errorThrown){
 	           console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
@@ -339,6 +359,8 @@ function optionModalClk(pno){
 		 // location.reload();
 		$('#onePj').empty();
 		$('#checkLevel').empty();
+		$('.formPer').empty();
+		location.reload();
 	});
 
 	
@@ -428,7 +450,7 @@ function optionModalClk(pno){
 	        });				
 		});
 
-
+	
 	
 	 $('.pj_folder_in').click(function () {  
          //e.preventDefault();  
@@ -468,6 +490,7 @@ function optionModalClk(pno){
             $("#updateModal").modal('show'); 
             $("#optionModal").modal('hide');
           });
+        
       });
 	  
 	
