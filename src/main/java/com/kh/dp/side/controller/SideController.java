@@ -135,4 +135,12 @@ public class SideController {
 		return "side/totalCalPage";
 	}
 	
+	@RequestMapping("/project/filePage.do")
+	public String filePage(@RequestParam int pno,
+						   @RequestParam int mno) {
+		
+		
+		return "/side/filePage";
+	}
+	
 }

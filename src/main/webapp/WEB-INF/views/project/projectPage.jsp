@@ -118,7 +118,7 @@ $(function(){
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
@@ -323,21 +323,24 @@ $(function(){
         
       </div>
       <hr>
-      <div class="timetable" style="color: #555">
+      <div class="timetable " style="color: #555">
+  
           <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                
+              
                 <c:if test="${s.SSNO eq 0}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
@@ -348,6 +351,7 @@ $(function(){
               </li>
             </c:forEach>
             </ul>
+          
         </div>
         <hr>
 
@@ -530,7 +534,7 @@ $(function(){
             </table>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary store">저장</button>
+          
         </div>
       </div>
     </div>

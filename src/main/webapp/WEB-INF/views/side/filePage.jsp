@@ -86,7 +86,7 @@ function taskToggle(){
         <hr>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/projectPage.do?pno={pno}&mno={mno}">
             <i class="fas fa-fw fa-table"></i>
             <span>전체보기</span></a>
         </li>
@@ -273,15 +273,35 @@ function taskToggle(){
             
              <div id="content-wrapper" >
 
-        <div class="container-fluid" style="height: 2000px">
-
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-			<a href="#">TEST</a>
+        <div class="container-fluid" style="height: 2000px;">
+		
+		<table class="table table-hover" >
+		  <thead class="table-secondary">
+		    <tr>
+		      <th scope="col"></th>
+		      <th scope="col">파일명</th>
+		      <th scope="col">등록정보</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">1</th>
+		      <td>Mark</td>
+		      <td>Otto</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">2</th>
+		      <td>Jacob</td>
+		      <td>Thornton</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">3</th>
+		      <td >Larry the Bird</td>
+		      <td>@twitter</td>
+		    </tr>
+			
+		  </tbody>
+		</table>
 
 
         </div>
