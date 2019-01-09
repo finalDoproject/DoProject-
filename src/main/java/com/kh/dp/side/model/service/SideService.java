@@ -1,5 +1,6 @@
 package com.kh.dp.side.model.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,12 @@ public interface SideService {
 	public int browseResult(int requestNo, int i);
 	
 	public int countMember(int requestNo);
+
+	public List<Map<String,String>> FileList(int currentPage, int numPerPage, int pno);
+
+	public int FileTotalContents(int pno);
+
+	
 	
 	
 
