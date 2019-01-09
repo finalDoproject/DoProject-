@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.dp.member.model.dao.MemberDao;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 
@@ -89,8 +90,18 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneNickname(nickname);
 	}
 
+	@Override
+	public Attachment selectAttach(int mno) {
+		return memberDao.selectAttach(mno);
+	}
 	
-	
+	@Override
+	public int updateAttachment(Attachment a) {
+		int result = 0;
+		
+		result = memberDao.updateAttachment(a);
+		return result;
+	}
 	
 	
 	public static String getRamdomPassword() { 
@@ -146,5 +157,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+	
 	
 }
