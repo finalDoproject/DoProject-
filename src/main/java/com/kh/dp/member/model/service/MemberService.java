@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 public interface MemberService {
@@ -36,6 +37,10 @@ public interface MemberService {
 	
 
 	
+
+	Attachment selectAttach(int mno);
+	
+	int updateAttachment(Attachment a);
 
 
 	

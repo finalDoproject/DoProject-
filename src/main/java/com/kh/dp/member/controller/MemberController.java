@@ -297,7 +297,7 @@ public class MemberController {
 	/*@RequestMapping("/member/memberUpdate.do")
 	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
-		
+
 		// 1. 파일을 저장할 경로 생성
 				String saveDir = session.getServletContext().getRealPath("/resources/upload/profile");
 				List<Attachment> attachList = new ArrayList<Attachment>();
@@ -307,11 +307,19 @@ public class MemberController {
 				File dir = new File(saveDir);
 				
 				System.out.println("폴더가 있나요? "+ dir.exists());
-				
 				if(dir.exists() == false) dir.mkdirs();
 				
+				String renamedName ="";
 				// 3. 파일 업로드 시작
+				Attachment at = new Attachment();
+				Attachment a = memberService.selectAttach(member.getMno());
 				
+				if(upFile == null) {
+					
+					renamedName="default.png";
+					
+				} else {
+					
 				for(MultipartFile f : upFile) {
 					if(!f.isEmpty()) {
 						// 원본 이름 가져오기
@@ -322,25 +330,32 @@ public class MemberController {
 						int rnNum = (int)(Math.random() * 1000);
 						
 						// 서버에서 저장 후 관리할 파일 명
-						String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
-						
+						 renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+						 
 						// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
 						try {
+							System.out.println("saveDir : " + saveDir);
+							System.out.println("renamedName : " + renamedName);
+							
 							f.transferTo(new File(saveDir + "/" + renamedName));
+							
+							System.out.println(new File(saveDir+"/"+renamedName).exists());
+							
 						} catch (IllegalStateException | IOException e) {
 							
 							e.printStackTrace();
 						} 
 						
-						Attachment at = new Attachment();
-						at.setOriginalFileName(originName);
-						at.setRenamedFileName(renamedName);
+						
+						a.setOriginalFileName(originName);
+						a.setRenamedFileName(renamedName);
 
 						
-						attachList.add(at);
+						
+						member.setRenamedFileName(renamedName);
 					}
 				}
-		
+				}
 		
 		
 		
@@ -357,14 +372,15 @@ public class MemberController {
 		ModelAndView mv = new ModelAndView();
 		
 		int result = memberService.updateMember(member);
+		int result1 = memberService.updateAttachment(a);
 		
 		String loc = "/";
 		String msg ="";
 		
-		if(result > 0) {
+		if(result > 0 && result1 >0) {
 			
 			msg="회원 정보 수정 성공!";
-			mv.addObject("member", member);
+			//mv.addObject("member", member);
 			
 		} else msg = "회원 정보 수정 실패!";
 		

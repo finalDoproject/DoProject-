@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -80,18 +79,60 @@ public class SideController {
 		
 		List DateTime = sideService.browseDT(mNo, requestNo);
 		
-		System.out.println(DateTime+", requestNo : " + requestNo + ", mNo : " + mNo);
-		
+		System.out.println(requestNo);
+		System.out.println(DateTime);
 		return DateTime;
 		
 	}
 	
+	// 요일/시간을 클릭했는지 확인
+	@RequestMapping("/project/isClicked.do")
+	@ResponseBody
+	public int isClicked(@RequestParam int requestNo,
+						 @RequestParam int mNo,
+						 @RequestParam int dtNo) {
+		
+		int result = sideService.isClicked(mNo, requestNo, dtNo);
+		
+		return result;
+	}
+	// matching 삭제
+	@RequestMapping("/project/deleteDT.do")
+	@ResponseBody
+	public int deleteDT(
+			 @RequestParam int requestNo,
+			 @RequestParam int mNo,
+			 @RequestParam int dtNo
+			) {
+		
+		int result = sideService.deleteDT(mNo, requestNo, dtNo);
+		
+		return result;
+	}
 	
+	// 결과 불러오는 테이블
+	@RequestMapping("/project/resultTable.do")
+	@ResponseBody
+	public Map<String, Integer> browseResult(@RequestParam int requestNo, @RequestParam int i) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		int result = sideService.browseResult(requestNo, i);
+		int totalMember = sideService.countMember(requestNo);
+		map.put("result", result);
+		map.put("i", i);
+		map.put("totalMember", totalMember);
+		
+		return map;
+		
+		
+		}
 	
-	
-	
-	
-	
-	
+	@RequestMapping("/project/totalCalendar.do")
+	public String totalCalendar(@RequestParam int pno,
+								@RequestParam int mno) {
+		
+		return "side/totalCalPage";
+	}
 	
 }

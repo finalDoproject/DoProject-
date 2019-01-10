@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 public interface MemberDao {
@@ -34,9 +35,9 @@ public interface MemberDao {
 
 	Member selectOneNickname(String nickname);
 
+	Attachment selectAttach(int mno);
 	
-
-	
+	int updateAttachment(Attachment a);
 
 
 }

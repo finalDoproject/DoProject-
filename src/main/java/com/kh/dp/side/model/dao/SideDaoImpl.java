@@ -63,4 +63,44 @@ public class SideDaoImpl implements SideDao {
 		return sqlSession.insert("matching.insertMySelf", mno);
 	}
 
+	@Override
+	public int isClicked(int mNo,int requestNo,int dtNo) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mNo", mNo);
+		map.put("requestNo", requestNo);
+		map.put("dtNo", dtNo);
+		
+		return sqlSession.selectOne("matching.isClicked", map);
+	}
+
+	@Override
+	public int deleteDT(int mNo, int requestNo, int dtNo) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mNo", mNo);
+		map.put("requestNo", requestNo);
+		map.put("dtNo", dtNo);
+		
+		return sqlSession.delete("matching.deleteDT", map);
+	}
+
+	@Override
+	public int browseResult(int requestNo, int i) {
+		
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("requestNo", requestNo);
+		map.put("i", i);
+		
+		return sqlSession.selectOne("matching.browseResult", map);
+		
+		}
+	
+	@Override
+	public int countMember(int requestNo) {
+		
+		return sqlSession.selectOne("matching.countMember", requestNo);
+	}
+
 }

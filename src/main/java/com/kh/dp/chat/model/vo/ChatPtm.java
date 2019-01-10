@@ -11,6 +11,8 @@ public class ChatPtm {
 	private int chWriter;
 	private int chPno;
 	
+	private String renamedfilename;
+	
 	public ChatPtm() {
 		super();
 	}
@@ -22,6 +24,17 @@ public class ChatPtm {
 		this.chCondition = chCondition;
 		this.chWriter = chWriter;
 		this.chPno = chPno;
+	}
+	public ChatPtm(int chNo, String chContent, Date chDate, String chCondition, int chWriter, int chPno,
+			String renamedfilename) {
+		super();
+		this.chNo = chNo;
+		this.chContent = chContent;
+		this.chDate = chDate;
+		this.chCondition = chCondition;
+		this.chWriter = chWriter;
+		this.chPno = chPno;
+		this.renamedfilename = renamedfilename;
 	}
 	public int getChNo() {
 		return chNo;
@@ -59,10 +72,18 @@ public class ChatPtm {
 	public void setChPno(int chPno) {
 		this.chPno = chPno;
 	}
+	public String getRenamedfilename() {
+		return renamedfilename;
+	}
+	public void setRenamedfilename(String renamedfilename) {
+		this.renamedfilename = renamedfilename;
+	}
 	@Override
 	public String toString() {
-		return "Chat_PTM [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
-				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + "]";
+		return "ChatPtm [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
+				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + ", renamedfilename=" + renamedfilename
+				+ "]";
 	}
 
 }
+

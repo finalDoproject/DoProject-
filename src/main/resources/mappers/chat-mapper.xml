@@ -4,15 +4,19 @@
 	<resultMap type="map" id="chatPtm"/>	
 	
 	<select id="selectProjectChatList" resultType="chatPtm">
-		SELECT *
-		FROM CHAT_PTM  
-		WHERE CHPNO = #{pno}
-		ORDER BY CHNO
+		SELECT C.*, P.RENAMEDFILENAME
+		FROM CHAT_PTM C  
+		JOIN MEMBER M ON(C.CHWRITER = M.MNO)
+		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
+		WHERE C.CHPNO = #{pno}
+		ORDER BY C.CHNO
 	</select>
 	
 	<select id="selectChatRoomList" resultType="member">
-		SELECT * FROM MEMBER WHERE MNO IN (
-    		SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
+		WHERE M.MNO IN (SELECT PMMNO FROM PROJECT_MEMBER PM WHERE PM.PMPNO = #{pno})
+		ORDER BY M.MNO
 	</select>
 	
 	<select id="selectProject" resultType="project">
@@ -20,7 +24,12 @@
 	</select>
 	
 	<select id="selectOneChatList" resultType="chatMtm">
-		SELECT * FROM CHAT_MTM WHERE CHPNO = #{pno} AND ((CHWRITER = #{chWriter} AND CHREADER = #{chReader}) OR (CHWRITER = #{chReader} AND CHREADER = #{chWriter}))
+		SELECT C.*, P.RENAMEDFILENAME FROM CHAT_MTM C
+		JOIN MEMBER M ON(C.CHREADER = M.MNO)
+		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
+		WHERE C.CHPNO = #{pno} AND 
+		((C.CHWRITER = #{chWriter} AND C.CHREADER = #{chReader}) OR 
+		(C.CHWRITER = #{chReader} AND C.CHREADER = #{chWriter}))
 	</select>
 	
 	<select id="selectSearchChatRoom" resultType="member">
