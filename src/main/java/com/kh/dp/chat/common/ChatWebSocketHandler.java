@@ -155,7 +155,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				}
 			}*/
 			for(String key : memberSessionList.keySet()) {
-				System.out.println(key);
+				//System.out.println(key);
 				if(key.equals(pNo + mNo + "TO" + mNo2) || key.equals(pNo + mNo2 + "TO" + mNo)) {
 					memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 					ChatMtm data = new ChatMtm();
