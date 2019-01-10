@@ -12,6 +12,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 @Repository
 public class SideDaoImpl implements SideDao {
@@ -108,13 +109,18 @@ public class SideDaoImpl implements SideDao {
 	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
 		
 		RowBounds rowBounds = new RowBounds((currentPage-1)*numPerPage, numPerPage);
-		return sqlSession.selectList("matching.selectFileList",null,rowBounds);
+		
+		Map<String, String> map = new HashMap<String,String>();
+		
+		map.put("pno", String.valueOf(pno));
+
+		return sqlSession.selectList("matching.fileList", map, rowBounds);
 	}
 
 	@Override
 	public int FileTotalContents(int pno) {
 		
-		return sqlSession.selectOne("matching.");
+		return sqlSession.selectOne("matching.fileTotalContents", pno);
 	}
 
 }

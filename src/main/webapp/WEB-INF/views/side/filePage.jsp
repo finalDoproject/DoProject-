@@ -63,7 +63,7 @@ function taskToggle(){
 	<span id="mno" style="display: none;">${member.mno}</span>
 	<span id="pno" style="display: none;">${project.pno}</span>
 	<c:set value="${member.mno}" var="mno"/>
-	<c:set value="#{project.pno}" var="pno"/>
+	<c:set value="${pno}" var="pno"/>
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
@@ -86,7 +86,7 @@ function taskToggle(){
         <hr>
 
         <li class="nav-item">
-          <a class="nav-link" href="/dp/project/projectPage.do?pno={pno}&mno={mno}">
+          <a class="nav-link" href="/dp/project/projectPage.do?pno=${pno}&mno=${mno}">
             <i class="fas fa-fw fa-table"></i>
             <span>전체보기</span></a>
         </li>
@@ -270,36 +270,38 @@ function taskToggle(){
                </form>
               </div>
             </div>
-            
-             <div id="content-wrapper" >
+            <div id="content-wrapper" >
 
         <div class="container-fluid" style="height: 2000px;">
-		
-		<table class="table table-hover" >
-		  <thead class="table-secondary">
-		    <tr>
-		      <th scope="col"></th>
-		      <th scope="col">파일명</th>
-		      <th scope="col">등록정보</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  
-		    <tr>
-		      <th scope="row">1</th>
-		      <td>Mark</td>
-		      <td>Otto</td>
-		    </tr>
-		  </tbody>
-		</table>
-
-
-        </div>
-        <!-- /.container-fluid -->
-
-        
-      </div>
-      <!-- /.content-wrapper -->
+			<section id="file-container" class="container">
+				<p>총 ${totalContents }건의 게시물이 있습니다.</p>
+				<table id="tbl-board" class="table table-striped table-hover">
+					<tr>
+						<th>번호</th>
+						<th>파일명</th>
+						<th>작성일</th>
+						<th>작성자</th>
+						<th>첨부파일</th>
+					</tr>
+					<c:forEach items="${list}" var="f"> 
+					<c:forEach begin="1" end="${fn:length(list)}">
+					<tr id="${f.fno}">
+						<td>${f.fno}</td>
+						<td>${f.foldName}</td>
+						<td>${f.twritedate}</td>
+						<td>${f.twriter}</td>
+						<td align="center">
+						<a href="{pageContext.request.contextPath}/resources/upload/task/"${f.fnewName} download>
+						<img alt="첨부파일" src="${pageContext.request.contextPath}/resources/images/file.png" width=16px></a>
+					</c:forEach>		
+						</td>
+					</tr>
+					</c:forEach>
+				</table>
+				<c:out value="${pageBar}" escapeXml="false"/>
+			</section> 
+	</div>
+	</div>
       
     </div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
@@ -337,7 +339,13 @@ function taskToggle(){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     
     <script type="text/javascript">
-	 	
+ 		// select2 
+    	$('.member-multiple').select2({
+    	placeholder : "함께할 인원을 선택해주세요."
+    	}); 
+ 
+    	$('.select2-search__field').attr("style", "width : 370px");
+    	
 	 	$(function(){
 	    	$("#findUserBtn").on("click",function(){
 	    		var nickname = $('.nickname').val();

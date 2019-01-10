@@ -18,6 +18,10 @@ public class Task {
 	private String twriter;
 	private int tpno;
 	private Date twritedate; 
+	// 가상 컬럼에 대한 필드 추가
+	private int fno;
+	private String foldName;
+	private String fnewName;
 	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
@@ -26,6 +30,20 @@ public class Task {
 	
 	public Task() {}
 	
+	// 가상 변수 필드 생성자 추가
+	
+		public Task(int tno, String ttitle, String tcontent, String twriter, Date twritedate, int fno, String foldName, String fnewName) {
+			super();
+			this.tno = tno;
+			this.ttitle = ttitle;
+			this.tcontent = tcontent;
+			this.twriter = twriter;
+			this.twritedate = twritedate;
+			this.fno = fno;
+			this.foldName = foldName;
+			this.fnewName = fnewName;
+		}
+		
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
 			String tstartdate, String twriter, int tpno, int count, Date twritedate) {
 		super();
@@ -60,6 +78,31 @@ public class Task {
 		this.tpno = tpno;
 		this.taskFiles = taskFiles;
 		this.count = count;
+	}
+	
+	
+	public String getFnewName() {
+		return fnewName;
+	}
+
+	public void setFnewName(String fnewName) {
+		this.fnewName = fnewName;
+	}
+
+	public int getFno() {
+		return fno;
+	}
+
+	public void setFno(int fno) {
+		this.fno = fno;
+	}
+
+	public String getFoldName() {
+		return foldName;
+	}
+
+	public void setFoldName(String foldName) {
+		this.foldName = foldName;
 	}
 
 	public int getTno() {
@@ -178,9 +221,12 @@ public class Task {
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
 				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
-				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", taskFiles="
-				+ taskFiles + ", count=" + count + "]";
+				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno
+				+ ", foldName=" + foldName + ", fnewName=" + fnewName + ", taskFiles=" + taskFiles + ", count=" + count
+				+ "]";
 	}
+
+	
 
 
 	

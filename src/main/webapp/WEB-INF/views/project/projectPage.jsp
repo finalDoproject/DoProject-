@@ -19,7 +19,8 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
@@ -74,7 +75,23 @@ $(function(){
 		  $('#taskForm').css('display', 'none');
 		  console.log("gg");
 		});	
-})
+});
+
+function formSubmit(){
+	 var title = $("input[name=title]").text();
+	 var member = $("option").val();
+	 var startdate = $("input[name=startDate]").text();
+	 var enddate = $("input[name=endDate]").text();
+	 
+	  if(title.length == 0 || startdate.length == 0 
+		|| enddate.length ==0 || member.length == 1){
+		alert ("필수 사항이 입력되지 않았습니다.");
+		return false;
+	} 
+	  
+	return true;  
+	
+};
 </script>
 </head>
 <body>
@@ -177,7 +194,8 @@ $(function(){
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  
+            	  method="post" onsubmit="return formSubmit();">
                     <table class="table">
                             <thead>
                               <tr>
@@ -218,7 +236,7 @@ $(function(){
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="ok">요청 완료</button>
+                <input type="submit" class="ok" value="요청 하기">
             </div>
                  </form>         
             </div>

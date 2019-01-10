@@ -157,9 +157,12 @@ public class SideController {
 		// 총 페이지, 현재 페이지, 한 게시글에 얼마정도 뿌릴 것인지 제공해주는 것.
 		String pageBar = Utils.getPageBar(totalContents, currentPage, numPerPage, "totalCalendar.do");
 		
+		System.out.println("list : " + list);
+		
 		model.addAttribute("list", list)
 		.addAttribute("totalContents", totalContents)
-		.addAttribute("numPerPage",numPerPage).addAttribute("pageBar", pageBar);
+		.addAttribute("numPerPage",numPerPage)
+		.addAttribute("pageBar", pageBar);
 		 
 		
 		return "/side/filePage";
