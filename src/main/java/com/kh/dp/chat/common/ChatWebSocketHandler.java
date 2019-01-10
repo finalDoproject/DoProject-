@@ -30,6 +30,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	
 	// 접속자 전체
 	private Map<String, WebSocketSession> projectSessionList = new HashMap<String, WebSocketSession>();
+	// 1:1
+	private Map<String, WebSocketSession> memberSessionList = new HashMap<String, WebSocketSession>();
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -45,34 +47,35 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		//String mNo2 = "m";
 		
 		projectSessionList.put(pNo + mNo, session);
+		memberSessionList.put(pNo + mNo, session);
 
-		projectMap.put(pNo, projectSessionList);
-		for(String key : projectMap.keySet()) {
+		projectMap.put(pNo, memberSessionList);
+		/*for(String key : projectMap.keySet()) {
 			System.out.println(String.format("[접속 후 세션 리스트 : " + key + " : " + projectMap.get(key) + " ]"));
-		}
+		}*/
 		
-		Iterator<String> iter1 = projectMap.keySet().iterator();
-		Iterator<String> iter2 = projectSessionList.keySet().iterator();
-		Iterator<String> iter3 = projectSessionList.keySet().iterator();
-		while (iter1.hasNext()) {
-			String key1 = iter1.next();
-			if(key1.equals(pNo)) {
-				while(iter2.hasNext()) {
-					String key2 = iter2.next();
-					while(iter3.hasNext()) {
-						String key3 = iter3.next();
-						// key2 접속자       key3 그외 접속자
-						if(key2.contains(pNo)/* && key2 != key3*/) {
-							//System.out.println("key1: " + key1 + " value1: " + projectSessionList.get(key1));
-							System.out.println("key2: " + key2 + " value2: " + projectSessionList.get(key2));
-							System.out.println("key3: " + key3 + " value2: " + projectSessionList.get(key3));
+		for(Map.Entry<String, Map<String, WebSocketSession>> entry : projectMap.entrySet()) {
+			System.out.println("key : " + entry.getKey() + "   value : " + entry.getValue());
+			if(entry.getKey().equals(pNo)) {
+				for(Map.Entry<String, WebSocketSession> key1 : projectSessionList.entrySet()) {
+					for(Map.Entry<String, WebSocketSession> key2 : projectSessionList.entrySet()) {
+						if(key1.getKey().contains(pNo) && key2.getKey().contains(pNo) && key1.getKey() != key2.getKey()) {
+							/*System.out.println("key1: " + key1.getKey() + " value1: " + key1.getValue());
+							System.out.println("key2: " + key2.getKey() + " value2: " + key2.getValue());
 							System.out.println("-----------------------------------------------------------");
-							/*projectSessionList.put(pNo + mNo + "TO" + key3.substring(key3.lastIndexOf("m") + 1), session);*/
+							//projectSessionList.put((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))), key1.getValue());
+							System.out.println((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))) + " : " + session);
+							System.out.println("session : " + session);*/
+							memberSessionList.put((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))), key1.getValue());
 						}
 					}
 				}
 			}
 		}
+		
+		/*for(String key : memberSessionList.keySet()) {
+			System.out.println(String.format("[memberSessionList : " + key + " : " + memberSessionList.get(key) + " ]"));
+		}*/
 		
 	}
 
@@ -86,7 +89,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		
 		int chatTarget = Integer.parseInt(chatRoom[0]);
 		int chatMe = Integer.parseInt(chatRoom[1]);
-
+		int check = 0;
+		
 		// 프로젝트 이름
 		String pNo = "p" + p.getPno();
 		// 송신자
@@ -95,43 +99,75 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		String mNo2 = "m" + chatTarget;
 		
 		//projectSessionList.put(pNo + mNo + "TO" + mNo2, session);
+		for(String key : projectSessionList.keySet()) {
+			if(!key.equals(pNo + mNo + "TO" + mNo2) && !key.equals(pNo + mNo2 + "TO" + mNo)){
+				/*memberSessionList.put(pNo + mNo + "TO" + mNo2, session);
+				memberSessionList.put(pNo + mNo2 + "TO" + mNo, session);*/
+				System.out.println("key : " + key);
+			}
+		}
 		
 		String realMsg = msg[1];
-
+		
 		if(msg[0].split(":")[0].charAt(0) == '0') {
 			for(String key : projectMap.keySet()) {
-				if(key.contains("p" + p.getPno())) {
+				if(key.equals("p" + p.getPno())) {
 					for(String realKey : projectMap.get(key).keySet()) {
-						if(!realKey.contains("TO")) {
+						if(!realKey.contains("TO") && realKey.contains("p" + p.getPno())) {
 							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 							ChatPtm data = new ChatPtm();
 							data.setChContent(realMsg);
 							data.setChWriter(m.getMno());
 							data.setChPno(p.getPno());
-							sqlsession.insert("chat.insertPtm", data);
+							if(check == 0) {
+								sqlsession.insert("chat.insertPtm", data);
+								check++;
+							}else{
+								check = 0;
+							}
 						}
-						continue;
 					}
 				}
-				break;
 			}
 		}else{
-			// 프로젝트 접속자 전체
+			/*// 프로젝트 접속자 전체
 			for(String key : projectMap.keySet()) {
 				// 해당 프로젝트만
 				if(key.contains("p" + p.getPno())) {
 					// 해당 프로젝트에 접속한 접속자 전체
 					for(String realKey : projectMap.get(key).keySet()) {
 						// 해당 회원 번호가 포함된 회원에게만
-						if(realKey.contains("p" + p.getPno()) && (realKey.contains(pNo + mNo + "TO" + mNo2) || realKey.contains(pNo + mNo2 + "TO" + mNo))) {
+						if(realKey.equals(pNo + mNo + "TO" + mNo2) || realKey.equals(pNo + mNo2 + "TO" + mNo)) {
 							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 							ChatMtm data = new ChatMtm();
 							data.setChContent(realMsg);
 							data.setChWriter(chatMe);
 							data.setChReader(chatTarget);
 							data.setChPno(p.getPno());
-							sqlsession.insert("chat.insertMtm", data);
+							if(check == 0) {
+								sqlsession.insert("chat.insertMtm", data);
+								check++;
+							}else{
+								check = 0;
+							}
 						}
+					}
+				}
+			}*/
+			for(String key : memberSessionList.keySet()) {
+				System.out.println(key);
+				if(key.equals(pNo + mNo + "TO" + mNo2) || key.equals(pNo + mNo2 + "TO" + mNo)) {
+					memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+					ChatMtm data = new ChatMtm();
+					data.setChContent(realMsg);
+					data.setChWriter(chatMe);
+					data.setChReader(chatTarget);
+					data.setChPno(p.getPno());
+					if(check == 0) {
+						sqlsession.insert("chat.insertMtm", data);
+						check++;
+					}else{
+						check = 0;
 					}
 				}
 			}
@@ -147,9 +183,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 회원 이름
 		String mNo = "m" + m.getMno();
 		projectSessionList.remove(pNo + mNo);
-		for(String key : projectMap.keySet()) {
+		/*for(String key : projectMap.keySet()) {
 			System.out.println(String.format("[종료 후 세션 리스트 : " + projectMap.get(key) + " ]"));
-		}
+		}*/
 	}
 	
 }
