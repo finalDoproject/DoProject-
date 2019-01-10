@@ -62,7 +62,6 @@ public class MemberController {
 	return "/member/Login";
 	}
 	
-	
 	@RequestMapping("/member/memberEnroll.do")
 	public String memberEnroll(Member member, Model model) {
 		System.out.println("member : " + member);

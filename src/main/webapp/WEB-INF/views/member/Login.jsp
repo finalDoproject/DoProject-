@@ -133,16 +133,17 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
+<a href="/dp"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">Login</h1>
 </div>
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">
 		<div class="form-item">
 			<p class="formLabel">아이디</p>
-			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" value="jeong"/>
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off"/>
 		</div>
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>
-			<input type="password" name="password" id="password" class="form-style" required="required" value="jeong03!@"/>
+			<input type="password" name="password" id="password" class="form-style" required="required" />
 			<!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
 			<!--  <p><a href="#" ><small>Forgot Password ?</small></a></p>  -->
 			<!-- <p align="center"><a href="#">아이디 찾기</a> &nbsp; <a href="#">비밀번호 찾기</a> &nbsp; <a href="#">회원가입</a></p>  --> 
