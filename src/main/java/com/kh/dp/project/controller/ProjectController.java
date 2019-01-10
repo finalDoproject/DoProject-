@@ -1,6 +1,5 @@
 package com.kh.dp.project.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,28 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
-
-import net.sf.json.JSONArray;
+import com.kh.dp.task.model.service.TaskService;
 
 @Controller
 public class ProjectController {
@@ -42,6 +34,9 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
+	
+	@Autowired
+	private TaskService taskService;
 	
 	@RequestMapping("/project/projectMain.do")
 
@@ -70,18 +65,67 @@ public class ProjectController {
 			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
 		
 		Project project = new Gson().fromJson(projectStr, Project.class);
-		List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
-		
 		System.out.println("project값 : " +project);
-		System.out.println("pjLevel값 : " +pjLevel);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
-		String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
 		
-	
 		Map<String, String> hmap = new HashMap<>();
 		hmap.put("msg", msg);	
-		hmap.put("msg1", msg1);	
+
+		if(pjLevelStr != null) {
+			List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("pjLevel값 : " +pjLevel);
+			String msg1  = projectService.insertProjectLv(pjLevel)>0?"레벨 생성 완료":"레벨 생성 실패";
+			hmap.put("msg1", msg1);	
+		}
+		
 		return hmap;
+	}
+	
+	
+	@RequestMapping(value="/project/projectMainDetail", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> ProjectModalDetail(Model model, @RequestParam int pno) {
+		
+		List<Project> OneProjectLvList = projectService.selectOneProjectLv(pno);
+		Project OneProject = projectService.selectOneProject(pno);
+		System.out.println("pno : " + pno);
+		System.out.println("OneProject : " + OneProject);
+		System.out.println("OneProjectLvList : " + OneProjectLvList);
+		Map<String,Object> resultMap = new HashMap<>();
+		resultMap.put("OneProjectLvList", OneProjectLvList);
+		resultMap.put("OneProject", OneProject);
+		
+		return resultMap;
+	}
+
+	
+	
+	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> updateLevelCk(@RequestBody Project project
+			/*@RequestParam(value="jsonStr", required=false) String projectStr*/
+			) {
+		
+		//Project project = new Gson().fromJson(projectStr, Project.class);
+		System.out.println("project값 : " +project);
+		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
+		
+		String msg1  = projectService.updateOneLevelCk(project)>0?"2체크 완료":"2체크 실패";
+		
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("msg", msg);	
+		map.put("msg1", msg1);	
+		
+		/*if(pjLevelStr != null) {
+			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("oneLevel값 : " +oneLevel);
+			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
+			map.put("msg1", msg1);	
+		}*/
+		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
+		
+		return map;
 	}
 	
 	@RequestMapping(value="/project/projectPage.do", method=RequestMethod.GET)
@@ -110,8 +154,14 @@ public class ProjectController {
 		// 스케줄 매칭 요청 리스트 불러오기
 		List<MatchingInfo> sArr = sideService.browseMatchingInfo(mno);
 		model.addAttribute("sArr", sArr);
-		
 		model.addAttribute("memberNo", mno);
+		
+		
+		// task List
+		ArrayList<Map<String, String>> tasklist = 
+				new ArrayList<Map<String, String>>(taskService.selectListTask(pno));
+		System.out.println("tasklist"+ tasklist);
+		model.addAttribute("tasklist", tasklist);
 		
 		return "project/projectPage";
 	}
@@ -259,5 +309,6 @@ public class ProjectController {
 		return m;
 		
 	}
+	
 	
 }

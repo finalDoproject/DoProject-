@@ -44,13 +44,25 @@
 	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo}
 	 </select>
 	 
+	 <select id="isClicked" resultType="_int" parameterType="map">
+	 SELECT COUNT(*) FROM MEMBER_MATCHING
+	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo} AND MMDTNO = #{dtNo}
+	 </select>
 	 
+	 <delete id="deleteDT" parameterType="map">
+	 DELETE FROM MEMBER_MATCHING
+	 WHERE MMMNO = #{mNo} AND MMSMNO = #{requestNo} AND MMDTNO = #{dtNo}
+	 </delete>
 	 
+	 <select id="browseResult" parameterType="map" resultType="_int">
+	 SELECT COUNT(*) FROM MEMBER_MATCHING
+	 WHERE MMSMNO = #{requestNo} AND MMDTNO = #{i}
+	 </select>
+	 
+	 <select id="countMember" resultType="_int" parameterType="_int" >
+	 SELECT COUNT(*) FROM SCHEDULE_JOIN
+	 WHERE SJSM = #{requestNo}
+	 </select>
 	 
 	 
 </mapper>
-
-
-
-
-

@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -50,9 +51,8 @@ public class TaskController {
 			/*@RequestParam(value="startdate", required=false) String startdate,
 			@RequestParam(value="enddate", required=false) String enddate*/) {
 		
-		
+		task.setTpno(pno);
 		System.out.println("pno, mno : " +pno+", " + mno);
-		task.setTmno(mno);
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
@@ -122,7 +122,7 @@ public class TaskController {
 		
 		return "common/msg";
 	}
-	
+	 
 	
 	@RequestMapping("/task/taskView.do")
 	public String selectOneTask(@RequestParam int no, Model model) {
@@ -131,4 +131,5 @@ public class TaskController {
 		
 		return "task/taskView";
 	}
+	
 }

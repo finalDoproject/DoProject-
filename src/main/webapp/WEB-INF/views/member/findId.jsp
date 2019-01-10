@@ -4,7 +4,6 @@
 <html>
 <head>
 
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -122,44 +121,35 @@ input[type="radio"]:checked:after {
         border: 2px solid #F88E6F;
 }
 
-
-
-
 </style>
-
-
-
-
-
-
-
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>아이디 찾기</title>
 </head>
 <body>
-
-
 
 <div id="formWrapper">
 
 <div id="form">
+
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/left_arrow.png" /></a>
+
+<br>
 <div class="logo">
         <ul class="nav nav-tabs">
-			<li class="active"><a href=" ">&nbsp;
+			<li class="active"><a href="${pageContext.request.contextPath}/member/toFindId.do">&nbsp;
 					ID찾기 &nbsp;</a></li>
-			<li><a href="">비밀번호 찾기</a></li>
+			<li><a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a></li>
 			
 		</ul>
+		
+		<%-- <br>
+		<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="32" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/arrow.png" /></a> --%>
 <h1 class="text-center head" id="title">ID 찾기</h1>
 
 		
 </div>
 
 <form id="findId" name="findId" action = "findId.do" method="post">
- 		<div class="form-item">
-			<p class="formLabel">이름</p>
-			<input type="text" name="nickName" id="nickName" class="form-style" autocomplete="off"/>
-		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">이메일 주소</p>
@@ -175,17 +165,13 @@ input[type="radio"]:checked:after {
 	    </div>
 	
 	</form>
-	
-
 		
 </div>
 </div>
 
-
 <script>
-
 $(document).ready(function(){
-	var formInputs = $('input[type="text"],input[type="email"]');
+	var formInputs = $('input[type="email"]');
 	formInputs.focus(function() {
        $(this).parent().children('p.formLabel').addClass('formTop');
        $('div#formWrapper').addClass('darken-bg');
@@ -202,38 +188,6 @@ $(document).ready(function(){
 		 $(this).parent().children('.form-style').focus();
 	});
 });
-
-
-$(document).on('click','.login pull-right',function(){
-	
-	var nickName = $("#nickName").val();
-	var email = $("#email").val();
-	var postData = {'nickName' : nickName, 'email' : email};
-	
-	$.ajax({
-		url: "${pageContext.request.contextPath}/member/findId.do",
-		data: postData,
-		dataType: "json",
-		success:function(data){
-			if(data = null){
-			    alert("가입 시 작성한 이름과 이메일에 따른 아이디가 존재하지 않습니다. ");
-			}else {
-				
-			alert("가입하신 아이디는"+userId+"입니다.");
-			
-		}, error : function(jqxhr, textStatus, errorThrown){
-            console.log("ajax 처리 실패");
-            //에러로그
-            console.log(jqxhr);
-            console.log(textStatus);
-            console.log(errorThrown);
-        }
-		
-	});
-	
-});
 </script>
-
-
 </body>
 </html>

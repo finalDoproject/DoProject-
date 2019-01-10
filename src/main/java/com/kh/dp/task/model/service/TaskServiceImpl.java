@@ -3,6 +3,7 @@ package com.kh.dp.task.model.service;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,12 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Attachment> selectAttachmentList(int taskNo){
 		return taskDao.selectAttachmentList(taskNo);
+	}
+
+	@Override
+	public List<Map<String, String>> selectListTask(int pno) {
+		
+		return taskDao.selectTaskList(pno);
 	}
 
 }

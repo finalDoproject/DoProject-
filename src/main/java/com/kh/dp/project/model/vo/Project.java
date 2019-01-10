@@ -5,6 +5,7 @@ public class Project {
 	private String ptitle; //프로젝트 이름
 	private String psummary; //프로젝트 개요
 	private int plevel; //프로젝트 단계
+	private int plevelck; // 프로젝트레벨 체크 여부
 	private int pmno; //프로젝트 최초 회원 번호 (프로젝트 팀장 번호)
 	private int pmpno; //프로젝트 번호
 	private int pmmno; //회원 번호
@@ -12,6 +13,7 @@ public class Project {
 	private int lpno; // level 프로젝트 번호
 	private int lno; // 프로젝트 단계 번호
 	private String lname; //프로젝트 단계별 이름
+	private String lcheck; // 프젝 단계 체크여부
 	
 	public Project() {
 		super();
@@ -149,12 +151,34 @@ public class Project {
 		this.lname = lname;
 	}
 
+	
+	
+
+	public String getLcheck() {
+		return lcheck;
+	}
+
+	public void setLcheck(String lcheck) {
+		this.lcheck = lcheck;
+	}
+
+	public int getPlevelck() {
+		return plevelck;
+	}
+
+	public void setPlevelck(int plevelck) {
+		this.plevelck = plevelck;
+	}
+
 	@Override
 	public String toString() {
 		return "Project [pno=" + pno + ", ptitle=" + ptitle + ", psummary=" + psummary + ", plevel=" + plevel
-				+ ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype=" + pmtype + ", lpno=" + lpno
-				+ ", lno=" + lno + ", lname=" + lname + "]";
+				+ ", plevelck=" + plevelck + ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype="
+				+ pmtype + ", lpno=" + lpno + ", lno=" + lno + ", lname=" + lname + ", lcheck=" + lcheck + "]";
 	}
+
+
+	
 
 	
 	

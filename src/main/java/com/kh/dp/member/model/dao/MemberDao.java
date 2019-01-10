@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 public interface MemberDao {
@@ -13,6 +14,8 @@ public interface MemberDao {
 	int insertMember(Member member);
 
 	int checkIdDuplicate(HashMap<String, Object> hmap);
+	
+	int checkEmailDuplicate(HashMap<String, Object> hmap);
 
 	Member selectOne(String userId);
 	
@@ -23,6 +26,8 @@ public interface MemberDao {
 	int deleteMember(int mno);
 
 	int updateNewPw(Member m);
+
+	Member searchId(String email);
 	
 	int withdrawMember(String userId);
 	
@@ -30,5 +35,8 @@ public interface MemberDao {
 
 	Member selectOneNickname(String nickname);
 
+	Attachment selectAttach(int mno);
+	
+	int updateAttachment(Attachment a);
 
 }
