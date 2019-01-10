@@ -13,6 +13,7 @@ public class Project {
 	private int lpno; // level 프로젝트 번호
 	private int lno; // 프로젝트 단계 번호
 	private String lname; //프로젝트 단계별 이름
+	private String lcheck; // 프젝 단계 체크여부
 	
 	public Project() {
 		super();
@@ -153,6 +154,14 @@ public class Project {
 	
 	
 
+	public String getLcheck() {
+		return lcheck;
+	}
+
+	public void setLcheck(String lcheck) {
+		this.lcheck = lcheck;
+	}
+
 	public int getPlevelck() {
 		return plevelck;
 	}
@@ -165,8 +174,9 @@ public class Project {
 	public String toString() {
 		return "Project [pno=" + pno + ", ptitle=" + ptitle + ", psummary=" + psummary + ", plevel=" + plevel
 				+ ", plevelck=" + plevelck + ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype="
-				+ pmtype + ", lpno=" + lpno + ", lno=" + lno + ", lname=" + lname + "]";
+				+ pmtype + ", lpno=" + lpno + ", lno=" + lno + ", lname=" + lname + ", lcheck=" + lcheck + "]";
 	}
+
 
 	
 
