@@ -84,6 +84,12 @@ button, a{cursor:pointer;}
     color: white;
 }
 
+.tab6.selected {
+	background-color: yellow;
+    border : yellow;
+    color: black;
+}
+
 /* 업무진척도 */
 /* 업무진척도 */
 .workPrgrs{display:block;margin-top:6px;margin-bottom:-3px;padding-bottom:3px;height:20px;}
@@ -267,6 +273,11 @@ $(document).ready(function(){
 		$(this).siblings().removeClass('selected');
 	});
 	
+	$('.tab6').click(function(){
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+	});
+	
 	/*업무 우선순위*/
 	if($('.imptc').onclick){
 		$('#PRIORITY_LAYER').css('display','block');
@@ -333,6 +344,7 @@ $(function() {
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="3">피드백</button>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="4">완료</button>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="5">보류</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab6" value="6">일정</button>
 				</div>
 				<script>
 					$(".tLevelSelect").each(function(){
@@ -432,7 +444,7 @@ $(function() {
 			</span>		
 		</div>	
 		</div>
-	
+		
 		<div class="right" style="display: inline-block;">
 			<input type="submit" class="btn btn-primary" id="insertFlow" value="UPLOAD"/>
 		</div>
@@ -446,7 +458,6 @@ $(function() {
 			alert("업무 제목을 입력해주세요.");
 			return false;
 		}
-		console.log($("#tlevel").val());
 		
 /* 		if($("#tlevel").val() == 0){
 			alert("업무 단계를 입력해주세요.");

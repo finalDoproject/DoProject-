@@ -37,14 +37,36 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	@Override
-	public List<Attachment> selectAttachmentList(int taskNo){
-		return sqlSession.selectList("task.selectAttachmentList", taskNo);
+	public Attachment selectOneAttachment(int tno){
+		return sqlSession.selectOne("task.selectOneAttachment", tno);
 	}
 
 	@Override
-	public List<Map<String, String>> selectTaskList(int pno) {
-
+	public List<Task> selectTaskList(int pno) {
+		System.out.println( sqlSession.selectList("task.selectTaskList", 1));
+		System.out.println("pno : "+pno);
 		return sqlSession.selectList("task.selectTaskList", pno);
-		
 	}
+
+	@Override
+	public int updateTask(Task task, Attachment a) {
+		// TODO Auto-generated method stub
+		int result1 = 0;
+		if(a.getFoldname() != null) {
+			result1 = sqlSession.insert("task.insertAttachment", a);
+		}else {
+			result1 = 1; 
+		}
+		
+		int result2 = sqlSession.update("task.updateTask",task);
+		
+		int result = 0;
+		if(result1 != 0 && result2 != 0) {
+			result = 1;
+		}
+		
+		return result; 
+	}
+	
+	
 }

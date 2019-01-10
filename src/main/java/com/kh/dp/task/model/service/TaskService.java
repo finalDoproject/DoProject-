@@ -17,7 +17,9 @@ public interface TaskService {
 	
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int no);
+	Attachment selectOneAttachment(int tno);
 
-	List<Map<String, String>> selectListTask(int pno);
+	List<Task> selectListTask(int pno);
+		
+	int updateTask(Task task, Attachment attach);
 }

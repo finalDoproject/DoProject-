@@ -11,7 +11,6 @@ public class Task {
 	private int tmno; // 업무 담당자
 	private String tenddate; 
 	private int ttpriority; // 우선 순위
-	private int tbno; // 업무 게시글 번호
 	private String ttitle; //업무명
 	private String tcontent; // 업무내용
 	private String tstartdate; // 업무 시작일
@@ -34,7 +33,6 @@ public class Task {
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
-		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -52,7 +50,6 @@ public class Task {
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
-		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -100,14 +97,6 @@ public class Task {
 
 	public void setTtpriority(int ttpriority) {
 		this.ttpriority = ttpriority;
-	}
-
-	public int getTbno() {
-		return tbno;
-	}
-
-	public void setTbno(int tbno) {
-		this.tbno = tbno;
 	}
 
 	public String getTtitle() {
@@ -177,7 +166,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
-				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
+				+ ttpriority + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
 				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", taskFiles="
 				+ taskFiles + ", count=" + count + "]";
 	}

@@ -14,9 +14,11 @@ public interface TaskDao {
 
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int taskNo);
+	Attachment selectOneAttachment(int tno);
 
 	int selectTaskTotalContents();
 	
-	List<Map<String, String>> selectTaskList(int pno);
+	List<Task> selectTaskList(int pno);
+	
+	int updateTask(Task task, Attachment attach);
 }

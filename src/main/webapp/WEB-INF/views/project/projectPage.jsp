@@ -45,36 +45,33 @@
 <script>
  var chk = 0;
 function taskToggle(){
-	if(chk == 0){
-		$('#taskForm').css('display', 'block');
-		$('#scheduleForm').css('display', 'none');
-		chk = 1;
-		chk2 = 0;
+	
+	if($('#exampleModalCenter').hasClass("show") === true){
+		$('#taskForm').css('display', 'none');
+		chk=0;
 	}else{
-		$('#taskForm').css('display', 'none');
-		chk=0;
+		
+		if(chk == 0){
+			$('#taskForm').css('display', 'block');
+			chk = 1;
+			chk2 = 0;
+		}else{
+			$('#taskForm').css('display', 'none');
+			chk=0;
+		}
 	}
 }
 
-var chk2 = 0;
-function scheduleToggle(){
-	if(chk2 == 0){
-		$('#scheduleForm').css('display', 'block');
+function sclick(){
+	console.log("click");
+	
 		$('#taskForm').css('display', 'none');
-		chk2 = 1;
 		chk=0;
-	}else {
-		$('#scheduleForm').css('display', 'none');
-		chk2 = 0;
-	}
+	
+	
 }
+	
 
-$(function(){
-	$('#taskForm').focusout(function() {
-		  $('#taskForm').css('display', 'none');
-		  console.log("gg");
-		});	
-})
 </script>
 </head>
 <body>
@@ -91,16 +88,11 @@ $(function(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>글 작성하기</span>
+            <span>업무/일정 작성하기</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" onclick="scheduleToggle();" >
-            <i class="fas fa-map-marker-alt"></i>
-            <span>일정 작성하기</span>
-          </a>
-          <li class="nav-item">
-        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
+        <li class="nav-item" >
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="sclick();">
         	<i class="far fa-clock" ></i>
         	<span id="req">스케줄 매칭 요청</span>
         	</a>
@@ -133,9 +125,6 @@ $(function(){
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
         	<c:import url="../task/tasktest.jsp"/>
-        </div>
-        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
-        	<c:import url="../task/schedule.jsp"/>
         </div>
       </ul>
       
@@ -783,7 +772,7 @@ $(function(){
 		        		if(data==0) alert("해당하는 정보가 없습니다.");
 		        		else{
 		        			 for(var i in data){
-		                     	html += "<tr><td>"+data[i].nickname+"</td>";
+		                     	html += "<tr><td>"+data[i].nickName+"</td>";
 		                     	html += "<td>"+data[i].userId+"</td></tr>";
 		                     }
 		        			 html+="</table>";
@@ -1167,9 +1156,10 @@ $(function(){
 				}else{
 					// 존재함
 					for(var i=0; i<response.length;i++){
+						console.log("response" + response[i].mno);
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1197,7 +1187,7 @@ $(function(){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1207,7 +1197,7 @@ $(function(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
@@ -1237,6 +1227,7 @@ $(function(){
 				if($("#pmno").text() == $("#mno").text()){
 					for(var i=0; i<response.length; i++){
 						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
 						console.log(response[i].mno);
 					}
 				}				
