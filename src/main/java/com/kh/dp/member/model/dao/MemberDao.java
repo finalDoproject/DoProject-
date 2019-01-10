@@ -14,7 +14,7 @@ public interface MemberDao {
 
 	int checkIdDuplicate(HashMap<String, Object> hmap);
 	
-	int checkEamilDuplicate(HashMap<String, Object> hmap);
+	int checkEmailDuplicate(HashMap<String, Object> hmap);
 
 	Member selectOne(String userId);
 	
@@ -33,6 +33,8 @@ public interface MemberDao {
 	int updateMember(Member member);
 
 	Member selectOneNickname(String nickname);
+
+	
 
 	
 

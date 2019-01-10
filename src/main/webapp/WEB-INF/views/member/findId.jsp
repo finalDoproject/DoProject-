@@ -130,6 +130,10 @@ input[type="radio"]:checked:after {
 <div id="formWrapper">
 
 <div id="form">
+
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/left_arrow.png" /></a>
+
+<br>
 <div class="logo">
         <ul class="nav nav-tabs">
 			<li class="active"><a href="${pageContext.request.contextPath}/member/toFindId.do">&nbsp;
@@ -137,6 +141,9 @@ input[type="radio"]:checked:after {
 			<li><a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a></li>
 			
 		</ul>
+		
+		<%-- <br>
+		<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="32" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/arrow.png" /></a> --%>
 <h1 class="text-center head" id="title">ID 찾기</h1>
 
 		

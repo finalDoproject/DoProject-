@@ -18,7 +18,7 @@
 		}
 	</select>
 	
-	<select id="checkEamilDuplicate" statementType="CALLABLE" parameterType="hashmap">
+	<select id="checkEmailDuplicate" statementType="CALLABLE" parameterType="hashmap">
 		{ CALL EMAIL_DUP_CHK(
 			#{email, mode=IN, jdbcType=VARCHAR},
 			#{result, mode=OUT, jdbcType=NUMERIC,

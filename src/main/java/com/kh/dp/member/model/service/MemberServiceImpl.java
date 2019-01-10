@@ -49,12 +49,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int checkEamilDuplicate(String email) {
+	public int checkEmailDuplicate(String email) {
 		
 		HashMap<String, Object> hmap = new HashMap<String, Object>();
 		hmap.put("email", email);
 		
-		return memberDao.checkEamilDuplicate(hmap);
+		return memberDao.checkEmailDuplicate(hmap);
 	}
 
 	@Override

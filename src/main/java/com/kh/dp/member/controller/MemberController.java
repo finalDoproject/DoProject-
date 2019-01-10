@@ -78,7 +78,7 @@ public class MemberController {
 		String loc = "/";
 		String msg = "";
 		
-		if(result > 0) msg = "회원 가입에 성공했습니다!"+"     "+member.getNickName()+"님 환영합니다!"+"     "+"멋진 프로젝트를 만들어보세요!";
+		if(result > 0) msg = member.getNickName()+"님 환영합니다!"+"   "+"멋진 프로젝트를 만들어보세요!";
 		else msg = "회원가입에 실패했습니다.";
 		
 		model.addAttribute("loc",loc);
@@ -101,14 +101,14 @@ public class MemberController {
 	
 	@RequestMapping("/member/checkEmailDuplicate.do")
 	@ResponseBody
-	public Map<String, Object> checkEamilDuplicate(@RequestParam String email){
+	public Map<String, Object> checkEmailDuplicate(@RequestParam String email){
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean isUsable2 = memberService.checkEamilDuplicate(email) == 0? true : false;
+		boolean isUsable2 = memberService.checkEmailDuplicate(email) == 0? true : false;
 		
 		map.put("isUsable2", isUsable2);
 		
-		System.out.println("이메일 확인 결과값 : " + isUsable2);
+	/*	System.out.println("이메일 확인 결과값 : " + isUsable2);*/
 		
 		return map;
 		

@@ -13,7 +13,7 @@ public interface MemberService {
 
 	int checkIdDuplicate(String userId);
 	
-	int checkEamilDuplicate(String email);
+	int checkEmailDuplicate(String email);
 
 	Member selectOne(String userId);
 	

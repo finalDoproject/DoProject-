@@ -34,8 +34,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 	
 	@Override
-	public int checkEamilDuplicate(HashMap<String, Object> hmap) {
-		sqlSession.selectOne("member.checkEamilDuplicate", hmap);
+	public int checkEmailDuplicate(HashMap<String, Object> hmap) {
+		sqlSession.selectOne("member.checkEmailDuplicate", hmap);
 		return (Integer)hmap.get("result");
 	}
 

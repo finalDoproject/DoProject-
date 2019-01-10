@@ -97,7 +97,7 @@ div.form-item p.formLabel {
 	color:#bbb;}
 .formTop{top:-22px !important; left:26px;  padding:0 5px; font-size: 14px; color:#F88E6F !important;}
 .formStatus{color:#8a8a8a !important;}
-input[type="submit"].login{
+input[type="submit"].login {
 	float:right;
 	width: 112px;
 	height: 37px;
@@ -127,6 +127,7 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">회원가입</h1>
 </div>
 
@@ -252,11 +253,11 @@ $(function(){
         success : function(data){
             console.log(data);
             if(data.isUsable2==true){ 
-                $(".emailDuplicateCheck").show();
+                $(".emailDuplicateCheck").hide();
                 $("#emailDuplicateCheck").val(1);
                 
             } else {
-            	$(".emailDuplicateCheck").hide();
+            	$(".emailDuplicateCheck").show();
             	$("#emailDuplicateCheck").val(0);
             }
         }, error : function(jqxhr, textStatus, errorThrown){
@@ -274,34 +275,53 @@ $("#mbEnrollFrm").submit(function(event){
 	
 		//아이디중복체크여부
 	    if($("#idDuplicateCheck").val()==0){
+	    	
+	    	$(".idCheckFail").hide();
+	     	$(".pwdCheckFail").hide(); 
+	    	$(".pw2CheckFail").hide();
+	    	$(".emailDuplicateCheck").hide();
+	    	
 	        alert("사용가능한 아이디를 입력해주세요.");
 	        return false;
 	    }
 		
 		var pw  = $('#password').val();
-		var pwRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+		var pwRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,25}$/;
 	
 		if (!pwRegex.test(pw)) {
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide(); 
+			$(".pw2CheckFail").hide();
+			$(".emailDuplicateCheck").hide();
     	
 			$(".pwdCheckFail").show();
-    		return false;
+			return false;
         }
 		
 		if( pw != $('#password2').val()){
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide();
+		 	$(".pwdCheckFail").hide(); 
+			$(".emailDuplicateCheck").hide();
 			
 			$('.pw2CheckFail').show();
 			return false;
 		}
 		
-		/* if($("#emailDuplicateCheck").val()==0){
+		if($("#emailDuplicateCheck").val()==0){
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide();
+		 	$(".pwdCheckFail").hide(); 
+			$(".pw2CheckFail").hide();
+		
+			alert("사용가능한 이메일을 입력해주세요.");
 			return false;
-		} */
+		} 
 		
 		return true;
-	
-	/* 
-		event.preventDefault();
-	 */
 	
 });
   
