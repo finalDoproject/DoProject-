@@ -99,7 +99,7 @@ function onMessage(evt){
 		else{
 			// if조건으로 현재 있는 방에만 출력$("#chatMe").text(me+"_"+you);
 			if(($("#chatMe").text() == you+"_"+me) || you.charAt(0) == 0){
-				var printHTML="<div><img src='resources/images/profile/" + $("#renamedfilename").text() + "' alt='profilpicture' style='float: left;'>";
+				var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
 				printHTML+="<div class='chat-bubble you' style='float: left;'>";
 				printHTML+="<div class='content'>";
 				printHTML+=ConvertSystemSourcetoHtml(message);
@@ -224,7 +224,7 @@ function chatMtm(me, you, yourNick){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedfilename + "' alt='profilpicture' style='float: left;'>";
+						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
@@ -289,7 +289,7 @@ function chatPtm(me, pno){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedfilename + "' alt='profilpicture' style='float: left;'>";
+						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
@@ -340,7 +340,7 @@ function searchRoom() {
 	<div style="display:none;" id="mCondition">${member.mCondition}</div>
 	<div style="display:none;" id="mDate">${member.mDate}</div>
 	<div style="display:none;" id="mProfile">${member.mProfile}</div>
-	<div style="display:none;" id="renamedfilename">${member.renamedfilename}</div>
+	<div style="display:none;" id="renamedFileName">${member.renamedFileName}</div>
 	<div style="display:none;" id="pno">${project.pno}</div>
 	<div style="display:none;" id="ptitle">${project.ptitle}</div>
 	<div class="wrap">
@@ -370,7 +370,7 @@ function searchRoom() {
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
 							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno}, '${sl.nickName}');">
-								<img src="resources/images/profile/${sl.renamedfilename}" alt="profilpicture">
+								<img src="resources/images/profile/${sl.renamedFileName}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text">
 										<h1 class="font-name">${sl.nickName}</h1>
