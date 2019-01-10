@@ -44,7 +44,7 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                                         <div class="h6 dropdown-header">Configuration</div>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
-                                        <a class="dropdown-item" href="#">삭제</a>
+                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}">삭제</a>
                                         <a class="dropdown-item" href="#">Report</a>
                                     </div>
                                 </div>
@@ -70,6 +70,7 @@
 						</div>
 						<hr />
                          <c:if test="${task.tlevel != null}">
+                         <p id="levelp"></p>
                          <input type="hidden" value="${task.tlevel}" id="levelchk${tcount }"/>
                          <input type="hidden" value="${tcount}" id="levelnum${tcount }"/>
 	                        <div class="line" >
@@ -181,7 +182,7 @@
 										
 						</script> 
 					<div>
-                        <p class="card-text" style="height: auto; margin:0 auto; width:500px; border : 1px solid lightgray; " >
+                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
                             ${task.tcontent}
                             <br /><br /><br /><br />
                         </p>
@@ -254,36 +255,31 @@
 								required /></h3>
                             <hr />
                          
-                         <input type="hidden" value="${task.tlevel}" id="levelchk${tnum.count }"/>
-                         <input type="hidden" value="${tnum.count }" id="levelnum${tnum.count }"/>
+
 	                        <div class="line" >
 								<label class="icon1"><span class="blind"></span></label>
 								<div class="workTab" name="tLevelSelect">
-									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab1" value="1">요청</button>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab2" value="2">진행</button>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="3">피드백</button>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="4">완료</button>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="5">보류</button>
-									<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab6" value="6">일정</button>
+									<input type="hidden" name="tlevel" id="tlevel" class="tlevelup" value="0"/>
+									<button type="button" style="text-decoration: none;" id="level1" class="tLevelSelect2 tab1" value="1">요청</button>
+									<button type="button" style="text-decoration: none;" id="level2" class="tLevelSelect2 tab2" value="2">진행</button>
+									<button type="button" style="text-decoration: none;" id="level3" class="tLevelSelect2 tab5" value="3">피드백</button>
+									<button type="button" style="text-decoration: none;" id="level4" class="tLevelSelect2 tab3" value="4">완료</button>
+									<button type="button" style="text-decoration: none;" id="level5" class="tLevelSelect2 tab4" value="5">보류</button>
+									<button type="button" style="text-decoration: none;" id="level6" class="tLevelSelect2 tab6" value="6">일정</button>
 								</div>
 							</div>
 							
-<!-- 							<script>
-								$(".tLevelSelect").each(function(){
+							<script>
+							
+								$(".tLevelSelect2").each(function(){
 									$(this).click(function(){
-										$('#tlevel').val($(this).val());
-									});
+										console.log("this" + $(this).val());
+										$('.tlevelup').val($(this).val());
+									})
 								});
 								
-								$(function(){
-									var num = '<c:out value="${tnum.count}"/>'
-									var level = $('#levelchk'+num).val();
-									var levelnum = $('#levelnum' + num).val();
-									
-									$("#level"+levelnum+level).addClass("selected");
-								})
-							</script> -->
+								
+							</script> 
 						
 							<hr />
 						<div class="form-group">
@@ -324,6 +320,31 @@
 							<option value="4" style="color:red;">긴급</option>
 						</select>
 					</div>
+					<script>
+						$(function(){
+								var num = $('#count');
+								var tpr = $('#nowp'+ num).val();
+								
+								if($('.ttp1'+num).val() == tpr){
+									$('.ttp1'+num).attr("selected", true);
+									
+									$('.ttp1'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp2'+num).val() == tpr){
+									$('.ttp2'+num).attr("selected", true);
+									$('.ttp2'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp3'+num).val() == tpr){
+									$('.ttp3'+num).attr("selected", true);
+									$('.ttp3'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp4'+num).val() == tpr){
+									$('.ttp4'+num).attr("selected", true);
+									$('.ttp4'+num).parent().prop('disabled', true);
+								}
+							})
+										
+						</script> 
 			</div>
                         <textarea name="tcontent" id="uptcontent" cols="" rows="" onkeyup="fn_textAreaResize(this);" 
 						class="mentions input ui-autocomplete-input" 
@@ -338,15 +359,18 @@
 					<div class="pst_btn_bx" id="filetag">	
 						<button type="button" id="filebtn"
 								class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;">
-
 						</button>
+						<button type="button" class="btn btn-outline-danger btn-block" onclick="deleteAttach();">첨부파일 삭제</button>
 					</div>	
 					
 				<div class="pst_btn_bx" id="filetag2">	
 					<span class="btn app_addfile">		
 					<input type="file" name="upFile" id="upFile1" multiple/>
+					
 					</span>		
+					
 				</div>	
+				
                 <button type="submit" class="ok">수정 완료</button>
                 <br /><br />
             </div>
@@ -363,6 +387,9 @@ $('a[id^=updatebtn]').click(function(){
 		var num = $(this).prop("name");
 		var tno = $('#tno'+num).val();
 		console.log("tno : " + tno);
+		
+		/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
+		levelp
 		$.ajax({
 		    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
 		    type : "get",
@@ -372,7 +399,9 @@ $('a[id^=updatebtn]').click(function(){
 		    success : function(data) {
 		 	   console.log(data);
 		       	var task = data.task;
-		       	$('#tnoh1').append('<input type="hidden" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
+		       	/* $('#tnoh1').append('<input type="hidden" name="count" id="levelchk'+num+'" value="'+task.tlevel +'"/>'); */
+		       	$('#level'+task.tlevel).addClass("selected");
+		       	$('#tnoh1').append('<input type="hidden" class="tno" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
 		       	if(data.attach != null){
 		       		var attach = data.attach;	
 		       		$('#filebtn').attr("onclick" , "location.href='${pageContext.request.contextPath}/resources/upload/task/'" + attach.fnewname);
@@ -381,23 +410,24 @@ $('a[id^=updatebtn]').click(function(){
 		       	}else{
 		       		$('#filetag').empty();
 		       	}
-				$('.tab'+task.tlevel).addClass("selected");
+				$('#level'+task.tlevel).addClass("selected");
+				$('.tlevelup').val(task.tlevel);
 				
-				if($(task.tlevel == 6)){
+				/* if($(task.tlevel == 6)){ */
 					$('#uptwriter').text(task.twriter);
 					/*  	$('#upwritedate').text(task.twritedate); */
 					 		  $('#upttitle').attr("value",task.ttitle);
-					 		  $('#upcontent').text(task.tcontent);
+					 		  $('#uptcontent').text(task.tcontent);
 					 	   	  $('#sd').prop('value', task.tstartdate);
 					 	   	$('#ed').prop('value', task.tenddate);
-				}else{
+				/* }else{
 					$('#uptwriter').text(task.twriter);
-					/*   $('#upwritedate').text(task.twritedate); */
+				   $('#upwritedate').text(task.twritedate);
 					$('#upttitle').attr("value",task.ttitle);
-					$('#upcontent').text(task.tcontent);
+					$('#uptcontent').attr("value",task.tcontent);
 					$('#sd').prop('value', task.tstartdate);
 					$('#ed').prop('value', task.tenddate);
-				}
+				} */
 		 		  
 		    },
 		    error : function(jqxhr, textStatus, errorThrown){
@@ -407,7 +437,24 @@ $('a[id^=updatebtn]').click(function(){
 		}); 
 })
 
-
+function deleteAttach(){
+	var tno = $('.tno').val();
+	$.ajax({
+	    url  :'${pageContext.request.contextPath}/task/deleteAttach.do',
+	    type : "get",
+	    dataType: "json",
+	    contentType: 'application/json; charset=utf-8',
+	    data : {tno : tno},
+	    success : function(data) {
+				alert(data.msg);
+				$('#filetag').empty();
+	    },
+	    error : function(jqxhr, textStatus, errorThrown){
+	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	    }
+	    
+	}); 
+}
 
 	function validate(){
 		

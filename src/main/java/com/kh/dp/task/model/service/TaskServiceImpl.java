@@ -81,4 +81,16 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.updateTask(task, attach);
 	}
 
+	@Override
+	public int deleteTask(int tno) {
+		// TODO Auto-generated method stub
+		return taskDao.deleteTask(tno);
+	}
+
+	@Override
+	public int deleteAttach(int tno) {
+		// TODO Auto-generated method stub
+		return taskDao.deleteAttach(tno);
+	}
+
 }

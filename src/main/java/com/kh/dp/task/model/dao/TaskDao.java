@@ -21,4 +21,8 @@ public interface TaskDao {
 	List<Task> selectTaskList(int pno);
 	
 	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
 }

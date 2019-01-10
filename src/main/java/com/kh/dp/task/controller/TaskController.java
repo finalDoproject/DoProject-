@@ -228,6 +228,37 @@ public class TaskController {
 		return "common/msg";
 	
 	}
+	
+	@RequestMapping("/task/taskdelete.do")
+	public String deleteTask(@RequestParam int tno ,@RequestParam int mno, @RequestParam int pno , Model model) {
+		
+		int result = taskService.deleteTask(tno);
+		String msg = "";
+		String loc = "";
+		if(result > 0) {
+			msg = "글이 삭제되었습니다.";
+			loc = "/project/projectPage.do?mno="+ mno +"&pno=" + pno;
+		}else {
+			msg = "삭제 중 에러발생 관리자에게 문의해주세요";
+		}
+		model.addAttribute("msg", msg).addAttribute("loc",loc);
+		return "common/msg";
+	}
+	
+	@RequestMapping(value="/task/deleteAttach.do", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,String> deleteAttach(@RequestParam int tno) {
+		
+		Map<String, String> hmap = new HashMap<>();
+		int result = taskService.deleteAttach(tno);
+		
+		String msg = "";
+		if(result > 0) {
+			msg = "첨부파일 삭제 성공";
+		}
+		hmap.put("msg", msg);
+		return hmap;
+	}
 			
 			
 }

@@ -67,6 +67,18 @@ public class TaskDaoImpl implements TaskDao {
 		
 		return result; 
 	}
+
+	@Override
+	public int deleteTask(int tno) {
+		
+		return sqlSession.delete("task.deleteTask", tno);
+	}
+
+	@Override
+	public int deleteAttach(int tno) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("task.deleteAttach", tno);
+	}
 	
 	
 }

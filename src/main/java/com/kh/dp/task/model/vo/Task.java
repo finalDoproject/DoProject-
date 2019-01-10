@@ -16,7 +16,7 @@ public class Task {
 	private String tstartdate; // 업무 시작일
 	private String twriter;
 	private int tpno;
-	private Date twritedate; 
+	private String twritedate; 
 	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
@@ -26,7 +26,7 @@ public class Task {
 	public Task() {}
 	
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, int count, Date twritedate) {
+			String tstartdate, String twriter, int tpno, int count, String twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
@@ -43,7 +43,7 @@ public class Task {
 
 	// 첨부파일 있는 생성자
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count, Date twritedate) {
+			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count, String twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
@@ -155,11 +155,11 @@ public class Task {
 		this.count = count;
 	}
 	
-	public Date getTwritedate() {
+	public String getTwritedate() {
 		return twritedate;
 	}
 
-	public void setTwritedate(Date twritedate) {
+	public void setTwritedate(String twritedate) {
 		this.twritedate = twritedate;
 	}
 

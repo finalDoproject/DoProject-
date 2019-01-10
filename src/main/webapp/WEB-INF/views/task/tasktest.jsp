@@ -341,9 +341,9 @@ $(function() {
 					<input type="hidden" name="tlevel" id="tlevel" value="0"/>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab1" value="1">요청</button>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab2" value="2">진행</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="3">피드백</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="4">완료</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="5">보류</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="3">피드백</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="4">완료</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="5">보류</button>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab6" value="6">일정</button>
 				</div>
 				<script>

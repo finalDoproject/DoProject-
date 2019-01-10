@@ -22,4 +22,9 @@ public interface TaskService {
 	List<Task> selectListTask(int pno);
 		
 	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
+	
 }

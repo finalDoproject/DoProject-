@@ -87,4 +87,12 @@
 		WHERE TNO = #{tno}
 	</update>
 	
+	<delete id="deleteTask">	
+		DELETE FROM TASK WHERE TNO = #{tno}
+	</delete>
+	
+	<delete id="deleteAttach">
+	 DELETE FROM TASK_FILE WHERE FTNO = #{tno}
+	</delete>
+	
 </mapper>
