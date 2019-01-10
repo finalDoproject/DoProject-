@@ -14,6 +14,8 @@ public interface MemberDao {
 	int insertMember(Member member);
 
 	int checkIdDuplicate(HashMap<String, Object> hmap);
+	
+	int checkEmailDuplicate(HashMap<String, Object> hmap);
 
 	Member selectOne(String userId);
 	
@@ -24,6 +26,8 @@ public interface MemberDao {
 	int deleteMember(int mno);
 
 	int updateNewPw(Member m);
+
+	Member searchId(String email);
 	
 	int withdrawMember(String userId);
 	
@@ -34,6 +38,5 @@ public interface MemberDao {
 	Attachment selectAttach(int mno);
 	
 	int updateAttachment(Attachment a);
-
 
 }
