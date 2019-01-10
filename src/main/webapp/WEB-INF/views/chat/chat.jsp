@@ -56,7 +56,7 @@ function sendMessage(){
 };
 
 function onOpen(){
-	
+	console.log("onopen : " + sock.readyState);
 }
 
 function onMessage(evt){
@@ -77,31 +77,37 @@ function onMessage(evt){
 		you=strArray[4];
 		me=strArray[5];
 		today=new Date();
+		//console.log(you.charAt(0) == 0);
+		/* console.log("you : " + you);
+		console.log(you.charAt(0) == 0)
+		console.log("me : " + me); */
+		/* console.log($("#chatMe").text());
+		console.log(you+"_"+me); */
 		if(userName == $("#nickName").text())
 		{
-			if(($("#chatMe").text() == me+"_"+you) || (you.indexOf(0) == 0)){
-			var printHTML="<div style='clear:both;'></div>";
-			printHTML+="<div class='chat-bubble me' id='myChat'>";
-			printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+			if(($("#chatMe").text() == me+"_"+you)){
+				var printHTML="<div style='clear:both;'></div>";
+				printHTML+="<div class='chat-bubble me' id='myChat'>";
+				printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 			}
 		}
 		else{
 			// if조건으로 현재 있는 방에만 출력$("#chatMe").text(me+"_"+you);
-			if(($("#chatMe").text() == you+"_"+me) || (you.indexOf(0) == 0)){
-			var printHTML="<div><img src='resources/images/profile/" + $("#renamedfilename").text() + "' alt='profilpicture' style='float: left;'>";
-			printHTML+="<div class='chat-bubble you' style='float: left;'>";
-			printHTML+="<div class='content'>";
-			printHTML+=ConvertSystemSourcetoHtml(message);
-			printHTML+="</div><div class='time'>";
-			printHTML+=sockformatAMPM(today)+"</div></div></div>";
-			printHTML+="<div style='clear: both;'></div>";
-			$('#chatList').append(printHTML);
-			$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+			if(($("#chatMe").text() == you+"_"+me) || you.charAt(0) == 0){
+				var printHTML="<div><img src='resources/images/profile/" + $("#renamedfilename").text() + "' alt='profilpicture' style='float: left;'>";
+				printHTML+="<div class='chat-bubble you' style='float: left;'>";
+				printHTML+="<div class='content'>";
+				printHTML+=ConvertSystemSourcetoHtml(message);
+				printHTML+="</div><div class='time'>";
+				printHTML+=sockformatAMPM(today)+"</div></div></div>";
+				printHTML+="<div style='clear: both;'></div>";
+				$('#chatList').append(printHTML);
+				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 			}
 		}
 
@@ -178,6 +184,7 @@ function chatMtm(me, you, yourNick){
 	$("#chatNickName").text(yourNick);
 	$("#chatMe").text(me+"_"+you);
 	$("#chatMe").text();
+	/* console.log($("#chatMe").text()); */
 	chatYou = you;
 	chatMe = me;
 	$.ajax({
@@ -243,6 +250,7 @@ function chatPtm(me, pno){
 	$("#chatNickName").text($("#ptitle").text());
 	$("#chatMe").text(me+"_"+"0"+pno);
 	$("#chatMe").text();
+	/* console.log($("#chatMe").text()); */
 	chatYou = "0"+pno;
 	chatMe = me;
 	$.ajax({
