@@ -1,10 +1,18 @@
 package com.kh.dp.mypage.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 
 @Controller
 public class MypageController {
+	@Autowired
+	private MemberService memberService;
 
 	@RequestMapping("/mypage/mypage.do")
 	public String mypageView() {
@@ -13,7 +21,10 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/mypage/profile.do")
-	public String profileView() {
+	public String profileView(@RequestParam int mno, Model model) {
+		Attachment a = memberService.selectAttach(mno);
+		
+		model.addAttribute("a", a);
 		
 		return null;
 	}
