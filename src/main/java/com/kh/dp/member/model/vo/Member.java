@@ -11,7 +11,9 @@ public class Member {
 	private  String nickName;           // 회원 닉네임(이름)
 	private  String mCondition;         // 회원 상태
 	private  Date mDate;                // 회원 가입일
-	private  String mProfile;           // 회원 프로필
+	private  int mProfile;           // 회원 프로필
+	
+	private String renamedFileName;		// 회원 프로필을 참조로 가져온 파일 이름
 	
 	public Member() {
 		super();
@@ -19,7 +21,7 @@ public class Member {
 	}
 
 	public Member(int mno, String userId, String password, String email, String nickName, String mCondition, Date mDate,
-			String mProfile) {
+			int mProfile, String renamedFileName) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
@@ -29,6 +31,7 @@ public class Member {
 		this.mCondition = mCondition;
 		this.mDate = mDate;
 		this.mProfile = mProfile;
+		this.renamedFileName = renamedFileName;
 	}
 
 	public Member(String userId, String password) {
@@ -100,19 +103,27 @@ public class Member {
 		this.mDate = mDate;
 	}
 
-	public String getmProfile() {
+	public int getmProfile() {
 		return mProfile;
 	}
 
-	public void setmProfile(String mProfile) {
+	public void setmProfile(int mProfile) {
 		this.mProfile = mProfile;
+	}
+
+	public String getRenamedFileName() {
+		return renamedFileName;
+	}
+
+	public void setRenamedFileName(String renamedFileName) {
+		this.renamedFileName = renamedFileName;
 	}
 
 	@Override
 	public String toString() {
 		return "Member [mno=" + mno + ", userId=" + userId + ", password=" + password + ", email=" + email
 				+ ", nickName=" + nickName + ", mCondition=" + mCondition + ", mDate=" + mDate + ", mProfile="
-				+ mProfile + "]";
+				+ mProfile + ", renamedfilename=" + renamedFileName + "]";
 	}
 	
 	

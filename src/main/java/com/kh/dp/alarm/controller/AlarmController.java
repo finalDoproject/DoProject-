@@ -30,12 +30,13 @@ public class AlarmController {
 	}
 	
 	@RequestMapping(value="/alarm/alarmList.al", method=RequestMethod.GET)
-	public @ResponseBody List<Alarm> selectSearchMember(@RequestParam(required=true) int mno, @RequestParam(required=true) int loginmno, HttpServletResponse response) throws Exception {
+	public @ResponseBody List<Alarm> selectSearchMember(@RequestParam(required=true) int mno, HttpServletResponse response) throws Exception {
 		
-		List<Alarm> a = alarmService.selectSearchAlarm(mno, loginmno);
+		List<Alarm> a = alarmService.selectSearchAlarm(mno);
 		
 		return a;
 		
 	}
 	
 }
+

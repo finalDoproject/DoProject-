@@ -85,3 +85,12 @@
     font-weight:600;
     color:#999;
 }
+@media (max-width: 768px) {
+	.formLv{
+		width: 250px !important;
+	}
+	.formPer{
+	left: 20px !important;
+	width: 100px !important;
+	}
+}

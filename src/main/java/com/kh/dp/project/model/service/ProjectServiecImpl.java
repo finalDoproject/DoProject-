@@ -27,14 +27,26 @@ public class ProjectServiecImpl implements ProjectService {
 	public int insertProject(Project project) {
 		return projectDao.insertProject(project);
 	}
-	
+	@Override
+	public int insertProjectLv(List<Project> pjLevel) {
+		return projectDao.insertProjectLv(pjLevel);
+	}
 	
 	@Override
 	public Project selectOneProject(int pno) {
 		return projectDao.selectOneProject(pno);
 	}
 
+	@Override
+	public List<Project> selectOneProjectLv(int pno) {
+		 return projectDao.selectOneProjectLv(pno);
+	}
 	
+	@Override
+	public int updateLevelCk(Project project) {
+		return projectDao.updateLevelCk(project);
+	}
+
 	
 	// ---- 메모 ---- //
 	@Override
@@ -73,6 +85,7 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.selectAlarmList(mno);
   }
 
+
 	@Override
 	public int deleteProject(int pno) {
 		return projectDao.deleteProject(pno);
@@ -107,6 +120,8 @@ public class ProjectServiecImpl implements ProjectService {
 	public int insertLeaveAlarm(int mno, int pno, int apmno) {
 		return projectDao.insertLeaveAlarm(pno, mno, apmno);
 	}
+
+	
 
 	
 }
