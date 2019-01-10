@@ -98,14 +98,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 수신자 or 프로젝트 번호
 		String mNo2 = "m" + chatTarget;
 		
+		memberSessionList.put(pNo + mNo + "TO" + mNo2, session);
 		//projectSessionList.put(pNo + mNo + "TO" + mNo2, session);
-		for(String key : projectSessionList.keySet()) {
+		/*for(String key : projectSessionList.keySet()) {
 			if(!key.equals(pNo + mNo + "TO" + mNo2) && !key.equals(pNo + mNo2 + "TO" + mNo)){
-				/*memberSessionList.put(pNo + mNo + "TO" + mNo2, session);
-				memberSessionList.put(pNo + mNo2 + "TO" + mNo, session);*/
+				memberSessionList.put(pNo + mNo + "TO" + mNo2, session);
+				memberSessionList.put(pNo + mNo2 + "TO" + mNo, session);
 				System.out.println("key : " + key);
 			}
-		}
+		}*/
 		
 		String realMsg = msg[1];
 		
