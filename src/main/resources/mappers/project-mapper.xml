@@ -11,7 +11,7 @@
 	
 	<select id="selectOneProjectLv"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT_LEVEL WHERE PNO = #{pno}
+		SELECT * FROM PROJECT_LEVEL WHERE LPNO = #{pno}+1
 	</select>
 	
 	<select id="selectOneProject" parameterType="_int" resultType="project">
@@ -20,17 +20,23 @@
 	
 	<insert id="insertProject">
 		 INSERT INTO PROJECT VALUES
-		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, DEFAULT, #{pmmno})
 	</insert>
+	<update id="updateLevelCk">
+		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
+	</update>
 	
-	
+	<update id="updateOneLevelCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
 	
 	<insert id="insertProjectLv" parameterType="java.util.List">
 	INSERT ALL
 		<if test="list != null">
 			<foreach collection="list" item="item">		 
 			 INTO PROJECT_LEVEL VALUES
-			(SEQ_PNO.NEXTVAL, #{item.lno}, #{item.lname})	
+			(SEQ_PNO.NEXTVAL, #{item.lno}, #{item.lname}, DEFAULT)	
 			</foreach>
 		</if>
 	SELECT * FROM DUAL

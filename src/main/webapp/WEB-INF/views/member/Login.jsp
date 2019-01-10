@@ -17,7 +17,7 @@
 <style>
 
 body{
-	 background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed; 
+	/*  background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed;  */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -61,7 +61,7 @@ div#form{
 	border-radius: 5px;
 	padding:20px;
 	left:50%;
-	top:50%;
+	top:46%;
 	margin-left:-180px;
 	margin-top:-200px;
 }
@@ -138,11 +138,11 @@ input[type="submit"].login:focus{outline: none;}
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">
 		<div class="form-item">
 			<p class="formLabel">아이디</p>
-			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" />
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" value="jeong"/>
 		</div>
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>
-			<input type="password" name="password" id="password" class="form-style" required="required" />
+			<input type="password" name="password" id="password" class="form-style" required="required" value="jeong03!@"/>
 			<!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
 			<!--  <p><a href="#" ><small>Forgot Password ?</small></a></p>  -->
 			<!-- <p align="center"><a href="#">아이디 찾기</a> &nbsp; <a href="#">비밀번호 찾기</a> &nbsp; <a href="#">회원가입</a></p>  --> 
@@ -150,7 +150,7 @@ input[type="submit"].login:focus{outline: none;}
 
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
-		 <p align="center"><a href="#">아이디 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/join.do">회원가입</a></p>
+		 <p align="center"><a href="${pageContext.request.contextPath}/member/toFindId.do">아이디 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a> &nbsp; <a href="${pageContext.request.contextPath}/member/join.do">회원가입</a></p>
 
 			<br />
 		<input type="submit" class="login pull-right" value="Log In">

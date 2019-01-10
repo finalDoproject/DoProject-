@@ -43,12 +43,13 @@
 
 </style>
 <script>
-var chk = 0;
+ var chk = 0;
 function taskToggle(){
 	if(chk == 0){
 		$('#taskForm').css('display', 'block');
 		$('#scheduleForm').css('display', 'none');
-		chk=1;
+		chk = 1;
+		chk2 = 0;
 	}else{
 		$('#taskForm').css('display', 'none');
 		chk=0;
@@ -61,11 +62,19 @@ function scheduleToggle(){
 		$('#scheduleForm').css('display', 'block');
 		$('#taskForm').css('display', 'none');
 		chk2 = 1;
-	}else{
+		chk=0;
+	}else {
 		$('#scheduleForm').css('display', 'none');
 		chk2 = 0;
 	}
 }
+
+$(function(){
+	$('#taskForm').focusout(function() {
+		  $('#taskForm').css('display', 'none');
+		  console.log("gg");
+		});	
+})
 </script>
 </head>
 <body>
@@ -104,7 +113,7 @@ function scheduleToggle(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
@@ -325,13 +334,15 @@ function scheduleToggle(){
                 </c:if>
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <input type="hidden" value="${s.SMNO}" id="smno"/>
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
+                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
+                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
+                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
                 </c:if>
                
               </li>
@@ -545,7 +556,7 @@ function scheduleToggle(){
         
         <!-- /.container-fluid -->
 
-        
+        <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
       
@@ -600,43 +611,98 @@ function scheduleToggle(){
 	    }); 
 	 	
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
-	    function selectId(){
-	 		
+	    function selectId(A){
 	 		
 	 		// 요청 번호
-	    	var requestNo = $('#smno').val();
+	    	var requestNo = A;
+	 		
 	 		// 회원 번호
 	    	var mNo = ${member.mno};
 	    	// 요청 시작일
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	
+	    	alert(requestNo + ", " + smdate + ", " + smenddate);
 	    	// 요일 값 가져오기
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
 	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
+	 			data : {requestNo : requestNo,
+	 				    mNo : mNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				if(data != null){
+	 				for(var i in data ) {
+	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
+	 				}
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
+	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
 	 	    	var dtNo = $(this).attr("id");
 	    		
-			    	 $.ajax({
-			         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
-			         	data : {dtNo : dtNo,
-			         		    requestNo : requestNo,
-			         		    mNo : mNo},
-			         	dataType : "json",
-			         	success : function(data) {
-			         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-			         		
-			         		
-			         	 },error : function(request, status, error){
-			      			alert(request + "\n"
-			      					  + status + "\n"
-			      					  + error);
-			         	}
-			         });  
+	    		$.ajax({
+	    			url : '${pageContext.request.contextPath}/project/isClicked.do',
+	    			data : {
+	    				requestNo : requestNo,
+	 				    mNo : mNo,
+	 				    dtNo : dtNo},
+	 				dataType : "json",
+	 				success : function(data) {
+	 					if(data == 0){
+	 		
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 					}else{
+	 						
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/deleteDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "white");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 						
+	 					}
+	 				},error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+	    		});
+			    	
 			    	
 		    	}); 
 	    	 
@@ -666,28 +732,74 @@ function scheduleToggle(){
 	    		};
 	    	};
 	    	
-	 		  $.ajax({
-	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
-	 			data : {requestNo : requestNo,
-	 				    mNo : mNo},
-	 			dataType : "json",
-	 			success : function(data){
-	 				for(var i in data ) {
-	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
-	         		}
-	 			},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	}
-	 		});  
-		    	
-		    	
-		    	  
 		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
-	 		 	
+	 	
+	 	function result(a){
+	    	
+	 		   for(i=1; i<106; i++){
+	 		 $.ajax({
+	 			url :'${pageContext.request.contextPath}/project/resultTable.do',
+	 			data : {requestNo : a,
+	 					i : i},
+	 			dataType : "json",
+	 			type : "get",
+	 			success : function(data){
+	 				
+	 				 if((data.result/data.totalMember)*100 <= 25){
+	 					$('#'+data.i).css("background-color", "black");
+	 				}else if((data.result/data.totalMember)*100 > 25 && (data.result/data.totalMember)*100 <= 50) {
+	 					$('#'+data.i).css("background-color", "gray");
+	 				}else if((data.result/data.totalMember)*100 > 50 && (data.result/data.totalMember)*100 <= 75){
+	 					$('#'+data.i).css("background-color", "orange");
+	 				}else{
+	 					$('#'+data.i).css("background-color", "coral");
+	 				} 
+	 				
+	 				
+	 				},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+	 		}); 
+	 		 }  
+	 	};
+	 	
+	 	$(function(){
+	    	$("#findUserBtn").on("click",function(){
+	    		var nickname = $('.nickname').val();
+	    		
+	    		console.log(nickname);
+	    		$.ajax({
+	                url  : "${pageContext.request.contextPath}/project/projectPage",
+	                data: {nickname:nickname},
+	                dataType: "json",
+	                type : "get",
+	                success : function(data){
+	                    console.log(data);
+	                    var html = "<table class=table>";
+	                    html+="<tr><th>이름</th><th>ID</th></tr>";
+		        		if(data==0) alert("해당하는 정보가 없습니다.");
+		        		else{
+		        			 for(var i in data){
+		                     	html += "<tr><td>"+data[i].nickname+"</td>";
+		                     	html += "<td>"+data[i].userId+"</td></tr>";
+		                     }
+		        			 html+="</table>";
+		                     $("#findUser-result").html(html);
+		        		}
+		        	},
+		            error : function(jqxhr, textStatus, errorThrown){
+		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+		            }
+
+	            });
+	    	});
+	    	
+		});
+	 	
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -990,6 +1102,7 @@ function scheduleToggle(){
     	}else{
     		return false;
     	}
+    	tmanager();
 	}
 	function kick(name, pNo, mNo, mMno){
 		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
@@ -1014,6 +1127,7 @@ function scheduleToggle(){
 		}else{
 			return;
 		}
+		tmanager();
 	}
 	function leaveProject(pno, mno, pmno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
@@ -1066,6 +1180,7 @@ function scheduleToggle(){
 		    error:function(request,status,error){
 		    	alert("code:"+request.status+"\n"+"error:"+error);
 		    }
+		
 		});
 	}
 	
@@ -1101,11 +1216,17 @@ function scheduleToggle(){
 					printHTML="";
 				}
 				
+				tmanager();
 			}
 		});
 		
 	}
 	$(function(){
+		tmanager();	
+	})
+	
+		function tmanager(){
+		$("#tmno").empty();
 		var pNo = ${pno};
 		$.ajax({
 			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
@@ -1115,19 +1236,14 @@ function scheduleToggle(){
 			success:function(response){
 				if($("#pmno").text() == $("#mno").text()){
 					for(var i=0; i<response.length; i++){
-						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
 						console.log(response[i].mno);
 					}
-				}else{
-					for(var i=0; i<response.length; i++){
-
-					}
-
-				}
-				
+				}				
 			}
 		});
-	})
+		}
+	
 	
 	
 

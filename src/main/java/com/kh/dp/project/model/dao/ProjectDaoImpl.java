@@ -44,7 +44,16 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.selectList("project.selectOneProjectLv", pno);
 	}
 	
-	
+	@Override
+	public int updateLevelCk(Project project) {
+		return sqlSession.update("project.updateLevelCk", project);
+	}
+
+	@Override
+	public int updateOneLevelCk(Project project) {
+		System.out.println("요까지옴");
+		return sqlSession.update("project.updateOneLevelCk", project);			
+	}
 	
 	// ---- 메모 ----//
 	@Override
@@ -137,6 +146,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		map.put("apmno", apmno);
 		return sqlSession.insert("project.insertLeaveAlarm", map);
 	}
+
+
+
+	
 
 
 	

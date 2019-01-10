@@ -36,9 +36,19 @@
 
 										</header>
 										<p> &nbsp; 지금 바로 시작하기</p>
+										<c:choose>
+										<c:when test="${member == null }">
 										<ul class="actions">
 											<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/member/login.do" class="button big">login!</a></li>
 										</ul>
+										</c:when>
+										<c:when test="${member != null }">
+											<ul class="actions"> 
+												<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}" class="button big">내 프로젝트로 이동</a></li>
+													<li> &nbsp;&nbsp;<a onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'" class="button big">로그아웃</a></li>
+											</ul>
+										</c:when>
+										</c:choose>
 									</div>
 									<span class="image object">
 										<img src="resources/images/intro/main1.png" alt="" />
