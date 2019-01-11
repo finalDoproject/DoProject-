@@ -13,3 +13,4 @@ public interface AlarmDao {
 	/*String countAlarm(String payload);*/
 	
 }
+

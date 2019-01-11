@@ -18,9 +18,25 @@
 		}
 	</select>
 	
+	<select id="checkEmailDuplicate" statementType="CALLABLE" parameterType="hashmap">
+		{ CALL EMAIL_DUP_CHK(
+			#{email, mode=IN, jdbcType=VARCHAR},
+			#{result, mode=OUT, jdbcType=NUMERIC,
+			  javaType=integer}
+			)
+		}
+	</select>
+	
 	<select id="loginMember" parameterType="string" resultType="Member">
-		SELECT * FROM MEMBER 
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
 		WHERE USERID = #{userId}
+	</select>
+	
+    <select id="member.searchId" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER 
+		WHERE EMAIL = #{email}
+
 	</select>
 	
 	<select id="selectMemberList" resultType="member">
@@ -62,6 +78,19 @@
 		WHERE NICKNAME = #{nickname}
 
 	</select>
+	
+	<select id="selectAttach" resultType="Attachment_profile">
+		SELECT * FROM PROFILE_IMG
+		WHERE IMGNO = (SELECT MPROFILE FROM MEMBER 
+		               WHERE MNO= #{mno})
+	</select>
+	
+	<update id="updateAttachment" parameterType="Attachment_profile">
+	UPDATE PROFILE_IMG
+	SET ORIGINALFILENAME =#{originalFileName}, RENAMEDFILENAME=#{renamedFileName}
+	WHERE IMGNO=#{imgNo}
+	</update>
+	
 
 	
 </mapper>

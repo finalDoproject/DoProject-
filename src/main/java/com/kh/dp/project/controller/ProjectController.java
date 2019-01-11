@@ -24,6 +24,9 @@ import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.service.TaskService;
+import com.kh.dp.task.model.vo.Attachment;
+import com.kh.dp.task.model.vo.Task;
 
 @Controller
 public class ProjectController {
@@ -33,7 +36,9 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
-	
+	@Autowired
+	private TaskService taskService;
+
 	@RequestMapping("/project/projectSearch.do")
 	public String projectSearch(
 			//Model model, @RequestParam("mno") int mno
@@ -43,6 +48,7 @@ public class ProjectController {
 		
 		return "project/projectSearch";
 	}
+
 	
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
@@ -188,6 +194,21 @@ public class ProjectController {
 		model.addAttribute("sArr", sArr);
 		model.addAttribute("memberNo", mno);
 		
+
+		//참여자 불러오기
+		List<Member> m = projectService.selectSearchMember(pno);
+		
+		// task List
+		ArrayList<Task> tasklist = 
+				new ArrayList<Task>(taskService.selectListTask(pno));
+		
+		
+
+
+		model.addAttribute("mem", m);
+		model.addAttribute("tasklist", tasklist);
+		System.out.println("tasklist" + tasklist);
+		
 		return "project/projectPage";
 	}
 
@@ -296,7 +317,6 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) String userNick, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(userNick);
-		
 		return m;
 		
 	}
@@ -330,9 +350,9 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
-		
 		return m;
 		
 	}
+	
 	
 }

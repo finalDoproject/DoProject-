@@ -43,7 +43,7 @@
 	<div>
 		<nav class="navtop navbar navbar-expand static-top" >
 	      <div class="logo_area " style="width: 200px; height: 60px;">
-	        <a class="navtop_logo"  href="index.html">
+	        <a class="navtop_logo"  href="/dp">
 	        	<b style="font-family:'Exo 2', sans-serif; font-size: 26px">DOPE</b>
 	        	<small style="font-family:'Exo 2', sans-serif; font-size: 17px">Do Project!</small></a>
 	      </div>
@@ -105,7 +105,7 @@
 	            <div id="userImg" class="cropcircle"></div>
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-	            <a class="dropdown-item" href="#">Settings</a>
+	            <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a>
 	            <a class="dropdown-item" href="#">Activity Log</a>
 	            <div class="dropdown-divider"></div>
 	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">Logout</a>

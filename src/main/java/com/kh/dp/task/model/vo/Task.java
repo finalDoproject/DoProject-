@@ -11,12 +11,18 @@ public class Task {
 	private int tmno; // 업무 담당자
 	private String tenddate; 
 	private int ttpriority; // 우선 순위
-	private int tbno; // 업무 게시글 번호
 	private String ttitle; //업무명
 	private String tcontent; // 업무내용
 	private String tstartdate; // 업무 시작일
 	private String twriter;
 	private int tpno;
+	private Date twritedate; 
+	// 가상 컬럼에 대한 필드 추가
+	private int fno;
+	private String foldName;
+	private String fnewName;
+
+	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
 	
@@ -24,15 +30,28 @@ public class Task {
 	
 	public Task() {}
 	
+	// 가상 변수 필드 생성자 추가
+	
+		public Task(int tno, String ttitle, String tcontent, String twriter, Date twritedate, int fno, String foldName, String fnewName) {
+			super();
+			this.tno = tno;
+			this.ttitle = ttitle;
+			this.tcontent = tcontent;
+			this.twriter = twriter;
+			this.twritedate = twritedate;
+			this.fno = fno;
+			this.foldName = foldName;
+			this.fnewName = fnewName;
+		}
+		
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, int count) {
+			String tstartdate, String twriter, int tpno, int count, String twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
-		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -43,14 +62,13 @@ public class Task {
 
 	// 첨부파일 있는 생성자
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count) {
+			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count, String twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
-		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -58,6 +76,31 @@ public class Task {
 		this.tpno = tpno;
 		this.taskFiles = taskFiles;
 		this.count = count;
+	}
+	
+	
+	public String getFnewName() {
+		return fnewName;
+	}
+
+	public void setFnewName(String fnewName) {
+		this.fnewName = fnewName;
+	}
+
+	public int getFno() {
+		return fno;
+	}
+
+	public void setFno(int fno) {
+		this.fno = fno;
+	}
+
+	public String getFoldName() {
+		return foldName;
+	}
+
+	public void setFoldName(String foldName) {
+		this.foldName = foldName;
 	}
 
 	public int getTno() {
@@ -98,14 +141,6 @@ public class Task {
 
 	public void setTtpriority(int ttpriority) {
 		this.ttpriority = ttpriority;
-	}
-
-	public int getTbno() {
-		return tbno;
-	}
-
-	public void setTbno(int tbno) {
-		this.tbno = tbno;
 	}
 
 	public String getTtitle() {
@@ -163,12 +198,27 @@ public class Task {
 	public void setCount(int count) {
 		this.count = count;
 	}
+	
+	public String getTwritedate() {
+		return twritedate;
+	}
+
+	public void setTwritedate(String twritedate) {
+		this.twritedate = twritedate;
+	}
 
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
 				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
-				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", taskFiles=" + taskFiles + "]";
+				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno
+				+ ", foldName=" + foldName + ", fnewName=" + fnewName + ", taskFiles=" + taskFiles + ", count=" + count
+				+ "]";
+
 	}
+
+	
+
+
 	
 }

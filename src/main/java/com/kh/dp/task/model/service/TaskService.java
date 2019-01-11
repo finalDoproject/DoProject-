@@ -2,6 +2,7 @@ package com.kh.dp.task.model.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
@@ -16,6 +17,14 @@ public interface TaskService {
 	
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int no);
+	Attachment selectOneAttachment(int tno);
 
+	List<Task> selectListTask(int pno);
+		
+	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
+	
 }
