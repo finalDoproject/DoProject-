@@ -34,22 +34,10 @@ public class ChatServiceImpl implements ChatService{
 	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
 		return chatDao.selectOneChatList(pno, chWriter, chReader);
 	}
-	
-	@Override
-	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
-		return chatDao.selectSearchChatRoom(roomName);
-	}
-	
-	@Override
-	public int insertChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
-	public int updateChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneFileName(int chReader) {
+		return chatDao.selectOneFileName(chReader);
 	}
 
 }

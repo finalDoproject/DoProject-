@@ -118,7 +118,7 @@
 
 
 	<!-- Bootstrap 4 JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
@@ -228,37 +228,38 @@
 			    }
 			});
 		}
-		
-		var wsUri = "ws://localhost/count";
-		function send_message() {
-	        websocket = new WebSocket(wsUri);
-	        websocket.onopen = function(evt) {
-	            onOpen(evt);
-	        };
-	        websocket.onmessage = function(evt) {
-	            onMessage(evt);
-	        };
-	        websocket.onerror = function(evt) {
-	            onError(evt);
-	        };
-	    }
-		
-		function onOpen(evt) {
-	       websocket.send($('#nick').text());
-	    }
-	    function onMessage(evt) {
-	    	var data=evt.data;
-	    	if(data!=0){
-	    		$("#alarmCount").empty();
-	    		$('#alarmCount').append(data);
-	    	}else{
-	    		$("#alarmCount").empty();
-	    	}
-	    }
-	    function onError(evt) {
-	    }
 	    
 	    $(document).ready(function(){
+			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
+			var wsUri = "ws://192.168.20.72/count";
+			function send_message() {
+		        websocket = new WebSocket(wsUri);
+		        websocket.onopen = function(evt) {
+		            onOpen(evt);
+		        };
+		        websocket.onmessage = function(evt) {
+		            onMessage(evt);
+		        };
+		        websocket.onerror = function(evt) {
+		            onError(evt);
+		        };
+		    }
+			
+			function onOpen(evt) {
+				setInterval(function(){websocket.send($('#nick').text());},500);
+		    }
+		    function onMessage(evt) {
+		    	var data=evt.data;
+		    	if(data!=0){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text(data);
+		    	}else{
+		    		$("#alarmCount").empty();
+		    	}
+		    }
+		    function onError(evt) {
+		    }
+		    
 	    	send_message();
 	    });
 	    

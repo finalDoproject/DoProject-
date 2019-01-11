@@ -557,23 +557,23 @@ function formSubmit(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -1211,6 +1211,7 @@ function formSubmit(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
