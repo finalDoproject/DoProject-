@@ -157,13 +157,13 @@ input[type="submit"].login:focus{outline: none;}
 		
 		<div class="form-item">
 			<p class="formLabel">이름</p>
-			<input type="text" name="nickName" id="nickName" class="form-style" required="required" />
+			<input type="text" name="nickName" id="nickName" class="form-style" required="required" autocomplete="off" />
 			
 		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">이메일 주소</p>
-			<input type="email" name="email" id="email" class="form-style" required="required" />
+			<input type="email" name="email" id="email" class="form-style" required="required" autocomplete="off"/>
 			<span class="emailDuplicateCheck"><em>이미 사용중인 이메일입니다.</em></span>
 			<input type="hidden" name="emailDuplicateCheck" id="emailDuplicateCheck" value="0"/>	
 			<br>
