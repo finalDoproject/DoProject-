@@ -291,11 +291,9 @@ function taskToggle(){
 						<td>${f.twritedate}</td>
 						<td>${f.twriter}</td>
 						<td align="center">
-						<a href="{pageContext.request.contextPath}/resources/upload/task/"${f.fnewName} download>
+						<a href="${pageContext.request.contextPath}/resources/upload/task/${f.fnewName}" download>
 						<img alt="첨부파일" src="${pageContext.request.contextPath}/resources/images/file.png" width=16px></a>
-					</c:forEach>		
-						</td>
-					</tr>
+					</c:forEach>
 					</c:forEach>
 				</table>
 				<c:out value="${pageBar}" escapeXml="false"/>
