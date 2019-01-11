@@ -65,14 +65,32 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public List<Attachment> selectAttachmentList(int taskNo){
-		return taskDao.selectAttachmentList(taskNo);
+	public Attachment selectOneAttachment(int tno){
+		return taskDao.selectOneAttachment(tno);
 	}
 
 	@Override
-	public List<Map<String, String>> selectListTask(int pno) {
+	public List<Task> selectListTask(int pno) {
 		
 		return taskDao.selectTaskList(pno);
+	}
+
+	@Override
+	public int updateTask(Task task, Attachment attach) {
+		// TODO Auto-generated method stub
+		return taskDao.updateTask(task, attach);
+	}
+
+	@Override
+	public int deleteTask(int tno) {
+		// TODO Auto-generated method stub
+		return taskDao.deleteTask(tno);
+	}
+
+	@Override
+	public int deleteAttach(int tno) {
+		// TODO Auto-generated method stub
+		return taskDao.deleteAttach(tno);
 	}
 
 }
