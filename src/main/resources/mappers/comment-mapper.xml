@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="comment">
+		<resultMap type="map" id="taskcomment"/>
+
+	<insert id="insertComment">
+		INSERT INTO TASK_COMMENT(CNO, CWRITER, CCONTENT, CWRITEDATE, CTNO) 
+		VALUES( SEQ_CONO.NEXTVAL, #{cwriter}, #{ccontent}, DEFAULT, #{ctno})
+	</insert>
+	
+	<select id="selectListComment" resultMap="taskcomment">
+		SELECT * FROM TASK_COMMENT WHERE CTNO = #{ctno}
+	</select>
+	
+</mapper>

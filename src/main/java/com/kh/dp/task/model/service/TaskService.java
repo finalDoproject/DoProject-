@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 public interface TaskService {
 	static int TASK_SERVICE_ERROR = 0;
@@ -27,4 +28,5 @@ public interface TaskService {
 	
 	int deleteAttach(int tno);
 	
+	int insertTaskkeep(TaskKeep tk);
 }

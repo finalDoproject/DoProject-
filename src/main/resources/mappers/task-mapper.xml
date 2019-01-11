@@ -79,11 +79,11 @@
 	<update id="updateTask">
 		UPDATE TASK
 		SET TLEVEL = #{tlevel},
+			TSTARTDATE = TO_DATE(#{tstartdate},'MM/DD/RRRR'),
 			TENDDATE = TO_DATE(#{tenddate},'MM/DD/RRRR'),
 			TTPRIORITY = #{ttpriority},
 			TTITLE = #{ttitle},
-			TCONTENT = #{tcontent},
-			TSTARTDATE = TO_DATE(#{tstartdate},'MM/DD/RRRR')
+			TCONTENT = #{tcontent}
 		WHERE TNO = #{tno}
 	</update>
 	
@@ -94,5 +94,9 @@
 	<delete id="deleteAttach">
 	 DELETE FROM TASK_FILE WHERE FTNO = #{tno}
 	</delete>
+	
+	<insert id="">
+	INSERT INTO BOARD_KEEP(BKMNO, BKBNO ) VALUES(#{bkmno}, #{bkbno} )
+	</insert>
 	
 </mapper>

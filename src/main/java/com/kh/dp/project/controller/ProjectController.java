@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kh.dp.comment.model.service.CommentService;
+import com.kh.dp.comment.model.vo.TaskComment;
 import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
@@ -25,7 +27,6 @@ import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
-import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
 
 @Controller
@@ -39,6 +40,9 @@ public class ProjectController {
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@RequestMapping("/project/projectMain.do")
 
@@ -151,9 +155,12 @@ public class ProjectController {
 		ArrayList<Task> tasklist = 
 				new ArrayList<Task>(taskService.selectListTask(pno));
 		
-		
+		List<TaskComment> comment = new ArrayList<TaskComment>();
+		for(Task t : tasklist) {
+			comment = commentService.selectListComment(t.getTno());
+		}
 
-
+		model.addAttribute("comment", comment);
 		model.addAttribute("mem", m);
 		model.addAttribute("tasklist", tasklist);
 		System.out.println("tasklist" + tasklist);

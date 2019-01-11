@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 @Repository
 public class TaskDaoImpl implements TaskDao {
@@ -78,6 +79,13 @@ public class TaskDaoImpl implements TaskDao {
 	public int deleteAttach(int tno) {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("task.deleteAttach", tno);
+	}
+
+	@Override
+	public int insertTaskkeep(TaskKeep tk) {
+		// TODO Auto-generated method stub
+		
+		return sqlSession.insert("task.insertTaskkeep", tk);
 	}
 	
 	

@@ -20,8 +20,9 @@
     <div class="container-fluid gedf-wrapper" style="width: 60%;">
         <div >
             <div class=" gedf-main">
-			
-			<input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
+            <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
+			<form action="${pageContext.request.contextPath}/comment/insertcomment.do" id="commentform">
+			<input type="hidden" name="ctno" id="ctno" value="${task.tno }" />
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
                     <div class="card-header" style="background-color : #F88E6F;">
@@ -45,7 +46,7 @@
                                         <div class="h6 dropdown-header">Configuration</div>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}">삭제</a>
-                                        <a class="dropdown-item" href="#">Report</a>
+                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a>
                                     </div>
                                 </div>
                                 <%-- </c:if> --%>
@@ -110,7 +111,7 @@
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
-									<input name="tstartdate" value="${task.tstartdate}" readonly>
+									<input name="tstartdate" value="${fn:substring(task.tstartdate,0,11)}" readonly>
 								</div>
 							</div>
 							</c:if>
@@ -119,7 +120,7 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="tstartdate" value="${task.tenddate}" readonly>
+									<input name="tenddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
 								</div>
 							</div>
 						<hr />
@@ -189,6 +190,7 @@
                     </div>
                     <br /><br />
                     </div>
+                    
                     <c:forEach  items="${task.taskFiles}" var="attach" varStatus="tnum">
 						<button type="button" 
 								class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;" onclick="location.href='${pageContext.request.contextPath}/resources/upload/task/${attach.fnewname}'">
@@ -200,12 +202,13 @@
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                    <div id="commentdiv">
-                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" >
-                           <textarea style="width: 75%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" ></textarea>
-                           <a href=""	style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small">등록</a>         
+                    <input type="hidden" name="cwriter" value="${member.mno}" />
+                    <div id="commentdiv" style="border : 1px solid lightgray;">
+                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" />
+                           <textarea style="width: 75%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" name="ccontent" id="ccontent" ></textarea>
+                           <button type="submit" style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small">등록</button>         
                     </div>
-                   
+                   </form>
                 </div>
                 <!-- Post /////-->
 
@@ -413,13 +416,16 @@ $('a[id^=updatebtn]').click(function(){
 				$('#level'+task.tlevel).addClass("selected");
 				$('.tlevelup').val(task.tlevel);
 				
+				console.log(task.tstartdate.substring(0,10));
+				
+
 				/* if($(task.tlevel == 6)){ */
 					$('#uptwriter').text(task.twriter);
 					/*  	$('#upwritedate').text(task.twritedate); */
 					 		  $('#upttitle').attr("value",task.ttitle);
 					 		  $('#uptcontent').text(task.tcontent);
-					 	   	  $('#sd').prop('value', task.tstartdate);
-					 	   	$('#ed').prop('value', task.tenddate);
+					 	   	  $('#sd').val(task.tstartdate.substring(0,10));
+					 	   	$('#ed').val(task.tenddate.substring(0,10));
 				/* }else{
 					$('#uptwriter').text(task.twriter);
 				   $('#upwritedate').text(task.twritedate);
@@ -477,6 +483,15 @@ function deleteAttach(){
 		
 		if($("#ttpriority").val() == ""){
 			alert("업무 우선 순위를 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	function commentin(){
+		
+		if($('#ccontent').val() == null){
+			alert("내용을 입력해주세요.");
 			event.preventDefault();
 			return false;
 		}
