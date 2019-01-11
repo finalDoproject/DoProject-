@@ -48,7 +48,7 @@ public class ProjectController {
 		
 		return "project/projectSearch";
 	}
-	
+
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
