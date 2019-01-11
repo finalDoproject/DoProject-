@@ -36,6 +36,12 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return (Integer)hmap.get("result");
 	}
+	
+	@Override
+	public int checkEmailDuplicate(HashMap<String, Object> hmap) {
+		sqlSession.selectOne("member.checkEmailDuplicate", hmap);
+		return (Integer)hmap.get("result");
+	}
 
 	@Override
 	public Member selectOne(String userId) {
@@ -69,6 +75,11 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update("member.memberNewPw", m);
 	}
 
+	@Override
+	public Member searchId(String email) {
+		
+		return sqlSession.selectOne("member.searchId", email);
+	}
 
 
 	@Override
@@ -82,7 +93,6 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return sqlSession.update("member.updateMember", member);
 	}
-
 
 	@Override
 	public Member selectOneNickname(String nickname) {

@@ -15,6 +15,10 @@ public interface ProjectService {
 	Project selectOneProject(int pno);
 	List<Project> selectOneProjectLv(int pno);
 	int updateLevelCk(Project project);
+	int updateOneLevelCk(Project project);
+	int updateOneLevelunCk(Project project);
+	int updateProject(Project project);
+	int updateProjectLv(List<Project> pjLevel);
 	
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList(Map<String, Object> map);
@@ -33,6 +37,7 @@ public interface ProjectService {
 	Object selectSearchPM(int pno, int mno);
 	int insertExileAlarm(int mno, int pno);
 	int insertLeaveAlarm(int mno, int pno, int apmno);
+	
 	
 
 

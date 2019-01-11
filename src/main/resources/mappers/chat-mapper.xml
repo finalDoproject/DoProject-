@@ -12,6 +12,10 @@
 		ORDER BY C.CHNO
 	</select>
 	
+	<!-- <update id="updateProjectChatList">
+		UPDATE CHAT_PTM SET CHCONDITION = 'N' WHERE CHPNO = #{pno}
+	</update> -->
+	
 	<select id="selectChatRoomList" resultType="member">
 		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
 		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
@@ -32,8 +36,21 @@
 		(C.CHWRITER = #{chReader} AND C.CHREADER = #{chWriter}))
 	</select>
 	
-	<select id="selectSearchChatRoom" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{roomName} || '%'
+	<!-- <update id="updateOneChatList">
+		UPDATE CHAT_MTM SET CHCONDITION = 'N' WHERE CHPNO = #{pno} AND (CHWRITER = #{chWriter} AND CHREADER = #{chReader}) or CHWRITER = #{chReader} AND CHREADER = #{chWriter}
+	</update> -->
+	
+	<insert id="insertMtm">
+		INSERT INTO CHAT_MTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chReader}, #{chPno})
+	</insert>
+	
+	<insert id="insertPtm">
+		INSERT INTO CHAT_PTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chPno})
+	</insert>
+	
+	<select id="selectOneFileName" resultType="string">
+		SELECT RENAMEDFILENAME FROM PROFILE_IMG WHERE
+		IMGNO = (SELECT MPROFILE FROM MEMBER WHERE MNO = #{chReader})
 	</select>
 		
 </mapper>

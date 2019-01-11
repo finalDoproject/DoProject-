@@ -4,7 +4,6 @@
 <html>
 <head>
 
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -122,34 +121,31 @@ input[type="radio"]:checked:after {
         border: 2px solid #F88E6F;
 }
 
-
 #active{
 color:#F88E6F;
 }
 
 </style>
 
-
-
 <meta charset="UTF-8">
 <title>search password</title>
 </head>
 <body>
 
-
-
 <div id="formWrapper">
 
 <div id="form">
+
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
+<br>
 <div class="logo">
         <ul class="nav nav-tabs">
-			<li ><a href=" ">&nbsp;
+			<li ><a href="${pageContext.request.contextPath}/member/toFindId.do">&nbsp;
 					ID찾기 &nbsp;</a></li>
-			<li class="active"><a href="">비밀번호 찾기</a></li>
+			<li class="active"><a href="${pageContext.request.contextPath}/member/toFindFw.do">비밀번호 찾기</a></li>
 			
 		</ul>
 <h1 class="text-center head" id="title">비밀번호 찾기</h1>
-
 		
 </div>
 
@@ -172,16 +168,12 @@ color:#F88E6F;
 		<!-- <div class="clear-fix"></div>  -->
 	    </div>
 	
-	
 	</form>
-	
-		
+			
 </div>
 </div>
-
 
 <script>
-
 $(document).ready(function(){
 	var formInputs = $('input[type="text"],input[type="email"]');
 	formInputs.focus(function() {
@@ -201,13 +193,6 @@ $(document).ready(function(){
 	});
 });
 
-
-$("findId").submit(function(){
-	alert("임시 비밀번호가 입력하신 이메일로 전송되었습니다. 임시 비밀번호로 로그인 하신 후 꼭 비밀번호 변경을 하시기 바랍니다.");
-});
-
 </script>
-
-
 </body>
 </html>

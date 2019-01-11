@@ -19,7 +19,8 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
@@ -45,36 +46,56 @@
 <script>
  var chk = 0;
 function taskToggle(){
-	if(chk == 0){
-		$('#taskForm').css('display', 'block');
-		$('#scheduleForm').css('display', 'none');
-		chk = 1;
-		chk2 = 0;
-	}else{
+	
+	if($('#exampleModalCenter').hasClass("show") === true){
 		$('#taskForm').css('display', 'none');
 		chk=0;
+	}else{
+		
+		if(chk == 0){
+			$('#taskForm').css('display', 'block');
+			chk = 1;
+			chk2 = 0;
+		}else{
+			$('#taskForm').css('display', 'none');
+			chk=0;
+		}
 	}
 }
 
-var chk2 = 0;
-function scheduleToggle(){
-	if(chk2 == 0){
-		$('#scheduleForm').css('display', 'block');
+function sclick(){
+	console.log("click");
+	
 		$('#taskForm').css('display', 'none');
-		chk2 = 1;
 		chk=0;
-	}else {
-		$('#scheduleForm').css('display', 'none');
-		chk2 = 0;
-	}
+	
+	
 }
+	
 
 $(function(){
 	$('#taskForm').focusout(function() {
 		  $('#taskForm').css('display', 'none');
 		  console.log("gg");
 		});	
-})
+});
+
+function formSubmit(){
+	 var title = $("input[name=title]").text();
+	 var member = $("option").val();
+	 var startdate = $("input[name=startDate]").text();
+	 var enddate = $("input[name=endDate]").text();
+	 
+	  if(title.length == 0 || startdate.length == 0 
+		|| enddate.length ==0 || member.length == 1){
+		alert ("필수 사항이 입력되지 않았습니다.");
+		return false;
+	} 
+	  
+	return true;  
+	
+};
+
 </script>
 </head>
 <body>
@@ -91,16 +112,11 @@ $(function(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>글 작성하기</span>
+            <span>업무/일정 작성하기</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" onclick="scheduleToggle();" >
-            <i class="fas fa-map-marker-alt"></i>
-            <span>일정 작성하기</span>
-          </a>
-          <li class="nav-item">
-        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
+        <li class="nav-item" >
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="sclick();">
         	<i class="far fa-clock" ></i>
         	<span id="req">스케줄 매칭 요청</span>
         	</a>
@@ -118,7 +134,7 @@ $(function(){
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
@@ -133,9 +149,6 @@ $(function(){
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
         	<c:import url="../task/tasktest.jsp"/>
-        </div>
-        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
-        	<c:import url="../task/schedule.jsp"/>
         </div>
       </ul>
       
@@ -177,7 +190,8 @@ $(function(){
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  
+            	  method="post" onsubmit="return formSubmit();">
                     <table class="table">
                             <thead>
                               <tr>
@@ -218,7 +232,7 @@ $(function(){
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="ok">요청 완료</button>
+                <input type="submit" class="ok" value="요청 하기">
             </div>
                  </form>         
             </div>
@@ -323,21 +337,24 @@ $(function(){
         
       </div>
       <hr>
-      <div class="timetable" style="color: #555">
+      <div class="timetable " style="color: #555">
+  
           <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                
+              
                 <c:if test="${s.SSNO eq 0}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
@@ -348,6 +365,7 @@ $(function(){
               </li>
             </c:forEach>
             </ul>
+          
         </div>
         <hr>
 
@@ -530,7 +548,7 @@ $(function(){
             </table>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary store">저장</button>
+          
         </div>
       </div>
     </div>
@@ -539,23 +557,23 @@ $(function(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -783,7 +801,7 @@ $(function(){
 		        		if(data==0) alert("해당하는 정보가 없습니다.");
 		        		else{
 		        			 for(var i in data){
-		                     	html += "<tr><td>"+data[i].nickname+"</td>";
+		                     	html += "<tr><td>"+data[i].nickName+"</td>";
 		                     	html += "<td>"+data[i].userId+"</td></tr>";
 		                     }
 		        			 html+="</table>";
@@ -1167,9 +1185,10 @@ $(function(){
 				}else{
 					// 존재함
 					for(var i=0; i<response.length;i++){
+						console.log("response" + response[i].mno);
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1192,12 +1211,13 @@ $(function(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1207,7 +1227,7 @@ $(function(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedfilename+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
@@ -1237,6 +1257,7 @@ $(function(){
 				if($("#pmno").text() == $("#mno").text()){
 					for(var i=0; i<response.length; i++){
 						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
 						console.log(response[i].mno);
 					}
 				}				

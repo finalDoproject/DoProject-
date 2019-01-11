@@ -1,3 +1,4 @@
+
 package com.kh.dp.alarm.common;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -27,10 +28,10 @@ public class AlarmWebSocketHandler extends TextWebSocketHandler{
 
 		/*AlarmDao alarmDao = sqlsession.getMapper(AlarmDao.class);
 		session.sendMessage(new TextMessage(alarmDao.countAlarm(message.getPayload())));*/
-		
 		String result = sqlsession.selectOne("alarm.selectCountAlarm", message.getPayload());
 		session.sendMessage(new TextMessage(result));
 
 	}
  
 }
+

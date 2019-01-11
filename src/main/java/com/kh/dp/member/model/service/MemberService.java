@@ -13,8 +13,12 @@ public interface MemberService {
 	int insertMember(Member member);
 
 	int checkIdDuplicate(String userId);
+	
+	int checkEmailDuplicate(String email);
 
 	Member selectOne(String userId);
+	
+	Member searchId(String email);
 	
 	List<Map<String, String>> selectMemberList(int cPage, int numPerPage);
 
@@ -28,12 +32,11 @@ public interface MemberService {
 
 	Member selectOneNickname(String nickname);
 
-	
-	
-	
+	int updateNewPw(Member m);
+
 	
 
-	int updateNewPw(Member m);
+	
 
 	Attachment selectAttach(int mno);
 	

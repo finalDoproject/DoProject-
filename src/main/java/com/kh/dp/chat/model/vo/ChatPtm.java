@@ -1,3 +1,4 @@
+
 package com.kh.dp.chat.model.vo;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ public class ChatPtm {
 	private int chWriter;
 	private int chPno;
 	
-	private String renamedfilename;
+	private String renamedFileName;
 	
 	public ChatPtm() {
 		super();
@@ -26,7 +27,7 @@ public class ChatPtm {
 		this.chPno = chPno;
 	}
 	public ChatPtm(int chNo, String chContent, Date chDate, String chCondition, int chWriter, int chPno,
-			String renamedfilename) {
+			String renamedFileName) {
 		super();
 		this.chNo = chNo;
 		this.chContent = chContent;
@@ -34,7 +35,7 @@ public class ChatPtm {
 		this.chCondition = chCondition;
 		this.chWriter = chWriter;
 		this.chPno = chPno;
-		this.renamedfilename = renamedfilename;
+		this.renamedFileName = renamedFileName;
 	}
 	public int getChNo() {
 		return chNo;
@@ -72,17 +73,18 @@ public class ChatPtm {
 	public void setChPno(int chPno) {
 		this.chPno = chPno;
 	}
-	public String getRenamedfilename() {
-		return renamedfilename;
+	public String getRenamedFileName() {
+		return renamedFileName;
 	}
-	public void setRenamedfilename(String renamedfilename) {
-		this.renamedfilename = renamedfilename;
+	public void setRenamedFileName(String renamedFileName) {
+		this.renamedFileName = renamedFileName;
 	}
 	@Override
 	public String toString() {
 		return "ChatPtm [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
-				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + ", renamedfilename=" + renamedfilename
+				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + ", renamedFileName=" + renamedFileName
 				+ "]";
 	}
 
 }
+

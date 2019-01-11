@@ -18,6 +18,7 @@ public class ChatDaoImpl implements ChatDao{
 
 	@Override
 	public List<Map<String, String>> selectProjectChatList(int pno) {
+		/*sqlSession.update("chat.updateProjectChatList", pno);*/
 		return sqlSession.selectList("chat.selectProjectChatList", pno);
 	}
 
@@ -37,25 +38,13 @@ public class ChatDaoImpl implements ChatDao{
 		map.put("pno", pno);
 		map.put("chWriter", chWriter);
 		map.put("chReader", chReader);
-		
+		/*sqlSession.update("chat.updateOneChatList", map);*/
 		return sqlSession.selectList("chat.selectOneChatList", map);
 	}
-	
-	@Override
-	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
-		return sqlSession.selectList("chat.selectSearchChatRoom", roomName);
-	}
 
 	@Override
-	public int insertChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneFileName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneFileName", chReader);
 	}
 
 }

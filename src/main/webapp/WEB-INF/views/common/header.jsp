@@ -55,7 +55,7 @@
 	        <div class="input-group">
 	          <div class="input-group-append searchBar_area" >
 	            <i class="fas fa-search" style="color: rgba(73, 77, 82, 0.6); margin: 5px 10px;"></i>
-	            <input type="text" class="searchBar" placeholder="검색어 입력 후 Enter" aria-label="Search" >
+	            <input type="text" class="searchBar" id="srcWd" placeholder="검색어 입력 후 Enter" />
 	          </div>
 	        </div>
 	      </form>
@@ -119,7 +119,7 @@
 
 	<!-- Bootstrap 4 JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="/resources/js/jquery-3.3.1.min.js"></script>
+
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
@@ -229,39 +229,54 @@
 			    }
 			});
 		}
-		
-		var wsUri = "ws://localhost/count";
-		function send_message() {
-	        websocket = new WebSocket(wsUri);
-	        websocket.onopen = function(evt) {
-	            onOpen(evt);
-	        };
-	        websocket.onmessage = function(evt) {
-	            onMessage(evt);
-	        };
-	        websocket.onerror = function(evt) {
-	            onError(evt);
-	        };
-	    }
-		
-		function onOpen(evt) {
-	       websocket.send($('#nick').text());
-	    }
-	    function onMessage(evt) {
-	    	var data=evt.data;
-	    	if(data!=0){
-	    		$("#alarmCount").empty();
-	    		$('#alarmCount').append(data);
-	    	}else{
-	    		$("#alarmCount").empty();
-	    	}
-	    }
-	    function onError(evt) {
-	    }
 	    
 	    $(document).ready(function(){
+			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
+			var wsUri = "ws://192.168.20.72/count";
+			function send_message() {
+		        websocket = new WebSocket(wsUri);
+		        websocket.onopen = function(evt) {
+		            onOpen(evt);
+		        };
+		        websocket.onmessage = function(evt) {
+		            onMessage(evt);
+		        };
+		        websocket.onerror = function(evt) {
+		            onError(evt);
+		        };
+		    }
+			
+			function onOpen(evt) {
+				setInterval(function(){websocket.send($('#nick').text());},500);
+		    }
+		    function onMessage(evt) {
+		    	var data=evt.data;
+		    	if(data!=0){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text(data);
+		    	}else{
+		    		$("#alarmCount").empty();
+		    	}
+		    }
+		    function onError(evt) {
+		    }
+		    
 	    	send_message();
 	    });
+	    
+	 	// 검색창 - 엔터키가 눌렸을 때 실행할 내용
+	    $("#srcWd").keydown(function(){
+	        if (window.event.keyCode == 13) {
+	        	event.preventDefault();
+	 			var mno = $(".headerMno").text();
+	             var searchWd = $('#srcWd').val();
+	            console.log(mno+":"+searchWd);
+	            
+	           location.href="${pageContext.request.contextPath}/project/projectSearch.do?mno="+mno+"&searchWd="+searchWd;
+	        }
+	    	
+	    });
+
 	</script>
 </body>
 </html>

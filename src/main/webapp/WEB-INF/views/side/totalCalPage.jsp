@@ -91,7 +91,7 @@ function taskToggle(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
+          <a class="nav-link" href="#">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
@@ -281,7 +281,9 @@ function taskToggle(){
           <hr>
           <p>This is a great starting point for new custom pages.</p>
           <!-- /Page Content -->
-<a href="#">TEST</a>
+			<a href="#">TEST</a>
+
+
         </div>
         <!-- /.container-fluid -->
 
