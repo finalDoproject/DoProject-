@@ -22,7 +22,7 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+
 	<!-- viewResolver : 특정 객체나 경로를 서버가 제공하는 환경에 맞게 변환해주는 클래스 -->
 	<!-- 
 		<bean id="아이디" class="클래스명">
