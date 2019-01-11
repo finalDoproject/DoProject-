@@ -136,7 +136,7 @@ color:#F88E6F;
 
 <div id="form">
 
-<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
 <br>
 <div class="logo">
         <ul class="nav nav-tabs">

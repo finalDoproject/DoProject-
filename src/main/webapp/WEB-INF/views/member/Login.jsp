@@ -133,7 +133,7 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
-<a href="/dp"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
+<a href="/dp"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">Login</h1>
 </div>
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">

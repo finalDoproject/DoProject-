@@ -49,7 +49,7 @@
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; DOPROJECT. All rights reserved. Demo Images: <a href="">Sighjoechyo</a>. Design: <a href="">Sighjoechyo</a>.</p>
+									<p class="copyright">&copy; DOPROJECT. All rights reserved. Project Images: <a href="">Sighjoechyo</a>. Design: <a href="">Sighjoechyo</a>.</p>
 								</footer>
 
 						</div>
