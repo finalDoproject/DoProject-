@@ -60,10 +60,8 @@ function taskToggle(){
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 	<div id="wrapper" >
-	<span id="mno" style="display: none;">${member.mno}</span>
-	<span id="pno" style="display: none;">${project.pno}</span>
 	<c:set value="${member.mno}" var="mno"/>
-	<c:set value="#{project.pno}" var="pno"/>
+	<c:set value="${pno}" var="pno"/>
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
@@ -86,7 +84,7 @@ function taskToggle(){
         <hr>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/projectPage.do?pno=${pno}&mno=${mno}">
             <i class="fas fa-fw fa-table"></i>
             <span>전체보기</span></a>
         </li>
@@ -96,7 +94,7 @@ function taskToggle(){
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${pno}&mno=${mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
@@ -273,15 +271,86 @@ function taskToggle(){
             
              <div id="content-wrapper" >
 
-        <div class="container-fluid" style="height: 2000px">
+		<div >
+	<c:forEach items="${list}" var="task" varStatus="tnum">
+    <div class="container-fluid gedf-wrapper" style="width: 60%;">
+        <div>
+            <div class=" gedf-main" style="border : 1px solid black">
+			
+                <!--- \\\\\\\Post-->
+                <div class="card gedf-card">
+                    <div class="card-header" style="background-color : #F88E6F;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div >
+                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                </div>
+                                <div >
+                                    <div class="h5 m-0">&nbsp; ${task.twriter } </div>
+                                    <div class="h7 text-muted"></div>
+                                </div>
+                            </div>
+                        </div>
+					
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
+                        
+                            <h3 class="card-title">${task.ttitle }</h3>
+                            
+						<hr />
+                         <p id="levelp"></p>
+	                        <div class="line" >
+								<label class="icon1"><span class="blind"></span></label>
+								<div class="workTab">
+									<button type="button" style="margin-left : 0" value="6">일정</button>
+								</div>
+							</div>
+						
+							<hr />
+							<!-- 3. 시작일 지정 -->
+						
+							<div class="line" style="display: inline-block;">
+								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
+								<div >
+									<input name="tstartdate" value="${task.tstartdate}" readonly>
+								</div>
+							</div>
+							<!-- 4. 마감일 지정 -->
+							&nbsp;~&nbsp; 
+							<div class="line"  style="display: inline-block;">
+								<label class="icon4" ><span class="blind" >마감일</span></label>
+								<div  >
+									<input name="tstartdate" value="${task.tenddate}" readonly>
+								</div>
+							</div>
+						<hr />
+					</div>
+					<div>
+                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
+                            ${task.tcontent}
+                            <br /><br /><br /><br />
+                        </p>
+                    </div>
+                    <br /><br />
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                    </div>
+                   
+                </div>
+                <!-- Post /////-->
 
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-			<a href="#">TEST</a>
+				<br /><br /><br />
+				<br/>
+				
+               
+            </div>
+        </div>
+        </c:forEach>
+    </div>
+          
 
 
         </div>
@@ -291,7 +360,6 @@ function taskToggle(){
       </div>
       <!-- /.content-wrapper -->
       
-    </div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	
 	 <!-- Scroll to Top Button-->
