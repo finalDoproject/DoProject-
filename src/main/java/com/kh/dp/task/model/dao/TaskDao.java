@@ -1,6 +1,7 @@
 package com.kh.dp.task.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
@@ -13,7 +14,15 @@ public interface TaskDao {
 
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int taskNo);
+	Attachment selectOneAttachment(int tno);
 
 	int selectTaskTotalContents();
+	
+	List<Task> selectTaskList(int pno);
+	
+	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
 }

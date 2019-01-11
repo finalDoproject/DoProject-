@@ -3,15 +3,42 @@
 <mapper namespace="task">
 	<resultMap type="map" id="task"/>
 	
+	<resultMap type="Task" id="taskandattach">
+		<id  property="tno"  column="TNO"/>
+		<result property="tlevel" column="TLEVEL" />
+		<result property="tmno" column="TMNO" />
+		<result property="tenddate" column="TENDDATE" />
+		<result property="ttpriority" column="TTPRIORITY" />
+		<result property="ttitle" column="TTITLE" />
+		<result property="tcontent" column="TCONTENT" />
+		<result property="tstartdate" column="TSTARTDATE" />
+		<result property="twriter" column="TWRITER" />
+		<result property="tpno" column="TPNO" />
+		<result property="twritedate" column="TWRITEDATE" />
+		<collection property="taskFiles" ofType="Attachment" resultMap="resultAttachment"/>
+	</resultMap>
+	
+	<resultMap id="resultAttachment" type="Attachment">
+		<id property="fno" column="FNO"/>
+		<result property="foldname" column="FOLDNAME"/>
+		<result property="fnewname" column="FNEWNAME"/>
+		<result property="fpath" column="FPATH"/>
+		<result property="ftno" column="FTNO"/>
+	</resultMap>
+	
+	<sql id="selectAttachmentSQL">
+		
+	</sql>
+	
 	<select id="selectTaskTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM TASK
 	</select>
 	
 	<insert id="insertTask">
 		INSERT INTO TASK(TNO, TLEVEL, TMNO, TENDDATE, TTPRIORITY,
-			TTITLE, TCONTENT, TSTARTDATE, TWRITER)
+			TTITLE, TCONTENT, TSTARTDATE, TWRITER, TPNO, TWRITEDATE)
 		VALUES (SEQ_TNO.NEXTVAL, #{tlevel}, #{tmno}, TO_DATE(#{tenddate},'MM/DD/RRRR'), #{ttpriority},
-		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter})
+		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter}, #{tpno}, SYSDATE)
 		<selectKey keyProperty="tno" resultType="_int"
 			order="AFTER">
 			SELECT SEQ_TNO.CURRVAL FROM DUAL
@@ -28,4 +55,44 @@
 			SELECT SEQ_FNO.CURRVAL FROM DUAL
 		</selectKey> -->
 	</insert>
+	
+ 	
+	<select id="selectOneTask" resultType="task">
+		SELECT *
+		FROM TASK
+		WHERE TNO = #{tno}
+	</select> 
+	
+	<select id="selectTaskList" parameterType="_int" resultMap="taskandattach">
+	SELECT * FROM TASK
+	LEFT JOIN TASK_FILE ON(TASK.TNO = TASK_FILE.FTNO)
+	JOIN PROJECT ON(TASK.TPNO = PROJECT.PNO)
+	WHERE PNO = #{pno}
+	ORDER BY TWRITEDATE DESC
+	</select>
+	
+	<select id="selectOneAttachment" resultType="attachment">
+	SELECT * FROM TASK_FILE
+	WHERE FTNO = #{tno}
+	</select>
+	
+	<update id="updateTask">
+		UPDATE TASK
+		SET TLEVEL = #{tlevel},
+			TENDDATE = TO_DATE(#{tenddate},'MM/DD/RRRR'),
+			TTPRIORITY = #{ttpriority},
+			TTITLE = #{ttitle},
+			TCONTENT = #{tcontent},
+			TSTARTDATE = TO_DATE(#{tstartdate},'MM/DD/RRRR')
+		WHERE TNO = #{tno}
+	</update>
+	
+	<delete id="deleteTask">	
+		DELETE FROM TASK WHERE TNO = #{tno}
+	</delete>
+	
+	<delete id="deleteAttach">
+	 DELETE FROM TASK_FILE WHERE FTNO = #{tno}
+	</delete>
+	
 </mapper>

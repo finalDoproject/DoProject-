@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +17,8 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>    
 	<!-- jQuery UI 라이브러리 js파일 -->
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>  
-
+	
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSep_oACVc__OknKvoBB2SN9ndH85aTLE&libraries=places"></script>
 <style>  
 
 /* input 기본 스타일 초기화 */
@@ -78,6 +82,12 @@ button, a{cursor:pointer;}
     background-color: #555555;
     border : #555555;
     color: white;
+}
+
+.tab6.selected {
+	background-color: yellow;
+    border : yellow;
+    color: black;
 }
 
 /* 업무진척도 */
@@ -263,6 +273,11 @@ $(document).ready(function(){
 		$(this).siblings().removeClass('selected');
 	});
 	
+	$('.tab6').click(function(){
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+	});
+	
 	/*업무 우선순위*/
 	if($('.imptc').onclick){
 		$('#PRIORITY_LAYER').css('display','block');
@@ -286,16 +301,14 @@ $(function() {
     });
 });
 
-
-
 </script>
 
 
 </head>
 <body> 
-<div class="post_write_wrap" style="text-align : center; ">
+<div class="post_write_wrap" style="text-align : center;" id="taskside">
 		<%-- <c:import url="../common/introSidebar.jsp"/> --%><!-- css적용이 안됌 -->
-		<form name="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
+		<form name="taskForm" id="taskForm" action="${pageContext.request.contextPath}/task/taskFormEnd.do" method="post" onsubmit="return validate(); " enctype="multipart/form-data">
 		<div class="post_write_tab">
 		</div>
 		
@@ -328,9 +341,10 @@ $(function() {
 					<input type="hidden" name="tlevel" id="tlevel" value="0"/>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab1" value="1">요청</button>
 					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab2" value="2">진행</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="3">피드백</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="4">완료</button>
-					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="5">보류</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab3" value="3">피드백</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab4" value="4">완료</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab5" value="5">보류</button>
+					<button type="button" style="text-decoration: none;" name="level" class="tLevelSelect tab6" value="6">일정</button>
 				</div>
 				<script>
 					$(".tLevelSelect").each(function(){
@@ -344,7 +358,7 @@ $(function() {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="담당자 추가">담당자</label>
 							<div class="col-md-4">
-								<select id="tmanager" name="tmanager" class="form-control" style="margin-left:130px;">
+								<select id="tmno" name="tmno" class="form-control" style="margin-left:130px;">
 								</select>
 				
 							</div>
@@ -366,8 +380,20 @@ $(function() {
 					<span id="END_DT_CNTN" class="c_red" style="display:none;">마감일이 시작일 이전 날짜로 되어 있습니다.</span><span id="END_DT_OVERDUE" class="c_red" style="display:none;">마감기한이 지났습니다.</span>
 				</div>
 			</div>
-			<!-- 5. 진척도 지정 -->
 			<br />
+	
+<!--         <label for="locationTextField">Location</label>
+        <input id="locationTextField" type="text" size="50"> -->
+<%--          <c:import url="../task/searchLoc.jsp"/> --%>
+<!--         <script>
+            function init() {
+                var input = document.getElementById('locationTextField');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+            }
+ 
+            google.maps.event.addDomListener(window, 'load', init);
+        </script> -->
+			<!-- 5. 진척도 지정 -->
 			<br />
 			<div class="line" id="PROGRESS_LINE" >
 				<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
@@ -418,11 +444,45 @@ $(function() {
 			</span>		
 		</div>	
 		</div>
-	
+		
 		<div class="right" style="display: inline-block;">
 			<input type="submit" class="btn btn-primary" id="insertFlow" value="UPLOAD"/>
 		</div>
 		</form>
 	</div>
+	<script>
+			
+	
+	function validate(){
+		if($("#ttitle").val() == ""){
+			alert("업무 제목을 입력해주세요.");
+			return false;
+		}
+		
+/* 		if($("#tlevel").val() == 0){
+			alert("업무 단계를 입력해주세요.");
+			return false;
+		} */
+		
+		if($("#tmno").val() == ""){
+			alert("업무 담당자를 지정해주세요.");
+			event.preventDefault();
+			return false;
+		}
+		
+		if($("#dp1545179837850").val() == ""){
+			alert("업무 종료일을 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+		
+		if($("#ttpriority").val() == ""){
+			alert("업무 우선 순위를 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	</script>
 </body>
 </html>
