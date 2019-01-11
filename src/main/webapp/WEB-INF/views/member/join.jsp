@@ -127,7 +127,7 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
-<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">회원가입</h1>
 </div>
 
