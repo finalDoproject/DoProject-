@@ -12,6 +12,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.vo.Task;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 @Repository
@@ -121,6 +122,13 @@ public class SideDaoImpl implements SideDao {
 	public int FileTotalContents(int pno) {
 		
 		return sqlSession.selectOne("matching.fileTotalContents", pno);
+	}
+
+	@Override
+	public List<Task> totalCalendar(int pno) {
+		
+		
+		return sqlSession.selectList("task.selectTaskList", pno);
 	}
 
 }

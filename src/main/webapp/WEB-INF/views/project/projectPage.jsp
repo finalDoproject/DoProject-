@@ -81,15 +81,24 @@ $(function(){
 });
 
 function formSubmit(){
-	 var title = $("input[name=title]").text();
+	 var title = $("input[name=title]").val()
 	 var member = $("option").val();
-	 var startdate = $("input[name=startDate]").text();
-	 var enddate = $("input[name=endDate]").text();
+	 var startdate = $("input[name=startDate]").val();
+	 var enddate = $("input[name=endDate]").val();
 	 
-	  if(title.length == 0 || startdate.length == 0 
-		|| enddate.length ==0 || member.length == 1){
-		alert ("필수 사항이 입력되지 않았습니다.");
-		return false;
+	  if(title.length == 0){
+		  alert ("제목이 입력되지 않았습니다.");
+		  return false;  
+	  }if(startdate.length == 0){
+		  alert ("시작일이 입력되지 않았습니다.");
+		  return false;
+		  
+	  }if( enddate.length == 0){
+		  alert ("마감일이 입력되지 않았습니다.");
+		  return false;
+	  }if( MEMBER.LENGTH == 1){
+			alert ("사람 수 필수 사항이 입력되지 않았습니다.");
+		  return false;
 	} 
 	  
 	return true;  
@@ -183,7 +192,7 @@ function formSubmit(){
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px; font-weight: bolder;">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="background-color : white; color : black; margin-left : 180px; font-weight: bolder;">
               스케줄 매칭</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -573,7 +582,6 @@ function formSubmit(){
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->

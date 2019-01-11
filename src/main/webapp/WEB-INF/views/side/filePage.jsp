@@ -69,7 +69,7 @@ function taskToggle(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>글 작성하기</span>
+            <span>업무 작성하기</span>
           </a>
         </li>
         <li class="nav-item dropdown">
@@ -91,7 +91,7 @@ function taskToggle(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${pno}&mno=${mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
@@ -274,7 +274,7 @@ function taskToggle(){
 
         <div class="container-fluid" style="height: 2000px;">
 			<section id="file-container" class="container">
-				<p>총 ${totalContents }건의 게시물이 있습니다.</p>
+				<p>총 ${totalContents }건의 파일이 있습니다.</p>
 				<table id="tbl-board" class="table table-striped table-hover">
 					<tr>
 						<th>번호</th>

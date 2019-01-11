@@ -18,6 +18,7 @@ import com.kh.dp.common.util.Utils;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
+import com.kh.dp.task.model.vo.Task;
 
 @Controller
 public class SideController {
@@ -133,7 +134,14 @@ public class SideController {
 	
 	@RequestMapping("/project/totalCalendar.do")
 	public String totalCalendar(@RequestParam int pno,
-								@RequestParam int mno) {
+								@RequestParam int mno,
+								Model model) {
+		 
+		List<Task> list = new ArrayList<Task>();
+		
+		list = sideService.totalCalendar(pno);
+		
+		model.addAttribute("list", list);
 		
 		return "side/totalCalPage";
 	}
