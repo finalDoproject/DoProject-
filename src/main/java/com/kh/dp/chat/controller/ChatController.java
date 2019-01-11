@@ -62,7 +62,9 @@ public class ChatController {
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
-		mv.addObject("chatOneList", list);
+		String renamedFileName = chatService.selectOneFileName(chReader);
+		
+		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName);
 		mv.setViewName("jsonView");
 
 		return mv;
@@ -83,24 +85,19 @@ public class ChatController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/searchChatRoom.ch", method=RequestMethod.GET)
+	@RequestMapping(value="/chatTime.ch", method=RequestMethod.GET)
 	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("roomName") String roomName) {
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
 		
 		ArrayList<Map<String, String>> list =
-				new ArrayList<Map<String, String>>(chatService.selectSearchChatRoom(roomName));
+				new ArrayList<Map<String, String>>();
 		
 		mv.addObject("ajaxList", list);
 		mv.setViewName("jsonView");
 		System.out.println("ajax 검색 : " + list);
 		
 		return mv;
-	}
-	
-	public String insertChat() {
-		// 채팅 기록 저장용
-		return "";
 	}
 	
 }

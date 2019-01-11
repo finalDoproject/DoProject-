@@ -40,10 +40,6 @@
 		UPDATE CHAT_MTM SET CHCONDITION = 'N' WHERE CHPNO = #{pno} AND (CHWRITER = #{chWriter} AND CHREADER = #{chReader}) or CHWRITER = #{chReader} AND CHREADER = #{chWriter}
 	</update> -->
 	
-	<select id="selectSearchChatRoom" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{roomName} || '%'
-	</select>
-	
 	<insert id="insertMtm">
 		INSERT INTO CHAT_MTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chReader}, #{chPno})
 	</insert>
@@ -51,5 +47,10 @@
 	<insert id="insertPtm">
 		INSERT INTO CHAT_PTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chPno})
 	</insert>
+	
+	<select id="selectOneFileName" resultType="string">
+		SELECT RENAMEDFILENAME FROM PROFILE_IMG WHERE
+		IMGNO = (SELECT MPROFILE FROM MEMBER WHERE MNO = #{chReader})
+	</select>
 		
 </mapper>

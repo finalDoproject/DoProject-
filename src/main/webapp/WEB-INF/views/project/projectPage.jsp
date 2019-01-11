@@ -539,23 +539,23 @@ $(function(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -1169,7 +1169,7 @@ $(function(){
 					for(var i=0; i<response.length;i++){
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedfilename + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1192,6 +1192,7 @@ $(function(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";

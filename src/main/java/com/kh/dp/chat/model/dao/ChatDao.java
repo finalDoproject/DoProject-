@@ -13,12 +13,8 @@ public interface ChatDao {
 	
 	List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader);
 	
-	List<Map<String, String>> selectSearchChatRoom(String roomName);
-	
-	int insertChat(int pno, int mno);
-	
-	int updateChat(int pno, int mno);
-	
 	Project selectProject(int pno);
+
+	String selectOneFileName(int chReader);
 	
 }
