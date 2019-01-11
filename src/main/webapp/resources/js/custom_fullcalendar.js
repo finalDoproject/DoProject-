@@ -5,7 +5,35 @@ var eventId = 0;
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
+		var evts = [];
 		
+		console.log("asd");
+		
+		$.ajax({
+			url : "/dp/mypage/selectMypage.do",
+			success : function(data){
+				for(var i=0; i<data.length; i++){
+					var evt = {
+						id: data[i].mcno,
+						title: data[i].mcContent,
+						start: data[i].mcStart + 86400000,
+						end : data[i].mcEnd + 86400000 + 86400000,
+						allDay: true,
+						className: 'info'
+					}
+					console.log(data[i].mcStart +' ~ ' +data[i].mcEnd);
+					console.log(evt);
+					
+					evts.push(evt);
+				}
+			},
+			error : function(data){
+				console.log(data);
+			},
+			async : false
+		});
+		
+		console.log(evts);
 		/*  className colors
 		
 		className: default(transparent), important(red), chill(pink), success(green), info(blue)
@@ -65,6 +93,8 @@ var eventId = 0;
 						},
 						true // make the event "stick"
 					);
+					
+					location.href = "/dp/mypage/insert.do?start=" + start + "&end=" + end + "&content=" + title;
 				}
 				calendar.fullCalendar('unselect');
 			},
@@ -106,6 +136,7 @@ var eventId = 0;
 	            // Show Modal
 	            $("#myCalendarModal").modal('show');
 			},
+			events : evts
 			/*events: [
 				{
 					id: ++eventId,

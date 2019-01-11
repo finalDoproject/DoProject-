@@ -154,6 +154,8 @@
 		 
 		 // Close Modal
           $("#myCalendarModal").modal('hide');
+		 
+          location.href = "/dp/mypage/update.do?start=" + start + "&end=" + end + "&content=" + title;
 	 }
 	 
 	 function deleteCalendar() {
@@ -164,7 +166,10 @@
 			 
 			 // Close Modal
 			 $("#myCalendarModal").modal('hide');
+			 
 		 }
+		 
+		 location.href = "/dp/mypage/delete.do?start=" + start + "&end=" + end + "&content=" + title;
 	 }
 	</script>
 	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>

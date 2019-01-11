@@ -3,10 +3,12 @@
 <mapper namespace="member">
 	<resultMap type="map" id="member"/>
 
+	<insert id="insertFile">
+		INSERT INTO PROFILE_IMG VALUES (SEQ_IMGNO.NEXTVAL, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
+	 
+	</insert>
 	<insert id="insertMember" parameterType="Member">
-		INSERT INTO MEMBER VALUES (
-			SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, 
-			DEFAULT, DEFAULT, DEFAULT)
+		INSERT INTO MEMBER VALUES (SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, DEFAULT, DEFAULT, SEQ_IMGNO.CURRVAL)
 	</insert>
 	
 	<select id="checkIdDuplicate" statementType="CALLABLE" parameterType="hashmap">
@@ -71,10 +73,13 @@
 	</select>
 	
 	<update id="updateAttachment" parameterType="Attachment_profile">
-	UPDATE PROFILE_IMG
-	SET ORIGINALFILENAME =#{originalFileName}, RENAMEDFILENAME=#{renamedFileName}
-	WHERE IMGNO=#{imgNo}
+	UPDATE  PROFILE_IMG
+		SET ORIGINALFILENAME = #{originalFileName},
+		RENAMEDFILENAME = #{renamedFileName},
+		IMGPATH = #{imgPath}
+		WHERE IMGNO = #{imgNo}
 	</update>
+		 
 	
 
 	
