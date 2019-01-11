@@ -25,6 +25,8 @@ import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
+import com.kh.dp.task.model.vo.Attachment;
+import com.kh.dp.task.model.vo.Task;
 
 @Controller
 public class ProjectController {
@@ -102,13 +104,28 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> updateLevelCk(@RequestBody Project project) {
-		System.out.println("pj:"+project);
+	public Map<String,String> updateLevelCk(@RequestBody Project project
+			/*@RequestParam(value="jsonStr", required=false) String projectStr*/
+			) {
 		
+		//Project project = new Gson().fromJson(projectStr, Project.class);
+		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
+		
+		String msg1  = projectService.updateOneLevelCk(project)>0?"2체크 완료":"2체크 실패";
+		
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("msg", msg);	
+		map.put("msg1", msg1);	
+		
+		/*if(pjLevelStr != null) {
+			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("oneLevel값 : " +oneLevel);
+			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
+			map.put("msg1", msg1);	
+		}*/
+		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
 		
 		return map;
 	}
@@ -141,12 +158,20 @@ public class ProjectController {
 		model.addAttribute("sArr", sArr);
 		model.addAttribute("memberNo", mno);
 		
+
+		//참여자 불러오기
+		List<Member> m = projectService.selectSearchMember(pno);
 		
 		// task List
-		ArrayList<Map<String, String>> tasklist = 
-				new ArrayList<Map<String, String>>(taskService.selectListTask(pno));
-		System.out.println("tasklist"+ tasklist);
+		ArrayList<Task> tasklist = 
+				new ArrayList<Task>(taskService.selectListTask(pno));
+		
+		
+
+
+		model.addAttribute("mem", m);
 		model.addAttribute("tasklist", tasklist);
+		System.out.println("tasklist" + tasklist);
 		
 		return "project/projectPage";
 	}
@@ -256,7 +281,6 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) String userNick, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(userNick);
-		
 		return m;
 		
 	}
@@ -290,7 +314,6 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
-		
 		return m;
 		
 	}

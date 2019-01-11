@@ -8,6 +8,8 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css">
 
+
+	
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -28,7 +30,7 @@
             <span>내 캘린더</span>
           </a>
         </li>
-        <hr>
+        <hr/>
 
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do">
@@ -41,7 +43,7 @@
             <span>담아둔 글</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do">
+          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do?mno=${member.mno}">
             
             <span>정보 수정</span></a>
         </li>
@@ -50,9 +52,9 @@
       
         
 
-      <div id="content-wrapper" >
+  <div id="content-wrapper" >
 
-        <div class="container-fluid">
+     <div class="container-fluid">
 
 
           <!-- Page Content -->
@@ -83,17 +85,19 @@
             <div class="container-fluid">
                 <div class="row">
                     <!-- Column -->
-                    <form class="form-horizontal form-material" id="update" name="MemberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
-                    <div class="col-lg-4 col-xlg-3 col-md-5">
-                    
+                    <form class="form-horizontal form-material" id="update" name="MemberUpdateFrm" 
+                          action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post" 
+                          style="width:100%;" enctype="multipart/form-data">
+                    <div class="col-lg-4 col-xlg-3 col-md-5" style="float:left;">
+                    	<input type="hidden" name="mno" value="${member.mno}" />
                         <div class="card">
                             <div class="card-body">
                              <div class="text-center">
                                     <center class="m-t-30 profile-pic"> 
-                                        <img src="${pageContext.request.contextPath }/resources/images/profile/default.png" class="rounded-circle" width="150">
+                                        <img src="${pageContext.request.contextPath }/resources/upload/profile/${a.renamedFileName}" class="rounded-circle" width="150">
                                         <a href="javascript:;" class="pic-change" align="center">
                                              <i class="fa fa-2x fa-camera upload-button"></i>
-                                            <input class="file-upload" type="file" accept="image/*"/>
+                                            <input class="file-upload" name="upFile" type="file" accept="image/*"/>
                                         </a>
                                     </center>
                                 </div>
@@ -108,7 +112,7 @@
                     </div>
                     <!-- Column -->
                     <!-- Column -->
-                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="col-lg-8 col-xlg-9 col-md-7" style="float:right;">
                         <div class="card">
                             <div class="card-body" align="left">
                                 
@@ -148,29 +152,23 @@
                                         </div>
                                         
                                     </div>
-                                </form>
-                                <br><br>
-                                <div class="col-sm-12">
-                                    <input type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/member/withdrawMember.do'" value="회원탈퇴">
+                                       <div class="col-sm-12">
+                          			        <input type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/member/withdrawMember.do'" value="회원탈퇴">
+                                       </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                </div>
-            </div>
+                       </div>
+                       </form>
+                       <br><br>
+                      
+                  </div><!-- Column -->
+             </div> <!-- /.container-fluid -->
         </div>
-    </div>
-          <!-- /Page Content -->
-
-        </div>
-        <!-- /.container-fluid -->
-
-        
-      </div>
-      <!-- /.content-wrapper -->
-      
-    </div>
+                    
+     </div>
+  </div><!-- /.content-wrapper -->
+</div><!-- 전체 div -->
+    
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	
 	<script>
@@ -191,11 +189,11 @@
 	
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
     
     <script src="${pageContext.request.contextPath }/resources/js/BootSideMenu.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/script.js"></script>
-    
+	
 </body>
-
 </html>

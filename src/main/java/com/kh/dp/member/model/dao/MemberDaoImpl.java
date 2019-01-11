@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 
@@ -30,6 +31,12 @@ public class MemberDaoImpl implements MemberDao {
 	public int checkIdDuplicate(HashMap<String, Object> hmap) {
 		sqlSession.selectOne("member.checkIdDuplicate", hmap);
 		
+		return (Integer)hmap.get("result");
+	}
+	
+	@Override
+	public int checkEmailDuplicate(HashMap<String, Object> hmap) {
+		sqlSession.selectOne("member.checkEmailDuplicate", hmap);
 		return (Integer)hmap.get("result");
 	}
 
@@ -65,6 +72,11 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update("member.memberNewPw", m);
 	}
 
+	@Override
+	public Member searchId(String email) {
+		
+		return sqlSession.selectOne("member.searchId", email);
+	}
 
 
 	@Override
@@ -79,12 +91,22 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update("member.updateMember", member);
 	}
 
-
 	@Override
 	public Member selectOneNickname(String nickname) {
 		return sqlSession.selectOne("member.selectOneNickname", nickname);
 	}
 
+	@Override
+	public Attachment selectAttach(int mno) {
+		
+		return sqlSession.selectOne("member.selectAttach", mno);
+	}
 
+	@Override
+	public int updateAttachment(Attachment a) {
+	
+		return sqlSession.update("member.updateAttachment", a);
+	}
 
+	
 }

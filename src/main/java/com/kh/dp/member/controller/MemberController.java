@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
-
 import com.kh.dp.member.model.vo.Member;
-import com.kh.dp.member.model.vo.Attachment;
 
 @SessionAttributes(value= {"member"})
 @Controller
@@ -49,7 +45,12 @@ public class MemberController {
 		return "/member/join";
 	}
 	
-	@RequestMapping("member/toFindFw.do")
+	@RequestMapping("/member/toFindId.do")
+	public String toFindId() {
+		return "/member/findId";
+	}
+	
+	@RequestMapping("/member/toFindFw.do")
 	public String toFindFw() {
 		return "/member/findPw";
 	}
@@ -77,7 +78,7 @@ public class MemberController {
 		String loc = "/";
 		String msg = "";
 		
-		if(result > 0) msg = "회원 가입에 성공했습니다!"+"     "+member.getNickName()+"님 환영합니다!"+"     "+"멋진 프로젝트를 만들어보세요!";
+		if(result > 0) msg = member.getNickName()+"님 환영합니다!"+"   "+"멋진 프로젝트를 만들어보세요!";
 		else msg = "회원가입에 실패했습니다.";
 		
 		model.addAttribute("loc",loc);
@@ -96,6 +97,21 @@ public class MemberController {
 		map.put("isUsable", isUsable);
 		
 		return map;
+	}
+	
+	@RequestMapping("/member/checkEmailDuplicate.do")
+	@ResponseBody
+	public Map<String, Object> checkEmailDuplicate(@RequestParam String email){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean isUsable2 = memberService.checkEmailDuplicate(email) == 0? true : false;
+		
+		map.put("isUsable2", isUsable2);
+		
+	/*	System.out.println("이메일 확인 결과값 : " + isUsable2);*/
+		
+		return map;
+		
 	}
 	
 	@RequestMapping(value="/member/memberLogin.do", method = RequestMethod.POST)
@@ -141,66 +157,71 @@ public class MemberController {
 		return "common/msg";
 	}
 	
-
+	@RequestMapping("/member/findId")
+	public ModelAndView findId(@RequestParam String email) {
+	
+		ModelAndView mv = new ModelAndView();
+		
+		Member m = memberService.searchId(email);
+		
+		String loc = "/";
+		String msg = "";
+		
+		if( m == null) {
+			msg = "존재하는 회원이 없습니다.";
+			loc = "/member/toFindId.do";
+		} else {
+			msg = "회원님의 아이디는 "+ m.getUserId()+" 입니다!";
+			loc = "/member/login.do";
+		}
+		
+		mv.addObject("loc", loc).addObject("msg", msg);
+		mv.setViewName("common/msg");
+		
+		return mv;
+		
+	}
+	
 	@RequestMapping(value="/member/findPw.do", method = RequestMethod.POST)
-	public ModelAndView findPw1(@RequestParam String userId,  @RequestParam String email) {
+	public ModelAndView findPw(@RequestParam String userId,  @RequestParam String email) {
 		
 		ModelAndView mv = new ModelAndView();
 		
 		Member m = memberService.selectOne(userId);
 		
+/*		System.out.println("DB에 저장된 이메일 : " + m.getEmail());
+		System.out.println("입력한 이메일 : " +email);*/
 		String loc = "/";
 		String msg = "";
 		
 		if( m == null ) {
 			msg = "존재하지 않는 아이디입니다.";
+			loc="/member/toFindFw.do";
 			
-		} else if( m.getEmail() == email) {
+		} else if( !m.getEmail().equals(email)) {
 			
 			msg = "가입한 아이디와 일치하지 않는 이메일입니다.";
+			loc="/member/toFindFw.do";
 			
 		} else {
 			
 			int result = memberService.updateNewPw(m);
 			
 			if(result >0) {
-				loc="/member/memberLogin.do";
 				msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
+				loc="/member/login.do";
 			}else {
 				 msg = "임시 비밀번호 발급을 실패했습니다.";
+				 loc="/member/toFindFw.do";
 			}
 			
 		}
 		
-		mv.addObject("/member/findFw", loc).addObject("msg", msg);
+		mv.addObject("loc", loc).addObject("msg", msg);
 		mv.setViewName("common/msg");
 
 		return mv;
-		
 	}
-	
-/*	@RequestMapping(value="/member/findPw2.do", method = RequestMethod.POST)
-	public ModelAndView newPw(@RequestParam String email, @RequestParam String userId ,@RequestParam nickName, @RequestParam String password ) {
-		
-		ModelAndView mv = new ModelAndView();
-		int result = memberService.updateNewPw(email);
-		
-		String loc = "/";
-		String msg ="";
-		
-	   if(result > 0) {
-			
-			msg="임시 비밀번호를 이메일로 보내드렸습니다. 이메일을 확인해주세요.";
-			mv.addObject("member", email);
-			
-		} else msg = "임시 비밀번호 발급을 실패했습니다.";
-		
-		mv.addObject("loc", loc).addObject("msg", msg)
-		.setViewName("common/msg");
-		
-		return mv;
-	}*/
-	
 	
 	@RequestMapping("/member/MemberList.do")
 	public String SelectMemberList(
@@ -271,13 +292,12 @@ public class MemberController {
 		
 		return "common/msg";
 		
-		
 	}
 	
-	@RequestMapping("/member/memberUpdate.do")
+	/*@RequestMapping("/member/memberUpdate.do")
 	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
-		
+
 		// 1. 파일을 저장할 경로 생성
 				String saveDir = session.getServletContext().getRealPath("/resources/upload/profile");
 				List<Attachment> attachList = new ArrayList<Attachment>();
@@ -287,11 +307,19 @@ public class MemberController {
 				File dir = new File(saveDir);
 				
 				System.out.println("폴더가 있나요? "+ dir.exists());
-				
 				if(dir.exists() == false) dir.mkdirs();
 				
+				String renamedName ="";
 				// 3. 파일 업로드 시작
+				Attachment at = new Attachment();
+				Attachment a = memberService.selectAttach(member.getMno());
 				
+				if(upFile == null) {
+					
+					renamedName="default.png";
+					
+				} else {
+					
 				for(MultipartFile f : upFile) {
 					if(!f.isEmpty()) {
 						// 원본 이름 가져오기
@@ -302,25 +330,32 @@ public class MemberController {
 						int rnNum = (int)(Math.random() * 1000);
 						
 						// 서버에서 저장 후 관리할 파일 명
-						String renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
-						
+						 renamedName = sdf.format(new Date()) + "_" + rnNum + "." + ext;
+						 
 						// 실제 파일을 지정한 파일명으로 변환하며 데이터를 저장한다.
 						try {
+							System.out.println("saveDir : " + saveDir);
+							System.out.println("renamedName : " + renamedName);
+							
 							f.transferTo(new File(saveDir + "/" + renamedName));
+							
+							System.out.println(new File(saveDir+"/"+renamedName).exists());
+							
 						} catch (IllegalStateException | IOException e) {
 							
 							e.printStackTrace();
 						} 
 						
-						Attachment at = new Attachment();
-						at.setOriginalFileName(originName);
-						at.setRenamedFileName(renamedName);
+						
+						a.setOriginalFileName(originName);
+						a.setRenamedFileName(renamedName);
 
 						
-						attachList.add(at);
+						
+						member.setRenamedFileName(renamedName);
 					}
 				}
-		
+				}
 		
 		
 		
@@ -337,14 +372,15 @@ public class MemberController {
 		ModelAndView mv = new ModelAndView();
 		
 		int result = memberService.updateMember(member);
+		int result1 = memberService.updateAttachment(a);
 		
 		String loc = "/";
 		String msg ="";
 		
-		if(result > 0) {
+		if(result > 0 && result1 >0) {
 			
 			msg="회원 정보 수정 성공!";
-			mv.addObject("member", member);
+			//mv.addObject("member", member);
 			
 		} else msg = "회원 정보 수정 실패!";
 		
@@ -352,6 +388,6 @@ public class MemberController {
 		.setViewName("common/msg");
 		
 		return mv;
-	}
+	}*/
 
 }

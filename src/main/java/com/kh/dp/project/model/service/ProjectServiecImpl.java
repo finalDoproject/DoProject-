@@ -42,11 +42,16 @@ public class ProjectServiecImpl implements ProjectService {
 		 return projectDao.selectOneProjectLv(pno);
 	}
 	
+
 	@Override
 	public int updateLevelCk(Project project) {
 		return projectDao.updateLevelCk(project);
 	}
 
+	@Override
+	public int updateOneLevelCk(Project project) {
+		return projectDao.updateOneLevelCk(project);
+	}
 	
 	// ---- 메모 ---- //
 	@Override
@@ -120,6 +125,8 @@ public class ProjectServiecImpl implements ProjectService {
 	public int insertLeaveAlarm(int mno, int pno, int apmno) {
 		return projectDao.insertLeaveAlarm(pno, mno, apmno);
 	}
+
+	
 
 	
 
