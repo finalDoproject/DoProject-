@@ -4,7 +4,7 @@
 	<resultMap type="map" id="chatPtm"/>	
 	
 	<select id="selectProjectChatList" resultType="chatPtm">
-		SELECT C.*, P.RENAMEDFILENAME
+		SELECT C.*, P.RENAMEDFILENAME, M.NICKNAME
 		FROM CHAT_PTM C  
 		JOIN MEMBER M ON(C.CHWRITER = M.MNO)
 		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
@@ -34,6 +34,7 @@
 		WHERE C.CHPNO = #{pno} AND 
 		((C.CHWRITER = #{chWriter} AND C.CHREADER = #{chReader}) OR 
 		(C.CHWRITER = #{chReader} AND C.CHREADER = #{chWriter}))
+		ORDER BY C.CHNO
 	</select>
 	
 	<!-- <update id="updateOneChatList">
@@ -52,5 +53,22 @@
 		SELECT RENAMEDFILENAME FROM PROFILE_IMG WHERE
 		IMGNO = (SELECT MPROFILE FROM MEMBER WHERE MNO = #{chReader})
 	</select>
-		
+
+	<select id="selectOneYourName" resultType="string">
+		SELECT NICKNAME FROM MEMBER WHERE MNO = #{chReader}
+	</select>
+	
+	<select id="selectOneChatPtm" resultType="string">
+		SELECT COUNT(*) FROM CHAT_PTM WHERE CHPNO = #{pno} AND CHCONDITION = 'Y'
+	</select>
+	
+	<select id="selectPtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_PTM WHERE CHPNO = #{pno} ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
+	
+	<select id="selectMtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_MTM WHERE 
+		(CHWRITER = #{me} AND CHREADER = #{you}) OR (CHWRITER = #{you} AND CHREADER = #{me})
+		ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
 </mapper>

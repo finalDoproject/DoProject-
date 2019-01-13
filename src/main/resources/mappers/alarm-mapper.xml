@@ -21,5 +21,17 @@
 		SELECT COUNT(A.ANO) FROM ALARM A
 		JOIN MEMBER M ON(A.AMNO = M.MNO)
 		WHERE M.NICKNAME = #{payload} AND ACONDITION = 'Y'
-	</select>	
+	</select>
+	
+	<select id="selectApno" resultType="_int">
+		SELECT ATYPE FROM ALARM WHERE ANO = #{ano}
+	</select>
+	
+	<select id="selectCountChatAlarm" resultType="string">
+		SELECT COUNT(*) FROM
+		(SELECT CHNO FROM CHAT_MTM WHERE CHCONDITION = 'Y' AND CHPNO = #{pNo}
+		UNION SELECT CHNO FROM CHAT_PTM WHERE CHCONDITION = 'Y' AND CHPNO = #{pNo})
+	</select>
+	
+	
 </mapper>
