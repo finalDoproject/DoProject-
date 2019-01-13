@@ -194,6 +194,7 @@
 				dataType:"json",
 				type : "GET",
 				data : {mno:mNo},
+				async : false,
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){
@@ -261,9 +262,12 @@
 		    function onMessage(evt) {
 		    	var AlarmData=evt.data.split(":")[0];
 		    	var ChatData=evt.data.split(":")[1];
-		    	if(AlarmData!=0){
+		    	if(AlarmData!=0 && AlarmData < 10){
 		    		$("#alarmCount").empty();
 		    		$('#alarmCount').text(AlarmData);
+		    	}else if(AlarmData > 9){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text("9+");
 		    	}else{
 		    		$("#alarmCount").empty();
 		    	}

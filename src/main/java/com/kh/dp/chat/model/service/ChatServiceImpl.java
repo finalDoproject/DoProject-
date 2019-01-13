@@ -45,4 +45,19 @@ public class ChatServiceImpl implements ChatService{
 		return chatDao.selectOneYourName(chReader);
 	}
 
+	@Override
+	public String selectPtmLastChat(int me, int pno) {
+		return chatDao.selectPtmLastChat(me, pno);
+	}
+
+	@Override
+	public String selectMtmLastChat(int me, int you) {
+		return chatDao.selectMtmLastChat(me, you);
+	}
+
+	@Override
+	public int selectOneChatPtm(int pno) {
+		return chatDao.selectOneChatPtm(pno);
+	}
+
 }

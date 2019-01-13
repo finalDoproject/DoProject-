@@ -19,4 +19,10 @@ public interface ChatService {
 
 	String selectOneYourName(int chReader);
 
+	String selectPtmLastChat(int me, int pno);
+
+	String selectMtmLastChat(int me, int you);
+
+	int selectOneChatPtm(int pno);
+
 }

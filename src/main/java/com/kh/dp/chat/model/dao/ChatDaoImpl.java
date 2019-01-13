@@ -52,4 +52,25 @@ public class ChatDaoImpl implements ChatDao{
 		return sqlSession.selectOne("chat.selectOneYourName", chReader);
 	}
 
+	@Override
+	public String selectPtmLastChat(int me, int pno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mno", me);
+		map.put("pno", pno);
+		return sqlSession.selectOne("chat.selectPtmLastChat", map);
+	}
+
+	@Override
+	public String selectMtmLastChat(int me, int you) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("me", me);
+		map.put("you", you);
+		return sqlSession.selectOne("chat.selectMtmLastChat", map);
+	}
+
+	@Override
+	public int selectOneChatPtm(int pno) {
+		return Integer.parseInt(sqlSession.selectOne("chat.selectOneChatPtm", pno));
+	}
+
 }

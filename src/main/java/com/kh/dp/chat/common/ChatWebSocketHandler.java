@@ -98,7 +98,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 						/*if(!realKey.contains("TO") && realKey.contains("p" + p.getPno())) {*/
 							// 메시지를 뿌려줄 때 세션 아이디, 메시지, 닉네임, 송/수신자를 같이 보내준다.  
 							/*projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));*/
-							System.out.println(key.substring(key.lastIndexOf("m")));
+							/*System.out.println(key.substring(key.lastIndexOf("m")));*/
 							projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno()));
 							ChatPtm data = new ChatPtm();
 							data.setChContent(realMsg);

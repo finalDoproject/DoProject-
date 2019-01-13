@@ -57,4 +57,18 @@
 	<select id="selectOneYourName" resultType="string">
 		SELECT NICKNAME FROM MEMBER WHERE MNO = #{chReader}
 	</select>
+	
+	<select id="selectOneChatPtm" resultType="string">
+		SELECT COUNT(*) FROM CHAT_PTM WHERE CHPNO = #{pno} AND CHCONDITION = 'Y'
+	</select>
+	
+	<select id="selectPtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_PTM WHERE CHPNO = #{pno} ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
+	
+	<select id="selectMtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_MTM WHERE 
+		(CHWRITER = #{me} AND CHREADER = #{you}) OR (CHWRITER = #{you} AND CHREADER = #{me})
+		ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
 </mapper>
