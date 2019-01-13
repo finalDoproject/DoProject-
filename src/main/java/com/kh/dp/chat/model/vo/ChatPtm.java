@@ -13,6 +13,7 @@ public class ChatPtm {
 	private int chPno;
 	
 	private String renamedFileName;
+	private String nickName;
 	
 	public ChatPtm() {
 		super();
@@ -27,7 +28,7 @@ public class ChatPtm {
 		this.chPno = chPno;
 	}
 	public ChatPtm(int chNo, String chContent, Date chDate, String chCondition, int chWriter, int chPno,
-			String renamedFileName) {
+			String renamedFileName, String nickName) {
 		super();
 		this.chNo = chNo;
 		this.chContent = chContent;
@@ -36,6 +37,7 @@ public class ChatPtm {
 		this.chWriter = chWriter;
 		this.chPno = chPno;
 		this.renamedFileName = renamedFileName;
+		this.nickName = nickName;
 	}
 	public int getChNo() {
 		return chNo;
@@ -79,11 +81,17 @@ public class ChatPtm {
 	public void setRenamedFileName(String renamedFileName) {
 		this.renamedFileName = renamedFileName;
 	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	@Override
 	public String toString() {
 		return "ChatPtm [chNo=" + chNo + ", chContent=" + chContent + ", chDate=" + chDate + ", chCondition="
 				+ chCondition + ", chWriter=" + chWriter + ", chPno=" + chPno + ", renamedFileName=" + renamedFileName
-				+ "]";
+				+ ", nickName=" + nickName + "]";
 	}
 
 }

@@ -17,4 +17,12 @@ public interface ChatService {
 
 	String selectOneFileName(int chReader);
 
+	String selectOneYourName(int chReader);
+
+	String selectPtmLastChat(int me, int pno);
+
+	String selectMtmLastChat(int me, int you);
+
+	int selectOneChatPtm(int pno);
+
 }

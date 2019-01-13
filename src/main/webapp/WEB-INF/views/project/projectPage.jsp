@@ -1278,11 +1278,11 @@ function formSubmit(){
     });
 	function donutPie(){
 		var pieData = {
-			요청: 11,
-			진행: 3,
-			피드백: 3,
-			완료: 10,
-			보류: 7
+			요청: 0,
+			진행: 0,
+			피드백: 0,
+			완료: 0,
+			보류: 1
 		};
 		var chartDonut = c3.generate({
 			bindto: "#piechart",

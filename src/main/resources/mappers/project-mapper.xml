@@ -103,4 +103,12 @@
 	<insert id="insertLeaveAlarm">
 		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
 	</insert>
+	
+	<select id="selectTaskLevelCount" resultType="java.util.HashMap">
+		SELECT (SELECT COUNT(*) FROM TASK WHERE TLEVEL = 1) ONE,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 2) TWO,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 3) THREE,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 4) FOUR,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 5) FIVE FROM DUAL
+	</select>
 </mapper>
