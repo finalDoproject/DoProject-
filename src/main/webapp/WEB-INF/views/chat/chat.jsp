@@ -67,6 +67,7 @@ function onMessage(evt){
 	var userName=null;//대화명 저장
 	var you=null; // 채팅방(프로젝트 번호 또는 1:1 채팅 상대 번호)
 	var me=null; // 채팅방(내 번호)
+	var pNo=null; // 프로젝트 번호
 	
 	if(strArray.length>1)
 	{
@@ -76,6 +77,7 @@ function onMessage(evt){
 		userName=strArray[3]; // 
 		you=strArray[4];
 		me=strArray[5];
+		pNo=strArray[6];
 		today=new Date();
 		
 		if(userName == $("#nickName").text())
@@ -93,7 +95,55 @@ function onMessage(evt){
 		}
 		else{
 			// if조건으로 현재 있는 방에만 출력$("#chatMe").text(me+"_"+you);
-			if(($("#chatMe").text() == you+"_"+me) || you.charAt(0) == 0){
+			//$("#chatMe").text(me+"_"+"0"+pno);
+			//console.log($("#chatMe").text());
+			//console.log(me+"_"+"0"+pNo);
+			if(you.charAt(0) == 0){
+				if($("#chatMe").text().includes("0"+pNo)){
+					var yourNickName=null;
+					$.ajax({
+						url : "${pageContext.request.contextPath}/chatWho.ch?you="+you,
+						type : "GET",
+						data : { "me" : me},
+						success : function(responseData){
+							var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
+							printHTML+="<span style=''>"+responseData.yourName+"</span><br>"
+							printHTML+="<div class='chat-bubble you' style='float: left;'>";
+							printHTML+="<div class='content'>";
+							printHTML+=ConvertSystemSourcetoHtml(message);
+							printHTML+="</div><div class='time'>";
+							printHTML+=sockformatAMPM(today)+"</div></div></div>";
+							printHTML+="<div style='clear: both;'></div>";
+							$('#chatList').append(printHTML);
+							$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+						}
+					});
+				}
+			}else if(you.charAt(0) != 0){
+				if($("#chatMe").text() == you+"_"+me){
+					var yourNickName=null;
+					$.ajax({
+						url : "${pageContext.request.contextPath}/chatWho.ch?you="+you,
+						type : "GET",
+						data : { "me" : me},
+						success : function(responseData){
+							/* yourNickName = responseData.yourName; */
+							console.log(me);
+							var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
+							printHTML+="<span style=''>"+responseData.yourName+"</span><br>"
+							printHTML+="<div class='chat-bubble you' style='float: left;'>";
+							printHTML+="<div class='content'>";
+							printHTML+=ConvertSystemSourcetoHtml(message);
+							printHTML+="</div><div class='time'>";
+							printHTML+=sockformatAMPM(today)+"</div></div></div>";
+							printHTML+="<div style='clear: both;'></div>";
+							$('#chatList').append(printHTML);
+							$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+						}
+					});
+				}
+			}
+			/* if(($("#chatMe").text() == you+"_"+me) || you.charAt(0) == 0){
 				var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
 				printHTML+="<div class='chat-bubble you' style='float: left;'>";
 				printHTML+="<div class='content'>";
@@ -103,7 +153,7 @@ function onMessage(evt){
 				printHTML+="<div style='clear: both;'></div>";
 				$('#chatList').append(printHTML);
 				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-			}
+			} */
 		}
 
 	}
@@ -111,7 +161,7 @@ function onMessage(evt){
 };
 
 $(".contact").click(function(){
-	sock.close();
+	/* sock.close(); */
 });
 
 function onClose(evt){
@@ -189,6 +239,7 @@ function chatMtm(me, you, yourNick){
 		success : function(responseData){
 			var data = responseData.chatOneList;
 			var yourRenamedFileName = responseData.renamedFileName;
+			var yourNickName = responseData.yourName;
 			
 			if(data.length == 0){
 				$("#thisImg").attr("src", "resources/images/profile/" + yourRenamedFileName);
@@ -224,6 +275,7 @@ function chatMtm(me, you, yourNick){
 					else{
 						$("#thisImg").attr("src", "resources/images/profile/" + data[i].renamedFileName);
 						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
+						printHTML+="<span>"+yourNickName+"</span><br>"
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);
@@ -290,6 +342,7 @@ function chatPtm(me, pno){
 					}
 					else{
 						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
+						printHTML+="<span style=''>"+data[i].nickName+"</span><br>"
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
 						printHTML+=ConvertSystemSourcetoHtml(data[i].chContent);

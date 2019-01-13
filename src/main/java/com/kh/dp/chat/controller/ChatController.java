@@ -63,8 +63,9 @@ public class ChatController {
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
 		String renamedFileName = chatService.selectOneFileName(chReader);
+		String yourName = chatService.selectOneYourName(chReader);
 		
-		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName);
+		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName).addObject("yourName", yourName);
 		mv.setViewName("jsonView");
 
 		return mv;
@@ -77,7 +78,7 @@ public class ChatController {
 		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
-		
+
 		mv.addObject("chatProjectList", list);
 		mv.setViewName("jsonView");
 		/*System.out.println("ajax 채팅 : " + list);*/
@@ -97,6 +98,19 @@ public class ChatController {
 		mv.setViewName("jsonView");
 		System.out.println("ajax 검색 : " + list);
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="/chatWho.ch", method=RequestMethod.GET)
+	public ModelAndView selectWho(Model model,@RequestParam("me") int me) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		String yourName = chatService.selectOneYourName(me);
+		
+		mv.addObject("yourName", yourName);
+		mv.setViewName("jsonView");
+
 		return mv;
 	}
 	

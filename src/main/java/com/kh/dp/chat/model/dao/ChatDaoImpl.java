@@ -47,4 +47,9 @@ public class ChatDaoImpl implements ChatDao{
 		return sqlSession.selectOne("chat.selectOneFileName", chReader);
 	}
 
+	@Override
+	public String selectOneYourName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneYourName", chReader);
+	}
+
 }

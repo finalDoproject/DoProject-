@@ -40,4 +40,9 @@ public class ChatServiceImpl implements ChatService{
 		return chatDao.selectOneFileName(chReader);
 	}
 
+	@Override
+	public String selectOneYourName(int chReader) {
+		return chatDao.selectOneYourName(chReader);
+	}
+
 }

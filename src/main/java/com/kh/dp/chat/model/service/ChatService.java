@@ -17,4 +17,6 @@ public interface ChatService {
 
 	String selectOneFileName(int chReader);
 
+	String selectOneYourName(int chReader);
+
 }
