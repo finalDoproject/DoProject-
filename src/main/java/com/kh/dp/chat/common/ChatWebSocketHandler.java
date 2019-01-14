@@ -83,7 +83,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		
 		// 선택된 채팅방을 open
 		memberSessionList.put(p.getPno()+"p" + mNo + "TO" + mNo2, session);
-		
+		String oneKey = null;
 		String realMsg = msg[1];
 		try {
 			// 선택된 채팅방이 프로젝트 단체방이라면
@@ -117,6 +117,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 					// key값이 'a to b' 이거나 'b to a'인것 찾아서
 					if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
 						// 위와 같은 방식으로 메시지를 뿌려줌
+						oneKey = key;
 						memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 						ChatMtm data = new ChatMtm();
 						data.setChContent(realMsg);
@@ -145,7 +146,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 			data.setChPno(p.getPno());
 			data.setNickName(m.getNickName());
 			sqlsession.insert("chat.insertMtm", data);
-			//memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+			memberSessionList.get(oneKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
 			
 		}
 	}
