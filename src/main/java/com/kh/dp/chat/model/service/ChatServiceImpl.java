@@ -60,4 +60,9 @@ public class ChatServiceImpl implements ChatService{
 		return chatDao.selectOneChatPtm(pno);
 	}
 
+	@Override
+	public void updatePtm(String nickName, int pno) {
+		chatDao.updatePtm(nickName, pno);
+	}
+
 }

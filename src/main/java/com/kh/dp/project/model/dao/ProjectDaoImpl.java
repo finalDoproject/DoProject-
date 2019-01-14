@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -174,6 +175,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		map.put("mno", mno);
 		map.put("apmno", apmno);
 		return sqlSession.insert("project.insertLeaveAlarm", map);
+	}
+
+	@Override
+	public TaskCount selectTaskLevelCount(int pno) {
+		return sqlSession.selectOne("project.selectTaskLevelCount", pno);
 	}
 
 

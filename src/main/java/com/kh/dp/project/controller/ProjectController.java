@@ -22,6 +22,7 @@ import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
@@ -345,12 +346,17 @@ public class ProjectController {
 		return msgMap;
 	}
 	
-	@RequestMapping(value="/project/searchMemberList.do", method=RequestMethod.GET)
+	@RequestMapping(value="/project/searchMemberList.do")
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
 		return m;
 		
+	}
+	
+	@RequestMapping(value="/project/taskLevelCount.do")
+	public @ResponseBody TaskCount taskLevelCount(@RequestParam int pno){
+		return projectService.selectTaskLevelCount(pno);
 	}
 	
 	
