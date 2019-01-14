@@ -114,6 +114,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 			}else{ // 선택된 채팅방이 1:1 채팅방이라면
 				// 1:1 접속자 목록 중에서
 				for(String key : memberSessionList.keySet()) {
+					oneKey = key;
 					// key값이 'a to b' 이거나 'b to a'인것 찾아서
 					if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
 						// 위와 같은 방식으로 메시지를 뿌려줌
@@ -128,6 +129,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 						// 위와 같은 이유의 핸들링
 						if(check == 0) {
 							sqlsession.insert("chat.insertMtm", data);
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("nickName", m.getNickName());
+							map.put("pno", String.valueOf(p.getPno()));
+							map.put("chWriter", String.valueOf(chatMe));
+							map.put("chReader", String.valueOf(chatTarget));
+							sqlsession.update("chat.updateMtm", map);
 							check++;
 						}else{
 							check = 0;
@@ -138,15 +145,26 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		} catch(Exception e) {
 			handleTransportError(session, e);
 			// 1:1일때 db에 데이터 전송하고, 나에게만 msg 보내기
-			memberSessionList.remove(p.getPno()+"p" + mNo + "TO" + mNo2);
-			ChatMtm data = new ChatMtm();
-			data.setChContent(realMsg);
-			data.setChWriter(chatMe);
-			data.setChReader(chatTarget);
-			data.setChPno(p.getPno());
-			data.setNickName(m.getNickName());
-			sqlsession.insert("chat.insertMtm", data);
-			memberSessionList.get(oneKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+			//memberSessionList.put(p.getPno()+"p" + mNo + "TO" + mNo2, session);
+			if(check == 0) {
+				session.sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+				ChatMtm data = new ChatMtm();
+				data.setChContent(realMsg);
+				data.setChWriter(chatMe);
+				data.setChReader(chatTarget);
+				data.setChPno(p.getPno());
+				data.setNickName(m.getNickName());
+				sqlsession.insert("chat.insertMtm", data);
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("nickName", m.getNickName());
+				map.put("pno", String.valueOf(p.getPno()));
+				map.put("chWriter", String.valueOf(chatMe));
+				map.put("chReader", String.valueOf(chatTarget));
+				sqlsession.update("chat.updateMtm", map);
+				check++;
+			}else {
+				check = 0;
+			}
 			
 		}
 	}
@@ -167,7 +185,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
 		//super.handleTransportError(session, exception);
 		
-		System.out.println("사용자 종료 상황 발생!");
+		//System.out.println("사용자 종료 상황 발생!");
 	}
 	
 	
