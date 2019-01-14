@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 @SessionAttributes(value= {"member"})
@@ -62,9 +63,8 @@ public class MemberController {
 	return "/member/Login";
 	}
 	
-	
 	@RequestMapping("/member/memberEnroll.do")
-	public String memberEnroll(Member member, Model model) {
+	public String memberEnroll(SessionStatus sessionStatus, HttpSession session, Member member, Model model) {
 		System.out.println("member : " + member);
 		// 원래비번
 		String rawPwd = member.getPassword();
@@ -80,7 +80,7 @@ public class MemberController {
 		
 		if(result > 0) msg = member.getNickName()+"님 환영합니다!"+"   "+"멋진 프로젝트를 만들어보세요!";
 		else msg = "회원가입에 실패했습니다.";
-		
+		if( !sessionStatus.isComplete()) sessionStatus.setComplete();
 		model.addAttribute("loc",loc);
 		model.addAttribute("msg", msg);
 		
@@ -294,7 +294,7 @@ public class MemberController {
 		
 	}
 	
-	/*@RequestMapping("/member/memberUpdate.do")
+	@RequestMapping("/member/memberUpdate.do")
 	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
 
@@ -388,6 +388,6 @@ public class MemberController {
 		.setViewName("common/msg");
 		
 		return mv;
-	}*/
+	}
 
 }

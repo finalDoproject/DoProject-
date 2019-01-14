@@ -133,12 +133,15 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
+<a href="/dp"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">Login</h1>
 </div>
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">
 		<div class="form-item">
 			<p class="formLabel">아이디</p>
-			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" />
+
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off"/>
+
 		</div>
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>

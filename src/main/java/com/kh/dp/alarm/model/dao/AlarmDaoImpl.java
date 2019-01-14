@@ -26,6 +26,11 @@ public class AlarmDaoImpl implements AlarmDao{
 		return sqlSession.selectList("alarm.selectAlarmList", mno);
 	}
 
+	@Override
+	public int selectApno(Alarm al) {
+		return sqlSession.selectOne("alarm.selectApno", al);
+	}
+
 	/*@Override
 	public String countAlarm(String payload) {
 		System.out.println(payload);
@@ -33,4 +38,3 @@ public class AlarmDaoImpl implements AlarmDao{
 	}*/
 
 }
-

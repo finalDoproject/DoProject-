@@ -31,8 +31,8 @@ public class Task {
 	public Task() {}
 	
 	// 가상 변수 필드 생성자 추가
-	
-		public Task(int tno, String ttitle, String tcontent, String twriter,String twritedate, int fno, String foldName, String fnewName) {
+
+		public Task(int tno, String ttitle, String tcontent, String twriter, String twritedate, int fno, String foldName, String fnewName) {
 			super();
 			this.tno = tno;
 			this.ttitle = ttitle;

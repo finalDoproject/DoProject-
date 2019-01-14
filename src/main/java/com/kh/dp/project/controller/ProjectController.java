@@ -22,6 +22,7 @@ import com.kh.dp.member.model.service.MemberService;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
@@ -36,12 +37,20 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
-	
 	@Autowired
 	private TaskService taskService;
-	
-	@RequestMapping("/project/projectMain.do")
 
+	@RequestMapping("/project/projectSearch.do")
+	public String projectSearch(
+			//Model model, @RequestParam("mno") int mno
+			) {
+		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//model.addAttribute("projectList",projectList);
+		
+		return "project/projectSearch";
+	}
+
+	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
@@ -53,7 +62,6 @@ public class ProjectController {
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);
-
 		
 		return "project/projectMain";
 	}
@@ -99,7 +107,43 @@ public class ProjectController {
 		
 		return resultMap;
 	}
+	
+	@RequestMapping(value="/project/projectMainUpdate", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> ProjectModalUpdate(Model model, @RequestParam int pno) {
+		
+		List<Project> OneProjectLvList = projectService.selectOneProjectLv(pno);
+		Project OneProject = projectService.selectOneProject(pno);
 
+		Map<String,Object> resultMap = new HashMap<>();
+		resultMap.put("OneProjectLvList", OneProjectLvList);
+		resultMap.put("OneProject", OneProject);
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/project/projectMainUpdateFrm", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> projectMainUpdateFrm(
+			@RequestParam(value="jsonStr", required=false) String projectStr,
+			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
+		
+		Project project = new Gson().fromJson(projectStr, Project.class);
+		System.out.println("project값 : " +project);
+		String msg  = projectService.updateProject(project)>0?"프로젝트 수정 완료":"프로젝트 수정 실패";
+		
+		Map<String, String> hmap = new HashMap<>();
+		hmap.put("msg", msg);	
+
+		if(pjLevelStr != null) {
+			List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("pjLevel값 : " +pjLevel);
+			String msg1  = projectService.updateProjectLv(pjLevel)>0?"레벨 수정 완료":"레벨 수정 실패";
+			hmap.put("msg1", msg1);	
+		}
+		
+		return hmap;
+	}
 	
 	
 	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
@@ -111,21 +155,13 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
-		
-		String msg1  = projectService.updateOneLevelCk(project)>0?"2체크 완료":"2체크 실패";
-		
-		
 		Map<String, String> map = new HashMap<>();
 		map.put("msg", msg);	
-		map.put("msg1", msg1);	
 		
-		/*if(pjLevelStr != null) {
-			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
-			System.out.println("oneLevel값 : " +oneLevel);
-			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
-			map.put("msg1", msg1);	
-		}*/
-		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
+	
+		String msg1  = projectService.updateOneLevelCk(project)>0?"체크함":"체크못함";
+		map.put("msg1", msg1);
+		
 		
 		return map;
 	}
@@ -310,12 +346,17 @@ public class ProjectController {
 		return msgMap;
 	}
 	
-	@RequestMapping(value="/project/searchMemberList.do", method=RequestMethod.GET)
+	@RequestMapping(value="/project/searchMemberList.do")
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
 		return m;
 		
+	}
+	
+	@RequestMapping(value="/project/taskLevelCount.do")
+	public @ResponseBody TaskCount taskLevelCount(@RequestParam int pno){
+		return projectService.selectTaskLevelCount(pno);
 	}
 	
 	

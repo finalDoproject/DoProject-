@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="my">
+	<resultMap type="map" id="my"/>
+	
+	<insert id="insertContent">
+	INSERT INTO MYCALENDAR VALUES
+	(SEQ_MCNO.NEXTVAL, #{mcStart}, #{mcEnd}, #{mcContent}, DEFAULT, #{mcMno})
+	</insert>
+	
+	<select id="selectMypage" resultType="my">
+	SELECT * FROM MYCALENDAR WHERE MCMNO = #{mno} AND MCCONDITION = 'Y'
+	
+	</select>
+	
+	<update id="updateContent">
+	UPDATE MYCALENDAR SET MCCONTENT = #{mcContent} WHERE MCNO = #{mcno}
+	</update>
+	
+	<update id="deleteContent">
+	UPDATE MYCALENDAR SET MCCONDITION = 'N' WHERE MCNO = #{mcno}
+	</update>
+	
+	
+	
+</mapper>

@@ -1,5 +1,6 @@
 package com.kh.dp.task.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +79,12 @@ public class TaskDaoImpl implements TaskDao {
 	public int deleteAttach(int tno) {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("task.deleteAttach", tno);
+	}
+
+	@Override
+	public List<Task> selectListmyTask(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("task.selectListmyTask", mno);
 	}
 	
 	

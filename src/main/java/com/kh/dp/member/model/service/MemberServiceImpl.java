@@ -99,6 +99,7 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneNickname(String nickname) {
 		return memberDao.selectOneNickname(nickname);
 	}
+
 	@Override
 	public Attachment selectAttach(int mno) {
 		return memberDao.selectAttach(mno);

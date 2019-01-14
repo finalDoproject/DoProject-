@@ -23,6 +23,12 @@ public class AlarmServiceImpl implements AlarmService{
 	public List<Alarm> selectSearchAlarm(int mno) {
 		return alarmDao.selectSearchAlarm(mno);
 	}
+
+	@Override
+	public int selectApno(Alarm al) {
+		return alarmDao.selectApno(al);
+	}
 	
 
 }
+

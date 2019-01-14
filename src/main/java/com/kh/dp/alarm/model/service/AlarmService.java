@@ -10,5 +10,7 @@ public interface AlarmService {
 	int updateAlarm(Alarm al);
 
 	List<Alarm> selectSearchAlarm(int mno);
+
+	int selectApno(Alarm al);
 	
 }
