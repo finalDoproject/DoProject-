@@ -1,5 +1,6 @@
 package com.kh.dp.task.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,11 @@ public class TaskDaoImpl implements TaskDao {
 		// TODO Auto-generated method stub
 		
 		return sqlSession.insert("task.insertTaskkeep", tk);
+	}
+	@Override
+	public List<Task> selectListmyTask(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("task.selectListmyTask", mno);
 	}
 	
 	

@@ -92,11 +92,20 @@
 	</delete>
 	
 	<delete id="deleteAttach">
-	 DELETE FROM TASK_FILE WHERE FTNO = #{tno}
+	 	DELETE FROM TASK_FILE WHERE FTNO = #{tno}
 	</delete>
 	
 	<insert id="">
 	INSERT INTO BOARD_KEEP(BKMNO, BKBNO ) VALUES(#{bkmno}, #{bkbno} )
 	</insert>
+
+	<select id="selectListmyTask"  resultMap="taskandattach">
+			SELECT * FROM TASK
+			LEFT JOIN TASK_FILE ON(TASK.TNO = TASK_FILE.FTNO)
+			JOIN MEMBER ON(MEMBER.MNO = TASK.TMNO)
+			WHERE TMNO = #{mno}
+			ORDER BY TWRITEDATE DESC
+	</select>
+
 	
 </mapper>

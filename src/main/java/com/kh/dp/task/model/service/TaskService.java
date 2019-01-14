@@ -1,6 +1,7 @@
 package com.kh.dp.task.model.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,7 @@ public interface TaskService {
 	int deleteAttach(int tno);
 	
 	int insertTaskkeep(TaskKeep tk);
+
+	List<Task> selectListmyTask(int mno);
+
 }

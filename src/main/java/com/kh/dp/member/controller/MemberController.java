@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.common.util.Utils;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 
 @SessionAttributes(value= {"member"})
@@ -293,7 +294,7 @@ public class MemberController {
 		
 	}
 	
-	/*@RequestMapping("/member/memberUpdate.do")
+	@RequestMapping("/member/memberUpdate.do")
 	public ModelAndView memberUpdate(Member member, Model model, HttpSession session,
 			@RequestParam(value="upFile", required = false) MultipartFile[] upFile) {
 
@@ -387,6 +388,6 @@ public class MemberController {
 		.setViewName("common/msg");
 		
 		return mv;
-	}*/
+	}
 
 }

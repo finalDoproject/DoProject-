@@ -1,4 +1,3 @@
-
 package com.kh.dp.chat.model.vo;
 
 import java.util.Date;
