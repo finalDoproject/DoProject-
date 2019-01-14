@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Do Project!</title>
-
+<!-- stylesheet -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
@@ -18,7 +19,8 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
@@ -42,29 +44,58 @@
 
 </style>
 <script>
-var chk = 0;
+ var chk = 0;
 function taskToggle(){
-	if(chk == 0){
-		$('#taskForm').css('display', 'block');
-		$('#scheduleForm').css('display', 'none');
-		chk=1;
-	}else{
+	
+	if($('#exampleModalCenter').hasClass("show") === true){
 		$('#taskForm').css('display', 'none');
 		chk=0;
+	}else{
+		
+		if(chk == 0){
+			$('#taskForm').css('display', 'block');
+			chk = 1;
+			chk2 = 0;
+		}else{
+			$('#taskForm').css('display', 'none');
+			chk=0;
+		}
 	}
 }
 
-var chk2 = 0;
-function scheduleToggle(){
-	if(chk2 == 0){
-		$('#scheduleForm').css('display', 'block');
+function sclick(){
+	console.log("click");
+	
 		$('#taskForm').css('display', 'none');
-		chk2 = 1;
-	}else{
-		$('#scheduleForm').css('display', 'none');
-		chk2 = 0;
-	}
+		chk=0;
+	
+	
 }
+	
+
+$(function(){
+	$('#taskForm').focusout(function() {
+		  $('#taskForm').css('display', 'none');
+		  console.log("gg");
+		});	
+});
+
+function formSubmit(){
+	 var title = $("input[name=title]").text();
+	 var member = $("option").val();
+	 var startdate = $("input[name=startDate]").text();
+	 var enddate = $("input[name=endDate]").text();
+	 
+	  if(title.length == 0 || startdate.length == 0 
+		|| enddate.length ==0 || member.length == 1){
+		alert ("필수 사항이 입력되지 않았습니다.");
+		return false;
+	} 
+	  
+	return true;  
+	
+};
+
 </script>
 </head>
 <body>
@@ -81,16 +112,11 @@ function scheduleToggle(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>글 작성하기</span>
+            <span>업무/일정 작성하기</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" onclick="scheduleToggle();" >
-            <i class="fas fa-map-marker-alt"></i>
-            <span>일정 작성하기</span>
-          </a>
-          <li class="nav-item">
-        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
+        <li class="nav-item" >
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="sclick();">
         	<i class="far fa-clock" ></i>
         	<span id="req">스케줄 매칭 요청</span>
         	</a>
@@ -103,12 +129,12 @@ function scheduleToggle(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
@@ -123,9 +149,6 @@ function scheduleToggle(){
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
         	<c:import url="../task/tasktest.jsp"/>
-        </div>
-        <div id="scheduleForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
-        	<c:import url="../task/schedule.jsp"/>
         </div>
       </ul>
       
@@ -167,7 +190,8 @@ function scheduleToggle(){
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  
+            	  method="post" onsubmit="return formSubmit();">
                     <table class="table">
                             <thead>
                               <tr>
@@ -208,57 +232,13 @@ function scheduleToggle(){
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="ok">요청 완료</button>
+                <input type="submit" class="ok" value="요청 하기">
             </div>
                  </form>         
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- invitationModal -->
-      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
-              <div class="modal-dialog" role="document">
-              
-               <form id="proejctEnrollFrm">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
-                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
-                      </div>
-                      <div class="form-group">
-                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
-                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
-                      </div>                  
-                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
-                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
-                        <div class="form-group levelbox" style="display: none;">
-                          <hr>
-                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-                          <button type="button" class="btn minusbtn btn-light">-</button>
-                          
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
-                  </div>                  
-                </div>
-               </form>
-              </div>
-            </div>   
-      
-
      
       <!-- right nav --> 
       <div id="rightNav">
@@ -290,52 +270,46 @@ function scheduleToggle(){
       <hr>
       <div class="todo" style="color: #555">
         <h6>할일</h6>
+        <c:forEach items="${tasklist}" var="task" varStatus="vs">
+        <c:if test="${member.mno == task.tmno}">
         <p>
-          <input type="checkbox" name="todo_answer" value="ck1" id="ck1"> 
-          <label for="ck1">우유 사기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
+          <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
+          <input type="hidden" name="taskLv" value="${task.tlevel}" id="${task.tlevel}"> 
+          <label for="ck">${task.ttitle}</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
         </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck2" id="ck2">
-          <label for="ck2">자전거 타기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck3" id="ck3">
-          <label for="ck3">낮잠 자기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck4" id="ck4">
-          <label for="ck4">고양이랑 놀아주기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck5" id="ck5">
-          <label for="ck5">점심메뉴 정하기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        
+        </c:if>
+        </c:forEach>
       </div>
       <hr>
-      <div class="timetable" style="color: #555">
+      <div class="timetable " style="color: #555">
+  
           <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                
+              
                 <c:if test="${s.SSNO eq 0}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <input type="hidden" value="${s.SMNO}" id="smno"/>
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId();">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 2}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="complete">완료</button> </a>
+                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
+                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
+                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
                 </c:if>
                
               </li>
             </c:forEach>
             </ul>
+          
         </div>
         <hr>
 
@@ -518,7 +492,7 @@ function scheduleToggle(){
             </table>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary store">저장</button>
+          
         </div>
       </div>
     </div>
@@ -527,20 +501,24 @@ function scheduleToggle(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-
-        <div class="container-fluid" style="height: 2000px">
-
-
-          <!-- Page Content -->
-          <h1>페이지 콘텐츠 부분입니다</h1>
-          <hr>
-          <p>This is a great starting point for new custom pages.</p>
-          <!-- /Page Content -->
-<a href="#">TEST</a>
+      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        <div id="donut" class="container-fluid collapse show in">
+        	<div id="piechart"></div>
+        	<div>
+        	<ul class="circle_chart_list">
+				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>피드백&nbsp;<strong>N건</strong></li>
+				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+			</ul>
+			</div>
+			<!-- <div style="text-align:center; float:left;"></div> -->
         </div>
+        
         <!-- /.container-fluid -->
 
-        
+        <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
       
@@ -595,43 +573,98 @@ function scheduleToggle(){
 	    }); 
 	 	
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
-	    function selectId(){
-	 		
+	    function selectId(A){
 	 		
 	 		// 요청 번호
-	    	var requestNo = $('#smno').val();
+	    	var requestNo = A;
+	 		
 	 		// 회원 번호
 	    	var mNo = ${member.mno};
 	    	// 요청 시작일
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	
+	    	alert(requestNo + ", " + smdate + ", " + smenddate);
 	    	// 요일 값 가져오기
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
 	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
+	 			data : {requestNo : requestNo,
+	 				    mNo : mNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				if(data != null){
+	 				for(var i in data ) {
+	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
+	 				}
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
+	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
 	 	    	var dtNo = $(this).attr("id");
 	    		
-			    	 $.ajax({
-			         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
-			         	data : {dtNo : dtNo,
-			         		    requestNo : requestNo,
-			         		    mNo : mNo},
-			         	dataType : "json",
-			         	success : function(data) {
-			         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-			         		
-			         		
-			         	 },error : function(request, status, error){
-			      			alert(request + "\n"
-			      					  + status + "\n"
-			      					  + error);
-			         	}
-			         });  
+	    		$.ajax({
+	    			url : '${pageContext.request.contextPath}/project/isClicked.do',
+	    			data : {
+	    				requestNo : requestNo,
+	 				    mNo : mNo,
+	 				    dtNo : dtNo},
+	 				dataType : "json",
+	 				success : function(data) {
+	 					if(data == 0){
+	 		
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/matchingDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 					}else{
+	 						
+	 						 $.ajax({
+	 				         	url : '${pageContext.request.contextPath}/project/deleteDT.do',
+	 				         	data : {dtNo : dtNo,
+	 				         		    requestNo : requestNo,
+	 				         		    mNo : mNo},
+	 				         	dataType : "json",
+	 				         	success : function(data) {
+	 				         			$('#'+dtNo).css("background-color", "white");
+	 				         		
+	 				         		
+	 				         	 },error : function(request, status, error){
+	 				      			alert(request + "\n"
+	 				      					  + status + "\n"
+	 				      					  + error);
+	 				         	}
+	 				         });  
+	 						
+	 					}
+	 				},error : function(request, status, error){
+		      			alert(request + "\n"
+		      					  + status + "\n"
+		      					  + error);
+		         	}
+	    		});
+			    	
 			    	
 		    	}); 
 	    	 
@@ -661,28 +694,74 @@ function scheduleToggle(){
 	    		};
 	    	};
 	    	
-	 		  $.ajax({
-	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
-	 			data : {requestNo : requestNo,
-	 				    mNo : mNo},
-	 			dataType : "json",
-	 			success : function(data){
-	 				for(var i in data ) {
-	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
-	         		}
-	 			},error : function(request, status, error){
-	      			alert(request + "\n"
-	      					  + status + "\n"
-	      					  + error);
-	         	}
-	 		});  
-		    	
-		    	
-		    	  
 		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
-	 		 	
+	 	
+	 	function result(a){
+	    	
+	 		   for(i=1; i<106; i++){
+	 		 $.ajax({
+	 			url :'${pageContext.request.contextPath}/project/resultTable.do',
+	 			data : {requestNo : a,
+	 					i : i},
+	 			dataType : "json",
+	 			type : "get",
+	 			success : function(data){
+	 				
+	 				 if((data.result/data.totalMember)*100 <= 25){
+	 					$('#'+data.i).css("background-color", "black");
+	 				}else if((data.result/data.totalMember)*100 > 25 && (data.result/data.totalMember)*100 <= 50) {
+	 					$('#'+data.i).css("background-color", "gray");
+	 				}else if((data.result/data.totalMember)*100 > 50 && (data.result/data.totalMember)*100 <= 75){
+	 					$('#'+data.i).css("background-color", "orange");
+	 				}else{
+	 					$('#'+data.i).css("background-color", "coral");
+	 				} 
+	 				
+	 				
+	 				},
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+	 		}); 
+	 		 }  
+	 	};
+	 	
+	 	$(function(){
+	    	$("#findUserBtn").on("click",function(){
+	    		var nickname = $('.nickname').val();
+	    		
+	    		console.log(nickname);
+	    		$.ajax({
+	                url  : "${pageContext.request.contextPath}/project/projectPage",
+	                data: {nickname:nickname},
+	                dataType: "json",
+	                type : "get",
+	                success : function(data){
+	                    console.log(data);
+	                    var html = "<table class=table>";
+	                    html+="<tr><th>이름</th><th>ID</th></tr>";
+		        		if(data==0) alert("해당하는 정보가 없습니다.");
+		        		else{
+		        			 for(var i in data){
+		                     	html += "<tr><td>"+data[i].nickName+"</td>";
+		                     	html += "<td>"+data[i].userId+"</td></tr>";
+		                     }
+		        			 html+="</table>";
+		                     $("#findUser-result").html(html);
+		        		}
+		        	},
+		            error : function(jqxhr, textStatus, errorThrown){
+		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+		            }
+
+	            });
+	    	});
+	    	
+		});
+	 	
+
         $(document).ready(function () {
             w3.includeHTML(init);
         });
@@ -748,9 +827,9 @@ function scheduleToggle(){
         
         
         // right nav checkBox 
-        $(document).ready(function() { 
+         $(document).ready(function() { 
         $("input:checkbox").on('click', function() {
-             if ( $(this).prop('checked') ) {
+             if ( $(this).prop('checked')) {
                   $(this).next().addClass("selected");
                   
              } else { $(this).next().removeClass("selected");
@@ -879,6 +958,9 @@ function scheduleToggle(){
 			elements.addButton.addEventListener("click", function(){
 				// Get event name
 				var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
+				//var names = "가져온 일정";
+				//var name =+ names;
+				
 				var name = prompt(
 					"Event info",
 					names[Math. floor(Math.random() * names.length)] + "'s birthday."
@@ -888,7 +970,7 @@ function scheduleToggle(){
 				if (name === null || name === "") {
 					return;
 				}
-
+				//date_format = "20/01/2019";
 				// Date string
 				var id = jsCalendar.tools.dateToString(current, date_format, "en");
 
@@ -905,7 +987,7 @@ function scheduleToggle(){
 
 				// Refresh events
 				showEvents(current);
-      }, false);
+     }, false);
     });
     $(function(){
    	 
@@ -955,7 +1037,7 @@ function scheduleToggle(){
     
 	</script>
     <script>
-    $('input[type="text"]').keydown(function() {
+    $('input[type="text"]').not('#searchWd').keydown(function() {
 	    if (event.keyCode === 13) {
 	        event.preventDefault();
 	    }
@@ -985,6 +1067,7 @@ function scheduleToggle(){
     	}else{
     		return false;
     	}
+    	tmanager();
 	}
 	function kick(name, pNo, mNo, mMno){
 		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
@@ -1009,6 +1092,7 @@ function scheduleToggle(){
 		}else{
 			return;
 		}
+		tmanager();
 	}
 	function leaveProject(pno, mno, pmno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
@@ -1048,9 +1132,10 @@ function scheduleToggle(){
 				}else{
 					// 존재함
 					for(var i=0; i<response.length;i++){
+						console.log("response" + response[i].mno);
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].mProfile + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1061,6 +1146,7 @@ function scheduleToggle(){
 		    error:function(request,status,error){
 		    	alert("code:"+request.status+"\n"+"error:"+error);
 		    }
+		
 		});
 	}
 	
@@ -1077,7 +1163,7 @@ function scheduleToggle(){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1087,7 +1173,7 @@ function scheduleToggle(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].mProfile+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
@@ -1096,11 +1182,17 @@ function scheduleToggle(){
 					printHTML="";
 				}
 				
+				tmanager();
 			}
 		});
 		
 	}
 	$(function(){
+		tmanager();	
+	})
+	
+		function tmanager(){
+		$("#tmno").empty();
 		var pNo = ${pno};
 		$.ajax({
 			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
@@ -1110,22 +1202,48 @@ function scheduleToggle(){
 			success:function(response){
 				if($("#pmno").text() == $("#mno").text()){
 					for(var i=0; i<response.length; i++){
-						$('#tmanager').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
 						console.log(response[i].mno);
 					}
-				}else{
-					for(var i=0; i<response.length; i++){
-
-					}
-
-				}
-				
+				}				
 			}
 		});
-	})
+		}
+	
 	
 	
 
+	</script>
+	<!-- javascript -->
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+	<script>
+	$(document).ready(function () {
+		donutPie();
+    });
+	function donutPie(){
+		var pieData = {
+			요청: 11,
+			진행: 3,
+			피드백: 3,
+			완료: 10,
+			보류: 7
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
 	</script>
 	
 </body>

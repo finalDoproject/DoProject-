@@ -3,6 +3,7 @@
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,7 +44,7 @@
 	<div>
 		<nav class="navtop navbar navbar-expand static-top" >
 	      <div class="logo_area " style="width: 200px; height: 60px;">
-	        <a class="navtop_logo"  href="index.html">
+	        <a class="navtop_logo"  href="/dp">
 	        	<b style="font-family:'Exo 2', sans-serif; font-size: 26px">DOPE</b>
 	        	<small style="font-family:'Exo 2', sans-serif; font-size: 17px">Do Project!</small></a>
 	      </div>
@@ -51,14 +52,15 @@
 	     
 	
 	      <!-- Navbar Search -->
-	      <form>
 	        <div class="input-group">
 	          <div class="input-group-append searchBar_area" >
 	            <i class="fas fa-search" style="color: rgba(73, 77, 82, 0.6); margin: 5px 10px;"></i>
-	            <input type="text" class="searchBar" placeholder="검색어 입력 후 Enter" aria-label="Search" >
+			      <form id="searchListFrm" action="${pageContext.request.contextPath}/project/projectSearch.do?" >
+			      <input type="hidden" name="mno" value="${member.mno}">
+			      <input type="text" class="searchBar" id="searchWd" name="searchWd" placeholder="검색어 입력 후 Enter" />
+		      	 </form>
 	          </div>
 	        </div>
-	      </form>
 	
 	      <!-- Navbar -->
 	      <ul class="navbar-nav" style="padding-right: 30px; position: absolute; right: 0;">
@@ -69,6 +71,7 @@
 	               <c:if test="${!empty member}">
 
 							<span class="headerMno" id="mnoSession" data-value="@Request.RequestContext.HttpContext.Session['mno']" name="mno" style="display: none;">${member.mno}</span>
+							<span id="nick" style="display: none;">${member.nickName}</span>
 							<span>${member.nickName}님</span>&nbsp;&nbsp;
 
 	               </c:if>
@@ -76,7 +79,7 @@
 	              </a>
 	            </li>
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno}, 1);" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <a class="nav-link dropdown-toggle" onclick="alarmList(${member.mno});" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-bell fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
 	            <span class="badge badge-danger" id="alarmCount"></span>
 	          </a>
@@ -94,7 +97,7 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <span class="badge badge-danger">7</span>
+	            <!-- <span class="badge badge-danger">7</span> -->
 	          </a>
 	          </c:if>
 	        </li>
@@ -104,10 +107,10 @@
 	            <div id="userImg" class="cropcircle"></div>
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-	            <a class="dropdown-item" href="#">Settings</a>
+	            <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a>
 	            <a class="dropdown-item" href="#">Activity Log</a>
 	            <div class="dropdown-divider"></div>
-	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">Logout</a>
 	          </div>
 	        </li>
 	      </ul>
@@ -117,17 +120,11 @@
 
 
 	<!-- Bootstrap 4 JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-		crossorigin="anonymous"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-		crossorigin="anonymous"></script>
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 
 
 
@@ -180,22 +177,23 @@
 				dataType:"json",
 				type : "GET",
 				data : {ano:aNo},
+				async : false,
 				success : function(response){
 				},
 				error:function(request,status,error){
 			    	alert("code:"+request.status+"\n"+"error:"+error);
 			    }
 			});
+			send_message();
 		}
 		
-		function alarmList(mNo, loginMno){
-			console.log(loginMno);
+		function alarmList(mNo){
 			$("#alarmList").empty();
 			$.ajax({
 				url:"${pageContext.request.contextPath}/alarm/alarmList.al",
 				dataType:"json",
 				type : "GET",
-				data : {mno:mNo, loginmno:loginMno},
+				data : {mno:mNo},
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){
@@ -232,6 +230,41 @@
 			    }
 			});
 		}
+		
+		var wsUri = "ws://localhost/count";
+		function send_message() {
+	        websocket = new WebSocket(wsUri);
+	        websocket.onopen = function(evt) {
+	            onOpen(evt);
+	        };
+	        websocket.onmessage = function(evt) {
+	            onMessage(evt);
+	        };
+	        websocket.onerror = function(evt) {
+	            onError(evt);
+	        };
+	    }
+		
+		function onOpen(evt) {
+	       websocket.send($('#nick').text());
+	    }
+	    function onMessage(evt) {
+	    	var data=evt.data;
+	    	if(data!=0){
+	    		$("#alarmCount").empty();
+	    		$('#alarmCount').append(data);
+	    	}else{
+	    		$("#alarmCount").empty();
+	    	}
+	    }
+	    function onError(evt) {
+	    }
+	    
+	    $(document).ready(function(){
+	    	send_message();
+	    });
+	    
+
 	</script>
 </body>
 </html>

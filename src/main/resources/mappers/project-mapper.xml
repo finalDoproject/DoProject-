@@ -3,15 +3,28 @@
 <mapper namespace="project">
 	<resultMap type="map" id="project"/>
 	
+	<resultMap type="map" id="pjMemberList">
+		<id  property="pno"  column="PNO"/>
+		<result property="pmmno" column="PMMNO" />		
+	</resultMap>
 	
 	<select id="selectProjectList"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) ORDER BY pno DESC
+		SELECT P.*, PM.PMPNO, PM.PMMNO, MNOCNT, M.NICKNAME
+		FROM (SELECT PMPNO,COUNT(DISTINCT PMMNO) MNOCNT
+		        FROM PROJECT_MEMBER
+		        GROUP BY PMPNO) PMM
+		JOIN PROJECT P ON (PNO = PMPNO)
+		JOIN MEMBER M ON (P.PMNO = M.MNO)
+		JOIN PROJECT_MEMBER PM ON (PM.PMPNO = PMM.PMPNO)
+		WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO =#{mno}) 
+		AND PM.PMPNO = P.PNO
+		ORDER BY pno DESC
 	</select>
 	
 	<select id="selectOneProjectLv"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT_LEVEL WHERE PNO = #{pno}
+		SELECT * FROM PROJECT_LEVEL WHERE LPNO = #{pno}+1
 	</select>
 	
 	<select id="selectOneProject" parameterType="_int" resultType="project">
@@ -20,21 +33,42 @@
 	
 	<insert id="insertProject">
 		 INSERT INTO PROJECT VALUES
-		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, #{pmmno})
+		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, DEFAULT, #{pmmno})
 	</insert>
-	
-	
-	
 	<insert id="insertProjectLv" parameterType="java.util.List">
 	INSERT ALL
 		<if test="list != null">
 			<foreach collection="list" item="item">		 
 			 INTO PROJECT_LEVEL VALUES
-			(SEQ_PNO.NEXTVAL, #{item.lno}, #{item.lname})	
+			(SEQ_PNO.NEXTVAL, #{item.lno}, #{item.lname}, DEFAULT)	
 			</foreach>
 		</if>
 	SELECT * FROM DUAL
 	</insert>
+	
+	<update id="updateLevelCk">
+		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
+	</update>
+	
+	<update id="updateOneLevelCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
+	<update id="updateOneLevelunCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'N'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
+	
+	<update id="updateProject">
+		 UPDATE PROJECT SET 
+		 PTITLE = #{ptitle}, PSUMMARY = #{psummary}
+		 WHERE PNO = #{pno}
+	</update>
+	<update id="updateProjectLv" >
+		UPDATE PROJECT_LEVEL SET
+		 LNAME = #{lname}
+	  	 WHERE LPNO = (#{lpno} + 1) AND LNO = #{lno}
+	</update>
 		
 	
 		
@@ -56,7 +90,9 @@
 	</delete>
 
 	<select id="selectSearchMember" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{userNick} || '%'
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE NICKNAME LIKE '%' || #{userNick} || '%'
 	</select>
 	
 	<insert id="insertInviteProject">
@@ -64,7 +100,9 @@
 	</insert>
 	
 	<select id="searchMemberList" resultType="member">
-		SELECT * FROM MEMBER WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
+		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE MNO IN (SELECT PMMNO FROM PROJECT_MEMBER WHERE PMPNO = #{pno})
 	</select>
 	
 	<select id="selectSearchPM" parameterType="_int" resultType="ProjectMember">
@@ -78,4 +116,10 @@
 	<insert id="insertLeaveAlarm">
 		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
 	</insert>
+	<select id="projectMemberList" parameterType="_int" resultMap="pjMemberList">
+		SELECT PNO, PMMNO
+		FROM PROJECT 
+		JOIN PROJECT_MEMBER ON (PNO = PMPNO)
+		WHERE PMMNO=#{mno}
+	</select>
 </mapper>

@@ -42,6 +42,31 @@ public class ProjectServiecImpl implements ProjectService {
 		 return projectDao.selectOneProjectLv(pno);
 	}
 	
+
+	@Override
+	public int updateLevelCk(Project project) {
+		return projectDao.updateLevelCk(project);
+	}
+
+	@Override
+	public int updateOneLevelCk(Project project) {
+		return projectDao.updateOneLevelCk(project);
+	}
+	
+	@Override
+	public int updateOneLevelunCk(Project project) {
+		return projectDao.updateOneLevelunCk(project);
+	}
+	
+	@Override
+	public int updateProject(Project project) {
+		return projectDao.updateProject(project);
+	}
+
+	@Override
+	public int updateProjectLv(List<Project> pjLevel) {
+		return projectDao.updateProjectLv(pjLevel);
+	}
 	
 	// ---- 메모 ---- //
 	@Override
@@ -116,6 +141,18 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.insertLeaveAlarm(pno, mno, apmno);
 	}
 
+	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		 return projectDao.projectMemberList(mno);
+	}
+
+
+
+	
+
+	
+
+	
 
 	
 }

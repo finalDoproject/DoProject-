@@ -44,7 +44,45 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.selectList("project.selectOneProjectLv", pno);
 	}
 	
+	@Override
+	public int updateLevelCk(Project project) {
+		return sqlSession.update("project.updateLevelCk", project);
+	}
+
+	@Override
+	public int updateOneLevelCk(Project project) {
+		System.out.println("project:"+project);
+		System.out.println("체크값:"+project.getLcheck());
+		if(project.getLcheck().equals("N")) {
+			System.out.println("Y로 변경");
+			return sqlSession.update("project.updateOneLevelCk", project);					
+		}else {
+			System.out.println("N으로 변경");
+			return sqlSession.update("project.updateOneLevelunCk", project);	
+		}		
+	}
+	@Override
+	public int updateOneLevelunCk(Project project) {
+		return sqlSession.update("project.updateOneLevelunCk", project);	
+	}
 	
+	@Override
+	public int updateProject(Project project) {
+		return sqlSession.update("project.updateProject", project);
+	}
+
+	@Override
+	public int updateProjectLv(List<Project> pjLevel) {
+		int result = 0;
+		System.out.println("plevel:" +pjLevel );
+		for(Project project: pjLevel) {
+			System.out.println("확인!");
+			result += sqlSession.update("project.updateProjectLv", project);										
+		}
+		System.out.println("result:" + result);
+		return result;
+	}
+
 	
 	// ---- 메모 ----//
 	@Override
@@ -138,10 +176,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.insert("project.insertLeaveAlarm", map);
 	}
 
-
-	
-
-	
+	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		return sqlSession.selectList("project.projectMemberList", mno);
+	}
 
 
 
