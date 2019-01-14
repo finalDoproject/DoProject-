@@ -64,7 +64,7 @@ div#form{
 	border-radius: 5px;
 	padding:20px;
 	left:50%;
-	top:34%;
+	top:36%;
 	margin-left:-180px;
 	margin-top:-200px;
 }
@@ -97,7 +97,7 @@ div.form-item p.formLabel {
 	color:#bbb;}
 .formTop{top:-22px !important; left:26px;  padding:0 5px; font-size: 14px; color:#F88E6F !important;}
 .formStatus{color:#8a8a8a !important;}
-input[type="submit"].login{
+input[type="submit"].login {
 	float:right;
 	width: 112px;
 	height: 37px;
@@ -116,26 +116,18 @@ input[type="submit"].login{
 input[type="submit"].login:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 input[type="submit"].login:focus{outline: none;}
 
-/* input[type="radio"]:checked:after {
-   background-color: #ffa500;
-        
-        border: 2px solid #F88E6F;
-} */
-
-
 </style>
-
 
 <meta charset="UTF-8">
 <title>회원가입</title>
 </head>
 <body>
 
-
 <div id="formWrapper">
 
 <div id="form">
 <div class="logo">
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">회원가입</h1>
 </div>
 
@@ -165,29 +157,27 @@ input[type="submit"].login:focus{outline: none;}
 		
 		<div class="form-item">
 			<p class="formLabel">이름</p>
-			<input type="text" name="nickName" id="nickName" class="form-style" required="required" />
-		
+			<input type="text" name="nickName" id="nickName" class="form-style" required="required" autocomplete="off" />
 			
 		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">이메일 주소</p>
-			<input type="email" name="email" id="email" class="form-style" required="required" />
+			<input type="email" name="email" id="email" class="form-style" required="required" autocomplete="off"/>
+			<span class="emailDuplicateCheck"><em>이미 사용중인 이메일입니다.</em></span>
+			<input type="hidden" name="emailDuplicateCheck" id="emailDuplicateCheck" value="0"/>	
 			<br>
-<!-- 			&nbsp;&nbsp;<input type="radio"  value="M">&nbsp;남 &nbsp;&nbsp;&nbsp;
-										<input type="radio" value="F">&nbsp;여 &nbsp; -->
 		</div>
 		
 		<div class="form-item">
 		<!--  <p class="pull-left"><a href="#"><small>Register</small></a></p>  -->
 		<input type="submit" id="sbmComplete" class="login pull-right" value="가입완료">
 		<br />
-		 <!-- <div class="clear-fix"></div> -->  
+		
 	    </div>
 	</form>	
 </div>
 </div>
-
 
 <script>
 
@@ -195,8 +185,9 @@ $(document).ready(function(){
 	
 	$(".idCheckPass").hide();
 	$(".idCheckFail").hide();
-	$(".pwdCheckFail").hide();
+ 	$(".pwdCheckFail").hide(); 
 	$(".pw2CheckFail").hide();
+	$(".emailDuplicateCheck").hide();
 	
 	var formInputs = $('input[type="text"],input[type="password"],input[type="email"],input[type="radio"]');
 	formInputs.focus(function() {
@@ -215,7 +206,6 @@ $(document).ready(function(){
 		 $(this).parent().children('.form-style').focus();
 	});
 });
-
 
 $(function(){
 	
@@ -250,162 +240,90 @@ $(function(){
 	});
 });
 
-
-	$("#mbEnrollFrm").submit(function(event){
-		
+$(function(){
 	
-		 if($('#password').val() != $('#password2').val()){
-			 $(".pw2CheckFail").show();
-			event.preventDefault();
-			return;
-		}
-			
-		var pw  = $('#password').val();
-/* 		var pwRegex = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{4,20}$/;
-		
-		if (!pwRegex.test(pw)) {
-        	$("pwCheckFail").show();
-            return false;
-        }  */
-		
-	    if (isValidPasswd(pw) != true) {
-	    	$(".pwdCheckFail").show();
+	$("#email").on("keyup",function(){
+	
+	var email = $('#email').val();
+	
+	$.ajax({
+        url  : "${pageContext.request.contextPath}/member/checkEmailDuplicate.do",
+        data : {email:email},
+        dataType: "json",
+        success : function(data){
+            console.log(data);
+            if(data.isUsable2==true){ 
+                $(".emailDuplicateCheck").hide();
+                $("#emailDuplicateCheck").val(1);
+                
+            } else {
+            	$(".emailDuplicateCheck").show();
+            	$("#emailDuplicateCheck").val(0);
+            }
+        }, error : function(jqxhr, textStatus, errorThrown){
+            console.log("ajax 처리 실패");
+            //에러로그
+            console.log(jqxhr);
+            console.log(textStatus);
+            console.log(errorThrown);
+         }			
+	  });
+   });
+});
+
+$("#mbEnrollFrm").submit(function(event){
+	
+		//아이디중복체크여부
+	    if($("#idDuplicateCheck").val()==0){
+	    	
+	    	$(".idCheckFail").hide();
+	     	$(".pwdCheckFail").hide(); 
+	    	$(".pw2CheckFail").hide();
+	    	$(".emailDuplicateCheck").hide();
+	    	
+	        alert("사용가능한 아이디를 입력해주세요.");
 	        return false;
 	    }
-	    
-	    function checkSpace(str) {
-	        if (str.search(/\s/) != -1) {
-	            return true;
-	        } else {
-	        	$(".pwdCheckFail").show();
-	            return false;
-	        }
-	    }
-
-	    function isValidPasswd(str) {
-	    	 var cnt = 0;
-	         if (str == "") {
-	             return false;
-	         }
-
-	         /* check whether input value is included space or not */
-	         var retVal = checkSpace(str);
-	         if (retVal) {
-	             return false;
-	         }
-	         if (str.length < 8) {
-	             return false;
-	         }
-	         for (var i = 0; i < str.length; ++i) {
-	             if (str.charAt(0) == str.substring(i, i + 1))
-	                 ++cnt;
-	         }
-	         if (cnt == str.length) {
-	             return false;
-	         }
-
-	         var isPW = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{4,}$/;
-	         if (!isPW.test(str)) {
-	        	 $("pwCheckFail").show();
-	             return false;
-	         }
-
-	         return true;
-	    }
-	    
 		
-		var email = $("#email").val();
-
-		var regex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-		var isEmailValid = true;
-
+		var pw  = $('#password').val();
+		var pwRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,25}$/;
+	
+		if (!pwRegex.test(pw)) {
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide(); 
+			$(".pw2CheckFail").hide();
+			$(".emailDuplicateCheck").hide();
+    	
+			$(".pwdCheckFail").show();
+			return false;
+        }
 		
-		
-		if (email == "") {
-		
-			alert("올바른 이메일 주소를 입력해주세요.");
-			event.preventDefault();
-			return;
-		}
-
-		
-
-
-		
-
-		
-	
-
-	});
-	
-	
-	
-
-
- /* $("#mbEnrollFrm").submit(function(){
-	
-	var p1=$("#password").val(), p2=$("#password2").val();
-
-    if (isValidPasswd(p1) != true) {
-    	$(".pwdCheckFail").show();
-        return false;
-    }
-	
-     function isValidPassPwd(p1) { 
- 
-        var pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{4,}$/;
-        
-        if (!pwRegex.test(p1)) {
-        	$("pwCheckFail").show();
-            return false;
-        } 
-
-     
-     	return true;
-     } 
-     
- 	-------- 비번 재확인
-  	if(p1 != p2){
-  		$("pw2CheckFail").show();
-  		------------------------------ event.preventDefault(); 
-  		return false;
-  	}
- 	
-     function checkSpace(p1) {
-         if (p1.search(/\s/) != -1) {
-             return true;
-         } else {
-         	alert("비밀번호는 공백이 없어야합니다.");
-             return false;
-         }
-     } 
-     
- 	if (p2 == "") {
-      	alert("비밀번호 재확인란을 작성해주세요.");
-        return false;
-    }  
-    
-	var email = $("#email").val();
-
-	var emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-	
-	function isEmailValid(email){
-		if(!emailRegix.test(email)){
-			alert("이메일 형식을 올바르게 작성해주세요.");
+		if( pw != $('#password2').val()){
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide();
+		 	$(".pwdCheckFail").hide(); 
+			$(".emailDuplicateCheck").hide();
+			
+			$('.pw2CheckFail').show();
 			return false;
 		}
-	}
-
-	    $(".idCheckPass").hide();
-    	$(".idCheckFail").hide();
-    	$(".pwdCheckFail").hide();
-    	$(".pw2CheckFail").hide();
-  
-	return true;
+		
+		if($("#emailDuplicateCheck").val()==0){
+			
+			$(".idCheckPass").hide();
+			$(".idCheckFail").hide();
+		 	$(".pwdCheckFail").hide(); 
+			$(".pw2CheckFail").hide();
+		
+			alert("사용가능한 이메일을 입력해주세요.");
+			return false;
+		} 
+		
+		return true;
 	
 });
-  */
-
   
 </script>
 

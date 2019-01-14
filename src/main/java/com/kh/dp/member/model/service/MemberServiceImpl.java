@@ -48,6 +48,15 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.checkIdDuplicate(hmap);
 	}
+	
+	@Override
+	public int checkEmailDuplicate(String email) {
+		
+		HashMap<String, Object> hmap = new HashMap<String, Object>();
+		hmap.put("email", email);
+		
+		return memberDao.checkEmailDuplicate(hmap);
+	}
 
 	@Override
 	public Member selectOne(String userId) {
@@ -72,6 +81,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.deleteMember(mno);
 	}
+
 	
 	@Override
 	public int withdrawMember(String userId) {
@@ -103,7 +113,15 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	
+
 	
+	@Override
+	public Member searchId(String email) {
+		
+		return memberDao.searchId(email);
+	}
+
+	// 임시 비밀번호 발급
 	public static String getRamdomPassword() { 
 		
 		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -127,6 +145,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		String newPwd = getRamdomPassword();
 		
+		// 임시 비밀번호 암호화
 		m.setPassword(bcryptPasswordEncoder.encode(newPwd));
 		
 		int result = memberDao.updateNewPw(m);
@@ -135,19 +154,23 @@ public class MemberServiceImpl implements MemberService {
 		MimeMessageHelper helper = new MimeMessageHelper(mail);
 		
 		try {
+			// 보내는 사람 이메일
 			helper.setFrom("ddProjectbb@gmail.com");
 		} catch (MessagingException e1) {
 		
 			e1.printStackTrace();
 		}
 		
-		String htmlStr = "<h2>안녕하세요 '"+ m.getNickName()+"' 님</h2><br><br>" 
+		String htmlStr = 
+				 "<div align='center' style='border:2px solid #F88E6F; font-family:verdana'><br>"
+				+ "<img width='500' height='280' src='http://192.168.20.41/dp/resources/images/mypage/users/friends.jpg'/>"
+				+ "<h3>안녕하세요 '"+ m.getNickName()+"' 님</h3><br>"
 				+ "<p>비밀번호 찾기를 신청해주셔서 임시 비밀번호를 발급해드렸습니다.</p>"
-				+ "<p>임시로 발급 드린 비밀번호는 <h2 style='color : blue'>'" + newPwd +"'</h2>이며 로그인 후 마이페이지에서 비밀번호를 변경해주시면 됩니다.</p><br>"
-				+ "<h3><a href='http://54.180.123.73/MS/'>MS :p 홈페이지 접속 ^0^</a></h3><br><br>"
-				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
+				+ "<p>임시 비밀번호 : <h2 style='color : #F88E6F'>'" + newPwd +"'</h2><br> 로그인 후 마이페이지에서 비밀번호 변경을 꼭 해주시기 바랍니다.</p>"
+				+ "<p>오늘도 DOPROJECT와 멋진 프로젝트를 만들어보세요:D - 두플드림</p><br></div><br>"
+				+ "※ 비밀번호를 바꾸신 적이 없으시면 ddProjectbb@gmail.com로 문의 바랍니다.";
 		try {
-			mail.setSubject("[MS :p] 임시 비밀번호가 발급되었습니다", "utf-8");
+			mail.setSubject("[DOPROJECT]"+" "+m.getUserId()+"님, 임시 비밀번호가 발급되었습니다.", "utf-8");
 			mail.setText(htmlStr, "utf-8", "html");
 			mail.addRecipient(RecipientType.TO, new InternetAddress(m.getEmail()));
 			mailSender.send(mail);
@@ -158,6 +181,5 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	
 	
 }

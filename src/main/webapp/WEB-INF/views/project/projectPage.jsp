@@ -19,7 +19,8 @@
 <!-- jsCalendar -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/jsCalendar.clean.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <style>
@@ -72,6 +73,29 @@ function sclick(){
 }
 	
 
+$(function(){
+	$('#taskForm').focusout(function() {
+		  $('#taskForm').css('display', 'none');
+		  console.log("gg");
+		});	
+});
+
+function formSubmit(){
+	 var title = $("input[name=title]").text();
+	 var member = $("option").val();
+	 var startdate = $("input[name=startDate]").text();
+	 var enddate = $("input[name=endDate]").text();
+	 
+	  if(title.length == 0 || startdate.length == 0 
+		|| enddate.length ==0 || member.length == 1){
+		alert ("필수 사항이 입력되지 않았습니다.");
+		return false;
+	} 
+	  
+	return true;  
+	
+};
+
 </script>
 </head>
 <body>
@@ -110,7 +134,7 @@ function sclick(){
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>
@@ -166,7 +190,8 @@ function sclick(){
               </button>
             </div>
             <div class="modal-body">
-            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  method="post">
+            <form name="requestForm" action="matching.do?pno=${project.pno}&mno=${memberNo}"  
+            	  method="post" onsubmit="return formSubmit();">
                     <table class="table">
                             <thead>
                               <tr>
@@ -207,7 +232,7 @@ function sclick(){
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="ok">요청 완료</button>
+                <input type="submit" class="ok" value="요청 하기">
             </div>
                  </form>         
             </div>
@@ -312,21 +337,24 @@ function sclick(){
         
       </div>
       <hr>
-      <div class="timetable" style="color: #555">
+      <div class="timetable " style="color: #555">
+  
           <h6>스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                
+              
                 <c:if test="${s.SSNO eq 0}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
                 </c:if>
+                
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
@@ -337,6 +365,7 @@ function sclick(){
               </li>
             </c:forEach>
             </ul>
+          
         </div>
         <hr>
 
@@ -519,7 +548,7 @@ function sclick(){
             </table>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary store">저장</button>
+          
         </div>
       </div>
     </div>
@@ -528,23 +557,23 @@ function sclick(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -1182,6 +1211,7 @@ function sclick(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
@@ -1248,11 +1278,11 @@ function sclick(){
     });
 	function donutPie(){
 		var pieData = {
-			요청: 11,
-			진행: 3,
-			피드백: 3,
-			완료: 10,
-			보류: 7
+			요청: 0,
+			진행: 0,
+			피드백: 0,
+			완료: 0,
+			보류: 1
 		};
 		var chartDonut = c3.generate({
 			bindto: "#piechart",

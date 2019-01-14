@@ -84,4 +84,16 @@ public class SideServiceImpl implements SideService {
 		return sideDao.countMember(requestNo);
 	}
 
+	@Override
+	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
+		
+		return sideDao.FileList(currentPage, numPerPage, pno);
+	}
+
+	@Override
+	public int FileTotalContents(int pno) {
+		
+		return sideDao.FileTotalContents(pno);
+	}
+
 }

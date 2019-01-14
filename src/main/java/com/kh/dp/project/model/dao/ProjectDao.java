@@ -15,7 +15,10 @@ public interface ProjectDao {
 	Project selectOneProject(int no);
 	List<Project> selectOneProjectLv(int pno);
 	int updateLevelCk(Project project);
-	
+	int updateOneLevelCk(Project project);
+	int updateOneLevelunCk(Project project);
+	int updateProject(Project project);
+	int updateProjectLv(List<Project> pjLevel);
 	
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList(Map<String, Object> map);
@@ -36,6 +39,7 @@ public interface ProjectDao {
 	Object selectSearchPM(int pno, int mno);
 	int insertExileAlarm(int pno, int mno);
 	int insertLeaveAlarm(int pno, int mno, int apmno);
+
 	
 
 

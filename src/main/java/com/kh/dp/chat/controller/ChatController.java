@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dp.chat.model.service.ChatService;
+import com.kh.dp.chat.model.vo.ChatPtm;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Project;
 
@@ -62,7 +63,10 @@ public class ChatController {
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectOneChatList(pno, chWriter, chReader));
 		
-		mv.addObject("chatOneList", list);
+		String renamedFileName = chatService.selectOneFileName(chReader);
+		String yourName = chatService.selectOneYourName(chReader);
+		
+		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName).addObject("yourName", yourName);
 		mv.setViewName("jsonView");
 
 		return mv;
@@ -75,7 +79,7 @@ public class ChatController {
 		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
-		
+
 		mv.addObject("chatProjectList", list);
 		mv.setViewName("jsonView");
 		/*System.out.println("ajax 채팅 : " + list);*/
@@ -83,24 +87,42 @@ public class ChatController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/searchChatRoom.ch", method=RequestMethod.GET)
-	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("roomName") String roomName) {
+	@RequestMapping(value="/lastChat.ch", method=RequestMethod.GET)
+	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("me") int me, @RequestParam("you") String you) {
+		
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
+		String str = "";
+		System.out.println("you : " + you);
+		if(you.contains("p") || you.charAt(0) == '0') {
+			str = chatService.selectPtmLastChat(me, Integer.parseInt(you.substring(1)));
+		}else {
+			str = chatService.selectMtmLastChat(me, Integer.parseInt(you));
+		}
 		
-		ArrayList<Map<String, String>> list =
-				new ArrayList<Map<String, String>>(chatService.selectSearchChatRoom(roomName));
-		
-		mv.addObject("ajaxList", list);
+		mv.addObject("str", str);
 		mv.setViewName("jsonView");
-		System.out.println("ajax 검색 : " + list);
+		/*System.out.println("ajax 검색 : " + list);*/
 		
 		return mv;
 	}
 	
-	public String insertChat() {
-		// 채팅 기록 저장용
-		return "";
+	@RequestMapping(value="/chatWho.ch", method=RequestMethod.GET)
+	public ModelAndView selectWho(Model model,@RequestParam("me") int me) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		String yourName = chatService.selectOneYourName(me);
+		
+		mv.addObject("yourName", yourName);
+		mv.setViewName("jsonView");
+
+		return mv;
+	}
+	
+	@RequestMapping(value="/countChatPtm.ch", method=RequestMethod.GET)
+	public int countChatPtm(@RequestParam("mno") int mno, @RequestParam("pno") int pno) {
+		return chatService.selectOneChatPtm(pno);
 	}
 	
 }

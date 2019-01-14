@@ -10,6 +10,9 @@ public interface AlarmDao {
 
 	List<Alarm> selectSearchAlarm(int mno);
 
+	int selectApno(Alarm al);
+
 	/*String countAlarm(String payload);*/
 	
 }
+

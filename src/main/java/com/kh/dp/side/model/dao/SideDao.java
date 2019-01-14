@@ -32,6 +32,9 @@ public interface SideDao {
 	
 	public int countMember(int requestNo);
 	
+	public List<Map<String, String>> FileList (int currentPage, int numPerPage, int pno);
+
+	public int FileTotalContents(int pno);	
 	
 }
 	

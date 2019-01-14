@@ -22,10 +22,13 @@ public class AlarmController {
 
 	@RequestMapping(value="/alarm/delete.al", method=RequestMethod.GET)
 	public @ResponseBody int deleteAlarmList(Alarm al) {
-				
+
+		int apno = 0;
 		int result = alarmService.updateAlarm(al);
-				
-		return result;
+		if(result > 0) {
+			apno = alarmService.selectApno(al);
+		}
+		return apno;
 		
 	}
 	
@@ -39,3 +42,5 @@ public class AlarmController {
 	}
 	
 }
+
+

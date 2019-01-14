@@ -18,6 +18,7 @@ public class ChatDaoImpl implements ChatDao{
 
 	@Override
 	public List<Map<String, String>> selectProjectChatList(int pno) {
+		/*sqlSession.update("chat.updateProjectChatList", pno);*/
 		return sqlSession.selectList("chat.selectProjectChatList", pno);
 	}
 
@@ -37,25 +38,39 @@ public class ChatDaoImpl implements ChatDao{
 		map.put("pno", pno);
 		map.put("chWriter", chWriter);
 		map.put("chReader", chReader);
-		
+		/*sqlSession.update("chat.updateOneChatList", map);*/
 		return sqlSession.selectList("chat.selectOneChatList", map);
 	}
-	
+
 	@Override
-	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
-		return sqlSession.selectList("chat.selectSearchChatRoom", roomName);
+	public String selectOneFileName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneFileName", chReader);
 	}
 
 	@Override
-	public int insertChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneYourName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneYourName", chReader);
 	}
 
 	@Override
-	public int updateChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectPtmLastChat(int me, int pno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mno", me);
+		map.put("pno", pno);
+		return sqlSession.selectOne("chat.selectPtmLastChat", map);
+	}
+
+	@Override
+	public String selectMtmLastChat(int me, int you) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("me", me);
+		map.put("you", you);
+		return sqlSession.selectOne("chat.selectMtmLastChat", map);
+	}
+
+	@Override
+	public int selectOneChatPtm(int pno) {
+		return Integer.parseInt(sqlSession.selectOne("chat.selectOneChatPtm", pno));
 	}
 
 }
