@@ -21,7 +21,7 @@
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
-			<form action="${pageContext.request.contextPath}/comment/insertcomment.do" id="commentform">
+			<form action="${pageContext.request.contextPath}/comment/insertcomment.do?pno=${project.pno}&${member.mno}" id="commentform">
 			<input type="hidden" name="ctno" id="ctno" value="${task.tno }" />
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
@@ -45,7 +45,7 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                                         <div class="h6 dropdown-header">Configuration</div>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
-                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}">삭제</a>
+                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}" id="deltask">삭제</a>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
-									<input name="tstartdate" value="${fn:substring(task.tstartdate,0,11)}" readonly>
+									<input name="startdate" value="${fn:substring(task.tstartdate,0,11)}" readonly>
 								</div>
 							</div>
 							</c:if>
@@ -120,7 +120,7 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="tenddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
+									<input name="enddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
 								</div>
 							</div>
 						<hr />
@@ -202,7 +202,16 @@
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
+                    <c:forEach items="${comment}" var="cm">
+                     <div id="commentdiv" style="border : 1px solid lightgray;">
+                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" />
+                           <input type="text" value="${cm.cwriter }" />
+                           <input type="text" value="${cm.ccontent}" />
+                    </div>
+                    </c:forEach>
                     <input type="hidden" name="cwriter" value="${member.mno}" />
+                    <input type="hidden" name="pno" value="${project.pno}" />
+                    <input type="hidden" name="mno" value="${member.mno}" />
                     <div id="commentdiv" style="border : 1px solid lightgray;">
                            <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" />
                            <textarea style="width: 75%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" name="ccontent" id="ccontent" ></textarea>
@@ -434,7 +443,7 @@ $('a[id^=updatebtn]').click(function(){
 					$('#sd').prop('value', task.tstartdate);
 					$('#ed').prop('value', task.tenddate);
 				} */
-		 		  
+					 	   donutPie();
 		    },
 		    error : function(jqxhr, textStatus, errorThrown){
 		        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
@@ -496,6 +505,10 @@ function deleteAttach(){
 			return false;
 		}
 	}
+	
+	$('#deltask').click(function(){
+		 donutPie();
+	})
 
 	</script>
 </body>

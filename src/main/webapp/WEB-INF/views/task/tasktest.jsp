@@ -481,6 +481,8 @@ $(function() {
 			event.preventDefault();
 			return false;
 		}
+		
+		donutPie();
 	}
 	
 	</script>
