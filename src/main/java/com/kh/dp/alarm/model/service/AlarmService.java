@@ -1,4 +1,3 @@
-
 package com.kh.dp.alarm.model.service;
 
 import java.util.List;
@@ -15,4 +14,3 @@ public interface AlarmService {
 	int selectApno(Alarm al);
 	
 }
-
