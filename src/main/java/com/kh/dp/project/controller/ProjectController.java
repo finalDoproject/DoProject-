@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kh.dp.comment.model.service.CommentService;
 import com.kh.dp.comment.model.vo.TaskComment;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
@@ -206,14 +207,11 @@ public class ProjectController {
 		// task List
 		ArrayList<Task> tasklist = 
 				new ArrayList<Task>(taskService.selectListTask(pno));
-		
-		List<TaskComment> comment = new ArrayList<TaskComment>();
-		for(Task t : tasklist) {
-			comment = commentService.selectListComment(t.getTno());
-		}
+				
 
-		model.addAttribute("comment", comment);
-		model.addAttribute("mem", m);
+		
+		System.out.println("taskList +" + tasklist);
+		model.addAttribute("m", m);
 		model.addAttribute("tasklist", tasklist);
 		System.out.println("tasklist" + tasklist);
 		

@@ -18,7 +18,7 @@ public class CommentDaoImpl implements CommentDao {
 	@Override
 	public int insertComment(TaskComment tc) {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("comment.insertComment",tc);
+		return sqlSession.insert("taskcomment.insertComment",tc);
 	}
 
 	@Override
@@ -30,13 +30,13 @@ public class CommentDaoImpl implements CommentDao {
 	@Override
 	public List<TaskComment> selectListComment(int tcno) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("comment.selectListComment", tcno);
+		return sqlSession.selectList("taskcomment.selectListComment", tcno);
 	}
 
 	@Override
 	public int deleteComment(int cno) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete("taskcomment.deleteComment", cno);
 	}
 
 }

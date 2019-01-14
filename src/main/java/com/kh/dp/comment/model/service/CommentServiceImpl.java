@@ -1,6 +1,7 @@
 package com.kh.dp.comment.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int deleteComment(int cno) {
 		// TODO Auto-generated method stub
-		return 0;
+		return commentDao.deleteComment(cno);
 	}
 	
 	

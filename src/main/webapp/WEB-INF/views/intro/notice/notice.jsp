@@ -27,7 +27,54 @@
 		</script>
 	</head>
 	<body class="is-preload">
+<div id="wrapper">
 
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<a href="/dp" class="logo"><strong>Do </strong> Project!</a>
+				</header>
+
+				<!-- Content -->
+				<section>
+					<header class="main">
+						<h1>공지사항</h1>
+					</header>
+					<a
+						href="${pageContext.request.contextPath}/intro/board/insertNoticeView.do"
+						style="float: right;" class="button primary small">글쓰기</a>
+					<h2>공지</h2>
+
+					<div class="table-wrapper" >
+						<table style="text-align:center;" id="mtable">
+							<thead>
+								<tr>
+									<th style="text-align:center;">번호</th>
+									<th width="70%" style="text-align:center;">제목</th>
+									<th style="text-align:center;">작성일</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${list}" var="n" varStatus="num">
+									<tr id="${n.bno}">
+										<td>${num.count}</td>
+										<td>${n.btitle}</td>
+										<td>${n.bdate}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+ 				<c:out value="${pageBar}" escapeXml="false"/>
+
+
+				</section>
+
+			</div>
+		</div>
 	
 		<c:import url="../../common/introSidebar.jsp" />
 

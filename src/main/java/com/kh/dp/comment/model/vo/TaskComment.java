@@ -10,13 +10,13 @@ public class TaskComment {
 	private Date cwritedate;
 	private int ctno;
 	
-	
+	private String renamedFileName;	
 
 	public TaskComment() {
 		super();
 	}
 
-	public TaskComment(int cno, int cwriter, String ccontent, Date cwritedate, int ctno) {
+	public TaskComment(int cno, int cwriter, String ccontent, Date cwritedate, int ctno, String renamedFileName) {
 		super();
 		this.cno = cno;
 		this.cwriter = cwriter;
@@ -64,12 +64,24 @@ public class TaskComment {
 	public void setCtno(int ctno) {
 		this.ctno = ctno;
 	}
+	
+	
+
+	public String getRenamedFileName() {
+		return renamedFileName;
+	}
+
+	public void setRenamedFileName(String renamedFileName) {
+		this.renamedFileName = renamedFileName;
+	}
 
 	@Override
 	public String toString() {
 		return "TaskComment [cno=" + cno + ", cwriter=" + cwriter + ", ccontent=" + ccontent + ", cwritedate="
-				+ cwritedate + ", ctno=" + ctno + "]";
+				+ cwritedate + ", ctno=" + ctno + ", renamedFileName=" + renamedFileName + "]";
 	}
+
+	
 	
 	
 

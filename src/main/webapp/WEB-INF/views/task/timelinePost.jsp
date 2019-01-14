@@ -21,15 +21,20 @@
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
-			<form action="${pageContext.request.contextPath}/comment/insertcomment.do?pno=${project.pno}&${member.mno}" id="commentform">
-			<input type="hidden" name="ctno" id="ctno" value="${task.tno }" />
+			<input type="hidden" name="ctno" id="ctno${tcount}" value="${task.tno }" />
+			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
+            <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                	<c:forEach items="${m}" var="m">
+                                		<c:if test="${m.nickName eq task.twriter}">
+                                			<img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="">
+                                		</c:if>
+                                	</c:forEach>
                                 </div>
                                 <div >
                                     <div class="h5 m-0">&nbsp; ${task.twriter }</div>
@@ -43,7 +48,6 @@
                                         	더보기<i class="fa fa-ellipsis-h"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}" id="deltask">삭제</a>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a>
@@ -61,7 +65,7 @@
                             <hr />
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
-								<c:forEach items="${mem}" var="m" varStatus="tnum">
+								<c:forEach items="${m}" var="m" varStatus="tnum">
 									<c:if test="${m.mno == task.tmno }">
 										${m.nickName }
 									</c:if> 
@@ -202,22 +206,38 @@
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                    <c:forEach items="${comment}" var="cm">
-                     <div id="commentdiv" style="border : 1px solid lightgray;">
-                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" />
-                           <input type="text" value="${cm.cwriter }" />
-                           <input type="text" value="${cm.ccontent}" />
-                    </div>
+                    <c:if test="${task.taskComment != null}">
+                    <c:forEach items="${task.taskComment}" var="c" varStatus="cnum">
+	                    <div id="commentdiv${cnum.count }" style="border : 1px solid lightgray;" >
+								<c:forEach items="${m}" var="m" varStatus="tnum">
+									<c:if test="${m.mno == c.cwriter }">&nbsp;&nbsp;&nbsp;&nbsp;
+									<img class="rounded-circle" width="45" id="commentImg${cnum.count }" style=" float:left; margin-left:20px; margin-top:10px;" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="" />
+										<h3 style="float:left; margin-left:20px; margin-top:10px;">${m.nickName } </h3> ${c.cwritedate} <br>
+									</c:if> 
+								</c:forEach>
+	                            <textarea style="width: 60%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" readonly>${c.ccontent}</textarea>
+	                           
+                           <c:if test="${member.mno == c.cwriter }">
+                           <button style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small" onclick="location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno=${c.cno}&pno=${project.pno}&mno=${member.mno}'">삭제</button>         
+	                    	</c:if>
+	                    </div>
                     </c:forEach>
-                    <input type="hidden" name="cwriter" value="${member.mno}" />
-                    <input type="hidden" name="pno" value="${project.pno}" />
-                    <input type="hidden" name="mno" value="${member.mno}" />
-                    <div id="commentdiv" style="border : 1px solid lightgray;">
-                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" />
-                           <textarea style="width: 75%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" name="ccontent" id="ccontent" ></textarea>
-                           <button type="submit" style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small">등록</button>         
+                    </c:if>
+                     <div id="commentdivi${tcount }" style="border : 1px solid lightgray; display:hidden;" >
+                     <img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px;"  src="" alt="" />
+                    
                     </div>
-                   </form>
+                    <input type="hidden" name="cwriter" value="${member.mno}" />
+
+                    <div id="commentdiv" style="border : 1px solid lightgray;">
+                       <c:forEach items="${m}" var="m">
+                             <c:if test="${m.mno eq member.mno}">
+                                <img class="rounded-circle" width="45" style=" float:left; margin-left:20px; margin-top:10px;" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="">
+                             </c:if>
+                       </c:forEach>
+                           <textarea style="width: 60%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" name="ccontent${tcount }" id="ccontent${tcount }"></textarea>
+                           <button style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small hi" id="incomment${tcount }" value="${tcount }" onclick="insertComment();">등록</button>      
+                    </div>
                 </div>
                 <!-- Post /////-->
 
@@ -395,13 +415,53 @@
 
 <script>
 
+$('button[id*=incomment]').click(function(){
+	var thisid = $(this).val();
+	console.log("지금거" + thisid);
+	
+	if($('#ccontent'+thisid).val() == null){
+		alert("댓글 내용을 입력해주세요.");
+		console.log("1"+$('#ccontent'+thisid))
+		console.log("2"+$('#ccontent'+thisid).val());
+		event.preventDefault();
+		return false;
+	}
+
+	var pno = ${project.pno};
+	var mno = ${member.mno};
+
+	$.ajax({
+	    url  :'${pageContext.request.contextPath}/comment/insertcomment.do',
+	    type : "get",
+	    dataType: "json",
+	    contentType: 'application/json; charset=utf-8',
+	    data : { ccontent : $('#ccontent'+thisid).val(), pno : pno, mno : mno, ctno : $('#ctno'+thisid).val()},
+	    success : function(data) {
+				console.log(data);
+				var attach = data.img;
+				var comment = data.comment;
+				var m = data.m;  
+				$('#commentdivi'+thisid).append(' <input type="text" value="'+ m.nickName+'" />');
+				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" readonly>'+comment.ccontent+'</textarea>');
+				$('#commentImgi'+thisid).prop("src", "${pageContext.request.contextPath }/resources/upload/profile/"+ attach.renamedFileName);
+				$('#commentImgi'+thisid).css('display','block'); 
+				
+                    
+	    },
+	    error : function(jqxhr, textStatus, errorThrown){
+	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	    }
+	    
+	}); 
+})
+
 $('a[id^=updatebtn]').click(function(){
 		var num = $(this).prop("name");
 		var tno = $('#tno'+num).val();
 		console.log("tno : " + tno);
 		
 		/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
-		levelp
+		
 		$.ajax({
 		    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
 		    type : "get",
@@ -471,6 +531,8 @@ function deleteAttach(){
 	}); 
 }
 
+
+
 	function validate(){
 		
 /* 		if($("#tlevel").val() == 0){
@@ -510,6 +572,29 @@ function deleteAttach(){
 		 donutPie();
 	})
 
+	
+		function donutPie(){
+		var pieData = {
+			요청: 0,
+			진행: 0,
+			피드백: 0,
+			완료: 0,
+			보류: 1
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
 	</script>
 </body>
 </html>
