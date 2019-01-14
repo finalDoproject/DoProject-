@@ -141,6 +141,11 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.insertLeaveAlarm(pno, mno, apmno);
 	}
 
+	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		 return projectDao.projectMemberList(mno);
+	}
+
 
 
 	

@@ -176,6 +176,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.insert("project.insertLeaveAlarm", map);
 	}
 
+	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		return sqlSession.selectList("project.projectMemberList", mno);
+	}
+
 
 
 	

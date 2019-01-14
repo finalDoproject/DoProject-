@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +30,7 @@ import com.kh.dp.task.model.service.TaskService;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
 
+
 @Controller
 public class ProjectController {
 	
@@ -40,15 +43,34 @@ public class ProjectController {
 	private TaskService taskService;
 
 	@RequestMapping("/project/projectSearch.do")
-	public String projectSearch(
-			//Model model, @RequestParam("mno") int mno
-			) {
-		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		//model.addAttribute("projectList",projectList);
+	public String projectSearch( @RequestParam String mno,@RequestParam String searchWd, Model model) {
 		
-		return "project/projectSearch";
+		List<Task> searchTasklist = taskService.searchListTask(mno, searchWd);
+		
+		/*for(int i = 0; i < searchTasklist.size(); i++) {
+
+			String resultContent = "";
+			String originContent = searchTasklist.get(i).getTcontent();			
+			String patterString = "(&lt;img[^>]*src=[\\\"']?([^>\\\"']+)[\\\"']?[^>]*&gt;|<p>|</p>|<br>)";
+
+				Pattern pattern = Pattern.compile(patterString);	
+				Matcher matcher = pattern.matcher(originContent);
+				
+				while(matcher.find()) {
+					resultContent = matcher.replaceAll("");
+				}
+
+				searchTasklist.get(i).setTcontent(resultContent);		
+		
+		}*/
+		
+		model.addAttribute("searchTasklist", searchTasklist);		
+		System.out.println("searchTasklist:" +searchTasklist);
+		
+		return "/project/projectSearch";
 	}
 
+	
 	@RequestMapping("/project/projectMain.do")
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
@@ -57,7 +79,7 @@ public class ProjectController {
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
 		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
 		//List<Project> OneProject = projectService.selectOneProject(pno);
-		
+		System.out.println("projectList:"+projectList);
 		model.addAttribute("projectList",projectList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);

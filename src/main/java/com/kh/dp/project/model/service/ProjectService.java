@@ -39,6 +39,10 @@ public interface ProjectService {
 	int insertLeaveAlarm(int mno, int pno, int apmno);
 	
 	
+	List<Map<String, String>> projectMemberList(int mno);
+	
+	
+	
 
 
 }

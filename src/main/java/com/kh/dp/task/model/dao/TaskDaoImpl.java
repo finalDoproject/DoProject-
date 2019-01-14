@@ -1,5 +1,6 @@
 package com.kh.dp.task.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +79,15 @@ public class TaskDaoImpl implements TaskDao {
 	public int deleteAttach(int tno) {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("task.deleteAttach", tno);
+	}
+	
+	// 검색결과 리스트
+	@Override
+	public List<Task> searchListTask(String mno, String searchWd) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("mno", mno);
+		map.put("searchWd", searchWd);
+		return sqlSession.selectList("task.searchListTask", map);
 	}
 	
 	

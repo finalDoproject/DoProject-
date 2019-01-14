@@ -25,4 +25,7 @@ public interface TaskDao {
 	int deleteTask(int tno);
 	
 	int deleteAttach(int tno);
+	
+	//검색결과 리스트
+	List<Task> searchListTask(String mno, String searchWd);
 }

@@ -3,10 +3,23 @@
 <mapper namespace="project">
 	<resultMap type="map" id="project"/>
 	
+	<resultMap type="map" id="pjMemberList">
+		<id  property="pno"  column="PNO"/>
+		<result property="pmmno" column="PMMNO" />		
+	</resultMap>
 	
 	<select id="selectProjectList"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT * FROM PROJECT WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO = #{mno}) ORDER BY pno DESC
+		SELECT P.*, PM.PMPNO, PM.PMMNO, MNOCNT, M.NICKNAME
+		FROM (SELECT PMPNO,COUNT(DISTINCT PMMNO) MNOCNT
+		        FROM PROJECT_MEMBER
+		        GROUP BY PMPNO) PMM
+		JOIN PROJECT P ON (PNO = PMPNO)
+		JOIN MEMBER M ON (P.PMNO = M.MNO)
+		JOIN PROJECT_MEMBER PM ON (PM.PMPNO = PMM.PMPNO)
+		WHERE PNO IN (SELECT PMPNO FROM PROJECT_MEMBER WHERE PMMNO =#{mno}) 
+		AND PM.PMPNO = P.PNO
+		ORDER BY pno DESC
 	</select>
 	
 	<select id="selectOneProjectLv"  parameterType="_int" resultType="project">
@@ -103,4 +116,10 @@
 	<insert id="insertLeaveAlarm">
 		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
 	</insert>
+	<select id="projectMemberList" parameterType="_int" resultMap="pjMemberList">
+		SELECT PNO, PMMNO
+		FROM PROJECT 
+		JOIN PROJECT_MEMBER ON (PNO = PMPNO)
+		WHERE PMMNO=#{mno}
+	</select>
 </mapper>

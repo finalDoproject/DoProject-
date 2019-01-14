@@ -39,6 +39,9 @@ public interface ProjectDao {
 	Object selectSearchPM(int pno, int mno);
 	int insertExileAlarm(int pno, int mno);
 	int insertLeaveAlarm(int pno, int mno, int apmno);
+	
+	
+	List<Map<String, String>> projectMemberList(int mno);
 
 	
 

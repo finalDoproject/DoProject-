@@ -26,6 +26,17 @@
 		<result property="ftno" column="FTNO"/>
 	</resultMap>
 	
+	<resultMap type="Task" id="resultTaskList">
+		<id  property="tno"  column="TNO"/>
+		<result property="tmno" column="TMNO" />
+		<result property="ttitle" column="TTITLE" />
+		<result property="tcontent" column="TCONTENT" />
+		<result property="twritedate" column="TWRITEDATE" />
+		<result property="twriter" column="TWRITER" />
+		<result property="tpno" column="TPNO" />
+		
+	</resultMap>
+	
 	<sql id="selectAttachmentSQL">
 		
 	</sql>
@@ -94,5 +105,16 @@
 	<delete id="deleteAttach">
 	 DELETE FROM TASK_FILE WHERE FTNO = #{tno}
 	</delete>
-	
+
+
+	<select id="searchListTask" parameterType="java.util.Map" resultMap="resultTaskList">
+		SELECT distinct PJ.PTITLE PTTITLE, TNO, TTITLE, TMNO, TCONTENT, TWRITEDATE, M.NICKNAME, TPNO
+		FROM TASK TK
+		JOIN MEMBER M ON (TK.TMNO = M.MNO)
+        JOIN PROJECT_MEMBER PM ON (PMPNO = TPNO)
+		JOIN PROJECT PJ ON (TK.TPNO = PJ.PNO)
+		WHERE M.NICKNAME Like '%' || #{searchWd} || '%' OR TCONTENT   Like '%' || #{searchWd} || '%' OR TTITLE   Like '%' || #{searchWd} || '%'
+		AND PM.PMPNO = PJ.PNO AND PMMNO = #{mno}
+		ORDER BY TK.TNO DESC
+	</select>
 </mapper>

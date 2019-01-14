@@ -213,6 +213,7 @@ function optionModalClk(pno){
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
             		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
+            		<c:if test="${project.pno == project.pmpno}">
                     <h5>${project.ptitle}</h5>
                     <p>${project.psummary}</p>
                     <div class="progress_area">
@@ -225,8 +226,10 @@ function optionModalClk(pno){
                         style="width: ${persent}%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
                         <b id="per">${persent}%</b></div>
                       </div>
-                      <p>AA님 외 N명 참여중</p>
-                    </div>       
+                      
+                      <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
+                    </div> 
+                    </c:if>      
               </div>
             </div>
             </c:if>
@@ -243,7 +246,7 @@ function optionModalClk(pno){
                           <div id="users_Img" class="users_cropcircle"></div>
                           <div id="users_Img" class="users_cropcircle"></div>
                           <div id="users_Img" class="users_cropcircle"></div>
-                          <p>AA님 외 N명 참여중</p>
+                          <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
                         </div>       
                   </div>
                 </div>
