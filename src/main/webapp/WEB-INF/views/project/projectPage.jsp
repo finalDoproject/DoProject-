@@ -1257,6 +1257,11 @@ $(function(){
 		donutPie();
     });
 	function donutPie(){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/getData.do?you="+you,
+			type : "GET",
+			data : { "me" : me},
+		});
 		var pieData = {
 			요청: 0,
 			진행: 0,

@@ -93,7 +93,7 @@ public class ChatController {
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
 		String str = "";
-		System.out.println("you : " + you);
+		/*System.out.println("you : " + you);*/
 		if(you.contains("p") || you.charAt(0) == '0') {
 			str = chatService.selectPtmLastChat(me, Integer.parseInt(you.substring(1)));
 		}else {

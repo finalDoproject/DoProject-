@@ -22,6 +22,19 @@
 
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
+	var list = new Array();
+	<c:forEach items="${secondList}" var="sl">
+		list.push("${sl.mno},${sl.userId},${sl.nickName}");
+	</c:forEach>
+	setInterval(function() {
+		lastChat($("#mno").text(), "p"+$("#pno").text());
+		for(var i = 0; i < list.length; i++){
+			if(i != '${member.mno}'){
+				var you = list[i].split(",")[0];
+				lastChat('${member.mno}', you);
+			}
+		}	
+	}, 500);
 });
 var sock;
 //웹소켓 객체 생성하기
@@ -95,10 +108,7 @@ function onMessage(evt){
 			}
 		}
 		else{
-			// if조건으로 현재 있는 방에만 출력$("#chatMe").text(me+"_"+you);
-			//$("#chatMe").text(me+"_"+"0"+pno);
-			//console.log($("#chatMe").text());
-			//console.log(me+"_"+"0"+pNo);
+			// if조건으로 현재 있는 방에만 출력
 			if(you.charAt(0) == 0){
 				if($("#chatMe").text().includes("0"+pNo)){
 					var yourNickName=null;
@@ -117,6 +127,7 @@ function onMessage(evt){
 							printHTML+="<div style='clear: both;'></div>";
 							$('#chatList').append(printHTML);
 							$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+							lastChat(me, you);
 						}
 					});
 				}
@@ -128,7 +139,6 @@ function onMessage(evt){
 						type : "GET",
 						data : { "me" : me},
 						success : function(responseData){
-							/* yourNickName = responseData.yourName; */
 							console.log(me);
 							var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
 							printHTML+="<span style=''>"+responseData.yourName+"</span><br>"
@@ -140,21 +150,11 @@ function onMessage(evt){
 							printHTML+="<div style='clear: both;'></div>";
 							$('#chatList').append(printHTML);
 							$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+							lastChat(me, you);
 						}
 					});
 				}
 			}
-			/* if(($("#chatMe").text() == you+"_"+me) || you.charAt(0) == 0){
-				var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
-				printHTML+="<div class='chat-bubble you' style='float: left;'>";
-				printHTML+="<div class='content'>";
-				printHTML+=ConvertSystemSourcetoHtml(message);
-				printHTML+="</div><div class='time'>";
-				printHTML+=sockformatAMPM(today)+"</div></div></div>";
-				printHTML+="<div style='clear: both;'></div>";
-				$('#chatList').append(printHTML);
-				$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-			} */
 		}
 
 	}
@@ -162,7 +162,6 @@ function onMessage(evt){
 };
 
 $(".contact").click(function(){
-	/* sock.close(); */
 });
 
 function onClose(evt){
@@ -224,13 +223,11 @@ function dateDiff(_date1, _date2) {
 }
 
 function chatMtm(me, you, yourNick){
-	/* location.href = "/chatOne.ch?pno="+$("#pno").text()+"&chWriter="+me+"&chReader="+you; */
 	$("#chatContent").val('');
 	$("#chatContent").focus();
 	$("#chatNickName").text(yourNick);
 	$("#chatMe").text(me+"_"+you);
 	$("#chatMe").text();
-	/* console.log($("#chatMe").text()); */
 	chatYou = you;
 	chatMe = me;
 	$.ajax({
@@ -304,7 +301,6 @@ function chatPtm(me, pno){
 	$("#chatMe").text(me+"_"+"0"+pno);
 	$("#chatMe").text();
 	$("#thisImg").attr("src", "resources/images/profile/dope2.png");
-	/* console.log($("#chatMe").text()); */
 	chatYou = "0"+pno;
 	chatMe = me;
 	$.ajax({
@@ -379,7 +375,13 @@ function lastChat(me, you) {
 			}else{
 				str = "fp" + you;
 			}
-			$("#"+str).text(response.str);
+			var msg = "";
+			if(response.str != null && response.str.length > 9){
+				msg = response.str.substr(0,7) + "...";
+			}else{
+				msg = response.str;
+			}
+			$("#"+str).text(msg);
 		}
 	});
 }
@@ -452,7 +454,7 @@ function checkLength(aro_name, ari_max){
 					<div class="contact-preview">
 						<div class="contact-text" style="margin-top:10%;">
 							<h1 class="font-name">${project.ptitle}</h1>
-							<p class="font-preview" id="fpp${project.pno}"></p>
+							<span class="font-preview" id="fpp${project.pno}"></span>
 						</div>
 					</div>
 					<div class="contact-time">
@@ -466,7 +468,7 @@ function checkLength(aro_name, ari_max){
 								<div class="contact-preview">
 									<div class="contact-text" style="margin-top:10%;">
 										<h1 class="font-name">${sl.nickName}</h1>
-										<p class="font-preview" id="fp${sl.mno}"></p>
+										<span class="font-preview" id="fp${sl.mno}"></span>
 									</div>
 								</div>
 								<div class="contact-time">
