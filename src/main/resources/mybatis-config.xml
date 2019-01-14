@@ -34,7 +34,9 @@
 				 alias="ProjectMember"/>
 		<typeAlias type="com.kh.dp.project.model.vo.TaskCount" 
 				 alias="TaskCount"/>
-	</typeAliases>
+		<typeAlias type="com.kh.dp.mypage.model.vo.Mypage" 
+				 alias="my"/>
+	  </typeAliases>
 	
 	
 </configuration>

@@ -1,6 +1,7 @@
 package com.kh.dp.task.model.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,16 @@ public interface TaskService {
 	
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int no);
+	Attachment selectOneAttachment(int tno);
 
-	List<Map<String, String>> selectListTask(int pno);
+	List<Task> selectListTask(int pno);
+		
+	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
+	
+	List<Task> selectListmyTask(int mno);
+	
 }

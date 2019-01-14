@@ -22,15 +22,6 @@
 		 INSERT INTO PROJECT VALUES
 		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, DEFAULT, #{pmmno})
 	</insert>
-	<update id="updateLevelCk">
-		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
-	</update>
-	
-	<update id="updateOneLevelCk">
-			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
-		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
-	</update>
-	
 	<insert id="insertProjectLv" parameterType="java.util.List">
 	INSERT ALL
 		<if test="list != null">
@@ -41,6 +32,30 @@
 		</if>
 	SELECT * FROM DUAL
 	</insert>
+	
+	<update id="updateLevelCk">
+		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
+	</update>
+	
+	<update id="updateOneLevelCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
+	<update id="updateOneLevelunCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'N'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
+	
+	<update id="updateProject">
+		 UPDATE PROJECT SET 
+		 PTITLE = #{ptitle}, PSUMMARY = #{psummary}
+		 WHERE PNO = #{pno}
+	</update>
+	<update id="updateProjectLv" >
+		UPDATE PROJECT_LEVEL SET
+		 LNAME = #{lname}
+	  	 WHERE LPNO = (#{lpno} + 1) AND LNO = #{lno}
+	</update>
 		
 	
 		

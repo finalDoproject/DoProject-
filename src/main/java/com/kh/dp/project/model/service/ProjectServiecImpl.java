@@ -55,6 +55,21 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.updateOneLevelCk(project);
 	}
 	
+	@Override
+	public int updateOneLevelunCk(Project project) {
+		return projectDao.updateOneLevelunCk(project);
+	}
+	
+	@Override
+	public int updateProject(Project project) {
+		return projectDao.updateProject(project);
+	}
+
+	@Override
+	public int updateProjectLv(List<Project> pjLevel) {
+		return projectDao.updateProjectLv(pjLevel);
+	}
+	
 	// ---- 메모 ---- //
 	@Override
     public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
