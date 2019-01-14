@@ -42,6 +42,7 @@ sock=new SockJS("<c:url value='/chat'/>");
 sock.onopen=onOpen;
 sock.onmessage=onMessage;
 sock.onclose=onClose;
+sock.onerror=onError;
 var today=null;
 var chatYou = "";
 var chatMe = "";
@@ -71,7 +72,11 @@ function sendMessage(){
 };
 
 function onOpen(){
-}
+};
+
+function onError(){
+	console.log("error!!");
+};
 
 function onMessage(evt){
 	var data=evt.data;//new text객체로 보내준 값을 받아옴.
@@ -166,6 +171,7 @@ $(".contact").click(function(){
 
 function onClose(evt){
 };
+
 $(document).ready(function(){
 	window.addEventListener('resize', resizeTest);
 	
