@@ -103,4 +103,16 @@ public class SideDaoImpl implements SideDao {
 		return sqlSession.selectOne("matching.countMember", requestNo);
 	}
 
+	@Override
+	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int FileTotalContents(int pno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("matching.fileTotalContents", pno);
+	}
+
 }

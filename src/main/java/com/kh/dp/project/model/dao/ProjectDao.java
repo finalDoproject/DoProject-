@@ -40,6 +40,9 @@ public interface ProjectDao {
 	int insertLeaveAlarm(int pno, int mno, int apmno);
 
 	TaskCount selectTaskLevelCount(int pno);
+	int updateOneLevelunCk(Project project);
+	int updateProject(Project project);
+	int updateProjectLv(List<Project> pjLevel);
 	
 
 

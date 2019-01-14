@@ -133,6 +133,21 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.selectTaskLevelCount(pno);
 	}
 
+	@Override
+	public int updateOneLevelunCk(Project project) {
+		return projectDao.updateOneLevelunCk(project);
+	}
+
+	@Override
+	public int updateProject(Project project) {
+		return projectDao.updateProject(project);
+	}
+
+	@Override
+	public int updateProjectLv(List<Project> pjLevel) {
+		return projectDao.updateProjectLv(pjLevel);
+	}
+
 	
 
 	
