@@ -272,10 +272,12 @@ function formSubmit(){
         <h6>할일</h6>
         <c:forEach items="${tasklist}" var="task" varStatus="vs">
         <c:if test="${member.mno == task.tmno}">
-        <p>
+        <p id="myTask">
+        <a onclick="fnMove('${task.ttitle}')">
           <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
-          <input type="hidden" name="taskLv" value="${task.tlevel}" id="${task.tlevel}"> 
+          <input type="hidden" name="taskLv" value="${task.tno}" id="${task.tlevel}"> 
           <label for="ck">${task.ttitle}</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
+        </a>
         </p>
         </c:if>
         </c:forEach>
@@ -824,22 +826,26 @@ function formSubmit(){
         	
         });
         
-        
+        function fnMove(seq){
+        	
+        	console.log(":"+$(".card-title").val(seq));
+	        var offset = $(".card-title").val(seq).parent().parent().parent().parent().parent().offset();
+	        $('html, body').animate({scrollTop : offset.top}, 400);
+	    };
         
         // right nav checkBox 
          $(document).ready(function() { 
-        $("input:checkbox").on('click', function() {
-             if ( $(this).prop('checked')) {
-                  $(this).next().addClass("selected");
-                  
-             } else { $(this).next().removeClass("selected");
-             } 
-             if($(this).next().next(".delete_todo").css("display") == "none"){
-                $(this).next().next(".delete_todo").show();
-            } else {
-                $(this).next().next(".delete_todo").hide();
-            }
-        }); 
+        	 
+	       var countlv = $(".todo p").length;
+	       
+	       for(var i=0; i<countlv; i++){
+	         	   
+		      if( $("input:hidden[name='taskLv']").eq(i).prop("id")==4){
+		    	  $("input:hidden[name='taskLv']").eq(i).next().addClass("selected");
+		      } 
+	       }
+        
+        
     });
     </script>
     

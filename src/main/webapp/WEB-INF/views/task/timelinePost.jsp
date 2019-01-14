@@ -17,7 +17,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%;">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;">
         <div >
             <div class=" gedf-main">
 			

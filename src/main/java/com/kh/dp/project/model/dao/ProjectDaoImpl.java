@@ -82,6 +82,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		System.out.println("result:" + result);
 		return result;
 	}
+	
+	@Override
+	public List<Member> memberProfileList(int mno) {
+		return sqlSession.selectList("project.memberProfileList", mno);
+	}
 
 	
 	// ---- 메모 ----//
@@ -180,6 +185,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Map<String, String>> projectMemberList(int mno) {
 		return sqlSession.selectList("project.projectMemberList", mno);
 	}
+
+
 
 
 

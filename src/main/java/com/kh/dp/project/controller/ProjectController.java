@@ -75,12 +75,17 @@ public class ProjectController {
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-
+		
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		List<Member> memberProfileList = projectService.memberProfileList(mno);
 		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
 		//List<Project> OneProject = projectService.selectOneProject(pno);
 		System.out.println("projectList:"+projectList);
+		System.out.println("memberProfileList:"+memberProfileList);
+		
+		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("memberProfileList",memberProfileList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);
 		
@@ -99,7 +104,7 @@ public class ProjectController {
 		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);	
 
 		if(pjLevelStr != null) {
@@ -122,7 +127,7 @@ public class ProjectController {
 		System.out.println("pno : " + pno);
 		System.out.println("OneProject : " + OneProject);
 		System.out.println("OneProjectLvList : " + OneProjectLvList);
-		Map<String,Object> resultMap = new HashMap<>();
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("OneProjectLvList", OneProjectLvList);
 		resultMap.put("OneProject", OneProject);
 		
@@ -136,7 +141,7 @@ public class ProjectController {
 		List<Project> OneProjectLvList = projectService.selectOneProjectLv(pno);
 		Project OneProject = projectService.selectOneProject(pno);
 
-		Map<String,Object> resultMap = new HashMap<>();
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("OneProjectLvList", OneProjectLvList);
 		resultMap.put("OneProject", OneProject);
 		
@@ -153,7 +158,7 @@ public class ProjectController {
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateProject(project)>0?"프로젝트 수정 완료":"프로젝트 수정 실패";
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);	
 
 		if(pjLevelStr != null) {
@@ -176,7 +181,7 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", msg);	
 		
 	
@@ -202,7 +207,7 @@ public class ProjectController {
 		List<Member> mArr =  sideService.browseMember(pno);
 		model.addAttribute("project",project).addAttribute("mArr", mArr);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
@@ -252,14 +257,14 @@ public class ProjectController {
 										@RequestParam(value="saveMemo", required=false) String saveMemo){
 		System.out.println("메모:" + saveMemo);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("saveMemo", saveMemo);
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
 		String msg = projectService.updateMemo(map)>0?"메모 저장":"저장 실패";
 
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);
 		return hmap;
 		

@@ -122,4 +122,14 @@
 		JOIN PROJECT_MEMBER ON (PNO = PMPNO)
 		WHERE PMMNO=#{mno}
 	</select>
+	
+	<select id="memberProfileList" resultType="member">
+		SELECT PNO, MNO, MPROFILE, RENAMEDFILENAME
+		FROM (SELECT * FROM PROJECT WHERE PMNO = #{mno})
+		JOIN PROJECT_MEMBER ON (PNO = PMPNO)
+		JOIN MEMBER ON (MNO=PMMNO)
+		JOIN PROFILE_IMG ON (MPROFILE=IMGNO)
+	</select>
+	
+	
 </mapper>

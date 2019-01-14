@@ -138,7 +138,7 @@ public class TaskController {
 		System.out.println("tno: " + tno);
 		int tno1 = Integer.parseInt(tno);
 		System.out.println("tno: " + tno1);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		Task task = taskService.selectOneTask(tno1);
 		Attachment attach = taskService.selectOneAttachment(tno1);
 		if(attach != null) {
@@ -249,7 +249,7 @@ public class TaskController {
 	@ResponseBody
 	public Map<String,String> deleteAttach(@RequestParam int tno) {
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		int result = taskService.deleteAttach(tno);
 		
 		String msg = "";
