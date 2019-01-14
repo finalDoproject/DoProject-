@@ -19,10 +19,13 @@ var eventId = 0;
 						start: data[i].mcStart + 86400000,
 						end : data[i].mcEnd + 86400000 + 86400000,
 						allDay: true,
-						className: 'info'
+						className: 'info',
+						getMcno : function(){
+							return data[i].mcno;
+						}
 					}
 					console.log(data[i].mcStart +' ~ ' +data[i].mcEnd);
-					console.log(evt);
+					console.log(evt.getMcno());
 					
 					evts.push(evt);
 				}
@@ -90,6 +93,7 @@ var eventId = 0;
 							start: start,
 							end: end,
 							allDay: allDay
+							
 						},
 						true // make the event "stick"
 					);
@@ -137,49 +141,6 @@ var eventId = 0;
 	            $("#myCalendarModal").modal('show');
 			},
 			events : evts
-			/*events: [
-				{
-					id: ++eventId,
-					title: 'All Day Event',
-					start: new Date(y, m, 1)
-				},
-				{
-					id: ++eventId,
-					title: 'Repeating Event',
-					start: new Date(y, m, 3, 16, 0),
-					allDay: false,
-					className: 'info'
-				},
-				{
-					id: ++eventId,
-					title: 'Repeating Event',
-					start: new Date(y, m, 12, 16, 0),
-					allDay: false,
-					className: 'info'
-				},
-				{
-					id: ++eventId,
-					title: 'Meeting',
-					start: new Date(y, m, 16, 10, 30),
-					allDay: false,
-					className: 'important'
-				},
-				{
-					id: ++eventId,
-					title: 'Lunch',
-					start: new Date(y, m, 19, 12, 0),
-					end: new Date(y, m, 19, 14, 0),
-					allDay: false,
-					className: 'important'
-				},
-				{
-					id: ++eventId,
-					title: 'Birthday Party',
-					start: new Date(y, m, 21, 19, 0),
-					end: new Date(y, m, 21, 22, 30),
-					allDay: false,
-				}
-			],	*/		
 		});
 		
 		

@@ -24,15 +24,15 @@ public class MypageDaoImpl implements MypageDao {
 	
 	@Override
 	public int updateContent(Mypage my) {
-		
+		System.out.println("나와 : "+my);
 		return sqlSession.update("my.updateContent", my);
 	}
 
 	
 	@Override
-	public int deleteContent(int mcno) {
-		
-		return sqlSession.delete("my.deleteContent", mcno);
+	public int deleteContent(Mypage my) {
+		System.out.println("나와 : "+my);
+		return sqlSession.update("my.deleteContent", my);
 	}
 
 	@Override

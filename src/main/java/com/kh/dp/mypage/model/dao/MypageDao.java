@@ -9,10 +9,9 @@ public interface MypageDao {
 
 	int insertContent(Mypage my);
 
-
 	int updateContent(Mypage my);
 
-	int deleteContent(int mcno);
+	int deleteContent(Mypage my);
 
 	List<Mypage> selectMypage(int mno);
 

@@ -41,7 +41,7 @@
         <hr>
 
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do">
+          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do?mno=${member.mno}">
             
             <span>내가 쓴 글</span></a>
         </li>
@@ -154,8 +154,8 @@
 		 
 		 // Close Modal
           $("#myCalendarModal").modal('hide');
-		 
-          location.href = "/dp/mypage/update.do?start=" + start + "&end=" + end + "&content=" + title;
+		 console.log("mcno : "+ calendarId);
+         location.href = "/dp/mypage/update.do?mcno=" + calendarId + "&content=" + editCalendar;
 	 }
 	 
 	 function deleteCalendar() {
@@ -169,7 +169,7 @@
 			 
 		 }
 		 
-		 location.href = "/dp/mypage/delete.do?start=" + start + "&end=" + end + "&content=" + title;
+		 location.href = "/dp/mypage/delete.do?mcno=" + calendarId;
 	 }
 	</script>
 	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>

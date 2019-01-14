@@ -14,12 +14,12 @@
 	</select>
 	
 	<update id="updateContent">
-	UPDATE MYCALENDAR SET MCCONTENT = #{mcContent} WHERE MCNO = #{mcno} AND MCMNO = #{mcMno}
+	UPDATE MYCALENDAR SET MCCONTENT = #{mcContent} WHERE MCNO = #{mcno}
 	</update>
 	
-	<delete id="deleteContent">
-	DELETE FROM MYCALENDAR WHERE MCNO= #{mcno} AND MCMNO = #{mcMno}
-	</delete>
+	<update id="deleteContent">
+	UPDATE MYCALENDAR SET MCCONDITION = 'N' WHERE MCNO = #{mcno}
+	</update>
 	
 	
 	

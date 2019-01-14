@@ -28,9 +28,9 @@ public class MypageServiceImpl implements MypageService {
 	}
 
 	@Override
-	public int deleteContent(int mcno) {
+	public int deleteContent(Mypage my) {
 	
-		return mypageDao.deleteContent(mcno);
+		return mypageDao.deleteContent(my);
 	}
 
 	@Override

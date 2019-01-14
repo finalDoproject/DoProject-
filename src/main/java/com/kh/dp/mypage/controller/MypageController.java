@@ -1,6 +1,7 @@
 package com.kh.dp.mypage.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,8 @@ import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.mypage.model.service.MypageService;
 import com.kh.dp.mypage.model.vo.Mypage;
+import com.kh.dp.task.model.service.TaskService;
+import com.kh.dp.task.model.vo.Task;
 
 @Controller
 public class MypageController {
@@ -25,6 +28,9 @@ public class MypageController {
 	
 	@Autowired
 	private MypageService myService;
+	
+	@Autowired
+	private TaskService taskService;
 
 	@RequestMapping("/mypage/mypage.do")
 	public String mypageView() {
@@ -47,11 +53,6 @@ public class MypageController {
 		return null;
 	}
 	
-	@RequestMapping("/mypage/mypost.do")
-	public String mypostView() {
-		
-		return null;
-	}
 	
 	@RequestMapping("/mypage/mycalendar.do")
 	public String mycalendarView() {
@@ -69,7 +70,7 @@ public class MypageController {
 		my.setMcStart(new Date(start));
 		my.setMcMno(m.getMno());
 		
-		System.out.println(my.getMcMno());
+		System.out.println("insert:"+my.getMcMno());
 		
 		myService.insertContent(my);
 		
@@ -77,33 +78,33 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/mypage/update.do")
-	public String updateInfo(@RequestParam long start, @RequestParam long end, @RequestParam String content, HttpSession session) {
-		
+	public String updateInfo(@RequestParam int mcno, @RequestParam String content, HttpSession session) {
 		Member m = (Member)session.getAttribute("member");
 		
 		Mypage my = new Mypage();
 		my.setMcContent(content);
-		my.setMcEnd(new Date(end));
-		my.setMcStart(new Date(start));
+		my.setMcno(mcno);
 		my.setMcMno(m.getMno());
-		
-		System.out.println(my);
+
+		System.out.println("update:"+my.getMcMno());
+		System.out.println("여기 옵니다~~!");
+		myService.updateContent(my);
 		
 		return "/mypage/mycalendar";
 	}
 	
 	@RequestMapping("/mypage/delete.do")
-	public String deleteInfo(@RequestParam long start, @RequestParam long end, @RequestParam String content, HttpSession session) {
+	public String deleteInfo(@RequestParam int mcno, HttpSession session) {
 		
 		Member m = (Member)session.getAttribute("member");
 		
 		Mypage my = new Mypage();
-		my.setMcContent(content);
-		my.setMcEnd(new Date(end));
-		my.setMcStart(new Date(start));
+		my.setMcno(mcno);
+		/*my.setMcCondition(condition);*/
 		my.setMcMno(m.getMno());
 		
-		System.out.println(my);
+		System.out.println("삭제됩니다~~");
+		myService.deleteContent(my);
 		
 		return "/mypage/mycalendar";
 	}
@@ -127,4 +128,14 @@ public class MypageController {
 		return result;
 	}
 	
+	@RequestMapping("/mypage/mypost.do")
+	public String selectMytask(@RequestParam int mno, Model model) {
+		
+		ArrayList<Task> tasklist = 
+				new ArrayList<Task>(taskService.selectListmyTask(mno));
+		
+		model.addAttribute("task", tasklist);
+		
+		return "/mypage/mypost";
+	}
 }
