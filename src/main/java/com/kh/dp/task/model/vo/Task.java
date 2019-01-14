@@ -31,7 +31,7 @@ public class Task {
 	public Task() {}
 	
 	// 가상 변수 필드 생성자 추가
-	
+
 		public Task(int tno, String ttitle, String tcontent, String twriter, String twritedate, int fno, String foldName, String fnewName) {
 			super();
 			this.tno = tno;
@@ -210,7 +210,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
-				+ ttpriority +  ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
+				+ ttpriority + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
 				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno
 				+ ", foldName=" + foldName + ", fnewName=" + fnewName + ", taskFiles=" + taskFiles + ", count=" + count
 				+ "]";
