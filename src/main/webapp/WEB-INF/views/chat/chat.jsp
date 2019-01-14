@@ -19,9 +19,23 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <script>
+var eventSource;
 
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
+	
+	/* eventSource = new EventSource("<c:url value='/chatCount'/>");
+	eventSource.onopen = function(event){
+		$("#countPtm").text(event.data);
+	}
+	eventSource.onmessage = function(event){
+		var data = JSON.parse(event.data);
+		$("#countPtm").text(data);
+	}
+	eventSource.onerror = function(event){
+		$("#countPtm").text(event.data);
+	} */
+	
 	var list = new Array();
 	<c:forEach items="${secondList}" var="sl">
 		list.push("${sl.mno},${sl.userId},${sl.nickName}");
