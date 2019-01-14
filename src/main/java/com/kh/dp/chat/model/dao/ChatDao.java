@@ -24,5 +24,7 @@ public interface ChatDao {
 	String selectMtmLastChat(int me, int you);
 
 	int selectOneChatPtm(int pno);
+
+	void updatePtm(String nickName, int pno);
 	
 }

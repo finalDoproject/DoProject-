@@ -73,13 +73,16 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/chatProject.ch", method=RequestMethod.GET)
-	public ModelAndView selectProject(Model model, @RequestParam("pno") int pno) {
+	public ModelAndView selectProject(Model model, @RequestParam("pno") int pno, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		
 		// 저장되있는 채팅 내용 불러오기
 		ArrayList<Map<String, String>> list = 
 				new ArrayList<Map<String, String>>(chatService.selectProjectChatList(pno));
 
+		Member m = (Member)session.getAttribute("member");
+		chatService.updatePtm(m.getNickName(), pno);
+		
 		mv.addObject("chatProjectList", list);
 		mv.setViewName("jsonView");
 		/*System.out.println("ajax 채팅 : " + list);*/
@@ -93,7 +96,7 @@ public class ChatController {
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
 		String str = "";
-		System.out.println("you : " + you);
+		/*System.out.println("you : " + you);*/
 		if(you.contains("p") || you.charAt(0) == '0') {
 			str = chatService.selectPtmLastChat(me, Integer.parseInt(you.substring(1)));
 		}else {

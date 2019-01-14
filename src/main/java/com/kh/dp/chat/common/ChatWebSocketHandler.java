@@ -85,71 +85,89 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		memberSessionList.put(p.getPno()+"p" + mNo + "TO" + mNo2, session);
 		
 		String realMsg = msg[1];
-		
-		// 선택된 채팅방이 프로젝트 단체방이라면
-		if(msg[0].split(":")[0].charAt(0) == '0') {
-			// 전체 프로젝트 세션에서
-			for(String key : projectSessionList.keySet()) {
-				// 해당 프로젝트를 찾아
-				if(key.contains(pNo) && !key.contains("TO")) {
-					// 그 프로젝트에 속한 회원들에게 메시지를 뿌리기 위한 반복
-					/*for(String realKey : projectMap.get(key).keySet()) {*/
-						// key값에 TO가 포함되있으면 1:1 채팅이므로 ! 사용, 다시한번 key값에 현제 프로젝트인지를 확인하기 위한 contains
-						/*if(!realKey.contains("TO") && realKey.contains("p" + p.getPno())) {*/
-							// 메시지를 뿌려줄 때 세션 아이디, 메시지, 닉네임, 송/수신자를 같이 보내준다.  
-							/*projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));*/
-							/*System.out.println(key.substring(key.lastIndexOf("m")));*/
-							projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno()));
-							ChatPtm data = new ChatPtm();
-							data.setChContent(realMsg);
-							data.setChWriter(m.getMno());
-							data.setChPno(p.getPno());
-							// 'a to b' 와 'b to a' 형식으로 중복저장되기때문에 메시지가 2번 DB에 저장되는 것을 막기위한 핸들링
-							if(check == 0) {
-								sqlsession.insert("chat.insertPtm", data);
-								check++;
-							}else{
-								check = 0;
-							}
-						/*}*/
-					/*}*/
+		try {
+			// 선택된 채팅방이 프로젝트 단체방이라면
+			if(msg[0].split(":")[0].charAt(0) == '0') {
+				// 전체 프로젝트 세션에서
+				for(String key : projectSessionList.keySet()) {
+					// 해당 프로젝트를 찾아
+					if(key.contains(pNo) && !key.contains("TO")) {
+						projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno()));
+						ChatPtm data = new ChatPtm();
+						data.setChContent(realMsg);
+						data.setChWriter(m.getMno());
+						data.setChPno(p.getPno());
+						data.setNickName(m.getNickName());
+						// 'a to b' 와 'b to a' 형식으로 중복저장되기때문에 메시지가 2번 DB에 저장되는 것을 막기위한 핸들링
+						if(check == 0) {
+							sqlsession.insert("chat.insertPtm", data);
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("nickName", m.getNickName());
+							map.put("pno", String.valueOf(p.getPno()));
+							sqlsession.update("chat.updatePtm", map);
+							check++;
+						}else{
+							check = 0;
+						}
+					}
 				}
-			}
-		}else{ // 선택된 채팅방이 1:1 채팅방이라면
-			// 1:1 접속자 목록 중에서
-			for(String key : memberSessionList.keySet()) {
-				// key값이 'a to b' 이거나 'b to a'인것 찾아서
-				if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
-					// 위와 같은 방식으로 메시지를 뿌려줌
-					memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
-					ChatMtm data = new ChatMtm();
-					data.setChContent(realMsg);
-					data.setChWriter(chatMe);
-					data.setChReader(chatTarget);
-					data.setChPno(p.getPno());
-					// 위와 같은 이유의 핸들링
-					if(check == 0) {
-						sqlsession.insert("chat.insertMtm", data);
-						check++;
-					}else{
-						check = 0;
+			}else{ // 선택된 채팅방이 1:1 채팅방이라면
+				// 1:1 접속자 목록 중에서
+				for(String key : memberSessionList.keySet()) {
+					// key값이 'a to b' 이거나 'b to a'인것 찾아서
+					if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
+						// 위와 같은 방식으로 메시지를 뿌려줌
+						memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+						ChatMtm data = new ChatMtm();
+						data.setChContent(realMsg);
+						data.setChWriter(chatMe);
+						data.setChReader(chatTarget);
+						data.setChPno(p.getPno());
+						data.setNickName(m.getNickName());
+						// 위와 같은 이유의 핸들링
+						if(check == 0) {
+							sqlsession.insert("chat.insertMtm", data);
+							check++;
+						}else{
+							check = 0;
+						}
 					}
 				}
 			}
+		} catch(Exception e) {
+			handleTransportError(session, e);
+			// 1:1일때 db에 데이터 전송하고, 나에게만 msg 보내기
+			memberSessionList.remove(p.getPno()+"p" + mNo + "TO" + mNo2);
+			ChatMtm data = new ChatMtm();
+			data.setChContent(realMsg);
+			data.setChWriter(chatMe);
+			data.setChReader(chatTarget);
+			data.setChPno(p.getPno());
+			data.setNickName(m.getNickName());
+			sqlsession.insert("chat.insertMtm", data);
+			//memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+			
 		}
 	}
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		/*Member m = (Member)session.getAttributes().get("member");
+		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 		// 프로젝트 이름
 		String pNo = "p" + p.getPno();
 		// 회원 이름
 		String mNo = "m" + m.getMno();
 		// 연결이 끊기면 프로젝트와 1:1 접속자를 제거 
-		projectSessionList.remove(pNo + mNo);
-		memberSessionList.remove(pNo + mNo);*/
+		projectSessionList.remove(pNo+mNo);
 	}
+
+	@Override
+	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+		//super.handleTransportError(session, exception);
+		
+		System.out.println("사용자 종료 상황 발생!");
+	}
+	
 	
 }

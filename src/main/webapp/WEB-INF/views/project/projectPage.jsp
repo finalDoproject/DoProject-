@@ -1277,25 +1277,40 @@ function formSubmit(){
 		donutPie();
     });
 	function donutPie(){
-		var pieData = {
-			요청: 0,
-			진행: 0,
-			피드백: 0,
-			완료: 0,
-			보류: 1
-		};
-		var chartDonut = c3.generate({
-			bindto: "#piechart",
-			data: {
-				json: [pieData],
-				keys: {
-					value: Object.keys(pieData),
-				},
-				type: "donut",
-			},
-			donut: {
-				title: "전체 " + "건",
-			},
+		var sum;
+		var pieData;
+		$.ajax({
+			url : "${pageContext.request.contextPath}/project/taskLevelCount.do?pno=${project.pno}",
+			success : function(data){
+				sum = data.one + data.two + data.three + data.four + data.five
+				
+				if(data.one == 0 && data.two == 0 && data.three == 0 && data.four == 0 && data.five == 0){
+					pieData = {
+						없음 : 1
+					}
+				}else{
+					pieData = {
+						요청: data.one,
+						진행: data.two,
+						피드백: data.three,
+						완료: data.four,
+						보류: data.five
+					}
+				};
+				var chartDonut = c3.generate({
+					bindto: "#piechart",
+					data: {
+						json: [pieData],
+						keys: {
+							value: Object.keys(pieData),
+						},
+						type: "donut",
+					},
+					donut: {
+						title: "전체 " + sum + "건",
+					},
+				});
+			}
 		});
 	}
 	</script>

@@ -25,4 +25,6 @@ public interface ChatService {
 
 	int selectOneChatPtm(int pno);
 
+	void updatePtm(String nickName, int pno);
+
 }

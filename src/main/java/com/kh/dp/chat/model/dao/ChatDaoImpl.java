@@ -73,4 +73,12 @@ public class ChatDaoImpl implements ChatDao{
 		return Integer.parseInt(sqlSession.selectOne("chat.selectOneChatPtm", pno));
 	}
 
+	@Override
+	public void updatePtm(String nickName, int pno) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		sqlSession.update("chat.updatePtm", map);
+	}
+
 }
