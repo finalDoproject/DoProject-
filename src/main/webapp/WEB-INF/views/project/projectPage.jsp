@@ -42,6 +42,15 @@
 .ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 .ok:focus{outline: none;}
 
+.explainB {
+	 margin-left : 20px;
+	 width : 20px;
+	 height:20px;
+	 background-color:black;
+
+
+}
+
 </style>
 <script>
  var chk = 0;
@@ -68,8 +77,6 @@ function sclick(){
 	
 		$('#taskForm').css('display', 'none');
 		chk=0;
-	
-	
 }
 	
 
@@ -80,6 +87,7 @@ $(function(){
 		});	
 });
 
+//스케줄 매칭 요청 시 하나라도 입력하지 않으면 안넘어 가는 함수
 function formSubmit(){
 	 var title = $("input[name=title]").val()
 	 var member = $("option").val();
@@ -348,17 +356,13 @@ function formSubmit(){
       <hr>
       <div class="timetable " style="color: #555">
   
-          <h6>스케줄매칭 </h6>
+          <h6>스케줄매칭</h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-              
-                <c:if test="${s.SSNO eq 0}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
-                </c:if>
-                
-                <c:if test="${s.SSNO eq 1}">
+                <c:if test="${s.SSNO eq 0 || s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
+                <input type="hidden" value="${s.SMCONTENT}" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
@@ -366,6 +370,7 @@ function formSubmit(){
                 
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMCONTENT }" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
@@ -383,10 +388,26 @@ function formSubmit(){
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">스케줄 매칭</h5>
+          <h4 class="modal-title" id="exampleModalLongTitle" 
+          style="font-weight:bold;">
+          <span id="exampleTitle"></span>
+          </h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        
+        
+        <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
+        <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
+       	<div>
+       	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
+        <button class="explainB" style="background-color : gray;"></button>
+        <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
+        <button class="explainB" style="background-color : orange; "></button>
+        <span style="color : black"> : 50%이상 ~ 75%미만</span><br />
+        <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
+        <span style="color : black; "> : 75%이상</span>
         </div>
         <div class="modal-body">
             <table class="table table-bordered schedule" style="color : black;">
@@ -648,11 +669,38 @@ function formSubmit(){
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	alert(requestNo + ", " + smdate + ", " + smenddate);
-	    	// 요일 값 가져오기
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	
+	    	
+	    	// 요일 값 가져오기(숫자)
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
+	    	
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
 	    	
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
@@ -763,6 +811,39 @@ function formSubmit(){
 	 	$('.select2-search__field').attr("style", "width : 370px");
 	 	
 	 	function result(a){
+
+	 		// 요청 번호
+	    	var requestNo = a;
+	 		
+	 		// 요청 시작일
+	    	var smdate = $('#smdate').val();
+	    	// 요청 종료일
+	    	var smenddate = $('#smenddate').val();
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});
 	    	
 	 		   for(i=1; i<106; i++){
 	 		 $.ajax({

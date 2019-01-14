@@ -131,4 +131,10 @@ public class SideDaoImpl implements SideDao {
 		return sqlSession.selectList("task.selectTaskList", pno);
 	}
 
+	@Override
+	public List<Member> browseMatchingMember(int requestNo) {
+		
+		return sqlSession.selectList("matching.browseMatchingMember", requestNo);
+	}
+
 }

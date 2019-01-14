@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -42,18 +41,67 @@
 .ok:focus{outline: none;}
 
 </style>
+
 <script>
 var chk = 0;
 function taskToggle(){
-	if(chk == 0){
-		$('#taskForm').css('display', 'block');
-		chk=1;
-	}else{
+	if($('#exampleModalCenter').hasClass("show") === true){
 		$('#taskForm').css('display', 'none');
 		chk=0;
+	}else{
+		
+		if(chk == 0){
+			$('#taskForm').css('display', 'block');
+			chk = 1;
+			chk2 = 0;
+		}else{
+			$('#taskForm').css('display', 'none');
+			chk=0;
+		}
 	}
 }
+
+function sclick(){
+	console.log("click");
+	
+		$('#taskForm').css('display', 'none');
+		chk=0;
+}
+
+$(function(){
+	$('#taskForm').focusout(function() {
+		  $('#taskForm').css('display', 'none');
+		  console.log("gg");
+		});	
+});
+
+//스케줄 매칭 요청 시 하나라도 입력하지 않으면 안넘어 가는 함수
+function formSubmit(){
+	 var title = $("input[name=title]").val()
+	 var member = $("option").val();
+	 var startdate = $("input[name=startDate]").val();
+	 var enddate = $("input[name=endDate]").val();
+	 
+	  if(title.length == 0){
+		  alert ("제목이 입력되지 않았습니다.");
+		  return false;  
+	  }if(startdate.length == 0){
+		  alert ("시작일이 입력되지 않았습니다.");
+		  return false;
+		  
+	  }if( enddate.length == 0){
+		  alert ("마감일이 입력되지 않았습니다.");
+		  return false;
+	  }if( MEMBER.LENGTH == 1){
+			alert ("사람 수 필수 사항이 입력되지 않았습니다.");
+		  return false;
+	} 
+	  
+	return true;  
+	
+};
 </script>
+
 </head>
 <body>
 
@@ -62,12 +110,13 @@ function taskToggle(){
 	<div id="wrapper" >
 	<c:set value="${member.mno}" var="mno"/>
 	<c:set value="${pno}" var="pno"/>
+	
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>글 작성하기</span>
+            <span>업무 작성하기</span>
           </a>
         </li>
         <li class="nav-item dropdown">
@@ -100,38 +149,11 @@ function taskToggle(){
         </li>
 		<hr />
         <li class="nav-item">
-          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+          <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="searchMemberList(${project.pno});">
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
-  			<div class="dropdown-menu">
-  				<div>
-				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#invitationModal" style="text-align:center; font-weight:bolder; font-size: 14px; color:coral">프로젝트 초대하기</a>
-				</div>
-  				<c:forEach items="${memberList}" var="mList">
-  				<c:if test="${project.pmno eq member.mno}">
-  				<div>
-  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;" onclick="kick('${mList.nickName}', '${project.pno}', '${mList.mno}');">
-    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
-				</div>
-  				</c:if>
-  				<c:if test="${project.pmno ne member.mno}">
-  				<div>
-  				<a class="dropdown-item" href="#" style="height:40px; vertical-align:middle;">
-    				<img src='${pageContext.request.contextPath}/resources/images/profile/${mList.mProfile}' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>
-    				&nbsp;<span style="vertical-align:middle;">${mList.nickName}</span></a>
-				</div>
-  				</c:if>
-  				</c:forEach>
-  				<c:if test="${project.pmno ne member.mno}">
-  				<a class="dropdown-item" href="#" onclick="leaveProject('${project.pno}', '${member.mno}');"
-				style="text-align:center; font-weight:bolder;">프로젝트 나가기</a>
-				</c:if>
-				<c:if test="${project.pmno eq member.mno}">
-  				<a class="dropdown-item" onclick="deleteProject('${project.pno}', '${member.mno}')"
-				style="text-align:center; font-weight:bolder;">프로젝트 지우기</a>
-				</c:if>
+  			<div class="dropdown-menu" id="projectIntoMemberList">
 			</div>
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
@@ -219,7 +241,7 @@ function taskToggle(){
                             </tbody>
                           </table>
                           <div class="modal-footer" >
-                <button type="submit" class="ok">요청 완료</button>
+                <button type="submit" class="ok">요청 하기</button>
             </div>
                  </form>         
             </div>
@@ -268,97 +290,17 @@ function taskToggle(){
                </form>
               </div>
             </div>
-            
              <div id="content-wrapper" >
-
-		<div >
-	<c:forEach items="${list}" var="task" varStatus="tnum">
-    <div class="container-fluid gedf-wrapper" style="width: 60%;">
-        <div>
-            <div class=" gedf-main" style="border : 1px solid black">
-			
-                <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
-                    <div class="card-header" style="background-color : #F88E6F;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div >
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
-                                </div>
-                                <div >
-                                    <div class="h5 m-0">&nbsp; ${task.twriter } </div>
-                                    <div class="h7 text-muted"></div>
-                                </div>
-                            </div>
-                        </div>
-					
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
-                        
-                            <h3 class="card-title">${task.ttitle }</h3>
-                            
-						<hr />
-                         <p id="levelp"></p>
-	                        <div class="line" >
-								<label class="icon1"><span class="blind"></span></label>
-								<div class="workTab">
-									<button type="button" style="margin-left : 0" value="6">일정</button>
-								</div>
-							</div>
-						
-							<hr />
-							<!-- 3. 시작일 지정 -->
-						
-							<div class="line" style="display: inline-block;">
-								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
-								<div >
-									<input name="tstartdate" value="${task.tstartdate}" readonly>
-								</div>
-							</div>
-							<!-- 4. 마감일 지정 -->
-							&nbsp;~&nbsp; 
-							<div class="line"  style="display: inline-block;">
-								<label class="icon4" ><span class="blind" >마감일</span></label>
-								<div  >
-									<input name="tstartdate" value="${task.tenddate}" readonly>
-								</div>
-							</div>
-						<hr />
-					</div>
-					<div>
-                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
-                            ${task.tcontent}
-                            <br /><br /><br /><br />
-                        </p>
-                    </div>
-                    <br /><br />
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                   
-                </div>
-                <!-- Post /////-->
-
-				<br /><br /><br />
-				<br/>
-				
-               
-            </div>
-        </div>
-        </c:forEach>
-    </div>
-          
-
-
-        </div>
+            <div class="container-fluid">
+		
+	</div>
         <!-- /.container-fluid -->
 
         
       </div>
       <!-- /.content-wrapper -->
+      
+    </div>
       
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	
@@ -391,11 +333,65 @@ function taskToggle(){
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
+    <!-- datepicker를 위한 js -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	
 	<!-- select2를 위한 js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     
     <script type="text/javascript">
-	 	
+ // select2 
+	    $('.member-multiple').select2({
+	    	placeholder : "함께할 인원을 선택해주세요."
+	    }); 
+	    $('.select2-search__field').attr("style", "width : 370px");
+	    
+	    $(function(){
+	  	   // 한국어 설정
+	  	   $.datepicker.setDefaults($.datepicker.regional['ko']);
+	  	   
+	  	   // 시작일
+	  	   $('#startdate').datepicker({
+	  		  // 데이터 형식 지정
+	  		  dateFormat : "yy-mm-dd",
+	  		  // 달 / 주 이름 지정
+	  		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+	  		  dayNamesMin : ["일","월","화","수","목","금","토"],
+	  		  // 오늘 날짜 이후로 선택 가능
+	  		  minDate : 1,
+	  		  onClose : function(selectDate) {
+	  			  // 시작일 datepicker가 닫힐 때
+	  			  // 종료일의 선택할 수 있는 최소날짜를 선택일로 지정
+	  			  var date = $(this).datepicker('getDate');
+	  			  date.setDate(date.getDate()+1);
+	  			  
+	  			  $("#enddate").datepicker("option", "minDate", date);
+	  			  
+	  			  // 선택 후 7일간 선택 가능하도록 날짜 제한 두기
+	  			  var date = $(this).datepicker('getDate');
+	  			  
+	  			  date.setDate(date.getDate()+7);
+	  			  $("#enddate").datepicker("option", "maxDate", date);
+	  		  }
+	  		   
+	  	   });
+	  	   
+	  	   // 종료일
+	  	   $('#enddate').datepicker({
+	  		  dateFormat : "yy-mm-dd",
+	   		  monthNamesShort : ["1월",,"2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+	   		  dayNamesMin : ["일","월","화","수","목","금","토"],
+	   		  minDate : 0,
+	   		  
+	   		  // 시작 날짜에도 엉뚱한 날짜 선택할 수 없도록 제한두기.
+	   		  onClose : function(selectDate){
+	   			 
+	   			  $('#startdate').datepicker("option", "maxDate", selectDate);
+	   		  }
+	  	   });
+	     });
+	    
 	 	$(function(){
 	    	$("#findUserBtn").on("click",function(){
 	    		var nickname = $('.nickname').val();
@@ -428,10 +424,6 @@ function taskToggle(){
 	    	});
 	    	
 		});
-	 	
-        $(document).ready(function () {
-            w3.includeHTML(init);
-        });
     </script>
    
     <script>
@@ -440,28 +432,56 @@ function taskToggle(){
 	        event.preventDefault();
 	    }
 	});
-    function inviteProject(mno, nickName, pno){
+    function inviteProject(mNo, nickName, pNo){
     	if(confirm("[" + nickName + "] 님을 초대하시겠습니까?") == true){
     		// 알림내용 추가, 알림 선택시 초대 수락(알림 테이블에 상태 변경 필요?)
-    		if(mno != ${mno}){
-    			location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    		if(mNo != $("#mno").text()){
+    			// ajax로 해당 회원 초대만 하면 됨
+    			//location.href="${pageContext.request.contextPath}/project/inviteProject.do?pno="+pno+"&mno="+mno;
+    			$.ajax({
+    				url:"${pageContext.request.contextPath}/project/inviteProject.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
     		}else{
     			alert("본인은 초대할 수 없습니다.");
     		}
     	}else{
     		return false;
     	}
+    	tmanager();
 	}
-	function kick(name, pno, mno){
+    function kick(name, pNo, mNo, mMno){
+		//mNo 선택한 회원 번호, mMno 로그인한 회원 번호
 		if(confirm("[" + name + "] 님을 추방하시겠습니까?") == true){
-			if(mno == ${member.mno}){
+			if(mNo == $("#mno").text()){
 				alert("본인은 추방할 수 없습니다.");
 			}else{
-				location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno;
+				//location.href="${pageContext.request.contextPath}/project/exile.do?pno="+pno+"&mno="+mno+"&mmno="+mmno;
+				$.ajax({
+    				url:"${pageContext.request.contextPath}/project/exile.do",
+    				dataType:"json",
+    				type:"get",
+    				data:{pno:pNo, mno:mNo, mmno:mMno},
+    				success:function(response){
+    					alert(response.msg);
+    				},
+    				error:function(response){
+    					console.log(response);
+    				}
+    			});
 			}
 		}else{
 			return;
 		}
+		tmanager();
 	}
 	function leaveProject(pno, mno){
 		if(confirm("프로젝트에서 나가시겠습니까?") == true){
@@ -512,6 +532,66 @@ function taskToggle(){
 		    }
 		});
 	}
+	function searchMemberList(pNo){
+		$("#projectIntoMemberList").empty();
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno:pNo},
+			success:function(response){
+				var printHTML = "";
+				if($("#pmno").text() == $("#mno").text()){
+					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 지우기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}else{
+					for(var i=0; i<response.length; i++){
+						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
+					}
+					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
+					printHTML+="style='text-align:center; font-weight:bolder;'>프로젝트 나가기</a>";
+					$('#projectIntoMemberList').append(printHTML);
+					printHTML="";
+				}
+				
+				tmanager();
+			}
+		});
+		
+	}
+		$(function(){
+			tmanager();	
+		});
+	
+		function tmanager(){
+		$("#tmno").empty();
+		var pNo = ${pno};
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno: pNo},
+			success:function(response){
+				if($("#pmno").text() == $("#mno").text()){
+					for(var i=0; i<response.length; i++){
+						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						console.log(response[i].mno);
+					}
+				}				
+			}
+		});
+		}
 	</script>
 	
 	

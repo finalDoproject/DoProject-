@@ -37,7 +37,8 @@ public interface SideDao {
 
 	public int FileTotalContents(int pno);
 
-	public List<Task> totalCalendar(int pno);	
-	
+	public List<Task> totalCalendar(int pno);
+
+	public List<Member> browseMatchingMember(int requestNo);
 }
 	

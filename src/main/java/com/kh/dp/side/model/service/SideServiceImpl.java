@@ -103,4 +103,10 @@ public class SideServiceImpl implements SideService {
 		return sideDao.totalCalendar(pno);
 	}
 
+	@Override
+	public List<Member> browseMatchingMember(int requestNo) {
+		
+		return sideDao.browseMatchingMember(requestNo);
+	}
+
 }

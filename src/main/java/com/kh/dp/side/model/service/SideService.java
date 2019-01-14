@@ -39,6 +39,8 @@ public interface SideService {
 
 	public List<Task> totalCalendar(int pno);
 
+	public List<Member> browseMatchingMember(int requestNo);
+
 	
 	
 	
