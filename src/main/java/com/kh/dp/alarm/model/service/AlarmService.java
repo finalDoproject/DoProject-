@@ -1,4 +1,3 @@
-
 package com.kh.dp.alarm.model.service;
 
 import java.util.List;
@@ -11,6 +10,7 @@ public interface AlarmService {
 	int updateAlarm(Alarm al);
 
 	List<Alarm> selectSearchAlarm(int mno);
+
+	int selectApno(Alarm al);
 	
 }
-

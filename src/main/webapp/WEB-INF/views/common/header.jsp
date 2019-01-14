@@ -95,7 +95,7 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <!-- <span class="badge badge-danger">7</span> -->
+	            <span class="badge badge-danger" id="chatCount"></span>
 	          </a>
 	          </c:if>
 	        </li>
@@ -169,7 +169,7 @@
 			alert("프로젝트에 참여한 후 확인 가능합니다.");
 		}
 		
-		function deleteAlarmList(aNo){
+		function deleteAlarmList(aNo,aPno){
 			$.ajax({
 				type: "GET",
 				url:"${pageContext.request.contextPath}/alarm/delete.al",
@@ -178,12 +178,14 @@
 				data : {ano:aNo},
 				async : false,
 				success : function(response){
+					if(response==2 || response==5){
+						location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+					}
 				},
 				error:function(request,status,error){
 			    	alert("code:"+request.status+"\n"+"error:"+error);
 			    }
 			});
-			send_message();
 		}
 		
 		function alarmList(mNo){
@@ -193,6 +195,7 @@
 				dataType:"json",
 				type : "GET",
 				data : {mno:mNo},
+				async : false,
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){
@@ -205,19 +208,19 @@
 						//존재함
 						for(var i=0; i<response.length;i++){
 							if(response[i].atype == 1){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
 							}else if(response[i].atype == 2){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
 							}else if(response[i].atype == 3){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
 							}else if(response[i].atype == 4){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
 							}else if(response[i].atype == 5){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
 							}else if(response[i].atype == 6){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
 							}else if(response[i].atype == 7){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
 							}
 							$('#alarmList').append(printHTML);
 							printHTML = "";					
@@ -229,37 +232,75 @@
 			    }
 			});
 		}
-	    
+		
 	    $(document).ready(function(){
 			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
-			var wsUri = "ws://192.168.20.72/count";
+			var wsUri = "ws://192.168.0.6/count";
 			function send_message() {
 		        websocket = new WebSocket(wsUri);
 		        websocket.onopen = function(evt) {
 		            onOpen(evt);
+		            /* onChatCountOpen(evt); */
 		        };
 		        websocket.onmessage = function(evt) {
 		            onMessage(evt);
+		            /* onChatCountMessage(evt); */
 		        };
 		        websocket.onerror = function(evt) {
 		            onError(evt);
+		            /* onChatCountError(evt); */
 		        };
 		    }
 			
 			function onOpen(evt) {
-				setInterval(function(){websocket.send($('#nick').text());},500);
+				var pno = '<c:out value="${param.pno}"/>';
+				if(pno == null || pno == ""){
+					websocket.send($('#nick').text() + ":" + "0");
+				}else{
+					websocket.send($('#nick').text() + ":" + pno);
+				}
 		    }
 		    function onMessage(evt) {
-		    	var data=evt.data;
-		    	if(data!=0){
+		    	var AlarmData=evt.data.split(":")[0];
+		    	var ChatData=evt.data.split(":")[1];
+		    	if(AlarmData!=0 && AlarmData < 10){
 		    		$("#alarmCount").empty();
-		    		$('#alarmCount').text(data);
+		    		$('#alarmCount').text(AlarmData);
+		    	}else if(AlarmData > 9){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text("9+");
 		    	}else{
 		    		$("#alarmCount").empty();
+		    	}
+		    	if(ChatData!=0){
+		    		$("#chatCount").empty();
+		    		$('#chatCount').text("+");
+		    	}else{
+		    		$('#chatCount').empty();
 		    	}
 		    }
 		    function onError(evt) {
 		    }
+		    
+		    /* function onChatCountOpen(evt) {
+				var pno = '<c:out value="${param.pno}"/>';
+				console.log("pno : " + pno);
+				chatWebsocket.send(pno);
+		    }
+		    function onChatCountMessage(evt) {
+		    	var data=evt.data;
+		    	console.log("count : " + data);
+		    	if(data!=0){
+		    		$("#chatCount").empty();
+		    		$('#chatCount').text("+");
+		    	}else{
+		    		$("#chatCount").empty();
+		    	}
+		    }
+		    function onChatCountError(evt) {
+		    } */
+		    
+		    //sendChatCount_message();
 		    
 	    	send_message();
 	    });

@@ -16,5 +16,13 @@ public interface ChatDao {
 	Project selectProject(int pno);
 
 	String selectOneFileName(int chReader);
+
+	String selectOneYourName(int chReader);
+
+	String selectPtmLastChat(int me, int pno);
+
+	String selectMtmLastChat(int me, int you);
+
+	int selectOneChatPtm(int pno);
 	
 }
