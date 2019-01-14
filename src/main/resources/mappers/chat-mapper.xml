@@ -85,7 +85,8 @@
 		CASE WHEN CHREADERS NOT LIKE '%' || #{nickName} || '%'
 		THEN CHREADERS || ',' || #{nickName}
 		ELSE CHREADERS
-		END WHERE CHPNO = #{pno}
+		END WHERE CHPNO = #{pno} AND (CHWRITER = #{chWriter} AND CHREADER = #{chReader})
+		OR (CHWRITER = #{chReader} AND CHREADER = #{chWriter})
 	</update>
 	
 	<select id="countPtm">
@@ -96,5 +97,6 @@
 	<select id="countMtm">
 		SELECT COUNT(*) FROM CHAT_MTM
 		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
+		AND CHREADER = #{me} AND CHWRITER = #{you}
 	</select>
 </mapper>
