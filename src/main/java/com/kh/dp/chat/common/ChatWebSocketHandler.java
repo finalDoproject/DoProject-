@@ -137,6 +137,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		} catch(Exception e) {
 			handleTransportError(session, e);
 			// 1:1일때 db에 데이터 전송하고, 나에게만 msg 보내기
+			memberSessionList.remove(p.getPno()+"p" + mNo + "TO" + mNo2);
+			ChatMtm data = new ChatMtm();
+			data.setChContent(realMsg);
+			data.setChWriter(chatMe);
+			data.setChReader(chatTarget);
+			data.setChPno(p.getPno());
+			data.setNickName(m.getNickName());
+			sqlsession.insert("chat.insertMtm", data);
+			//memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+			
 		}
 	}
 
