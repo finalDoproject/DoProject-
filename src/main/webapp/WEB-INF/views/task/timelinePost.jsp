@@ -16,7 +16,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" id="${task.tno}">
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -183,11 +183,12 @@
 
 				<br /><br /><br />
 				<br/>
+				            </div>
+       				 </div>
 				</c:forEach>
                
             </div>
-        </div>
-    </div>
+ 
 
  <div class="modal fade mod" id="taskUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
