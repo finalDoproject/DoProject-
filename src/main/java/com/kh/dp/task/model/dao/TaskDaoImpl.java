@@ -72,9 +72,9 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public int deleteTask(int tno) {
-		
 		return sqlSession.delete("task.deleteTask", tno);
 	}
+	
 	
 	@Override
 	public int deleteAttach(int tno) {

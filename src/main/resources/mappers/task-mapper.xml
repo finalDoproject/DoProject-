@@ -83,14 +83,14 @@
 	</select> 
 	
 	<select id="selectTaskList" parameterType="_int" resultMap="taskandattach">
-		SELECT TS.*, T.*, P.RENAMEDFILENAME FROM TASK TS
+		SELECT TS.*, T.*,TF.* , P.RENAMEDFILENAME FROM TASK TS
 		LEFT JOIN TASK_FILE TF ON(TS.TNO = TF.FTNO)
 		LEFT JOIN PROJECT PJ ON(TS.TPNO = PJ.PNO)
 	    LEFT JOIN TASK_COMMENT T ON (TS.TNO = T.CTNO)
 	    LEFT JOIN MEMBER M ON (T.CWRITER = M.MNO)
 	    LEFT JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
 		WHERE PNO = #{pno}
-		ORDER BY TWRITEDATE DESC, CWRITEDATE DESC
+		ORDER BY TWRITEDATE DESC, CWRITEDATE 
 	</select>
 	
 	<select id="selectOneAttachment" resultType="attachment">

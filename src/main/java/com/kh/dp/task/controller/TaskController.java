@@ -157,12 +157,11 @@ public class TaskController {
 			@RequestParam(value="enddate", required=false) String enddate*/) throws ParseException {
 		
 		task.setTpno(pno);
-		System.out.println("pno, mno : " +pno+", " + mno);
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
 		Attachment at = new Attachment();
-	
+		System.out.println("upfile" + upFile);
 		task.setTstartdate(parseDate(task.getTstartdate()));
 		task.setTenddate(parseDate(task.getTenddate()));
 		
@@ -218,7 +217,7 @@ public class TaskController {
 		String msg = "";
 		
 		if(result > 0) {
-			msg = "게시글 등록 성공!";
+			msg = "게시글 수정 성공!";
 			/*loc = "/task/taskView.do?no="+task.getTno();*/
 			loc = "/project/projectPage.do?mno="+ mno +"&pno=" + pno;
 			
