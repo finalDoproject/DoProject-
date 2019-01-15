@@ -138,11 +138,11 @@ input[type="submit"].login:focus{outline: none;}
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">
 		<div class="form-item">
 			<p class="formLabel">아이디</p>
-			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" />
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" value="jeong"/>
 		</div>
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>
-			<input type="password" name="password" id="password" class="form-style" required="required" />
+			<input type="password" name="password" id="password" class="form-style" required="required" value="jeong03!@"/>
 			<!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
 			<!--  <p><a href="#" ><small>Forgot Password ?</small></a></p>  -->
 			<!-- <p align="center"><a href="#">아이디 찾기</a> &nbsp; <a href="#">비밀번호 찾기</a> &nbsp; <a href="#">회원가입</a></p>  --> 

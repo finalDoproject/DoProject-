@@ -65,7 +65,7 @@
 	      <!-- Navbar -->
 	      <ul class="navbar-nav" style="padding-right: 30px; position: absolute; right: 0;">
 	          <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
 	               <c:if test="${!empty member}">
@@ -97,14 +97,15 @@
 	          <c:if test="${pno ne null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openChat()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
-	            <!-- <span class="badge badge-danger">7</span> -->
+	            <span class="badge badge-danger" id="chatCount"></span>
 	          </a>
 	          </c:if>
 	        </li>
 	        <li class="nav-item dropdown no-arrow">
 	          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <!-- <i class="fas fa-user-circle fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i> -->
-	            <div id="userImg" class="cropcircle"></div>
+	            <div id="userImg" class="cropcircle" ><img src="${pageContext.request.contextPath }/resources/upload/profile/${member.renamedFileName}" alt="" id="userImg" class="cropcircle"/></div>
+	            
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 	            <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a>
@@ -120,7 +121,7 @@
 
 
 	<!-- Bootstrap 4 JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
@@ -170,7 +171,7 @@
 			alert("프로젝트에 참여한 후 확인 가능합니다.");
 		}
 		
-		function deleteAlarmList(aNo){
+		function deleteAlarmList(aNo,aPno){
 			$.ajax({
 				type: "GET",
 				url:"${pageContext.request.contextPath}/alarm/delete.al",
@@ -179,12 +180,16 @@
 				data : {ano:aNo},
 				async : false,
 				success : function(response){
+					if(response==2 || response==5){
+						if(confirm("해당 프로젝트로 이동하시겠습니까?") == true){
+							location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+						}
+					}
 				},
 				error:function(request,status,error){
 			    	alert("code:"+request.status+"\n"+"error:"+error);
 			    }
 			});
-			send_message();
 		}
 		
 		function alarmList(mNo){
@@ -194,6 +199,7 @@
 				dataType:"json",
 				type : "GET",
 				data : {mno:mNo},
+				async : false,
 				success:function(response){
 					var printHTML = "";
 					if(response.length == 0){
@@ -206,19 +212,19 @@
 						//존재함
 						for(var i=0; i<response.length;i++){
 							if(response[i].atype == 1){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>[${member.nickName}]</span>님 회원 가입을 축하합니다.</a>";
 							}else if(response[i].atype == 2){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에 초대되었습니다.</a>";
 							}else if(response[i].atype == 3){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 <span style='font-weight:bold'>["+response[i].nickname+"]</span>님이 나갔습니다.</a>";
 							}else if(response[i].atype == 4){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ptitle+"]</span>에서 추방당했습니다.</a>";
 							}else if(response[i].atype == 5){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].ttitle+"]</span>에서 담당자로 지명되었습니다.</a>";
 							}else if(response[i].atype == 6){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span> 새로운 요청이 있습니다.</a>";
 							}else if(response[i].atype == 7){
-								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
+								printHTML+="<a class='dropdown-item' onclick='deleteAlarmList("+response[i].ano+", "+response[i].apno+");'><span style='font-weight:bold'>["+response[i].smcontent+"]</span>이 종료되었습니다.</a>";
 							}
 							$('#alarmList').append(printHTML);
 							printHTML = "";					
@@ -231,39 +237,57 @@
 			});
 		}
 		
-		var wsUri = "ws://localhost/count";
-		function send_message() {
-	        websocket = new WebSocket(wsUri);
-	        websocket.onopen = function(evt) {
-	            onOpen(evt);
-	        };
-	        websocket.onmessage = function(evt) {
-	            onMessage(evt);
-	        };
-	        websocket.onerror = function(evt) {
-	            onError(evt);
-	        };
-	    }
-		
-		function onOpen(evt) {
-	       websocket.send($('#nick').text());
-	    }
-	    function onMessage(evt) {
-	    	var data=evt.data;
-	    	if(data!=0){
-	    		$("#alarmCount").empty();
-	    		$('#alarmCount').append(data);
-	    	}else{
-	    		$("#alarmCount").empty();
-	    	}
-	    }
-	    function onError(evt) {
-	    }
-	    
 	    $(document).ready(function(){
+			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
+			var wsUri = "ws://192.168.20.72/count";
+			function send_message() {
+		        websocket = new WebSocket(wsUri);
+		        websocket.onopen = function(evt) {
+		            onOpen(evt);
+		            /* onChatCountOpen(evt); */
+		        };
+		        websocket.onmessage = function(evt) {
+		            onMessage(evt);
+		            /* onChatCountMessage(evt); */
+		        };
+		        websocket.onerror = function(evt) {
+		            onError(evt);
+		            /* onChatCountError(evt); */
+		        };
+		    }
+			
+			function onOpen(evt) {
+				var pno = '<c:out value="${param.pno}"/>';
+				if(pno == null || pno == ""){
+					websocket.send($('#nick').text() + ":" + "0");
+				}else{
+					websocket.send($('#nick').text() + ":" + pno);
+				}
+		    }
+		    function onMessage(evt) {
+		    	var AlarmData=evt.data.split(":")[0];
+		    	var ChatData=evt.data.split(":")[1];
+		    	if(AlarmData!=0 && AlarmData < 10){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text(AlarmData);
+		    	}else if(AlarmData > 9){
+		    		$("#alarmCount").empty();
+		    		$('#alarmCount').text("9+");
+		    	}else{
+		    		$("#alarmCount").empty();
+		    	}
+		    	if(ChatData!=0){
+		    		$("#chatCount").empty();
+		    		$('#chatCount').text("+");
+		    	}else{
+		    		$('#chatCount').empty();
+		    	}
+		    }
+		    function onError(evt) {
+		    }
+		    
 	    	send_message();
 	    });
-	    
 
 	</script>
 </body>

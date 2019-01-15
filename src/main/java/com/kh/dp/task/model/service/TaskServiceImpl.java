@@ -16,6 +16,7 @@ import com.kh.dp.task.model.dao.TaskDao;
 import com.kh.dp.task.model.exception.TaskException;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -65,12 +66,12 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public Attachment selectOneAttachment(int tno){
-		return taskDao.selectOneAttachment(tno);
+	public List<Attachment> selectAttachmentList(int taskNo){
+		return taskDao.selectAttachmentList(taskNo);
 	}
 
 	@Override
-	public List<Task> selectListTask(int pno) {
+	public List<Map<String, String>> selectListTask(int pno) {
 		
 		return taskDao.selectTaskList(pno);
 	}
@@ -97,6 +98,17 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Task> searchListTask(String mno,String searchWd) {
 		return taskDao.searchListTask(mno, searchWd);
+	}
+
+	@Override
+	public int insertTaskkeep(TaskKeep tk) {
+		// TODO Auto-generated method stub
+		return taskDao.insertTaskkeep(tk);
+	}
+	@Override
+	public List<Task> selectListmyTask(int mno) {
+		// TODO Auto-generated method stub
+		return taskDao.selectListmyTask(mno);
 	}
 
 }

@@ -19,23 +19,20 @@ import com.kh.dp.project.model.vo.Project;
 
 @Repository
 public class ChatWebSocketHandler extends TextWebSocketHandler {
-	// 프로젝트별 전체 채팅은 구현
-	// 해당 방별로의 구분이 필요
+
 	@Autowired
 	SqlSessionTemplate sqlsession;
 	
-	//private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
-	// 프로젝트별 접속자
+	// 프로젝트별 접속자 구분 리스트
 	private Map<String, Map<String, WebSocketSession>> projectMap = new HashMap<String, Map<String, WebSocketSession>>();
 	
-	// 접속자 전체
+	// 프로젝트 접속자 리스트
 	private Map<String, WebSocketSession> projectSessionList = new HashMap<String, WebSocketSession>();
-	// 1:1
+	// 1:1 접속자 리스트
 	private Map<String, WebSocketSession> memberSessionList = new HashMap<String, WebSocketSession>();
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		/*System.out.println("채팅방 입장자 :"+session.getId());*/
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 		
@@ -43,39 +40,24 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		String pNo = "p" + p.getPno();
 		// 송신자
 		String mNo = "m" + m.getMno();
-		// 수신자
-		//String mNo2 = "m";
 		
 		projectSessionList.put(pNo + mNo, session);
-		memberSessionList.put(pNo + mNo, session);
+		//memberSessionList.put(pNo + mNo, session);
 
 		projectMap.put(pNo, memberSessionList);
-		/*for(String key : projectMap.keySet()) {
-			System.out.println(String.format("[접속 후 세션 리스트 : " + key + " : " + projectMap.get(key) + " ]"));
-		}*/
 		
+		// 접속한 회원들 1:1 채팅을 위한 소켓 open
 		for(Map.Entry<String, Map<String, WebSocketSession>> entry : projectMap.entrySet()) {
-			System.out.println("key : " + entry.getKey() + "   value : " + entry.getValue());
 			if(entry.getKey().equals(pNo)) {
 				for(Map.Entry<String, WebSocketSession> key1 : projectSessionList.entrySet()) {
 					for(Map.Entry<String, WebSocketSession> key2 : projectSessionList.entrySet()) {
 						if(key1.getKey().contains(pNo) && key2.getKey().contains(pNo) && key1.getKey() != key2.getKey()) {
-							/*System.out.println("key1: " + key1.getKey() + " value1: " + key1.getValue());
-							System.out.println("key2: " + key2.getKey() + " value2: " + key2.getValue());
-							System.out.println("-----------------------------------------------------------");
-							//projectSessionList.put((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))), key1.getValue());
-							System.out.println((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))) + " : " + session);
-							System.out.println("session : " + session);*/
-							memberSessionList.put((pNo + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))), key1.getValue());
+							memberSessionList.put((p.getPno()+"p" + key1.getKey().substring(key1.getKey().lastIndexOf("m")) + "TO" + key2.getKey().substring(key2.getKey().lastIndexOf("m"))), key1.getValue());
 						}
 					}
 				}
 			}
 		}
-		
-		/*for(String key : memberSessionList.keySet()) {
-			System.out.println(String.format("[memberSessionList : " + key + " : " + memberSessionList.get(key) + " ]"));
-		}*/
 		
 	}
 
@@ -84,6 +66,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 
+		// 1:1 채팅 핸들링을 위한 컨트롤
 		String[] msg = message.getPayload().split("_");
 		String[] chatRoom = msg[0].split(":");
 		
@@ -98,79 +81,91 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 수신자 or 프로젝트 번호
 		String mNo2 = "m" + chatTarget;
 		
-		//projectSessionList.put(pNo + mNo + "TO" + mNo2, session);
-		for(String key : projectSessionList.keySet()) {
-			if(!key.equals(pNo + mNo + "TO" + mNo2) && !key.equals(pNo + mNo2 + "TO" + mNo)){
-				/*memberSessionList.put(pNo + mNo + "TO" + mNo2, session);
-				memberSessionList.put(pNo + mNo2 + "TO" + mNo, session);*/
-				System.out.println("key : " + key);
-			}
-		}
-		
+		// 선택된 채팅방을 open
+		memberSessionList.put(p.getPno()+"p" + mNo + "TO" + mNo2, session);
+		String oneKey = null;
 		String realMsg = msg[1];
-		
-		if(msg[0].split(":")[0].charAt(0) == '0') {
-			for(String key : projectMap.keySet()) {
-				if(key.equals("p" + p.getPno())) {
-					for(String realKey : projectMap.get(key).keySet()) {
-						if(!realKey.contains("TO") && realKey.contains("p" + p.getPno())) {
-							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
-							ChatPtm data = new ChatPtm();
-							data.setChContent(realMsg);
-							data.setChWriter(m.getMno());
-							data.setChPno(p.getPno());
-							if(check == 0) {
-								sqlsession.insert("chat.insertPtm", data);
-								check++;
-							}else{
-								check = 0;
-							}
+		try {
+			// 선택된 채팅방이 프로젝트 단체방이라면
+			if(msg[0].split(":")[0].charAt(0) == '0') {
+				// 전체 프로젝트 세션에서
+				for(String key : projectSessionList.keySet()) {
+					// 해당 프로젝트를 찾아
+					if(key.contains(pNo) && !key.contains("TO")) {
+						projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno()));
+						ChatPtm data = new ChatPtm();
+						data.setChContent(realMsg);
+						data.setChWriter(m.getMno());
+						data.setChPno(p.getPno());
+						data.setNickName(m.getNickName());
+						// 'a to b' 와 'b to a' 형식으로 중복저장되기때문에 메시지가 2번 DB에 저장되는 것을 막기위한 핸들링
+						if(check == 0) {
+							sqlsession.insert("chat.insertPtm", data);
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("nickName", m.getNickName());
+							map.put("pno", String.valueOf(p.getPno()));
+							sqlsession.update("chat.updatePtm", map);
+							check++;
+						}else{
+							check = 0;
+						}
+					}
+				}
+			}else{ // 선택된 채팅방이 1:1 채팅방이라면
+				// 1:1 접속자 목록 중에서
+				for(String key : memberSessionList.keySet()) {
+					oneKey = key;
+					// key값이 'a to b' 이거나 'b to a'인것 찾아서
+					if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
+						// 위와 같은 방식으로 메시지를 뿌려줌
+						oneKey = key;
+						memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+						ChatMtm data = new ChatMtm();
+						data.setChContent(realMsg);
+						data.setChWriter(chatMe);
+						data.setChReader(chatTarget);
+						data.setChPno(p.getPno());
+						data.setNickName(m.getNickName());
+						// 위와 같은 이유의 핸들링
+						if(check == 0) {
+							sqlsession.insert("chat.insertMtm", data);
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("nickName", m.getNickName());
+							map.put("pno", String.valueOf(p.getPno()));
+							map.put("chWriter", String.valueOf(chatMe));
+							map.put("chReader", String.valueOf(chatTarget));
+							sqlsession.update("chat.updateMtm", map);
+							check++;
+						}else{
+							check = 0;
 						}
 					}
 				}
 			}
-		}else{
-			/*// 프로젝트 접속자 전체
-			for(String key : projectMap.keySet()) {
-				// 해당 프로젝트만
-				if(key.contains("p" + p.getPno())) {
-					// 해당 프로젝트에 접속한 접속자 전체
-					for(String realKey : projectMap.get(key).keySet()) {
-						// 해당 회원 번호가 포함된 회원에게만
-						if(realKey.equals(pNo + mNo + "TO" + mNo2) || realKey.equals(pNo + mNo2 + "TO" + mNo)) {
-							projectMap.get(key).get(realKey).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
-							ChatMtm data = new ChatMtm();
-							data.setChContent(realMsg);
-							data.setChWriter(chatMe);
-							data.setChReader(chatTarget);
-							data.setChPno(p.getPno());
-							if(check == 0) {
-								sqlsession.insert("chat.insertMtm", data);
-								check++;
-							}else{
-								check = 0;
-							}
-						}
-					}
-				}
-			}*/
-			for(String key : memberSessionList.keySet()) {
-				//System.out.println(key);
-				if(key.equals(pNo + mNo + "TO" + mNo2) || key.equals(pNo + mNo2 + "TO" + mNo)) {
-					memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
-					ChatMtm data = new ChatMtm();
-					data.setChContent(realMsg);
-					data.setChWriter(chatMe);
-					data.setChReader(chatTarget);
-					data.setChPno(p.getPno());
-					if(check == 0) {
-						sqlsession.insert("chat.insertMtm", data);
-						check++;
-					}else{
-						check = 0;
-					}
-				}
+		} catch(Exception e) {
+			handleTransportError(session, e);
+			// 1:1일때 db에 데이터 전송하고, 나에게만 msg 보내기
+			//memberSessionList.put(p.getPno()+"p" + mNo + "TO" + mNo2, session);
+			if(check == 0) {
+				session.sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+				ChatMtm data = new ChatMtm();
+				data.setChContent(realMsg);
+				data.setChWriter(chatMe);
+				data.setChReader(chatTarget);
+				data.setChPno(p.getPno());
+				data.setNickName(m.getNickName());
+				sqlsession.insert("chat.insertMtm", data);
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("nickName", m.getNickName());
+				map.put("pno", String.valueOf(p.getPno()));
+				map.put("chWriter", String.valueOf(chatMe));
+				map.put("chReader", String.valueOf(chatTarget));
+				sqlsession.update("chat.updateMtm", map);
+				check++;
+			}else {
+				check = 0;
 			}
+			
 		}
 	}
 
@@ -182,10 +177,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		String pNo = "p" + p.getPno();
 		// 회원 이름
 		String mNo = "m" + m.getMno();
-		projectSessionList.remove(pNo + mNo);
-		/*for(String key : projectMap.keySet()) {
-			System.out.println(String.format("[종료 후 세션 리스트 : " + projectMap.get(key) + " ]"));
-		}*/
+		// 연결이 끊기면 프로젝트와 1:1 접속자를 제거 
+		projectSessionList.remove(pNo+mNo);
 	}
+
+	@Override
+	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+		//super.handleTransportError(session, exception);
+		
+		//System.out.println("사용자 종료 상황 발생!");
+	}
+	
 	
 }

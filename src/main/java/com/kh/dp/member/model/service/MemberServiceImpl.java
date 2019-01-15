@@ -179,6 +179,12 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+	
+	@Override
+	public Member selectOne(int mno) {
+		// TODO Auto-generated method stub
+		return memberDao.selectOne(mno);
+	}
 
 	
 }

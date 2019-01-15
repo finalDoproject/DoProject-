@@ -7,6 +7,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.vo.Task;
 
 public interface SideDao {
 	
@@ -31,10 +32,12 @@ public interface SideDao {
 	public int browseResult(int requestNo, int i);
 	
 	public int countMember(int requestNo);
-	
-	public List<Map<String, String>> FileList (int currentPage, int numPerPage, int pno);
 
-	public int FileTotalContents(int pno);	
-	
+	public int FileTotalContents(int pno);
+
+	public List<Task> totalCalendar(int pno);
+
+	public List<Member> browseMatchingMember(int requestNo);
+  
 }
 	

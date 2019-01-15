@@ -90,7 +90,8 @@
 	SET ORIGINALFILENAME =#{originalFileName}, RENAMEDFILENAME=#{renamedFileName}
 	WHERE IMGNO=#{imgNo}
 	</update>
-	
+		 
+	<select id="selectOneMno" resultType="Member"> SELECT * FROM MEMBER WHERE MNO = #{mno} </select>
 
 	
 </mapper>

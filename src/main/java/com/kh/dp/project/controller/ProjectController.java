@@ -20,14 +20,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kh.dp.comment.model.service.CommentService;
+import com.kh.dp.comment.model.vo.TaskComment;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
-import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
 
 
@@ -39,8 +42,13 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
+	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private CommentService commentService;
+	
 
 	@RequestMapping("/project/projectSearch.do")
 	public String projectSearch( @RequestParam String mno,@RequestParam String searchWd, Model model) {
@@ -72,6 +80,7 @@ public class ProjectController {
 
 	
 	@RequestMapping("/project/projectMain.do")
+
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
@@ -88,6 +97,7 @@ public class ProjectController {
 		model.addAttribute("memberProfileList",memberProfileList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);
+
 		
 		return "project/projectMain";
 	}
@@ -133,6 +143,7 @@ public class ProjectController {
 		
 		return resultMap;
 	}
+
 	
 	@RequestMapping(value="/project/projectMainUpdate", method=RequestMethod.GET)
 	@ResponseBody
@@ -161,15 +172,7 @@ public class ProjectController {
 		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);	
 
-		if(pjLevelStr != null) {
-			List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
-			System.out.println("pjLevel값 : " +pjLevel);
-			String msg1  = projectService.updateProjectLv(pjLevel)>0?"레벨 수정 완료":"레벨 수정 실패";
-			hmap.put("msg1", msg1);	
-		}
-		
-		return hmap;
-	}
+
 	
 	
 	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
@@ -181,13 +184,19 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
+
 		Map<String, String> map = new HashMap<String, String>();
+
 		map.put("msg", msg);	
+		map.put("msg1", msg1);	
 		
-	
-		String msg1  = projectService.updateOneLevelCk(project)>0?"체크함":"체크못함";
-		map.put("msg1", msg1);
-		
+		/*if(pjLevelStr != null) {
+			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("oneLevel값 : " +oneLevel);
+			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
+			map.put("msg1", msg1);	
+		}*/
+		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
 		
 		return map;
 	}
@@ -220,20 +229,16 @@ public class ProjectController {
 		model.addAttribute("sArr", sArr);
 		model.addAttribute("memberNo", mno);
 		
-
-		//참여자 불러오기
-		List<Member> m = projectService.selectSearchMember(pno);
 		
 		// task List
 		ArrayList<Task> tasklist = 
 				new ArrayList<Task>(taskService.selectListTask(pno));
-		
-		
+				
 
-
-		model.addAttribute("mem", m);
+		
+		System.out.println("taskList +" + tasklist);
+		model.addAttribute("m", m);
 		model.addAttribute("tasklist", tasklist);
-		System.out.println("tasklist" + tasklist);
 		
 		return "project/projectPage";
 	}
@@ -343,6 +348,7 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) String userNick, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(userNick);
+		
 		return m;
 		
 	}
@@ -372,12 +378,18 @@ public class ProjectController {
 		return msgMap;
 	}
 	
-	@RequestMapping(value="/project/searchMemberList.do", method=RequestMethod.GET)
+	@RequestMapping(value="/project/searchMemberList.do")
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
+		
 		return m;
 		
+	}
+	
+	@RequestMapping(value="/project/taskLevelCount.do")
+	public @ResponseBody TaskCount taskLevelCount(@RequestParam int pno){
+		return projectService.selectTaskLevelCount(pno);
 	}
 	
 	

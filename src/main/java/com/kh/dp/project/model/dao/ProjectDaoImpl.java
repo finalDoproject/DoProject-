@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -51,16 +52,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public int updateOneLevelCk(Project project) {
-		System.out.println("project:"+project);
-		System.out.println("체크값:"+project.getLcheck());
-		if(project.getLcheck().equals("N")) {
-			System.out.println("Y로 변경");
-			return sqlSession.update("project.updateOneLevelCk", project);					
-		}else {
-			System.out.println("N으로 변경");
-			return sqlSession.update("project.updateOneLevelunCk", project);	
-		}		
+		System.out.println("요까지옴");
+		return sqlSession.update("project.updateOneLevelCk", project);			
 	}
+
 	@Override
 	public int updateOneLevelunCk(Project project) {
 		return sqlSession.update("project.updateOneLevelunCk", project);	
@@ -185,7 +180,33 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Map<String, String>> projectMemberList(int mno) {
 		return sqlSession.selectList("project.projectMemberList", mno);
 	}
+  
+  @Override
+	public TaskCount selectTaskLevelCount(int pno) {
+		return sqlSession.selectOne("project.selectTaskLevelCount", pno);
+	}
 
+	@Override
+	public int updateOneLevelunCk(Project project) {
+		return sqlSession.update("project.updateOneLevelunCk", project);	
+	}
+
+	@Override
+	public int updateProject(Project project) {
+		return sqlSession.update("project.updateProject", project);
+	}
+
+	@Override
+	public int updateProjectLv(List<Project> pjLevel) {
+		int result = 0;
+		System.out.println("plevel:" +pjLevel );
+		for(Project project: pjLevel) {
+			System.out.println("확인!");
+			result += sqlSession.update("project.updateProjectLv", project);										
+		}
+		System.out.println("result:" + result);
+		return result;
+	}
 
 
 

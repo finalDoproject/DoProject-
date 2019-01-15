@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +11,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.vo.Task;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 @Repository
@@ -107,20 +107,27 @@ public class SideDaoImpl implements SideDao {
 
 	@Override
 	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
-		
-		RowBounds rowBounds = new RowBounds((currentPage-1)*numPerPage, numPerPage);
-		
-		Map<String, String> map = new HashMap<String,String>();
-		
-		map.put("pno", String.valueOf(pno));
-
-		return sqlSession.selectList("matching.fileList", map, rowBounds);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int FileTotalContents(int pno) {
-		
+		// TODO Auto-generated method stub
 		return sqlSession.selectOne("matching.fileTotalContents", pno);
+	}
+
+	@Override
+	public List<Task> totalCalendar(int pno) {
+		
+		
+		return sqlSession.selectList("task.selectTaskList", pno);
+	}
+
+	@Override
+	public List<Member> browseMatchingMember(int requestNo) {
+		
+		return sqlSession.selectList("matching.browseMatchingMember", requestNo);
 	}
 
 }

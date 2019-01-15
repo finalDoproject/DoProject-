@@ -5,7 +5,38 @@ var eventId = 0;
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
+		var evts = [];
 		
+		console.log("asd");
+		
+		$.ajax({
+			url : "/dp/mypage/selectMypage.do",
+			success : function(data){
+				for(var i=0; i<data.length; i++){
+					var evt = {
+						id: data[i].mcno,
+						title: data[i].mcContent,
+						start: data[i].mcStart + 86400000,
+						end : data[i].mcEnd + 86400000 + 86400000,
+						allDay: true,
+						className: 'info',
+						getMcno : function(){
+							return data[i].mcno;
+						}
+					}
+					console.log(data[i].mcStart +' ~ ' +data[i].mcEnd);
+					console.log(evt.getMcno());
+					
+					evts.push(evt);
+				}
+			},
+			error : function(data){
+				console.log(data);
+			},
+			async : false
+		});
+		
+		console.log(evts);
 		/*  className colors
 		
 		className: default(transparent), important(red), chill(pink), success(green), info(blue)
@@ -62,9 +93,12 @@ var eventId = 0;
 							start: start,
 							end: end,
 							allDay: allDay
+							
 						},
 						true // make the event "stick"
 					);
+					
+					location.href = "/dp/mypage/insert.do?start=" + start + "&end=" + end + "&content=" + title;
 				}
 				calendar.fullCalendar('unselect');
 			},
@@ -106,49 +140,7 @@ var eventId = 0;
 	            // Show Modal
 	            $("#myCalendarModal").modal('show');
 			},
-			/*events: [
-				{
-					id: ++eventId,
-					title: 'All Day Event',
-					start: new Date(y, m, 1)
-				},
-				{
-					id: ++eventId,
-					title: 'Repeating Event',
-					start: new Date(y, m, 3, 16, 0),
-					allDay: false,
-					className: 'info'
-				},
-				{
-					id: ++eventId,
-					title: 'Repeating Event',
-					start: new Date(y, m, 12, 16, 0),
-					allDay: false,
-					className: 'info'
-				},
-				{
-					id: ++eventId,
-					title: 'Meeting',
-					start: new Date(y, m, 16, 10, 30),
-					allDay: false,
-					className: 'important'
-				},
-				{
-					id: ++eventId,
-					title: 'Lunch',
-					start: new Date(y, m, 19, 12, 0),
-					end: new Date(y, m, 19, 14, 0),
-					allDay: false,
-					className: 'important'
-				},
-				{
-					id: ++eventId,
-					title: 'Birthday Party',
-					start: new Date(y, m, 21, 19, 0),
-					end: new Date(y, m, 21, 22, 30),
-					allDay: false,
-				}
-			],	*/		
+			events : evts
 		});
 		
 		

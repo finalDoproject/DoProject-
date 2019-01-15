@@ -6,16 +6,19 @@ public class Attachment {
 	private String renamedFileName;
 	private String imgPath;
 	private String status;
+	private int imgMno;
 	
 	public Attachment() {}
 
-	public Attachment(int imgNo, String originalFileName, String renamedFileName, String imgPath, String status) {
+	public Attachment(int imgNo, String originalFileName, String renamedFileName, String imgPath, String status,
+			int imgMno) {
 		super();
 		this.imgNo = imgNo;
 		this.originalFileName = originalFileName;
 		this.renamedFileName = renamedFileName;
 		this.imgPath = imgPath;
 		this.status = status;
+		this.imgMno = imgMno;
 	}
 
 	public int getImgNo() {
@@ -58,15 +61,20 @@ public class Attachment {
 		this.status = status;
 	}
 
+	public int getImgMno() {
+		return imgMno;
+	}
+
+	public void setImgMno(int imgMno) {
+		this.imgMno = imgMno;
+	}
+
 	@Override
 	public String toString() {
 		return "Attachment [imgNo=" + imgNo + ", originalFileName=" + originalFileName + ", renamedFileName="
-				+ renamedFileName + ", imgPath=" + imgPath + ", status=" + status + "]";
+				+ renamedFileName + ", imgPath=" + imgPath + ", status=" + status + ", imgMno=" + imgMno + "]";
 	}
 
-	
-	
-	
 	
 
 }

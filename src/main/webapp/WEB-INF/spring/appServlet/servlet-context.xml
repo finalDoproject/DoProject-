@@ -22,7 +22,7 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-
+	
 	<!-- viewResolver : 특정 객체나 경로를 서버가 제공하는 환경에 맞게 변환해주는 클래스 -->
 	<!-- 
 		<bean id="아이디" class="클래스명">
@@ -91,7 +91,12 @@
 	<websocket:handlers>
 		<websocket:mapping handler="alarmHandler" path="/count" />
 	</websocket:handlers>
-
+	
+	<!-- <websocket:handlers>
+		<websocket:mapping handler="countHandler" path="/Chatcount" />
+	</websocket:handlers> -->
+	
+	<!-- <beans:bean id="countHandler" class="com.kh.dp.chat.common.ChatCountWebSocketHandler" /> -->
 	<beans:bean id="alarmHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" />
 	<beans:bean id="chatWebSocketHandler" class="com.kh.dp.chat.common.ChatWebSocketHandler" />
 	

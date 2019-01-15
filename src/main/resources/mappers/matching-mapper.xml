@@ -9,18 +9,7 @@
 		<result property="sjsm" column="MMSMNO" />
 		<result property="sjdtno" column="MMDTNO" />
 	</resultMap>
-	
-	<resultMap id="task2" type="Task">
-		<id property="tno" column="TNO"/>
-		<result property="ttitle" column="TTITLE"/>
-		<result property="tcontent" column="TCONTENT"/>
-		<result property="twriter" column="TWRITER"/>
-		<result property="twritedate" column="TWRITEDATE"/>
-		<result property="fno" column="FNO"/>
-		<result property="foldName" column="FOLDNAME"/>
-		<result property="fnewName" column="FNEWNAME"/>
-	</resultMap>
-	
+
 	<select resultType="Member" parameterType="_int" id="browseMember"> 
 	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
 	WHERE PMPNO = #{pno} 
@@ -44,7 +33,7 @@
 	 </insert>
 	 
 	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
-	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
+	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO, SJMNO
 	 FROM SCHEDULE_MATCHING
 	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
 	 WHERE SJMNO = #{mno}
@@ -88,7 +77,12 @@
 	 JOIN TASK ON(FTNO = TNO AND TPNO = #{pno})
 	 </select>
 	 
-	 
+	 <select id="browseMatchingMember" resultType="Member">
+	 SELECT NICKNAME
+	 FROM MEMBER
+	 JOIN SCHEDULE_JOIN ON(SJMNO =MNO)
+	 WHERE SJSM = #{pno}
+	 </select>
 	 
 	 
 </mapper>
