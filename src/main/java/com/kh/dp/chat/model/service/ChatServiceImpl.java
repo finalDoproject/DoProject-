@@ -34,22 +34,45 @@ public class ChatServiceImpl implements ChatService{
 	public List<Map<String, String>> selectOneChatList(int pno, int chWriter, int chReader) {
 		return chatDao.selectOneChatList(pno, chWriter, chReader);
 	}
-	
+
 	@Override
-	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
-		return chatDao.selectSearchChatRoom(roomName);
-	}
-	
-	@Override
-	public int insertChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneFileName(int chReader) {
+		return chatDao.selectOneFileName(chReader);
 	}
 
 	@Override
-	public int updateChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneYourName(int chReader) {
+		return chatDao.selectOneYourName(chReader);
+	}
+
+	@Override
+	public String selectPtmLastChat(int me, int pno) {
+		return chatDao.selectPtmLastChat(me, pno);
+	}
+
+	@Override
+	public String selectMtmLastChat(int me, int you, int pno) {
+		return chatDao.selectMtmLastChat(me, you, pno);
+	}
+
+	@Override
+	public String selectOneChatPtm(String nickName, int pno) {
+		return chatDao.selectOneChatPtm(nickName, pno);
+	}
+
+	@Override
+	public void updatePtm(String nickName, int pno) {
+		chatDao.updatePtm(nickName, pno);
+	}
+
+	@Override
+	public void updateMtm(String nickName, int pno, int chWriter, int chReader) {
+		chatDao.updateMtm(nickName, pno, chWriter, chReader);
+	}
+
+	@Override
+	public String selectOneChatMtm(String nickName, int pno, int chWriter, int chReader) {
+		return chatDao.selectOneChatMtm(nickName, pno, chWriter, chReader);
 	}
 
 }

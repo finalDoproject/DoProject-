@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 public interface TaskService {
 	static int TASK_SERVICE_ERROR = 0;
@@ -18,7 +19,7 @@ public interface TaskService {
 	
 	Task selectOneTask(int taskNo);
 
-	Attachment selectOneAttachment(int tno);
+	List<Attachment> selectAttachmentList(int no);
 
 	List<Task> selectListTask(int pno);
 		
@@ -28,7 +29,12 @@ public interface TaskService {
 	
 	int deleteAttach(int tno);
 	
+
 	// 검색결과 리스트
 	List<Task> searchListTask(String mno,String searchWd);
 	
+	int insertTaskkeep(TaskKeep tk);
+
+	List<Task> selectListmyTask(int mno);
+
 }

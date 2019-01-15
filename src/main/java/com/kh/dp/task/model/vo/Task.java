@@ -1,8 +1,9 @@
 package com.kh.dp.task.model.vo;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kh.dp.comment.model.vo.TaskComment;
 
 public class Task {
 	
@@ -11,6 +12,7 @@ public class Task {
 	private int tmno; // 업무 담당자
 	private String tenddate; 
 	private int ttpriority; // 우선 순위
+	private int tbno; // 업무 게시글 번호
 	private String ttitle; //업무명
 	private String tcontent; // 업무내용
 	private String tstartdate; // 업무 시작일
@@ -23,28 +25,27 @@ public class Task {
 	private String foldName;
 	private String fnewName;
 	private String nickname; // 이름
+
 	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
-	
+	private List<TaskComment> taskComment = new ArrayList<TaskComment>();
 	private int count;
 	
 	public Task() {}
 	
 	// 가상 변수 필드 생성자 추가
-		
-		
-		public Task(int tno, String ttitle, String tcontent, String twriter, String twritedate, int fno, String foldName, String fnewName) {
-			super();
-			this.tno = tno;
-			this.ttitle = ttitle;
-			this.tcontent = tcontent;
-			this.twriter = twriter;
-			this.twritedate = twritedate;
-			this.fno = fno;
-			this.foldName = foldName;
-			this.fnewName = fnewName;
-		}
+	public Task(int tno, String ttitle, String tcontent, String twriter, String twritedate, int fno, String foldName, String fnewName) {
+		super();
+		this.tno = tno;
+		this.ttitle = ttitle;
+		this.tcontent = tcontent;
+		this.twriter = twriter;
+		this.twritedate = twritedate;
+		this.fno = fno;
+		this.foldName = foldName;
+		this.fnewName = fnewName;
+	}
 		
 	public Task(int tno, String ttitle, String tcontent, String pttitle, String twritedate, String nickname) {
 		super();
@@ -64,6 +65,7 @@ public class Task {
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
+		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -81,6 +83,7 @@ public class Task {
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
+		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -90,9 +93,35 @@ public class Task {
 		this.count = count;
 	}
 	
+	// 첨부파일 + 댓글 있는 생성자
+	
+	
 	
 	public String getFnewName() {
 		return fnewName;
+	}
+
+	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, String ttitle, String tcontent,
+			String tstartdate, String twriter, int tpno, String twritedate, int fno, String foldName, String fnewName,
+			List<Attachment> taskFiles, List<TaskComment> taskComment, int count) {
+		super();
+		this.tno = tno;
+		this.tlevel = tlevel;
+		this.tmno = tmno;
+		this.tenddate = tenddate;
+		this.ttpriority = ttpriority;
+		this.ttitle = ttitle;
+		this.tcontent = tcontent;
+		this.tstartdate = tstartdate;
+		this.twriter = twriter;
+		this.tpno = tpno;
+		this.twritedate = twritedate;
+		this.fno = fno;
+		this.foldName = foldName;
+		this.fnewName = fnewName;
+		this.taskFiles = taskFiles;
+		this.taskComment = taskComment;
+		this.count = count;
 	}
 
 	public void setFnewName(String fnewName) {
@@ -153,6 +182,14 @@ public class Task {
 
 	public void setTtpriority(int ttpriority) {
 		this.ttpriority = ttpriority;
+	}
+
+	public int getTbno() {
+		return tbno;
+	}
+
+	public void setTbno(int tbno) {
+		this.tbno = tbno;
 	}
 
 	public String getTtitle() {
@@ -218,6 +255,16 @@ public class Task {
 	public void setTwritedate(String twritedate) {
 		this.twritedate = twritedate;
 	}
+	
+	
+
+	public List<TaskComment> getTaskComment() {
+		return taskComment;
+	}
+
+	public void setTaskComment(List<TaskComment> taskComment) {
+		this.taskComment = taskComment;
+	}
 
 	public String getNickname() {
 		return nickname;
@@ -239,15 +286,11 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
-				+ ttpriority + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate=" + tstartdate
-				+ ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno
-				+ ", foldName=" + foldName + ", fnewName=" + fnewName + ", nickname=" + nickname + ", taskFiles="
-				+ taskFiles + ", count=" + count + "]";
+				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
+				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", pttitle=" + pttitle + ", twritedate="
+				+ twritedate + ", fno=" + fno + ", foldName=" + foldName + ", fnewName=" + fnewName + ", nickname="
+				+ nickname + ", taskFiles=" + taskFiles + ", taskComment=" + taskComment + ", count=" + count + "]";
 	}
-
-	
-
-	
 
 
 	

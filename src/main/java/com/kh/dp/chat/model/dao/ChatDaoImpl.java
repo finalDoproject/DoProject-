@@ -41,22 +41,68 @@ public class ChatDaoImpl implements ChatDao{
 		/*sqlSession.update("chat.updateOneChatList", map);*/
 		return sqlSession.selectList("chat.selectOneChatList", map);
 	}
-	
+
 	@Override
-	public List<Map<String, String>> selectSearchChatRoom(String roomName) {
-		return sqlSession.selectList("chat.selectSearchChatRoom", roomName);
+	public String selectOneFileName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneFileName", chReader);
 	}
 
 	@Override
-	public int insertChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectOneYourName(int chReader) {
+		return sqlSession.selectOne("chat.selectOneYourName", chReader);
 	}
 
 	@Override
-	public int updateChat(int pno, int mno) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String selectPtmLastChat(int me, int pno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mno", me);
+		map.put("pno", pno);
+		return sqlSession.selectOne("chat.selectPtmLastChat", map);
+	}
+
+	@Override
+	public String selectMtmLastChat(int me, int you, int pno) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("me", me);
+		map.put("you", you);
+		map.put("pno", pno);
+		return sqlSession.selectOne("chat.selectMtmLastChat", map);
+	}
+
+	@Override
+	public String selectOneChatPtm(String nickName, int pno) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		return sqlSession.selectOne("chat.selectOneChatPtm", map);
+	}
+
+	@Override
+	public void updatePtm(String nickName, int pno) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		sqlSession.update("chat.updatePtm", map);
+	}
+
+	@Override
+	public void updateMtm(String nickName, int pno, int chWriter, int chReader) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		map.put("chWriter", String.valueOf(chWriter));
+		map.put("chReader", String.valueOf(chReader));
+		sqlSession.update("chat.updateMtm", map);
+	}
+
+	@Override
+	public String selectOneChatMtm(String nickName, int pno, int chWriter, int chReader) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		map.put("chWriter", String.valueOf(chWriter));
+		map.put("chReader", String.valueOf(chReader));
+		return sqlSession.selectOne("chat.selectOneChatMtm", map);
 	}
 
 }

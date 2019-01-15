@@ -35,6 +35,15 @@
 		 INSERT INTO PROJECT VALUES
 		(SEQ_PNO.NEXTVAL, #{ptitle}, #{psummary}, #{plevel}, DEFAULT, #{pmmno})
 	</insert>
+	<update id="updateLevelCk">
+		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
+	</update>
+	
+	<update id="updateOneLevelCk">
+			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
+		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
+	</update>
+	
 	<insert id="insertProjectLv" parameterType="java.util.List">
 	INSERT ALL
 		<if test="list != null">
@@ -45,30 +54,6 @@
 		</if>
 	SELECT * FROM DUAL
 	</insert>
-	
-	<update id="updateLevelCk">
-		UPDATE PROJECT SET PLEVELCK = #{plevelck} WHERE PNO = #{pno}
-	</update>
-	
-	<update id="updateOneLevelCk">
-			UPDATE PROJECT_LEVEL SET LCHECK = 'Y'
-		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
-	</update>
-	<update id="updateOneLevelunCk">
-			UPDATE PROJECT_LEVEL SET LCHECK = 'N'
-		  	WHERE LPNO = #{lpno}+1 AND LNO = #{lno}
-	</update>
-	
-	<update id="updateProject">
-		 UPDATE PROJECT SET 
-		 PTITLE = #{ptitle}, PSUMMARY = #{psummary}
-		 WHERE PNO = #{pno}
-	</update>
-	<update id="updateProjectLv" >
-		UPDATE PROJECT_LEVEL SET
-		 LNAME = #{lname}
-	  	 WHERE LPNO = (#{lpno} + 1) AND LNO = #{lno}
-	</update>
 		
 	
 		
@@ -116,6 +101,7 @@
 	<insert id="insertLeaveAlarm">
 		 INSERT INTO ALARM VALUES(SEQ_ANO.NEXTVAL, '프로젝트에서 나갔습니다.', DEFAULT, 3, #{mno}, #{pno}, NULL, NULL, #{apmno})
 	</insert>
+
 	<select id="projectMemberList" parameterType="_int" resultMap="pjMemberList">
 		SELECT PNO, PMMNO
 		FROM PROJECT 
@@ -130,6 +116,14 @@
 		JOIN MEMBER ON (MNO=PMMNO)
 		JOIN PROFILE_IMG ON (MPROFILE=IMGNO)
 	</select>
-	
-	
+
+    
+	<select id="selectTaskLevelCount" resultType="TaskCount">
+		SELECT (SELECT COUNT(*) FROM TASK WHERE TLEVEL = 1 AND TPNO = #{pno}) ONE,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 2 AND TPNO = #{pno}) TWO,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 3 AND TPNO = #{pno}) THREE,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 4 AND TPNO = #{pno}) FOUR,
+		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 5 AND TPNO = #{pno}) FIVE FROM DUAL
+	</select>
+
 </mapper>

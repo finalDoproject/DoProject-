@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="taskcomment">
+		<resultMap type="map" id="taskcomment"/>
+
+	<insert id="insertComment">
+		INSERT INTO TASK_COMMENT(CNO, CWRITER, CCONTENT, CWRITEDATE, CTNO) 
+		VALUES( SEQ_CONO.NEXTVAL, #{cwriter}, #{ccontent}, DEFAULT, #{ctno})
+		<selectKey keyProperty="cno" resultType="_int" order="AFTER"> 
+			SELECT SEQ_CONO.CURRVAL FROM DUAL 
+		</selectKey>
+	</insert>
+	
+	<select id="selectListComment" resultMap="taskcomment">
+		SELECT T.*, P.RENAMEDFILENAME FROM TASK_COMMENT T
+		JOIN MEMBER M ON (T.CWRITER = M.MNO)
+		JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE CTNO = #{ctno}
+	</select>
+	
+	<update id="updateComment">
+		UPDATE BOARD 
+		SET CCONTENT = #{ccontent}
+		WHERE BNO = #{cno}
+	</update>
+	
+	<delete id="deleteComment">
+		DELETE FROM TASK_COMMENT WHERE CNO = #{cno}
+	</delete>
+	
+</mapper>

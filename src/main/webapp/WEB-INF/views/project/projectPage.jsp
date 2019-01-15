@@ -42,6 +42,15 @@
 .ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 .ok:focus{outline: none;}
 
+.explainB {
+	 margin-left : 20px;
+	 width : 20px;
+	 height:20px;
+	 background-color:black;
+
+
+}
+
 </style>
 <script>
  var chk = 0;
@@ -68,8 +77,6 @@ function sclick(){
 	
 		$('#taskForm').css('display', 'none');
 		chk=0;
-	
-	
 }
 	
 
@@ -80,16 +87,26 @@ $(function(){
 		});	
 });
 
+//스케줄 매칭 요청 시 하나라도 입력하지 않으면 안넘어 가는 함수
 function formSubmit(){
-	 var title = $("input[name=title]").text();
+	 var title = $("input[name=title]").val()
 	 var member = $("option").val();
-	 var startdate = $("input[name=startDate]").text();
-	 var enddate = $("input[name=endDate]").text();
+	 var startdate = $("input[name=startDate]").val();
+	 var enddate = $("input[name=endDate]").val();
 	 
-	  if(title.length == 0 || startdate.length == 0 
-		|| enddate.length ==0 || member.length == 1){
-		alert ("필수 사항이 입력되지 않았습니다.");
-		return false;
+	  if(title.length == 0){
+		  alert ("제목이 입력되지 않았습니다.");
+		  return false;  
+	  }if(startdate.length == 0){
+		  alert ("시작일이 입력되지 않았습니다.");
+		  return false;
+		  
+	  }if( enddate.length == 0){
+		  alert ("마감일이 입력되지 않았습니다.");
+		  return false;
+	  }if( MEMBER.LENGTH == 1){
+			alert ("사람 수 필수 사항이 입력되지 않았습니다.");
+		  return false;
 	} 
 	  
 	return true;  
@@ -183,7 +200,7 @@ function formSubmit(){
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px; font-weight: bolder;">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="background-color : white; color : black; margin-left : 180px; font-weight: bolder;">
               스케줄 매칭</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -286,18 +303,13 @@ function formSubmit(){
       </div>
       <hr>
       <div class="timetable " style="color: #555">
-  
           <h6 style="font-weight: 600">스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-              
-                <c:if test="${s.SSNO eq 0}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
-                </c:if>
-                
-                <c:if test="${s.SSNO eq 1}">
+                <c:if test="${s.SSNO eq 0 || s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
+                <input type="hidden" value="${s.SMCONTENT}" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
@@ -305,6 +317,7 @@ function formSubmit(){
                 
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMCONTENT }" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
@@ -322,10 +335,26 @@ function formSubmit(){
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">스케줄 매칭</h5>
+          <h4 class="modal-title" id="exampleModalLongTitle" 
+          style="font-weight:bold;">
+          <span id="exampleTitle"></span>
+          </h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        
+        
+        <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
+        <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
+       	<div>
+       	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
+        <button class="explainB" style="background-color : gray;"></button>
+        <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
+        <button class="explainB" style="background-color : orange; "></button>
+        <span style="color : black"> : 50%이상 ~ 75%미만</span><br />
+        <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
+        <span style="color : black; "> : 75%이상</span>
         </div>
         <div class="modal-body">
             <table class="table table-bordered schedule" style="color : black;">
@@ -505,23 +534,23 @@ function formSubmit(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -588,11 +617,38 @@ function formSubmit(){
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	alert(requestNo + ", " + smdate + ", " + smenddate);
-	    	// 요일 값 가져오기
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	
+	    	
+	    	// 요일 값 가져오기(숫자)
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
+	    	
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
 	    	
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
@@ -703,6 +759,39 @@ function formSubmit(){
 	 	$('.select2-search__field').attr("style", "width : 370px");
 	 	
 	 	function result(a){
+
+	 		// 요청 번호
+	    	var requestNo = a;
+	 		
+	 		// 요청 시작일
+	    	var smdate = $('#smdate').val();
+	    	// 요청 종료일
+	    	var smenddate = $('#smenddate').val();
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});
 	    	
 	 		   for(i=1; i<106; i++){
 	 		 $.ajax({
@@ -1106,6 +1195,7 @@ function formSubmit(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
@@ -1171,25 +1261,40 @@ function formSubmit(){
 		donutPie();
     });
 	function donutPie(){
-		var pieData = {
-			요청: 11,
-			진행: 3,
-			피드백: 3,
-			완료: 10,
-			보류: 7
-		};
-		var chartDonut = c3.generate({
-			bindto: "#piechart",
-			data: {
-				json: [pieData],
-				keys: {
-					value: Object.keys(pieData),
-				},
-				type: "donut",
-			},
-			donut: {
-				title: "전체 " + "건",
-			},
+		var sum;
+		var pieData;
+		$.ajax({
+			url : "${pageContext.request.contextPath}/project/taskLevelCount.do?pno=${project.pno}",
+			success : function(data){
+				sum = data.one + data.two + data.three + data.four + data.five
+				
+				if(data.one == 0 && data.two == 0 && data.three == 0 && data.four == 0 && data.five == 0){
+					pieData = {
+						없음 : 1
+					}
+				}else{
+					pieData = {
+						요청: data.one,
+						진행: data.two,
+						피드백: data.three,
+						완료: data.four,
+						보류: data.five
+					}
+				};
+				var chartDonut = c3.generate({
+					bindto: "#piechart",
+					data: {
+						json: [pieData],
+						keys: {
+							value: Object.keys(pieData),
+						},
+						type: "donut",
+					},
+					donut: {
+						title: "전체 " + sum + "건",
+					},
+				});
+			}
 		});
 	}
 	</script>
