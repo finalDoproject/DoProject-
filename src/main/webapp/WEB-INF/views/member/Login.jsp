@@ -17,7 +17,7 @@
 <style>
 
 body{
-	/*  background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed;  */
+	background: url('../resources/images/main/hands.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -116,18 +116,10 @@ input[type="submit"].login:focus{outline: none;}
 
 </style>
 
-
-
-
-
-
-
 <meta charset="UTF-8">
 <title>login</title>
 </head>
 <body>
-
-
 
 <div id="formWrapper">
 
@@ -163,7 +155,6 @@ input[type="submit"].login:focus{outline: none;}
 </form>
 </div>
 </div>
-
 
 <script>
 

@@ -17,7 +17,7 @@
 <style>
 
 body{
-	 background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed; 
+	 background: url('../resources/images/main/twoCom.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -56,8 +56,8 @@ div#form{
 	width:360px;
 	height:320px;
 	height:auto;
-	/* background-color: rgba(127, 127, 127, 0.51); */
-	 background-color: #fff; 
+	/*  background-color: rgba(127, 127, 127, 0.51);  */
+	background-color: #fff;  
 	margin:auto;
 	border : 3px solid #fff;
 	border-radius: 5px;

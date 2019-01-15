@@ -17,7 +17,7 @@
 <style>
 
 body{
-	 background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed; 
+	 background: url('../resources/images/main/twoCom.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
