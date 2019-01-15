@@ -17,7 +17,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%;">
+    <div class="container-fluid gedf-wrapper" style="width: 60%;" id="${task.tno }">
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -50,7 +50,7 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}" id="deltask">삭제</a>
-                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a>
+                                        <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a> --%>
                                     </div>
                                 </div>
                                 <%-- </c:if> --%>
@@ -224,8 +224,7 @@
                     </c:forEach>
                     </c:if>
                      <div id="commentdivi${tcount }" style="border : 1px solid lightgray; display:hidden;" >
-                     <img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px;"  src="" alt="" />
-                    
+                     	<img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" />
                     </div>
                     <input type="hidden" name="cwriter" value="${member.mno}" />
 
@@ -236,7 +235,7 @@
                              </c:if>
                        </c:forEach>
                            <textarea style="width: 60%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" name="ccontent${tcount }" id="ccontent${tcount }"></textarea>
-                           <button style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small hi" id="incomment${tcount }" value="${tcount }" onclick="insertComment();">등록</button>      
+                           <button style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small hi" id="incomment${tcount }" value="${tcount }">등록</button>      
                     </div>
                 </div>
                 <!-- Post /////-->
@@ -305,7 +304,7 @@
 							
 								$(".tLevelSelect2").each(function(){
 									$(this).click(function(){
-										console.log("this" + $(this).val());
+										
 										$('.tlevelup').val($(this).val());
 									})
 								});
@@ -353,7 +352,7 @@
 						</select>
 					</div>
 					<script>
-						$(function(){
+/* 						$(function(){
 								var num = $('#count');
 								var tpr = $('#nowp'+ num).val();
 								
@@ -375,7 +374,7 @@
 									$('.ttp4'+num).parent().prop('disabled', true);
 								}
 							})
-										
+									 */	
 						</script> 
 			</div>
                         <textarea name="tcontent" id="uptcontent" cols="" rows="" onkeyup="fn_textAreaResize(this);" 
@@ -415,7 +414,63 @@
 
 <script>
 
-$('button[id*=incomment]').click(function(){
+$('a[id^=updatebtn]').click(function(){
+	var num = $(this).prop("name");
+	var tno = $('#tno'+num).val();
+	console.log("tno : " + tno);
+	
+	/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
+	
+	$.ajax({
+	    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
+	    type : "get",
+	    dataType: "json",
+	    contentType: 'application/json; charset=utf-8',
+	    data : {tno : tno},
+	    success : function(data) {
+	 	   console.log(data);
+	       	var task = data.task;
+	       	/* $('#tnoh1').append('<input type="hidden" name="count" id="levelchk'+num+'" value="'+task.tlevel +'"/>'); */
+	       	$('#level'+task.tlevel).addClass("selected");
+	       	$('#tnoh1').append('<input type="hidden" class="tno" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
+	       	if(data.attach != null){
+	       		var attach = data.attach;	
+	       		$('#filebtn').attr("onclick" , "location.href='${pageContext.request.contextPath}/resources/upload/task/'" + attach.fnewname);
+	       		$('#filebtn').text("첨부파일  -" + attach.foldname);
+	       		$('#filetag2').empty();
+	       	}else{
+	       		$('#filetag').empty();
+	       	}
+			$('#level'+task.tlevel).addClass("selected");
+			$('.tlevelup').val(task.tlevel);
+			
+			console.log(task.tstartdate.substring(0,10));
+			
+
+			/* if($(task.tlevel == 6)){ */
+				$('#uptwriter').text(task.twriter);
+				/*  	$('#upwritedate').text(task.twritedate); */
+				 		  $('#upttitle').attr("value",task.ttitle);
+				 		  $('#uptcontent').text(task.tcontent);
+				 	   	  $('#sd').val(task.tstartdate.substring(0,10));
+				 	   	$('#ed').val(task.tenddate.substring(0,10));
+			/* }else{
+				$('#uptwriter').text(task.twriter);
+			   $('#upwritedate').text(task.twritedate);
+				$('#upttitle').attr("value",task.ttitle);
+				$('#uptcontent').attr("value",task.tcontent);
+				$('#sd').prop('value', task.tstartdate);
+				$('#ed').prop('value', task.tenddate);
+			} */
+				 	   donutPie();
+	    },
+	    error : function(jqxhr, textStatus, errorThrown){
+	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	    }
+	    
+	}); 
+})
+$('button[id^=incomment]').click(function(){
 	var thisid = $(this).val();
 	console.log("지금거" + thisid);
 	
@@ -429,22 +484,27 @@ $('button[id*=incomment]').click(function(){
 
 	var pno = ${project.pno};
 	var mno = ${member.mno};
+	var ccontent = $('#ccontent'+thisid).val();
+	var ctno = $('#ctno'+thisid).val();
+	console.log("con :" + ccontent +"ctno : " +ctno);
 
 	$.ajax({
 	    url  :'${pageContext.request.contextPath}/comment/insertcomment.do',
 	    type : "get",
 	    dataType: "json",
 	    contentType: 'application/json; charset=utf-8',
-	    data : { ccontent : $('#ccontent'+thisid).val(), pno : pno, mno : mno, ctno : $('#ctno'+thisid).val()},
+	    data : { ccontent : ccontent, pno : pno, mno : mno, ctno : ctno},
 	    success : function(data) {
 				console.log(data);
 				var attach = data.img;
 				var comment = data.comment;
 				var m = data.m;  
-				$('#commentdivi'+thisid).append(' <input type="text" value="'+ m.nickName+'" />');
-				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" readonly>'+comment.ccontent+'</textarea>');
+				$('#commentdivi'+thisid).append(' <h4 type="text" value="" style=" float : left; display:inline-block;  margin-left:20px; margin-top:10px;">'+ m.nickName+'</h4>');
+				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none; display:inline-block;" maxlength="4000" placeholder="댓글을 입력하세요" id="nowcontent'+thisid+'" readonly>'+comment.ccontent+'</textarea> &nbsp;');
 				$('#commentImgi'+thisid).prop("src", "${pageContext.request.contextPath }/resources/upload/profile/"+ attach.renamedFileName);
 				$('#commentImgi'+thisid).css('display','block'); 
+				$('#nowcontent'+thisid).after('<button id="incom" style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small">삭제</button>');
+				$('#incom').attr('onclick', "location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno="+comment.cno+"&pno="+pno+"&mno="+ mno+"'");
 				
                     
 	    },
@@ -452,65 +512,10 @@ $('button[id*=incomment]').click(function(){
 	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
 	    }
 	    
-	}); 
-})
+	})
+});
 
-$('a[id^=updatebtn]').click(function(){
-		var num = $(this).prop("name");
-		var tno = $('#tno'+num).val();
-		console.log("tno : " + tno);
-		
-		/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
-		
-		$.ajax({
-		    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
-		    type : "get",
-		    dataType: "json",
-		    contentType: 'application/json; charset=utf-8',
-		    data : {tno : tno},
-		    success : function(data) {
-		 	   console.log(data);
-		       	var task = data.task;
-		       	/* $('#tnoh1').append('<input type="hidden" name="count" id="levelchk'+num+'" value="'+task.tlevel +'"/>'); */
-		       	$('#level'+task.tlevel).addClass("selected");
-		       	$('#tnoh1').append('<input type="hidden" class="tno" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
-		       	if(data.attach != null){
-		       		var attach = data.attach;	
-		       		$('#filebtn').attr("onclick" , "location.href='${pageContext.request.contextPath}/resources/upload/task/'" + attach.fnewname);
-		       		$('#filebtn').text("첨부파일  -" + attach.foldname);
-		       		$('#filetag2').empty();
-		       	}else{
-		       		$('#filetag').empty();
-		       	}
-				$('#level'+task.tlevel).addClass("selected");
-				$('.tlevelup').val(task.tlevel);
-				
-				console.log(task.tstartdate.substring(0,10));
-				
 
-				/* if($(task.tlevel == 6)){ */
-					$('#uptwriter').text(task.twriter);
-					/*  	$('#upwritedate').text(task.twritedate); */
-					 		  $('#upttitle').attr("value",task.ttitle);
-					 		  $('#uptcontent').text(task.tcontent);
-					 	   	  $('#sd').val(task.tstartdate.substring(0,10));
-					 	   	$('#ed').val(task.tenddate.substring(0,10));
-				/* }else{
-					$('#uptwriter').text(task.twriter);
-				   $('#upwritedate').text(task.twritedate);
-					$('#upttitle').attr("value",task.ttitle);
-					$('#uptcontent').attr("value",task.tcontent);
-					$('#sd').prop('value', task.tstartdate);
-					$('#ed').prop('value', task.tenddate);
-				} */
-					 	   donutPie();
-		    },
-		    error : function(jqxhr, textStatus, errorThrown){
-		        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
-		    }
-		    
-		}); 
-})
 
 function deleteAttach(){
 	var tno = $('.tno').val();
@@ -558,6 +563,11 @@ function deleteAttach(){
 			return false;
 		}
 	}
+	
+
+
+
+    
 	
 	function commentin(){
 		

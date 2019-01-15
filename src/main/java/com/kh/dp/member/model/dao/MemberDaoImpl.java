@@ -112,7 +112,11 @@ public class MemberDaoImpl implements MemberDao {
 	}
 	
 	
-
+	@Override
+	public Member selectOne(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("member.selectOneMno", mno);
+	}
 	
 
 }

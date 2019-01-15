@@ -450,6 +450,7 @@ $(function() {
 		</div>
 		</form>
 	</div>
+	
 	<script>
 			
 	
@@ -483,6 +484,7 @@ $(function() {
 		}
 		
 		donutPie();
+
 	}
 	
 	</script>

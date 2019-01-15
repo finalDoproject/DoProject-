@@ -121,6 +121,8 @@ public class MemberController {
 		
 		Member m = memberService.selectOne(userId);
 		
+		Attachment mat = memberService.selectAttach(m.getMno());
+		
 		String loc = "/";
 		String msg = "";
 		
@@ -130,7 +132,7 @@ public class MemberController {
 			
 			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
 				msg="로그인에 성공했습니다.";
-				mv.addObject("member", m);
+				mv.addObject("member", m).addObject(mat);
 				loc="/";
 			} else {
 				msg = "비밀번호를 다시 확인해주세요.";
