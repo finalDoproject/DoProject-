@@ -556,54 +556,203 @@ function optionModalClk(pno, mno){
 	            error : function(jqxhr, textStatus, errorThrown){
 	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
 	            }
-	        });				
-		});
+	        });			정다슬 2019-01-15 오후 3:11
+	        <script>
 
-	
-	
-	 $('.pj_folder_in').click(function () {  
-         //e.preventDefault();  
-        /*  var url = "${pageContext.request.contextPath}/project/projectPage.do";  
-         window.open(url, "_self");   */
-         var pno = $(this).children("#pno").text();
-         var mno = $(".headerMno").text();
-         //var pno = document.getElementById('pno').val();
-         console.log(pno);
 
-         console.log("메인"+mno);
-         
-         location.href = "${pageContext.request.contextPath}/project/projectPage.do?pno="
-             +pno+"&mno="+mno;
-         
-     }); 
-	 
-	 /* project level btn */
-	 $(document).ready(function(){
-        $(".addLevel").click(function(){
-          $(".addLevel").hide();
-          $(".delLevel").show();  
-          $(".levelbox").show();  
-          $("#addTable").show();
-        });
-        $(".delLevel").click(function(){
-          $(".addLevel").show();
-          $(".delLevel").hide();  
-          $(".levelbox").hide(); 
-          $("#addTable").hide();
-          for(var i=count; i>-1; i--){
-	          oTbl.deleteRow(oTbl.clickedRowIndex);
-	          count--;
-          }
-        });
-        $(".updateModal").click(function(){
-            $("#updateModal").modal('show'); 
-            $("#optionModal").modal('hide');
-          });
-        
-      });
-	  
-	
-	</script>
+			 function LevelSum(frm){
+			 var sum = 0;
+			 var count = frm.levelCk.length;
+			 var param = {}; 
+
+			 $('input:checkbox[name="levelCk"]').change(function(){
+			 console.log("체인지:"+$('input:checkbox[name="levelCk"]'));
+			 param.lpno = $(this).prop('class');
+			 param.lno = $(this).prop('id');
+			 param.lcheck = $(this).val();
+			 console.log("체크값: " + param.lno); 
+			 console.log("lpno: " + param.lpno); 
+			 param.plevelck = sum;
+			 param.pno = $("#onePj [name=thisPno]").val();
+			 var jsonStr = JSON.stringify(param);
+			 console.log("jsonStr:"+jsonStr);
+
+			 levelajax(jsonStr);
+			 });
+
+			 for(var i=0; i < count; i++ ){
+			 if( frm.levelCk[i].checked == true ){
+			 sum ++;	
+			 param.lpno = $(frm.levelCk[i]).prop('class');
+			 param.lno = $(frm.levelCk[i]).prop('id');
+
+			 }
+			 }
+
+			 console.log("선택되어진 체크박스의 갯수는 " + sum + "개입니다." );
+
+			 param.plevelck = sum;
+			 param.pno = $("#onePj [name=thisPno]").val();
+			 var jsonStr = JSON.stringify(param);
+			 console.log("jsonStr:"+jsonStr);
+
+			 $.ajax({
+			 url :"${pageContext.request.contextPath}/project/projectLevelCk.do",
+			 data : jsonStr,
+			 dataType: "json",
+			 contentType: 'application/json; charset=utf-8',
+			 type : "post",
+			 success : function(data) {
+			 console.log(data);
+
+
+			 },
+			 error : function(jqxhr, textStatus, errorThrown){
+			 console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+			 }
+			 }); 
+			 };
+
+			 $('.detailmodalClose').click(function () { 
+			 // location.reload();
+			 $('#onePj').empty();
+			 $('#checkLevel').empty();
+			 $('.formPer').empty();
+			 location.reload();
+			 });
+
+
+			 // level checkBox 
+			 var oTbl;
+			 var count = 2;
+
+			 //Row 추가
+			 function insRow() {
+			 if(count<=6){
+			 oTbl = document.getElementById("addTable");
+			 var oRow = oTbl.insertRow();
+			 oRow.onmouseover=function(){oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
+			 var oCell = oRow.insertCell();
+			 //삽입될 Form Tag
+			 var frmTag = "<input type='text' name='lname' class='form-control' style='width: 90% !important; display: inline-block; margin-bottom: 5px;'> ";
+			 frmTag += "<button type='button' class='btn plusbtn btn-light' onClick='removeRow()' >-</button>";
+
+			 oCell.innerHTML = frmTag;
+			 count++;
+			 }else{
+			 alert("최대 5단계를 초과할 수 없습니다.");
+			 }
+			 }
+			 //Row 삭제
+			 function removeRow(thisCount) {
+			 if(count>1){
+			 oTbl.deleteRow(oTbl.clickedRowIndex);
+			 count--;
+			 }
+			 }	
+
+			 $("#proejctEnrollFrm .btn-send").on("click",function(){
+			 //파라미터를 post방식으로 전송 -> message body에 씀
+			 //json문자열로 처리해야 컨트롤러에서 @RequestBody가 처리함(HttpMessageConverter에 의해 커맨트객체 매핑)
+			 //ajax요청 필수속성 => contentType: 'application/json; charset=utf-8' 
+
+			 var frm = document.proejctEnrollFrm;
+
+			 for( var i = 0; i <= frm.elements.length - 1; i++ ){
+			 if( frm.elements[i].name == "lname" )
+			 {
+			 if( !frm.elements[i].value ){
+			 alert("단계설정을 입력하세요!");
+			 frm.elements[i].focus();
+			 return;
+			 }
+			 }
+			 } 
+
+			 var param = {};
+			 param.ptitle = $("#proejctEnrollFrm [name=ptitle]").val();
+			 param.psummary = $("#proejctEnrollFrm [name=psummary]").val();
+			 param.pmmno =$(".headerMno").text();
+			 param.plevel =$("#proejctEnrollFrm [name=lname]").length;
+
+			 var larr = new Array();
+
+			 for (var i=0; i<$("#proejctEnrollFrm [name=lname]").length; i++){
+			 if($("#proejctEnrollFrm [name=lname]").val ==null){
+			 param.plevel = 0;
+			 }else{
+			 var lobj = new Object();
+			 lobj.lno = i+1;
+			 lobj.lname = $("#proejctEnrollFrm [name=lname]").eq(i).val();
+			 larr.push(lobj);	
+			 var jsonArr = JSON.stringify(larr);
+			 console.log(jsonArr);
+			 }
+			 }
+			 var jsonStr = JSON.stringify(param);
+			 console.log(jsonStr);
+
+			 $.ajax({
+			 url : "${pageContext.request.contextPath}/project/projectMainLv",
+			 data : {jsonStr:jsonStr, jsonArr:jsonArr},
+			 dataType: "json",
+			 type : "post",
+			 success : function(data){
+			 console.log(data);
+			 location.reload();
+
+			 },
+			 error : function(jqxhr, textStatus, errorThrown){
+			 console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+			 }
+			 });	
+			 });
+
+
+
+			 $('.pj_folder_in').click(function () { 
+			 //e.preventDefault(); 
+			 /* var url = "${pageContext.request.contextPath}/project/projectPage.do"; 
+			 window.open(url, "_self"); */
+			 var pno = $(this).children("#pno").text();
+			 var mno = $(".headerMno").text();
+			 //var pno = document.getElementById('pno').val();
+			 console.log(pno);
+
+			 console.log("메인"+mno);
+
+			 location.href = "${pageContext.request.contextPath}/project/projectPage.do?pno="
+			 +pno+"&mno="+mno;
+
+			 }); 
+
+			 /* project level btn */
+			 $(document).ready(function(){
+			 $(".addLevel").click(function(){
+			 $(".addLevel").hide();
+			 $(".delLevel").show(); 
+			 $(".levelbox").show(); 
+			 $("#addTable").show();
+			 });
+			 $(".delLevel").click(function(){
+			 $(".addLevel").show();
+			 $(".delLevel").hide(); 
+			 $(".levelbox").hide(); 
+			 $("#addTable").hide();
+			 for(var i=count; i>-1; i--){
+			 oTbl.deleteRow(oTbl.clickedRowIndex);
+			 count--;
+			 }
+			 });
+			 $(".updateModal").click(function(){
+			 $("#updateModal").modal('show'); 
+			 $("#optionModal").modal('hide');
+			 });
+
+			 });
+
+
+			 </script>
 	
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

@@ -36,7 +36,7 @@
                                 	</c:forEach>
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.TWRITER }</div>
+                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>
@@ -58,9 +58,9 @@
 
                     </div>
                     <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.TWRITEDATE }</div>
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
                         
-                            <h3 class="card-title">${task.TTITLE }</h3>
+                            <h3 class="card-title">${task.ttitle }</h3>
                             <hr />
 
                         <div class="form-group">
@@ -110,7 +110,7 @@
 						</c:if>
 							<hr />
 							<!-- 3. 시작일 지정 -->
-							<c:if test="${task.TSTARTDATE != null}">
+							<c:if test="${task.tstartdate != null}">
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
@@ -128,7 +128,7 @@
 							</div>
 						<hr />
                         <p class="card-text" style="height: auto;">
-                            ${task.TCONTENT}
+                            ${task.tcontent}
                         </p>
                     </div>
                     <br /><br />
