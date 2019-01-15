@@ -2,6 +2,7 @@ package com.kh.dp.task.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import com.kh.dp.task.model.exception.TaskException;
 import com.kh.dp.task.model.service.TaskService;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 @Controller
 public class TaskController {
@@ -154,7 +156,7 @@ public class TaskController {
 								HttpServletRequest request, @RequestParam(value="upFile", required = false) MultipartFile[] upFile,
 								@RequestParam int mno, @RequestParam int pno 
 			/*@RequestParam(value="startdate", required=false) String startdate,
-			@RequestParam(value="enddate", required=false) String enddate*/) {
+			@RequestParam(value="enddate", required=false) String enddate*/) throws ParseException {
 		
 		task.setTpno(pno);
 		System.out.println("pno, mno : " +pno+", " + mno);
@@ -162,6 +164,9 @@ public class TaskController {
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
 		Attachment at = new Attachment();
+	
+		task.setTstartdate(parseDate(task.getTstartdate()));
+		task.setTenddate(parseDate(task.getTenddate()));
 		
 		if(upFile != null) {
 		
@@ -259,6 +264,34 @@ public class TaskController {
 		hmap.put("msg", msg);
 		return hmap;
 	}
+	
+	public String insertTaskKeep(@RequestParam int tno, @RequestParam int mno) {
+		
+		TaskKeep tk = new TaskKeep();
+		
+		tk.setBkbno(tno);
+		tk.setBkmno(mno);
+		
+		int result = taskService.insertTaskkeep(tk);
+		
+		String msg = "";
+		
+		if(result >0) {
+			msg="글을 담아두기 하였습니다. 마이페이지에서 확인하세요!";
 			
-			
+		}else {
+			msg="담아두기 실패!";
+		}
+		
+		return "common/msg";
+	}
+	
+	public static String parseDate(String str) throws ParseException {		
+
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
+		
+		return sdf2.format(sdf1.parse(str));
+	}
+	
 }

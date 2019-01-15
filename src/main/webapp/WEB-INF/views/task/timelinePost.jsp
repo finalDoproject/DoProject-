@@ -17,18 +17,24 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%;">
+    <div class="container-fluid gedf-wrapper" style="width: 60%;" id="${task.tno }">
         <div >
             <div class=" gedf-main">
-			
-			<input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
+            <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
+			<input type="hidden" name="ctno" id="ctno${tcount}" value="${task.tno }" />
+			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
+            <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                	<c:forEach items="${m}" var="m">
+                                		<c:if test="${m.nickName eq task.twriter}">
+                                			<img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="">
+                                		</c:if>
+                                	</c:forEach>
                                 </div>
                                 <div >
                                     <div class="h5 m-0">&nbsp; ${task.twriter }</div>
@@ -42,10 +48,9 @@
                                         	더보기<i class="fa fa-ellipsis-h"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
-                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}">삭제</a>
-                                        <a class="dropdown-item" href="#">Report</a>
+                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}" id="deltask">삭제</a>
+                                        <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a> --%>
                                     </div>
                                 </div>
                                 <%-- </c:if> --%>
@@ -60,7 +65,7 @@
                             <hr />
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
-								<c:forEach items="${mem}" var="m" varStatus="tnum">
+								<c:forEach items="${m}" var="m" varStatus="tnum">
 									<c:if test="${m.mno == task.tmno }">
 										${m.nickName }
 									</c:if> 
@@ -110,7 +115,7 @@
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
-									<input name="tstartdate" value="${task.tstartdate}" readonly>
+									<input name="startdate" value="${fn:substring(task.tstartdate,0,11)}" readonly>
 								</div>
 							</div>
 							</c:if>
@@ -119,7 +124,7 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="tstartdate" value="${task.tenddate}" readonly>
+									<input name="enddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
 								</div>
 							</div>
 						<hr />
@@ -189,6 +194,7 @@
                     </div>
                     <br /><br />
                     </div>
+                    
                     <c:forEach  items="${task.taskFiles}" var="attach" varStatus="tnum">
 						<button type="button" 
 								class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;" onclick="location.href='${pageContext.request.contextPath}/resources/upload/task/${attach.fnewname}'">
@@ -200,12 +206,37 @@
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                    <div id="commentdiv">
-                           <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="" >
-                           <textarea style="width: 75%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" placeholder="댓글을 입력하세요" ></textarea>
-                           <a href=""	style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small">등록</a>         
+                    <c:if test="${task.taskComment != null}">
+                    <c:forEach items="${task.taskComment}" var="c" varStatus="cnum">
+	                    <div id="commentdiv${cnum.count }" style="border : 1px solid lightgray;" >
+								<c:forEach items="${m}" var="m" varStatus="tnum">
+									<c:if test="${m.mno == c.cwriter }">&nbsp;&nbsp;&nbsp;&nbsp;
+									<img class="rounded-circle" width="45" id="commentImg${cnum.count }" style=" float:left; margin-left:20px; margin-top:10px;" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="" />
+										<h3 style="float:left; margin-left:20px; margin-top:10px;">${m.nickName } </h3> ${c.cwritedate} <br>
+									</c:if> 
+								</c:forEach>
+	                            <textarea style="width: 60%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" readonly>${c.ccontent}</textarea>
+	                           
+                           <c:if test="${member.mno == c.cwriter }">
+                           <button style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small" onclick="location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno=${c.cno}&pno=${project.pno}&mno=${member.mno}'">삭제</button>         
+	                    	</c:if>
+	                    </div>
+                    </c:forEach>
+                    </c:if>
+                     <div id="commentdivi${tcount }" style="border : 1px solid lightgray; display:hidden;" >
+                     	<img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" />
                     </div>
-                   
+                    <input type="hidden" name="cwriter" value="${member.mno}" />
+
+                    <div id="commentdiv" style="border : 1px solid lightgray;">
+                       <c:forEach items="${m}" var="m">
+                             <c:if test="${m.mno eq member.mno}">
+                                <img class="rounded-circle" width="45" style=" float:left; margin-left:20px; margin-top:10px;" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="">
+                             </c:if>
+                       </c:forEach>
+                           <textarea style="width: 60%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none;" maxlength="4000" name="ccontent${tcount }" id="ccontent${tcount }"></textarea>
+                           <button style="float: right; border-radius: 5px; background-color: #F88E6F; margin-right:20px;" class="button primary small hi" id="incomment${tcount }" value="${tcount }">등록</button>      
+                    </div>
                 </div>
                 <!-- Post /////-->
 
@@ -273,7 +304,7 @@
 							
 								$(".tLevelSelect2").each(function(){
 									$(this).click(function(){
-										console.log("this" + $(this).val());
+										
 										$('.tlevelup').val($(this).val());
 									})
 								});
@@ -321,7 +352,7 @@
 						</select>
 					</div>
 					<script>
-						$(function(){
+/* 						$(function(){
 								var num = $('#count');
 								var tpr = $('#nowp'+ num).val();
 								
@@ -343,7 +374,7 @@
 									$('.ttp4'+num).parent().prop('disabled', true);
 								}
 							})
-										
+									 */	
 						</script> 
 			</div>
                         <textarea name="tcontent" id="uptcontent" cols="" rows="" onkeyup="fn_textAreaResize(this);" 
@@ -384,58 +415,107 @@
 <script>
 
 $('a[id^=updatebtn]').click(function(){
-		var num = $(this).prop("name");
-		var tno = $('#tno'+num).val();
-		console.log("tno : " + tno);
-		
-		/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
-		levelp
-		$.ajax({
-		    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
-		    type : "get",
-		    dataType: "json",
-		    contentType: 'application/json; charset=utf-8',
-		    data : {tno : tno},
-		    success : function(data) {
-		 	   console.log(data);
-		       	var task = data.task;
-		       	/* $('#tnoh1').append('<input type="hidden" name="count" id="levelchk'+num+'" value="'+task.tlevel +'"/>'); */
-		       	$('#level'+task.tlevel).addClass("selected");
-		       	$('#tnoh1').append('<input type="hidden" class="tno" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
-		       	if(data.attach != null){
-		       		var attach = data.attach;	
-		       		$('#filebtn').attr("onclick" , "location.href='${pageContext.request.contextPath}/resources/upload/task/'" + attach.fnewname);
-		       		$('#filebtn').text("첨부파일  -" + attach.foldname);
-		       		$('#filetag2').empty();
-		       	}else{
-		       		$('#filetag').empty();
-		       	}
-				$('#level'+task.tlevel).addClass("selected");
-				$('.tlevelup').val(task.tlevel);
-				
-				/* if($(task.tlevel == 6)){ */
-					$('#uptwriter').text(task.twriter);
-					/*  	$('#upwritedate').text(task.twritedate); */
-					 		  $('#upttitle').attr("value",task.ttitle);
-					 		  $('#uptcontent').text(task.tcontent);
-					 	   	  $('#sd').prop('value', task.tstartdate);
-					 	   	$('#ed').prop('value', task.tenddate);
-				/* }else{
-					$('#uptwriter').text(task.twriter);
-				   $('#upwritedate').text(task.twritedate);
-					$('#upttitle').attr("value",task.ttitle);
-					$('#uptcontent').attr("value",task.tcontent);
-					$('#sd').prop('value', task.tstartdate);
-					$('#ed').prop('value', task.tenddate);
-				} */
-		 		  
-		    },
-		    error : function(jqxhr, textStatus, errorThrown){
-		        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
-		    }
-		    
-		}); 
+	var num = $(this).prop("name");
+	var tno = $('#tno'+num).val();
+	console.log("tno : " + tno);
+	
+	/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
+	
+	$.ajax({
+	    url  :'${pageContext.request.contextPath}/task/taskUpdateView.do',
+	    type : "get",
+	    dataType: "json",
+	    contentType: 'application/json; charset=utf-8',
+	    data : {tno : tno},
+	    success : function(data) {
+	 	   console.log(data);
+	       	var task = data.task;
+	       	/* $('#tnoh1').append('<input type="hidden" name="count" id="levelchk'+num+'" value="'+task.tlevel +'"/>'); */
+	       	$('#level'+task.tlevel).addClass("selected");
+	       	$('#tnoh1').append('<input type="hidden" class="tno" name="tno" id="'+task.tno+num+'" value="'+task.tno +'"/>');
+	       	if(data.attach != null){
+	       		var attach = data.attach;	
+	       		$('#filebtn').attr("onclick" , "location.href='${pageContext.request.contextPath}/resources/upload/task/'" + attach.fnewname);
+	       		$('#filebtn').text("첨부파일  -" + attach.foldname);
+	       		$('#filetag2').empty();
+	       	}else{
+	       		$('#filetag').empty();
+	       	}
+			$('#level'+task.tlevel).addClass("selected");
+			$('.tlevelup').val(task.tlevel);
+			
+			console.log(task.tstartdate.substring(0,10));
+			
+
+			/* if($(task.tlevel == 6)){ */
+				$('#uptwriter').text(task.twriter);
+				/*  	$('#upwritedate').text(task.twritedate); */
+				 		  $('#upttitle').attr("value",task.ttitle);
+				 		  $('#uptcontent').text(task.tcontent);
+				 	   	  $('#sd').val(task.tstartdate.substring(0,10));
+				 	   	$('#ed').val(task.tenddate.substring(0,10));
+			/* }else{
+				$('#uptwriter').text(task.twriter);
+			   $('#upwritedate').text(task.twritedate);
+				$('#upttitle').attr("value",task.ttitle);
+				$('#uptcontent').attr("value",task.tcontent);
+				$('#sd').prop('value', task.tstartdate);
+				$('#ed').prop('value', task.tenddate);
+			} */
+				 	   donutPie();
+	    },
+	    error : function(jqxhr, textStatus, errorThrown){
+	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	    }
+	    
+	}); 
 })
+$('button[id^=incomment]').click(function(){
+	var thisid = $(this).val();
+	console.log("지금거" + thisid);
+	
+	if($('#ccontent'+thisid).val() == null){
+		alert("댓글 내용을 입력해주세요.");
+		console.log("1"+$('#ccontent'+thisid))
+		console.log("2"+$('#ccontent'+thisid).val());
+		event.preventDefault();
+		return false;
+	}
+
+	var pno = ${project.pno};
+	var mno = ${member.mno};
+	var ccontent = $('#ccontent'+thisid).val();
+	var ctno = $('#ctno'+thisid).val();
+	console.log("con :" + ccontent +"ctno : " +ctno);
+
+	$.ajax({
+	    url  :'${pageContext.request.contextPath}/comment/insertcomment.do',
+	    type : "get",
+	    dataType: "json",
+	    contentType: 'application/json; charset=utf-8',
+	    data : { ccontent : ccontent, pno : pno, mno : mno, ctno : ctno},
+	    success : function(data) {
+				console.log(data);
+				var attach = data.img;
+				var comment = data.comment;
+				var m = data.m;  
+				$('#commentdivi'+thisid).append(' <h4 type="text" value="" style=" float : left; display:inline-block;  margin-left:20px; margin-top:10px;">'+ m.nickName+'</h4>');
+				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none; display:inline-block;" maxlength="4000" placeholder="댓글을 입력하세요" id="nowcontent'+thisid+'" readonly>'+comment.ccontent+'</textarea> &nbsp;');
+				$('#commentImgi'+thisid).prop("src", "${pageContext.request.contextPath }/resources/upload/profile/"+ attach.renamedFileName);
+				$('#commentImgi'+thisid).css('display','block'); 
+				$('#nowcontent'+thisid).after('<button id="incom" style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small">삭제</button>');
+				$('#incom').attr('onclick', "location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno="+comment.cno+"&pno="+pno+"&mno="+ mno+"'");
+				
+                    
+	    },
+	    error : function(jqxhr, textStatus, errorThrown){
+	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	    }
+	    
+	})
+});
+
+
 
 function deleteAttach(){
 	var tno = $('.tno').val();
@@ -455,6 +535,8 @@ function deleteAttach(){
 	    
 	}); 
 }
+
+
 
 	function validate(){
 		
@@ -481,7 +563,48 @@ function deleteAttach(){
 			return false;
 		}
 	}
+	
 
+
+
+    
+	
+	function commentin(){
+		
+		if($('#ccontent').val() == null){
+			alert("내용을 입력해주세요.");
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+	$('#deltask').click(function(){
+		 donutPie();
+	})
+
+	
+		function donutPie(){
+		var pieData = {
+			요청: 0,
+			진행: 0,
+			피드백: 0,
+			완료: 0,
+			보류: 1
+		};
+		var chartDonut = c3.generate({
+			bindto: "#piechart",
+			data: {
+				json: [pieData],
+				keys: {
+					value: Object.keys(pieData),
+				},
+				type: "donut",
+			},
+			donut: {
+				title: "전체 " + "건",
+			},
+		});
+	}
 	</script>
 </body>
 </html>

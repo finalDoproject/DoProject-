@@ -17,6 +17,7 @@ import com.kh.dp.task.model.dao.TaskDao;
 import com.kh.dp.task.model.exception.TaskException;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -94,6 +95,11 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.deleteAttach(tno);
 	}
 
+	@Override
+	public int insertTaskkeep(TaskKeep tk) {
+		// TODO Auto-generated method stub
+		return taskDao.insertTaskkeep(tk);
+	}
 	@Override
 	public List<Task> selectListmyTask(int mno) {
 		// TODO Auto-generated method stub

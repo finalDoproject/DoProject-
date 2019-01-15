@@ -63,7 +63,7 @@
 	      <!-- Navbar -->
 	      <ul class="navbar-nav" style="padding-right: 30px; position: absolute; right: 0;">
 	          <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
-	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+	              <a class="nav-link dropdown-toggle goPjview" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
 	              target=_blank title="프로젝트 목록보기">
 	              <!-- <i class="fas fa-folder" style="color: rgba(248, 143, 111, 0.6)"></i> -->
 	               <c:if test="${!empty member}">
@@ -102,7 +102,8 @@
 	        <li class="nav-item dropdown no-arrow">
 	          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <!-- <i class="fas fa-user-circle fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i> -->
-	            <div id="userImg" class="cropcircle"></div>
+	            <div id="userImg" class="cropcircle" ><img src="${pageContext.request.contextPath }/resources/upload/profile/${member.renamedFileName}" alt="" id="userImg" class="cropcircle"/></div>
+	            
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 	            <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a>

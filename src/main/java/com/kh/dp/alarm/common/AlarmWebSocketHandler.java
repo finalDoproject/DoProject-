@@ -1,3 +1,4 @@
+import org.springframework.beans.factory.annotation.Autowired;
 package com.kh.dp.alarm.common;
 
 import java.io.IOException;
@@ -13,8 +14,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import com.kh.dp.member.model.vo.Member;
 
 @Repository
 public class AlarmWebSocketHandler extends TextWebSocketHandler{
@@ -73,4 +72,3 @@ public class AlarmWebSocketHandler extends TextWebSocketHandler{
 	}
  
 }
-
