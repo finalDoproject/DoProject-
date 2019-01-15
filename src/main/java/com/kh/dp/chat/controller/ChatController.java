@@ -1,7 +1,10 @@
 package com.kh.dp.chat.controller;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,10 +12,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
 import com.kh.dp.chat.model.service.ChatService;
 import com.kh.dp.chat.model.vo.ChatPtm;
@@ -65,6 +71,9 @@ public class ChatController {
 		
 		String renamedFileName = chatService.selectOneFileName(chReader);
 		String yourName = chatService.selectOneYourName(chReader);
+		
+		Member m = (Member)session.getAttribute("member");
+		chatService.updateMtm(m.getNickName(), pno, chWriter, chReader);
 		
 		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName).addObject("yourName", yourName);
 		mv.setViewName("jsonView");
@@ -128,4 +137,24 @@ public class ChatController {
 		return chatService.selectOneChatPtm(pno);
 	}
 	
+	@GetMapping("/chatCount")
+	public SseEmitter streamSseMvc() {
+	    SseEmitter emitter = new SseEmitter();
+	    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+	    sseMvcExecutor.execute(() -> {
+	        try {
+	            for (int i = 0; true; i++) {
+	                SseEventBuilder event = SseEmitter.event()
+	                  .data("SSE MVC - " + LocalTime.now().toString())
+	                  .id(String.valueOf(i))
+	                  .name("sse event - mvc");
+	                emitter.send(event);
+	                Thread.sleep(1000);
+	            }
+	        } catch (Exception ex) {
+	            emitter.completeWithError(ex);
+	        }
+	    });
+	    return emitter;
+	}
 }

@@ -236,7 +236,7 @@
 		
 	    $(document).ready(function(){
 			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
-			var wsUri = "ws://192.168.20.72/count";
+			var wsUri = "ws://192.168.0.6/count";
 			function send_message() {
 		        websocket = new WebSocket(wsUri);
 		        websocket.onopen = function(evt) {

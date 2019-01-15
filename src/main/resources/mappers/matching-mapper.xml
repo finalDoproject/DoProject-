@@ -44,7 +44,7 @@
 	 </insert>
 	 
 	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
-	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
+	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO, SJMNO
 	 FROM SCHEDULE_MATCHING
 	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
 	 WHERE SJMNO = #{mno}
@@ -88,7 +88,12 @@
 	 JOIN TASK ON(FTNO = TNO AND TPNO = #{pno})
 	 </select>
 	 
-	 
+	 <select id="browseMatchingMember" resultType="Member">
+	 SELECT NICKNAME
+	 FROM MEMBER
+	 JOIN SCHEDULE_JOIN ON(SJMNO =MNO)
+	 WHERE SJSM = #{pno}
+	 </select>
 	 
 	 
 </mapper>

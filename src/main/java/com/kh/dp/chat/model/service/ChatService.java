@@ -27,4 +27,6 @@ public interface ChatService {
 
 	void updatePtm(String nickName, int pno);
 
+	void updateMtm(String nickName, int pno, int chWriter, int chReader);
+
 }
