@@ -55,7 +55,7 @@
 	        <div class="input-group">
 	          <div class="input-group-append searchBar_area" >
 	            <i class="fas fa-search" style="color: rgba(73, 77, 82, 0.6); margin: 5px 10px;"></i>
-	            <input type="text" class="searchBar" id="srcWd" placeholder="검색어 입력 후 Enter" />
+	            <input type="text" class="searchBar" placeholder="검색어 입력 후 Enter" aria-label="Search" >
 	          </div>
 	        </div>
 	      </form>
@@ -119,8 +119,7 @@
 
 
 	<!-- Bootstrap 4 JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script
@@ -180,7 +179,9 @@
 				async : false,
 				success : function(response){
 					if(response==2 || response==5){
-						location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+						if(confirm("해당 프로젝트로 이동하시겠습니까?") == true){
+							location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+						}
 					}
 				},
 				error:function(request,status,error){
@@ -236,7 +237,7 @@
 		
 	    $(document).ready(function(){
 			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
-			var wsUri = "ws://192.168.0.6/count";
+			var wsUri = "ws://192.168.20.72/count";
 			function send_message() {
 		        websocket = new WebSocket(wsUri);
 		        websocket.onopen = function(evt) {
@@ -283,42 +284,8 @@
 		    function onError(evt) {
 		    }
 		    
-		    /* function onChatCountOpen(evt) {
-				var pno = '<c:out value="${param.pno}"/>';
-				console.log("pno : " + pno);
-				chatWebsocket.send(pno);
-		    }
-		    function onChatCountMessage(evt) {
-		    	var data=evt.data;
-		    	console.log("count : " + data);
-		    	if(data!=0){
-		    		$("#chatCount").empty();
-		    		$('#chatCount').text("+");
-		    	}else{
-		    		$("#chatCount").empty();
-		    	}
-		    }
-		    function onChatCountError(evt) {
-		    } */
-		    
-		    //sendChatCount_message();
-		    
 	    	send_message();
 	    });
-	    
-	 	// 검색창 - 엔터키가 눌렸을 때 실행할 내용
-	    $("#srcWd").keydown(function(){
-	        if (window.event.keyCode == 13) {
-	        	event.preventDefault();
-	 			var mno = $(".headerMno").text();
-	             var searchWd = $('#srcWd').val();
-	            console.log(mno+":"+searchWd);
-	            
-	           location.href="${pageContext.request.contextPath}/project/projectSearch.do?mno="+mno+"&searchWd="+searchWd;
-	        }
-	    	
-	    });
-
 	</script>
 </body>
 </html>

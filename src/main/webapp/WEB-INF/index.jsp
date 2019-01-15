@@ -55,63 +55,6 @@
 										<img src="resources/images/intro/main1.png" alt="" />
 									</span>
 								</section>
-								
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>기능 소개</h2>
-									</header>
-									<div class="posts">
-										<article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/makeProject.png" width="410" height="230" alt="" />
-											<h3>프로젝트 생성</h3>
-											<p>팀장이 되어 직접 프로젝트를 만들거나 팀원으로 프로젝트에 참여할 수 있습니다. 단계별 목표 설정이 가능하고 그 진행률을 한 눈에 확인하실 수 있습니다.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article>
-										<article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/workReport.png" width="410" height="230" alt="" />
-											<h3>업무 리포트</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article>
-										<article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/sidebar.png" width="180" height="260" alt="" />
-											<h3>사이드바</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article>
-										<article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/myScheduler.png" width="395" height="220" alt="" />
-											<h3>내 캘린더</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article>
-										 <article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/scheduleMatching.png" width="395" height="220" alt="" />
-											<h3>스캐쥴 매칭</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article>
-										<article>
-											<img src="${pageContext.request.contextPath}/resources/images/main/chatting.png" width="395" height="220" alt="" />
-											<h3>채팅</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-											<ul class="actions">
-												<!-- <li><a href="#" class="button">More</a></li> -->
-											</ul>
-										</article> 
-									</div>
-								</section>								
 
 							<!-- Section -->
 								<section>
@@ -150,11 +93,66 @@
 									</div>
 								</section>
 
-
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Ipsum sed dolor</h2>
+									</header>
+									<div class="posts">
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic01.jpg" alt="" /></a>
+											<h3>Interdum aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic02.jpg" alt="" /></a>
+											<h3>Nulla amet dolore</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic03.jpg" alt="" /></a>
+											<h3>Tempus ullamcorper</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic04.jpg" alt="" /></a>
+											<h3>Sed etiam facilis</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic05.jpg" alt="" /></a>
+											<h3>Feugiat lorem aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic06.jpg" alt="" /></a>
+											<h3>Amet varius aliquam</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+									</div>
+								</section>
 
 						</div>
 					</div>
-       
+
 				<c:import url="views/common/introSidebar.jsp"/>
 
 		<!-- Scripts -->

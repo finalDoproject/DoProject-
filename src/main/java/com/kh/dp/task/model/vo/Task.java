@@ -12,17 +12,13 @@ public class Task {
 	private int tmno; // 업무 담당자
 	private String tenddate; 
 	private int ttpriority; // 우선 순위
+	private int tbno; // 업무 게시글 번호
 	private String ttitle; //업무명
 	private String tcontent; // 업무내용
 	private String tstartdate; // 업무 시작일
 	private String twriter;
 	private int tpno;
-	private String twritedate; 
-	// 가상 컬럼에 대한 필드 추가
-	private int fno;
-	private String foldName;
-	private String fnewName;
-
+	private Date twritedate; 
 	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
@@ -46,13 +42,14 @@ public class Task {
 		}
 		
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, int count, String twritedate) {
+			String tstartdate, String twriter, int tpno, int count, Date twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
+		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -63,13 +60,14 @@ public class Task {
 
 	// 첨부파일 있는 생성자
 	public Task(int tno, int tlevel, int tmno, String tenddate, int ttpriority, int tbno, String ttitle, String tcontent,
-			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count, String twritedate) {
+			String tstartdate, String twriter, int tpno, List<Attachment> taskFiles, int count, Date twritedate) {
 		super();
 		this.tno = tno;
 		this.tlevel = tlevel;
 		this.tmno = tmno;
 		this.tenddate = tenddate;
 		this.ttpriority = ttpriority;
+		this.tbno = tbno;
 		this.ttitle = ttitle;
 		this.tcontent = tcontent;
 		this.tstartdate = tstartdate;
@@ -170,6 +168,14 @@ public class Task {
 		this.ttpriority = ttpriority;
 	}
 
+	public int getTbno() {
+		return tbno;
+	}
+
+	public void setTbno(int tbno) {
+		this.tbno = tbno;
+	}
+
 	public String getTtitle() {
 		return ttitle;
 	}
@@ -226,11 +232,11 @@ public class Task {
 		this.count = count;
 	}
 	
-	public String getTwritedate() {
+	public Date getTwritedate() {
 		return twritedate;
 	}
 
-	public void setTwritedate(String twritedate) {
+	public void setTwritedate(Date twritedate) {
 		this.twritedate = twritedate;
 	}
 	
@@ -247,6 +253,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
+
 
 				+ ttpriority + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate=" + tstartdate
 				+ ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno

@@ -41,5 +41,4 @@ public interface MemberDao {
 	
 	Member selectOne(int mno);
 
-
 }

@@ -9,18 +9,7 @@
 		<result property="sjsm" column="MMSMNO" />
 		<result property="sjdtno" column="MMDTNO" />
 	</resultMap>
-	
-	<resultMap id="task2" type="Task">
-		<id property="tno" column="TNO"/>
-		<result property="ttitle" column="TTITLE"/>
-		<result property="tcontent" column="TCONTENT"/>
-		<result property="twriter" column="TWRITER"/>
-		<result property="twritedate" column="TWRITEDATE"/>
-		<result property="fno" column="FNO"/>
-		<result property="foldName" column="FOLDNAME"/>
-		<result property="fnewName" column="FNEWNAME"/>
-	</resultMap>
-	
+
 	<select resultType="Member" parameterType="_int" id="browseMember"> 
 	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
 	WHERE PMPNO = #{pno} 

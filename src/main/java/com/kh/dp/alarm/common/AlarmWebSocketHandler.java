@@ -2,8 +2,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 package com.kh.dp.alarm.common;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -52,15 +50,7 @@ public class AlarmWebSocketHandler extends TextWebSocketHandler{
 			public void run() {
 				try {
 					String result1 = sqlsession.selectOne("alarm.selectCountAlarm", nickName);
-					String result2;
-					if(pNo != 0) {
-					Map<String, String> map = new HashMap<String, String>();
-					map.put("nickName", nickName);
-					map.put("pno", String.valueOf(pNo));
-						result2 = sqlsession.selectOne("alarm.selectCountChatAlarm", map);
-					}else {
-						result2 = "0";
-					}
+					String result2 = sqlsession.selectOne("alarm.selectCountChatAlarm", pNo);
 					String result = result1 + ":" + result2;
 					session.sendMessage(new TextMessage(result));
 				} catch (IOException e) {

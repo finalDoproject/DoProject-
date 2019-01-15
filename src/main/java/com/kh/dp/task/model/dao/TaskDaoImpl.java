@@ -1,6 +1,5 @@
 package com.kh.dp.task.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,21 +33,17 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	@Override
-	public Task selectOneTask(int tno) {
-		return sqlSession.selectOne("task.selectOneTask",tno);
+	public Task selectOneTask(int taskNo) {
+		return sqlSession.selectOne("task.selectOneTask",taskNo);
 	}
 	
 	@Override
-	public Attachment selectOneAttachment(int tno){
-		return sqlSession.selectOne("task.selectOneAttachment", tno);
+	public List<Attachment> selectAttachmentList(int taskNo){
+		return sqlSession.selectList("task.selectAttachmentList", taskNo);
 	}
 
 	@Override
-	public List<Task> selectTaskList(int pno) {
-		System.out.println( sqlSession.selectList("task.selectTaskList", 1));
-		System.out.println("pno : "+pno);
-		return sqlSession.selectList("task.selectTaskList", pno);
-	}
+	public List<Map<String, String>> selectTaskList(int pno) {
 
 	@Override
 	public int updateTask(Task task, Attachment a) {
@@ -74,10 +69,9 @@ public class TaskDaoImpl implements TaskDao {
 		return result; 
 	}
 
-	@Override
 	public int deleteTask(int tno) {
+		return sqlSession.selectList("task.selectTaskList", pno);
 		
-		return sqlSession.delete("task.deleteTask", tno);
 	}
 
 	@Override

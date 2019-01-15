@@ -51,13 +51,13 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public String selectMtmLastChat(int me, int you) {
-		return chatDao.selectMtmLastChat(me, you);
+	public String selectMtmLastChat(int me, int you, int pno) {
+		return chatDao.selectMtmLastChat(me, you, pno);
 	}
 
 	@Override
-	public int selectOneChatPtm(int pno) {
-		return chatDao.selectOneChatPtm(pno);
+	public String selectOneChatPtm(String nickName, int pno) {
+		return chatDao.selectOneChatPtm(nickName, pno);
 	}
 
 	@Override
@@ -68,6 +68,11 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public void updateMtm(String nickName, int pno, int chWriter, int chReader) {
 		chatDao.updateMtm(nickName, pno, chWriter, chReader);
+	}
+
+	@Override
+	public String selectOneChatMtm(String nickName, int pno, int chWriter, int chReader) {
+		return chatDao.selectOneChatMtm(nickName, pno, chWriter, chReader);
 	}
 
 }
