@@ -357,28 +357,25 @@ function formSubmit(){
       <div class="timetable " style="color: #555">
   
           <h6>스케줄매칭</h6>
+          
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
                 <c:if test="${s.SSNO eq 0 || s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <input type="hidden" value="${s.SMCONTENT}" id="smcontent" />
-                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
-                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">진행중</button>
+                <button class="request" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">결과보기</button>
+                 </a>
                 </c:if>
-                
                 <c:if test="${s.SSNO eq 2}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} 
-                <input type="hidden" value="${s.SMCONTENT }" id="smcontent" />
-                <input type="hidden" value="${s.SMDATE}" id="smdate"/>
-                <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
-                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
+                <a style="color: #555;">${s.SMCONTENT}
+                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">완료</button> </a>
                 </c:if>
                
               </li>
             </c:forEach>
             </ul>
+            </div>
           
         </div>
         <hr>
@@ -392,15 +389,13 @@ function formSubmit(){
           style="font-weight:bold;">
           <span id="exampleTitle"></span>
           </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
         
         
         <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
         <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
-       	<div>
+       	
+       	<div style="display:none" class="explain">
        	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
         <button class="explainB" style="background-color : gray;"></button>
         <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
@@ -409,6 +404,7 @@ function formSubmit(){
         <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
         <span style="color : black; "> : 75%이상</span>
         </div>
+        
         <div class="modal-body">
             <table class="table table-bordered schedule" style="color : black;">
                 <thead>
@@ -578,7 +574,7 @@ function formSubmit(){
             </table>
         </div>
         <div class="modal-footer">
-          
+          <button type="button" class="ok" id="modalConfirm">확인</button>
         </div>
       </div>
     </div>
@@ -587,6 +583,7 @@ function formSubmit(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
+      
       	<div class="container-fluid gedf-wrapper">
       		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
         	<div id="donut" class="container-fluid collapse show in">
@@ -607,7 +604,6 @@ function formSubmit(){
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
-      
     </div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	
@@ -659,7 +655,7 @@ function formSubmit(){
 	    }); 
 	 	
 	 	// select 클릭 시 효과  + 아이디 값 가져오기 
-	    function selectId(A){
+	    function selectId(A,B,C,D){
 	 		
 	 		// 요청 번호
 	    	var requestNo = A;
@@ -667,12 +663,11 @@ function formSubmit(){
 	 		// 회원 번호
 	    	var mNo = ${member.mno};
 	    	// 요청 시작일
-	    	var smdate = $('#smdate').val();
+	    	var smdate = C;
 	    	// 요청 종료일
-	    	var smenddate = $('#smenddate').val();
+	    	var smenddate = D;
 	    	// 요청 제목
-	    	var smcontent = $('#smcontent').val();
-	    	
+	    	var smcontent = B;
 	    	
 	    	// 요일 값 가져오기(숫자)
 	    	var week = ['1','2','3','4','5','6','7'];
@@ -683,10 +678,8 @@ function formSubmit(){
 	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
 	    	var s = w[new Date(smdate).getDay()];
 	    	var e = w[new Date(smenddate).getDay()];
-	    	$('#exampleTitle').html(smcontent);
-	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
-	    	$('#explain2').text("매칭 참여 인원 : ");
 	    	
+	    	// 매칭에 참여하는 멤버 불러오기
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
 	 			data : {requestNo : requestNo},
@@ -703,6 +696,7 @@ function formSubmit(){
 	         	}
 	 		});  
 	    	
+	    	// DateTime 부러오기
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
 	 			data : {requestNo : requestNo,
@@ -713,6 +707,7 @@ function formSubmit(){
 	 				for(var i in data ) {
 	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
 	 				}
+	 				
 	 				}
 	 			},error : function(request, status, error){
 	      			alert(request + "\n"
@@ -720,6 +715,10 @@ function formSubmit(){
 	      					  + error);
 	         	}
 	 		});  
+	    	
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
 	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
@@ -743,7 +742,7 @@ function formSubmit(){
 	 				         	dataType : "json",
 	 				         	success : function(data) {
 	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-	 				         		
+	 				         			
 	 				         		
 	 				         	 },error : function(request, status, error){
 	 				      			alert(request + "\n"
@@ -761,7 +760,7 @@ function formSubmit(){
 	 				         	dataType : "json",
 	 				         	success : function(data) {
 	 				         			$('#'+dtNo).css("background-color", "white");
-	 				         		
+	 				         			
 	 				         		
 	 				         	 },error : function(request, status, error){
 	 				      			alert(request + "\n"
@@ -806,29 +805,38 @@ function formSubmit(){
 	    			};
 	    		};
 	    	};
-	    	
-		};
+	    	$('#modalConfirm').click(function(){
+		 		location.reload();
+		 	});
+		
+	 	};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
 	 	
-	 	function result(a){
+	 	
+	 	
+	 	function result(a,b,c,d){
 
 	 		// 요청 번호
 	    	var requestNo = a;
 	 		
 	 		// 요청 시작일
-	    	var smdate = $('#smdate').val();
+	    	var smdate = c;
 	    	// 요청 종료일
-	    	var smenddate = $('#smenddate').val();
+	    	var smenddate = d;
 	    	// 요청 제목
-	    	var smcontent = $('#smcontent').val();
+	    	var smcontent = b;
+	    	
 	    	// 요일 값 가져오기(한글)
 	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
 	    	var s = w[new Date(smdate).getDay()];
 	    	var e = w[new Date(smenddate).getDay()];
+	    	
 	    	$('#exampleTitle').html(smcontent);
 	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
 	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$('.explain').css("display","inline");
 	    	
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
@@ -871,7 +879,12 @@ function formSubmit(){
 	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
 	            }
 	 		}); 
-	 		 }  
+	 		 };
+	 		 
+	 		$('#modalConfirm').click(function(){
+		 		location.reload();
+		 	});
+		
 	 	};
 	 	
 	 	$(function(){

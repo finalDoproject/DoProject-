@@ -28,7 +28,7 @@
 	
 	<insert parameterType="Matching" id="insertMatching">
 	 INSERT INTO SCHEDULE_MATCHING VALUES 
-	 (SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
+	 (SEQ_SMNO.NEXTVAL, #{smcontent}, DEFAULT,#{smdate}, #{smenddate}, DEFAULT)
 	 </insert>
 	 
 	 <insert parameterType="_int" id="insertMember">
@@ -80,7 +80,6 @@
 	 FROM TASK
 	 JOIN TASK_FILE ON(FTNO = TNO)
 	 WHERE TPNO = TO_NUMBER(#{pno})
-	 ORDER BY TWRITEDATE DESC, TNO DESC
 	 </select>
 	 
 	 <select id="fileTotalContents" resultType="_int">
