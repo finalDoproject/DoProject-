@@ -16,7 +16,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" id="${task.tno}">
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -36,7 +36,7 @@
                                 	</c:forEach>
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.TWRITER }</div>
+                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>
@@ -58,9 +58,9 @@
 
                     </div>
                     <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.TWRITEDATE }</div>
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
                         
-                            <h3 class="card-title">${task.TTITLE }</h3>
+                            <h3 class="card-title">${task.ttitle }</h3>
                             <hr />
 
                         <div class="form-group">
@@ -110,7 +110,7 @@
 						</c:if>
 							<hr />
 							<!-- 3. 시작일 지정 -->
-							<c:if test="${task.TSTARTDATE != null}">
+							<c:if test="${task.tstartdate != null}">
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
@@ -128,7 +128,7 @@
 							</div>
 						<hr />
                         <p class="card-text" style="height: auto;">
-                            ${task.TCONTENT}
+                            ${task.tcontent}
                         </p>
                     </div>
                     <br /><br />
@@ -183,11 +183,12 @@
 
 				<br /><br /><br />
 				<br/>
+				            </div>
+       				 </div>
 				</c:forEach>
                
             </div>
-        </div>
-    </div>
+ 
 
  <div class="modal fade mod" id="taskUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

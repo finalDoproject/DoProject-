@@ -9,7 +9,18 @@
 		<result property="sjsm" column="MMSMNO" />
 		<result property="sjdtno" column="MMDTNO" />
 	</resultMap>
-
+	
+	<resultMap id="task2" type="Task">
+		<id property="tno" column="TNO"/>
+		<result property="ttitle" column="TTITLE"/>
+		<result property="tcontent" column="TCONTENT"/>
+		<result property="twriter" column="TWRITER"/>
+		<result property="twritedate" column="TWRITEDATE"/>
+		<result property="fno" column="FNO"/>
+		<result property="foldName" column="FOLDNAME"/>
+		<result property="fnewName" column="FNEWNAME"/>
+	</resultMap>
+	
 	<select resultType="Member" parameterType="_int" id="browseMember"> 
 	SELECT MNO,NICKNAME FROM MEMBER JOIN PROJECT_MEMBER ON(PMMNO = MNO) 
 	WHERE PMPNO = #{pno} 
@@ -17,7 +28,7 @@
 	
 	<insert parameterType="Matching" id="insertMatching">
 	 INSERT INTO SCHEDULE_MATCHING VALUES 
-	 (SEQ_SMNO.NEXTVAL, #{smcontent}, #{smdate}, #{smenddate}, DEFAULT)
+	 (SEQ_SMNO.NEXTVAL, #{smcontent}, DEFAULT,#{smdate}, #{smenddate}, DEFAULT)
 	 </insert>
 	 
 	 <insert parameterType="_int" id="insertMember">
@@ -69,7 +80,6 @@
 	 FROM TASK
 	 JOIN TASK_FILE ON(FTNO = TNO)
 	 WHERE TPNO = TO_NUMBER(#{pno})
-	 ORDER BY TWRITEDATE DESC, TNO DESC
 	 </select>
 	 
 	 <select id="fileTotalContents" resultType="_int">

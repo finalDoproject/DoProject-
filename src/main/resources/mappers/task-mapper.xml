@@ -34,16 +34,17 @@
 		<result property="ctno" column="CTNO"/>
 	</resultMap>
 	
+	
 	<resultMap type="Task" id="resultTaskList">
-		<id  property="tno"  column="TNO"/>
-		<result property="tmno" column="TMNO" />
-		<result property="ttitle" column="TTITLE" />
-		<result property="tcontent" column="TCONTENT" />
-		<result property="twritedate" column="TWRITEDATE" />
-		<result property="twriter" column="TWRITER" />
-		<result property="tpno" column="TPNO" />
-		
-	</resultMap>
+<id property="tno" column="TNO"/>
+<result property="tmno" column="TMNO" />
+<result property="ttitle" column="TTITLE" />
+<result property="tcontent" column="TCONTENT" />
+<result property="twritedate" column="TWRITEDATE" />
+<result property="twriter" column="TWRITER" />
+<result property="tpno" column="TPNO" />
+
+</resultMap>
 	
 	<sql id="selectAttachmentSQL">
 		
@@ -57,7 +58,7 @@
 		INSERT INTO TASK(TNO, TLEVEL, TMNO, TENDDATE, TTPRIORITY,
 			TTITLE, TCONTENT, TSTARTDATE, TWRITER, TPNO, TWRITEDATE)
 		VALUES (SEQ_TNO.NEXTVAL, #{tlevel}, #{tmno}, TO_DATE(#{tenddate},'MM/DD/RRRR'), #{ttpriority},
-		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter}, #{tpno},SYSDATE)
+		#{ttitle}, #{tcontent}, TO_DATE(#{tstartdate},'MM/DD/RRRR'), #{twriter}, #{tpno}, SYSDATE)
 		<selectKey keyProperty="tno" resultType="_int"
 			order="AFTER">
 			SELECT SEQ_TNO.CURRVAL FROM DUAL
@@ -75,8 +76,8 @@
 		</selectKey> -->
 	</insert>
 	
-	
-	<select id="selectTaskList" resultMap="task">
+ 	
+	<select id="selectOneTask" resultType="task">
 		SELECT *
 		FROM TASK
 		WHERE TNO = #{tno}
@@ -116,18 +117,6 @@
 	<delete id="deleteAttach">
 	 	DELETE FROM TASK_FILE WHERE FTNO = #{tno}
 	</delete>
-
-	<select id="searchListTask" parameterType="java.util.Map" resultMap="resultTaskList">
-		SELECT distinct PJ.PTITLE PTTITLE, TNO, TTITLE, TMNO, TCONTENT, TWRITEDATE, M.NICKNAME, TPNO
-		FROM TASK TK
-		JOIN MEMBER M ON (TK.TMNO = M.MNO)
-        JOIN PROJECT_MEMBER PM ON (PMPNO = TPNO)
-		JOIN PROJECT PJ ON (TK.TPNO = PJ.PNO)
-		WHERE M.NICKNAME Like '%' || #{searchWd} || '%' OR TCONTENT   Like '%' || #{searchWd} || '%' OR TTITLE   Like '%' || #{searchWd} || '%'
-		AND PM.PMPNO = PJ.PNO AND PMMNO = #{mno}
-		ORDER BY TK.TNO DESC
-	</select>
-
 	
 	<insert id="">
 	INSERT INTO BOARD_KEEP(BKMNO, BKBNO ) VALUES(#{bkmno}, #{bkbno} )
@@ -140,6 +129,17 @@
 			WHERE TMNO = #{mno}
 			ORDER BY TWRITEDATE DESC
 	</select>
-
-
+	
+	<select id="searchListTask" parameterType="java.util.Map" resultMap="resultTaskList">
+	SELECT distinct PJ.PTITLE PTTITLE, TNO, TTITLE, TMNO, TCONTENT, TWRITEDATE, M.NICKNAME, TPNO
+	FROM TASK TK
+	JOIN MEMBER M ON (TK.TMNO = M.MNO)
+	JOIN PROJECT_MEMBER PM ON (PMPNO = TPNO)
+	JOIN PROJECT PJ ON (TK.TPNO = PJ.PNO)
+	WHERE M.NICKNAME Like '%' || #{searchWd} || '%' OR TCONTENT Like '%' || #{searchWd} || '%' OR TTITLE Like '%' || #{searchWd} || '%'
+	AND PM.PMPNO = PJ.PNO AND PMMNO = #{mno}
+	ORDER BY TK.TNO DESC
+	</select>
+	
+	
 </mapper>

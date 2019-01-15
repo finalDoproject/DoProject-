@@ -186,27 +186,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.selectOne("project.selectTaskLevelCount", pno);
 	}
 
-	@Override
-	public int updateOneLevelunCk(Project project) {
-		return sqlSession.update("project.updateOneLevelunCk", project);	
-	}
-
-	@Override
-	public int updateProject(Project project) {
-		return sqlSession.update("project.updateProject", project);
-	}
-
-	@Override
-	public int updateProjectLv(List<Project> pjLevel) {
-		int result = 0;
-		System.out.println("plevel:" +pjLevel );
-		for(Project project: pjLevel) {
-			System.out.println("확인!");
-			result += sqlSession.update("project.updateProjectLv", project);										
-		}
-		System.out.println("result:" + result);
-		return result;
-	}
 
 
 

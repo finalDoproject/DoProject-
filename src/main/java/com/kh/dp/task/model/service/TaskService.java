@@ -19,7 +19,7 @@ public interface TaskService {
 	
 	Task selectOneTask(int taskNo);
 
-	List<Attachment> selectAttachmentList(int no);
+	Attachment selectOneAttachment(int tno);
 
 	List<Task> selectListTask(int pno);
 		
@@ -29,11 +29,11 @@ public interface TaskService {
 	
 	int deleteAttach(int tno);
 	
-	// 검색결과 리스트
-	List<Task> searchListTask(String mno,String searchWd);
-	
 	int insertTaskkeep(TaskKeep tk);
 
 	List<Task> selectListmyTask(int mno);
-
+	
+	// 검색결과 리스트
+	List<Task> searchListTask(String mno,String searchWd);
+	
 }

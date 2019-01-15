@@ -66,12 +66,12 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public List<Attachment> selectAttachmentList(int taskNo){
-		return taskDao.selectAttachmentList(taskNo);
+	public Attachment selectOneAttachment(int tno){
+		return taskDao.selectOneAttachment(tno);
 	}
 
 	@Override
-	public List<Map<String, String>> selectListTask(int pno) {
+	public List<Task> selectListTask(int pno) {
 		
 		return taskDao.selectTaskList(pno);
 	}
@@ -93,12 +93,6 @@ public class TaskServiceImpl implements TaskService {
 		// TODO Auto-generated method stub
 		return taskDao.deleteAttach(tno);
 	}
-	
-	// 검색결과 리스트
-	@Override
-	public List<Task> searchListTask(String mno,String searchWd) {
-		return taskDao.searchListTask(mno, searchWd);
-	}
 
 	@Override
 	public int insertTaskkeep(TaskKeep tk) {
@@ -110,5 +104,12 @@ public class TaskServiceImpl implements TaskService {
 		// TODO Auto-generated method stub
 		return taskDao.selectListmyTask(mno);
 	}
+	
+	// 검색결과 리스트
+	@Override
+	public List<Task> searchListTask(String mno,String searchWd) {
+		return taskDao.searchListTask(mno, searchWd);
+	}
+
 
 }

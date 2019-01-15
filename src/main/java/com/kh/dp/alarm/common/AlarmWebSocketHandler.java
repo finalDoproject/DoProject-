@@ -1,5 +1,6 @@
-import org.springframework.beans.factory.annotation.Autowired;
 package com.kh.dp.alarm.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

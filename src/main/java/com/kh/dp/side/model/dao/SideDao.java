@@ -39,5 +39,7 @@ public interface SideDao {
 
 	public List<Member> browseMatchingMember(int requestNo);
   
+	public List<Map<String, String>> FileList (int currentPage, int numPerPage, int pno);
+
 }
 	
