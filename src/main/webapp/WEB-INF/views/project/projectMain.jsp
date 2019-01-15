@@ -13,10 +13,9 @@
 <script>
 // 상세 불러오는 모달
 
-function optionModalClk(pno){
-	 var pno = pno;
-
-	 console.log(pno);
+function optionModalClk(pno, mno){
+	 console.log(pno+":"+ mno);
+	 
 	$.ajax({
        url  :"${pageContext.request.contextPath}/project/projectMainDetail",
        data : {pno:pno},
@@ -30,13 +29,89 @@ function optionModalClk(pno){
        	
        	var persent = oneProject.plevelck/oneProject.plevel*100;
    		console.log(persent);
-       	
-   		var printPer ="";
-   		printPer+='<label for="recipient-name" class="form-control-label">진행률</label>';       
-   		printPer+='<p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">'+persent.toFixed(0);+'% </p>';
-   		printPer+=
-   		$('.formPer').append(printPer);
-   		printPer = "";   
+
+       	if(oneProject.plevel == 0){
+       		
+       		var printPer ="";
+       		printPer+='<label for="recipient-name" class="form-control-label">진행률</label>';       
+       		printPer+='<p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">X</p>';
+       		printPer+=
+       		$('.formPer').append(printPer);
+       		printPer = "";   
+       		
+       		var printHTML = "";
+           	printHTML+='<small>프로젝트명</small>';
+           	printHTML+='<input name="thisPno" style="display: none;" value="'+oneProject.pno+'" ></input>';
+           	printHTML+='<h4>'+oneProject.ptitle+'</h4>';
+           	printHTML+='<small>프로젝트 개요</small>';
+           	printHTML+='<p>'+oneProject.psummary+'</p>';
+           	$('#onePj').append(printHTML);
+           	printHTML = "";  
+           	
+           	var printListHTML = "";
+   			printListHTML+='<label for="ck1">설정된 레벨이 없습니다.</label><br>';
+   			$('#checkLevel').append(printListHTML);
+   			printListHTML = ""; 	
+   			
+   			var footerHTML = "";
+   			footerHTML+= '<button type="button" class="btn btn-sm updateModal" style="background-color: coral; color: white"  data-toggle="modal" data-target="#updateModal" onclick="updateModalClk('+oneProject.pno+')">수정</button>';
+          	$('.footbtn').append(footerHTML);
+         	footerHTML = ""; 
+          
+       	}else{
+       		
+       		var printPer ="";
+       		printPer+='<label for="recipient-name" class="form-control-label">진행률</label>';       
+       		printPer+='<p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">'+persent+'% </p>';
+       		printPer+=
+       		$('.formPer').append(printPer);
+       		printPer = "";   
+       		
+           	var printHTML = "";
+           	printHTML+='<small>프로젝트명</small>';
+           	printHTML+='<input name="thisPno" style="display: none;" value="'+oneProject.pno+'" ></input>';
+           	printHTML+='<h4>'+oneProject.ptitle+'</h4>';
+           	printHTML+='<small>프로젝트 개요</small>';
+           	printHTML+='<p>'+oneProject.psummary+'</p>';
+           	$('#onePj').append(printHTML);
+           	printHTML = "";   
+           	
+           	var footerHTML = "";
+   			footerHTML+= '<button type="button" class="btn btn-sm updateModal" style="background-color: coral; color: white"  data-toggle="modal" data-target="#updateModal" onclick="updateModalClk('+oneProject.pno+')">수정</button>';
+          	$('.footbtn').append(footerHTML);
+         	footerHTML = ""; 
+         	
+           	var printListHTML = "";
+    		for(var i=0; i<OneProjectLvList.length;i++){
+    			printListHTML+='<input type="checkbox" name="levelCk" onClick="LevelSum(this.form);" id="'+OneProjectLvList[i].lno+'" class="'+oneProject.pno+'" value="'+OneProjectLvList[i].lcheck+'">';
+    			printListHTML+='<input id="thisLck" name="thisLck" style="display: none; class="'+OneProjectLvList[i].lcheck+'"></input>';
+    			printListHTML+='<label for="ck">&nbsp'+OneProjectLvList[i].lname+'</label><br>';
+    			//printListHTML+='<label for="ck1">설정된 레벨이 없습니다.</label><br>';
+    			$('#checkLevel').append(printListHTML);
+    			printListHTML = ""; 	
+    			
+
+    			// 체크값 Y 일 때 자동으로 체크
+    			if(OneProjectLvList[i].lcheck =='Y'){
+    				var ckNum =OneProjectLvList[i].lno;
+    				 //console.log("Y값ck:" + ckNum );
+    				 $('input:checkBox[id='+ckNum+']').prop( "checked", true );
+    			}else{
+    				var ckNumN =OneProjectLvList[i].lno;
+    				//console.log("N값ck:" + ckNumN );
+    				$('input:checkBox[id='+ckNumN+']').prop( "checked", false );
+    			}
+    			if(mno == oneProject.pmno){
+    				console.log("mno 같음");
+    				 $('input:checkBox[name="levelCk"]').attr( "disabled", false );
+    			}else{
+    				console.log("mno 다름"); 
+    				 $('input:checkBox[name="levelCk"]').attr( "disabled", true );
+    				 $('.updateModal').css( "display", "none");
+    			}
+    		}
+    		
+       	}
    		
        	var printHTML = "";
        	printHTML+='<small>프로젝트명</small>';
@@ -168,7 +243,7 @@ function optionModalClk(pno){
           <c:forEach items="${projectList}" var="project" varStatus="vs">
           <c:if test="${project.plevel >0}">
             <div class="pj_folder" id="pj_folder" style="background: rgba(255, 220, 205, 1);">
-                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno})">
+                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno}, ${member.mno})">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
             		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
@@ -184,8 +259,8 @@ function optionModalClk(pno){
                         style="width: ${persent}%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
                         <b id="per">${persent}%</b></div>
                       </div>
-                      <p>AA님 외 N명 참여중</p>
-                    </div>       
+                      <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
+                    </div> 
               </div>
             </div>
             </c:if>
@@ -199,15 +274,33 @@ function optionModalClk(pno){
                         <h5>${project.ptitle}</h5>
                         <p>${project.psummary}</p>
                         <div class="users_area">
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <p>AA님 외 N명 참여중</p>
+                        <%-- <c:forEach items="${memberProfileList}" var="item" varStatus="status">	 --%>
+                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status">	
+                        <c:if test="${memberProfile.pno == project.pno}">
+                          <div id="users_Img ${memberProfile.mProfile}" class="users_cropcircle">
+                          	<input type="hidden" class="thisImg" id="${memberProfile.renamedFileName}">
+                          </div>
+                        </c:if>
+                        </c:forEach>
+                        <%-- </c:forEach> --%>
+                          <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
                         </div>       
                   </div>
                 </div>
 			</c:if>
 			</c:forEach>
+			<script>
+			 $(document).ready(function() { 
+				 var users_area_cnt = $(".users_area").length;
+				 console.log("cnt:"+users_area_cnt);
+				 
+				 for(var i=0; i<users_area_cnt; i++){
+				 var img = $(".thisImg").eq(i).prop("id");
+				 console.log("img:"+img);
+				$(".thisImg").eq(i).parent().css( 'background-image','url("'+img+'")'); 						 
+				 }
+			 });
+			</script>
 			
                 <!-- optionModal -->
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
@@ -322,6 +415,22 @@ function optionModalClk(pno){
 		   var sum = 0;
 		   var count = frm.levelCk.length;
 		   var param = {}; 
+		   
+		   $('input:checkbox[name="levelCk"]').change(function(){
+			    console.log("체인지:"+$('input:checkbox[name="levelCk"]'));
+			    param.lpno = $(this).prop('class');
+				param.lno = $(this).prop('id');
+				param.lcheck = $(this).val();
+	   			console.log("체크값: " +  param.lno); 
+	   			console.log("lpno: " +  param.lpno); 
+	   			param.plevelck = sum;
+	   			param.pno = $("#onePj [name=thisPno]").val();
+	   			var jsonStr = JSON.stringify(param);
+	   			 console.log("jsonStr:"+jsonStr);
+	   			 
+	   			levelajax(jsonStr);
+		   });
+
 		   for(var i=0; i < count; i++ ){
 		       if( frm.levelCk[i].checked == true ){
 			    	sum ++;	

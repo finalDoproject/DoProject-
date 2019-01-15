@@ -256,50 +256,6 @@ function formSubmit(){
           </div>
         </div>
       </div>
-      
-      <!-- invitationModal -->
-      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
-              <div class="modal-dialog" role="document">
-              
-               <form id="proejctEnrollFrm">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
-                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
-                      </div>
-                      <div class="form-group">
-                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
-                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
-                      </div>                  
-                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
-                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
-                        <div class="form-group levelbox" style="display: none;">
-                          <hr>
-                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-                          <button type="button" class="btn minusbtn btn-light">-</button>
-                          
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
-                  </div>                  
-                </div>
-               </form>
-              </div>
-            </div>   
-      
-
      
       <!-- right nav --> 
       <div id="rightNav">
@@ -330,33 +286,26 @@ function formSubmit(){
       </div>
       <hr>
       <div class="todo" style="color: #555">
-        <h6>할일</h6>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck1" id="ck1"> 
-          <label for="ck1">우유 사기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
+        <h6 style="font-weight: 600">일정확인</h6>
+        <c:forEach items="${tasklist}" var="task" varStatus="vs">
+        <c:if test="${member.mno == task.tmno}">
+        <p id="myTask">
+        <a onclick="fnMove('${task.tno}')">
+          <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
+          <input type="hidden" name="taskLv" value="${task.tno}" id="${task.tlevel}"> 
+          <label for="ck">${task.ttitle}</label>
+        </a>
+         <i class="fas fa-times-circle delete_todo" style="display: none"></i>
         </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck2" id="ck2">
-          <label for="ck2">자전거 타기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck3" id="ck3">
-          <label for="ck3">낮잠 자기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck4" id="ck4">
-          <label for="ck4">고양이랑 놀아주기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck5" id="ck5">
-          <label for="ck5">점심메뉴 정하기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        
+        </c:if>
+        </c:forEach>
+        <small style="color: #FF8224">*완료된 일정은 자동삭제됩니다.</small>
       </div>
       <hr>
       <div class="timetable " style="color: #555">
   
-          <h6>스케줄매칭</h6>
+
+          <h6 style="font-weight: 600">스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
@@ -970,22 +919,34 @@ function formSubmit(){
         	
         });
         
-        
+        function fnMove(tno){
+        	console.log("tno:"+tno);
+        	console.log(":"+$('input:hidden[name=tno]').val());        		
+	        var offset = $('input:hidden[name=tno]').val(tno).parent().offset();
+	        
+	        $('html, body').animate({scrollTop : offset.top}, 400);        		        			
+        	
+	    };
         
         // right nav checkBox 
-        $(document).ready(function() { 
-        $("input:checkbox").on('click', function() {
-             if ( $(this).prop('checked') ) {
-                  $(this).next().addClass("selected");
-                  
-             } else { $(this).next().removeClass("selected");
-             } 
-             if($(this).next().next(".delete_todo").css("display") == "none"){
-                $(this).next().next(".delete_todo").show();
-            } else {
-                $(this).next().next(".delete_todo").hide();
-            }
-        }); 
+         $(document).ready(function() { 
+        	 
+	       var countlv = $(".todo p").length;
+	       
+	       for(var i=0; i<countlv; i++){
+	         	   
+		      if( $("input:hidden[name='taskLv']").eq(i).prop("id")==4){
+		    	  $("input:hidden[name='taskLv']").eq(i).parent().css("display", "none");
+		    	  //$("input:hidden[name='taskLv']").eq(i).next().addClass("selected");
+		    	  //$("input:hidden[name='taskLv']").eq(i).parent().next(".delete_todo").show();
+		      }
+	       }
+	    $(".delete_todo").on('click',function(){
+	    	if(confirm("삭제한 내용은 복구가 불가능합니다.")){
+	    		$(this).parent().css("display", "none");
+	    	}
+	    	
+	    });
     });
     </script>
     
@@ -1007,23 +968,13 @@ function formSubmit(){
 			var calendar = jsCalendar.new(elements.calendar);
 
 			// Create events elements
-			elements.title = document.createElement("div");
-			// elements.title.className = "title";
-			// elements.events.appendChild(elements.title);
-			// elements.subtitle = document.createElement("div");
-			// elements.subtitle.className = "subtitle";
-			// elements.events.appendChild(elements.subtitle);
 			elements.list = document.createElement("div");
 			elements.list.className = "list";
 			elements.events.appendChild(elements.list);
 			elements.actions = document.createElement("div");
 			elements.actions.className = "action";
 			elements.events.appendChild(elements.actions);
-			elements.addButton = document.createElement("input");
-			elements.addButton.type = "button";
-			elements.addButton.value = "Add";
-			elements.actions.appendChild(elements.addButton);
-
+		
 			var events = {};
 			var date_format = "DD/MM/YYYY";
 			var current = null;
@@ -1065,31 +1016,6 @@ function formSubmit(){
 				}
 			};
 
-			var removeEvent = function (date, index) {
-				// Date string
-				var id = jsCalendar.tools.dateToString(date, date_format, "en");
-
-				// If no events return
-				if (!events.hasOwnProperty(id)) {
-					return;
-				}
-				// If not found
-				if (events[id].length <= index) {
-					return;
-				}
-
-				// Remove event
-				events[id].splice(index, 1);
-
-				// Refresh events
-				showEvents(current);
-
-				// If no events uncheck date
-				if (events[id].length === 0) {
-					calendar.unselect(date);
-				}
-			}
-
 			// Show current date events
 			showEvents(new Date());
 
@@ -1100,38 +1026,8 @@ function formSubmit(){
 				// Show events
 				showEvents(date);
 			});
-
-			elements.addButton.addEventListener("click", function(){
-				// Get event name
-				var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
-				var name = prompt(
-					"Event info",
-					names[Math. floor(Math.random() * names.length)] + "'s birthday."
-				);
-
-				//Return on cancel
-				if (name === null || name === "") {
-					return;
-				}
-
-				// Date string
-				var id = jsCalendar.tools.dateToString(current, date_format, "en");
-
-				// If no events, create list
-				if (!events.hasOwnProperty(id)) {
-					// Select date
-					calendar.select(current);
-					// Create list
-					events[id] = [];
-				}
-
-				// Add event
-				events[id].push({name : name});
-
-				// Refresh events
-				showEvents(current);
-      }, false);
     });
+     
     $(function(){
    	 
  	   // 한국어 설정
@@ -1180,7 +1076,7 @@ function formSubmit(){
     
 	</script>
     <script>
-    $('input[type="text"]').keydown(function() {
+    $('input[type="text"]').not('#searchWd').keydown(function() {
 	    if (event.keyCode === 13) {
 	        event.preventDefault();
 	    }

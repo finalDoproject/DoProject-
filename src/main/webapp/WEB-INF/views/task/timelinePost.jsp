@@ -16,7 +16,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%;" id="${task.tno }">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;">
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -121,7 +121,7 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="enddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
+									<input name="enddate" id="${fn:substring(task.tenddate,0,10)}" value="${fn:substring(task.tenddate,0,10)}" readonly>
 								</div>
 							</div>
 						<hr />

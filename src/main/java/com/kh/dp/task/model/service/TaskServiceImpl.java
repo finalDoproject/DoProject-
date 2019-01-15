@@ -93,6 +93,12 @@ public class TaskServiceImpl implements TaskService {
 		// TODO Auto-generated method stub
 		return taskDao.deleteAttach(tno);
 	}
+	
+	// 검색결과 리스트
+	@Override
+	public List<Task> searchListTask(String mno,String searchWd) {
+		return taskDao.searchListTask(mno, searchWd);
+	}
 
 	@Override
 	public int insertTaskkeep(TaskKeep tk) {

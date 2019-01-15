@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,6 +33,7 @@ import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
 import com.kh.dp.task.model.vo.Task;
 
+
 @Controller
 public class ProjectController {
 	
@@ -48,26 +51,50 @@ public class ProjectController {
 	
 
 	@RequestMapping("/project/projectSearch.do")
-	public String projectSearch(
-			//Model model, @RequestParam("mno") int mno
-			) {
-		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		//model.addAttribute("projectList",projectList);
+	public String projectSearch( @RequestParam String mno,@RequestParam String searchWd, Model model) {
 		
-		return "project/projectSearch";
+		List<Task> searchTasklist = taskService.searchListTask(mno, searchWd);
+		
+		/*for(int i = 0; i < searchTasklist.size(); i++) {
+
+			String resultContent = "";
+			String originContent = searchTasklist.get(i).getTcontent();			
+			String patterString = "(&lt;img[^>]*src=[\\\"']?([^>\\\"']+)[\\\"']?[^>]*&gt;|<p>|</p>|<br>)";
+
+				Pattern pattern = Pattern.compile(patterString);	
+				Matcher matcher = pattern.matcher(originContent);
+				
+				while(matcher.find()) {
+					resultContent = matcher.replaceAll("");
+				}
+
+				searchTasklist.get(i).setTcontent(resultContent);		
+		
+		}*/
+		
+		model.addAttribute("searchTasklist", searchTasklist);		
+		System.out.println("searchTasklist:" +searchTasklist);
+		
+		return "/project/projectSearch";
 	}
 
+	
 	@RequestMapping("/project/projectMain.do")
 
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-
+		
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		List<Member> memberProfileList = projectService.memberProfileList(mno);
 		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
 		//List<Project> OneProject = projectService.selectOneProject(pno);
+		System.out.println("projectList:"+projectList);
+		System.out.println("memberProfileList:"+memberProfileList);
+		
 		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("memberProfileList",memberProfileList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);
 
@@ -87,7 +114,7 @@ public class ProjectController {
 		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);	
 
 		if(pjLevelStr != null) {
@@ -110,12 +137,41 @@ public class ProjectController {
 		System.out.println("pno : " + pno);
 		System.out.println("OneProject : " + OneProject);
 		System.out.println("OneProjectLvList : " + OneProjectLvList);
-		Map<String,Object> resultMap = new HashMap<>();
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("OneProjectLvList", OneProjectLvList);
 		resultMap.put("OneProject", OneProject);
 		
 		return resultMap;
 	}
+
+	
+	@RequestMapping(value="/project/projectMainUpdate", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> ProjectModalUpdate(Model model, @RequestParam int pno) {
+		
+		List<Project> OneProjectLvList = projectService.selectOneProjectLv(pno);
+		Project OneProject = projectService.selectOneProject(pno);
+
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("OneProjectLvList", OneProjectLvList);
+		resultMap.put("OneProject", OneProject);
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/project/projectMainUpdateFrm", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> projectMainUpdateFrm(
+			@RequestParam(value="jsonStr", required=false) String projectStr,
+			@RequestParam(value="jsonArr", required=false) String pjLevelStr){
+		
+		Project project = new Gson().fromJson(projectStr, Project.class);
+		System.out.println("project값 : " +project);
+		String msg  = projectService.updateProject(project)>0?"프로젝트 수정 완료":"프로젝트 수정 실패";
+		
+		Map<String, String> hmap = new HashMap<String, String>();
+		hmap.put("msg", msg);	
+
 
 	
 	
@@ -128,11 +184,9 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
-		
-		String msg1  = projectService.updateOneLevelCk(project)>0?"2체크 완료":"2체크 실패";
-		
-		
-		Map<String, String> map = new HashMap<>();
+
+		Map<String, String> map = new HashMap<String, String>();
+
 		map.put("msg", msg);	
 		map.put("msg1", msg1);	
 		
@@ -162,7 +216,7 @@ public class ProjectController {
 		List<Member> mArr =  sideService.browseMember(pno);
 		model.addAttribute("project",project).addAttribute("mArr", mArr);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
@@ -208,14 +262,14 @@ public class ProjectController {
 										@RequestParam(value="saveMemo", required=false) String saveMemo){
 		System.out.println("메모:" + saveMemo);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("saveMemo", saveMemo);
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
 		String msg = projectService.updateMemo(map)>0?"메모 저장":"저장 실패";
 
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);
 		return hmap;
 		
