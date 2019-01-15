@@ -1,10 +1,7 @@
 package com.kh.dp.chat.controller;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,13 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
 import com.kh.dp.chat.model.service.ChatService;
 import com.kh.dp.chat.model.vo.ChatPtm;
@@ -72,9 +66,6 @@ public class ChatController {
 		String renamedFileName = chatService.selectOneFileName(chReader);
 		String yourName = chatService.selectOneYourName(chReader);
 		
-		Member m = (Member)session.getAttribute("member");
-		chatService.updateMtm(m.getNickName(), pno, chWriter, chReader);
-		
 		mv.addObject("chatOneList", list).addObject("renamedFileName", renamedFileName).addObject("yourName", yourName);
 		mv.setViewName("jsonView");
 
@@ -100,16 +91,18 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/lastChat.ch", method=RequestMethod.GET)
-	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("me") int me, @RequestParam("you") String you) {
-		
+	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("me") int me, @RequestParam("you") String you,
+			HttpSession session) {
+
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
+		Project p = (Project)session.getAttribute("project");
 		String str = "";
 		/*System.out.println("you : " + you);*/
 		if(you.contains("p") || you.charAt(0) == '0') {
 			str = chatService.selectPtmLastChat(me, Integer.parseInt(you.substring(1)));
 		}else {
-			str = chatService.selectMtmLastChat(me, Integer.parseInt(you));
+			str = chatService.selectMtmLastChat(me, Integer.parseInt(you), p.getPno());
 		}
 		
 		mv.addObject("str", str);
@@ -125,7 +118,7 @@ public class ChatController {
 		ModelAndView mv = new ModelAndView();
 		
 		String yourName = chatService.selectOneYourName(me);
-		
+
 		mv.addObject("yourName", yourName);
 		mv.setViewName("jsonView");
 
@@ -133,28 +126,41 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/countChatPtm.ch", method=RequestMethod.GET)
-	public int countChatPtm(@RequestParam("mno") int mno, @RequestParam("pno") int pno) {
-		return chatService.selectOneChatPtm(pno);
+	public ModelAndView countChatPtm(Model model, @RequestParam("nickName") String nickName, @RequestParam("pno") int pno) {
+		
+		ModelAndView mv = new ModelAndView();
+		String str = chatService.selectOneChatPtm(nickName, pno);
+
+		mv.addObject("str", str);
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 	
-	@GetMapping("/chatCount")
-	public SseEmitter streamSseMvc() {
-	    SseEmitter emitter = new SseEmitter();
-	    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-	    sseMvcExecutor.execute(() -> {
-	        try {
-	            for (int i = 0; true; i++) {
-	                SseEventBuilder event = SseEmitter.event()
-	                  .data("SSE MVC - " + LocalTime.now().toString())
-	                  .id(String.valueOf(i))
-	                  .name("sse event - mvc");
-	                emitter.send(event);
-	                Thread.sleep(1000);
-	            }
-	        } catch (Exception ex) {
-	            emitter.completeWithError(ex);
-	        }
-	    });
-	    return emitter;
+	@RequestMapping(value="/countChatMtm.ch", method=RequestMethod.GET)
+	public ModelAndView countChatMtm(Model model, @RequestParam("nickName") String nickName, @RequestParam("pno") int pno,
+			@RequestParam("chWriter") int chWriter, @RequestParam("chReader") int chReader) {
+		
+		ModelAndView mv = new ModelAndView();
+		String str = chatService.selectOneChatMtm(nickName, pno, chWriter, chReader);
+
+		mv.addObject("str", str);
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
+	
+	@RequestMapping(value="/updateChatPtm.ch")
+	public void updateChatPtm(@RequestParam("nickName") String nickName, @RequestParam("pno") int pno) {
+		chatService.updatePtm(nickName, pno);
+	}
+	
+	@RequestMapping(value="/updateChatMtm.ch")
+	public void updateChatMtm(@RequestParam("nickName") String nickName, @RequestParam("pno") int pno,
+			@RequestParam("chWriter") int chWriter, @RequestParam("chReader") int chReader) {
+		/*System.out.println("업데이트 전");*/
+		chatService.updateMtm(nickName, pno, chWriter, chReader);
+		/*System.out.println("업데이트 후");*/
+	}
+	
 }

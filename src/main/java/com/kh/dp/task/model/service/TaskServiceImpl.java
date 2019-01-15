@@ -2,7 +2,6 @@ package com.kh.dp.task.model.service;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,12 +66,12 @@ public class TaskServiceImpl implements TaskService {
 	}
 	
 	@Override
-	public Attachment selectOneAttachment(int tno){
-		return taskDao.selectOneAttachment(tno);
+	public List<Attachment> selectAttachmentList(int taskNo){
+		return taskDao.selectAttachmentList(taskNo);
 	}
 
 	@Override
-	public List<Task> selectListTask(int pno) {
+	public List<Map<String, String>> selectListTask(int pno) {
 		
 		return taskDao.selectTaskList(pno);
 	}

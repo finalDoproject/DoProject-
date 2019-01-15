@@ -1,6 +1,5 @@
 package com.kh.dp.task.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public interface TaskDao {
 
 	Task selectOneTask(int taskNo);
 
-	Attachment selectOneAttachment(int tno);
+	List<Attachment> selectAttachmentList(int taskNo);
 
 	int selectTaskTotalContents();
 	

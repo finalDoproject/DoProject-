@@ -33,7 +33,7 @@
         <hr/>
 
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do?mno=${member.mno}">
+          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do">
             
             <span>내가 쓴 글</span></a>
         </li>

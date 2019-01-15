@@ -138,7 +138,7 @@ function formSubmit(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>

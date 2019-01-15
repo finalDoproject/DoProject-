@@ -1,6 +1,5 @@
 package com.kh.dp.task.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,46 +33,20 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	@Override
-	public Task selectOneTask(int tno) {
-		return sqlSession.selectOne("task.selectOneTask",tno);
+	public Task selectOneTask(int taskNo) {
+		return sqlSession.selectOne("task.selectOneTask",taskNo);
 	}
 	
 	@Override
-	public Attachment selectOneAttachment(int tno){
-		return sqlSession.selectOne("task.selectOneAttachment", tno);
+	public List<Attachment> selectAttachmentList(int taskNo){
+		return sqlSession.selectList("task.selectAttachmentList", taskNo);
 	}
 
 	@Override
-	public List<Task> selectTaskList(int pno) {
-		System.out.println( sqlSession.selectList("task.selectTaskList", 1));
-		System.out.println("pno : "+pno);
+	public List<Map<String, String>> selectTaskList(int pno) {
+
 		return sqlSession.selectList("task.selectTaskList", pno);
-	}
-
-	@Override
-	public int updateTask(Task task, Attachment a) {
-		// TODO Auto-generated method stub
-		int result1 = 0;
-		if(a.getFoldname() != null) {
-			result1 = sqlSession.insert("task.insertAttachment", a);
-		}else {
-			result1 = 1; 
-		}
 		
-		int result2 = sqlSession.update("task.updateTask",task);
-		
-		int result = 0;
-		if(result1 != 0 && result2 != 0) {
-			result = 1;
-		}
-		
-		return result; 
-	}
-
-	@Override
-	public int deleteTask(int tno) {
-		
-		return sqlSession.delete("task.deleteTask", tno);
 	}
 
 	@Override

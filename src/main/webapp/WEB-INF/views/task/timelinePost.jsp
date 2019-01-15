@@ -10,7 +10,6 @@
 <title>Insert title here</title>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
         crossorigin="anonymous">
-        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <br /><br /><br />
@@ -37,12 +36,11 @@
                                 	</c:forEach>
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
+                                    <div class="h5 m-0">&nbsp; ${task.TWRITER }</div>
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>
                             <div>
-                            	<%--  <c:if test="${member.userId eq task.TWRITER}"> --%>
                                 <div class="dropdown">
                                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         	더보기<i class="fa fa-ellipsis-h"></i>
@@ -53,16 +51,16 @@
                                         <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a> --%>
                                     </div>
                                 </div>
-                                <%-- </c:if> --%>
                             </div>
                         </div>
-					
+
                     </div>
                     <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.TWRITEDATE }</div>
                         
-                            <h3 class="card-title">${task.ttitle }</h3>
+                            <h3 class="card-title">${task.TTITLE }</h3>
                             <hr />
+
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
 								<c:forEach items="${m}" var="m" varStatus="tnum">
@@ -78,40 +76,39 @@
                          <p id="levelp"></p>
                          <input type="hidden" value="${task.tlevel}" id="levelchk${tcount }"/>
                          <input type="hidden" value="${tcount}" id="levelnum${tcount }"/>
+
 	                        <div class="line" >
 								<label class="icon1"><span class="blind"></span></label>
-								<div class="workTab" name="tLevelSelect" >
+								<div class="workTab" name="tLevelSelect">
 									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
-									
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }1" class="tLevelSelect1 tab1" value="1">요청</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }2" class="tLevelSelect1 tab2" value="2">진행</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }3" class="tLevelSelect1 tab5" value="3">피드백</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }4" class="tLevelSelect1 tab3" value="4">완료</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }5" class="tLevelSelect1 tab4" value="5">보류</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }6" class="tLevelSelect1 tab6" value="6">일정</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }1" class="tLevelSelect tab1" value="1">요청</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }2" class="tLevelSelect tab2" value="2">진행</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }3" class="tLevelSelect tab5" value="3">피드백</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }4" class="tLevelSelect tab3" value="4">완료</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }5" class="tLevelSelect tab4" value="5">보류</button>
 								</div>
 							</div>
 							<script>
 							$(function(){
-								var num = ${tcount};
+								var num = '<c:out value="${tnum.count}"/>'
 								var level = $('#levelchk'+num).val();
 								var levelnum = $('#levelnum' + num).val();
-								/* console.log("num"+num);
+								console.log(num);
 								console.log(level);
-								console.log(levelnum); */
+								console.log(levelnum);
 								
-								$(".tLevelSelect1").each(function(){
+								$(".tLevelSelect").each(function(){
 									$(this).prop('disabled', true);
 								});
 								
 								$("#level"+levelnum+level).addClass("selected");
-								/* console.log(levelnum+"앞에는 num 뒤에는 레벨"+level); */
+								console.log(levelnum+"앞에는 num 뒤에는 레벨"+level);
 							})
 							</script>
 						</c:if>
 							<hr />
 							<!-- 3. 시작일 지정 -->
-							<c:if test="${task.tstartdate != null}">
+							<c:if test="${task.TSTARTDATE != null}">
 							<div class="line" style="display: inline-block;">
 								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
 								<div >
@@ -128,68 +125,8 @@
 								</div>
 							</div>
 						<hr />
-									<!-- 5. 진척도 지정 -->
-			<br />
-						<div class="line" id="PROGRESS_LINE" >
-							<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
-							<a class="workPrgrs" style="display: inline-block;">
-								<div class="workPrgrs_bg"><!-- 20170407 수정 -->
-									<strong id="PROGRESS_PER" class="txt"></strong>
-									<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
-									<!-- toltip -->
-									<div class="pcnt0" style="width:5%;display:block"><span class="pcnt"><button>0%</button></span></div>
-									<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div><!-- bar style="right:80%;" -->
-									<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div><!-- bar style="right:60%;" -->
-									<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div><!-- bar style="right:40%;" -->
-									<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div><!-- bar style="right:20%;" -->
-									<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div><!-- bar style="right:0;" -->
-								</div><!-- 20170407 수정 -->
-							</a>
-						</div>
-						<!-- 6. 우선순위 지정 -->
-						<input type="hidden" id="nowp${tcount }" value="${task.ttpriority }" />
-						<div class="form-group" >
-							우선순위 : 
-								<div class="col-md-4"  style="display: inline-block;">
-									<select id="ttpriority" name="ttpriority" class="form-control" >
-										<option value="1" class="ttp1${tcount }">낮음</option>
-										<option value="2" style="color:green;" class="ttp2${tcount }">보통</option>
-										<option value="3"style="color:orange;" class="ttp3${tcount }" >높음</option>
-										<option value="4" style="color:red;" class="ttp4${tcount }">긴급</option>
-									</select>
-
-								</div>
-						</div>
-					</div>
-					 <script>
-						$(function(){
-								var num = "${tcount}";
-								var tpr = $('#nowp'+ num).val();
-								
-								if($('.ttp1'+num).val() == tpr){
-									$('.ttp1'+num).attr("selected", true);
-									
-									$('.ttp1'+num).parent().prop('disabled', true);
-								}
-								if($('.ttp2'+num).val() == tpr){
-									$('.ttp2'+num).attr("selected", true);
-									$('.ttp2'+num).parent().prop('disabled', true);
-								}
-								if($('.ttp3'+num).val() == tpr){
-									$('.ttp3'+num).attr("selected", true);
-									$('.ttp3'+num).parent().prop('disabled', true);
-								}
-								if($('.ttp4'+num).val() == tpr){
-									$('.ttp4'+num).attr("selected", true);
-									$('.ttp4'+num).parent().prop('disabled', true);
-								}
-							})
-										
-						</script> 
-					<div>
-                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
-                            ${task.tcontent}
-                            <br /><br /><br /><br />
+                        <p class="card-text" style="height: auto;">
+                            ${task.TCONTENT}
                         </p>
                     </div>
                     <br /><br />
@@ -242,11 +179,10 @@
 
 				<br /><br /><br />
 				<br/>
-				
+				</c:forEach>
                
             </div>
         </div>
-        </c:forEach>
     </div>
 
  <div class="modal fade mod" id="taskUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
