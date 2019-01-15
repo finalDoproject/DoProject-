@@ -269,23 +269,25 @@ function formSubmit(){
       </div>
       <hr>
       <div class="todo" style="color: #555">
-        <h6>할일</h6>
+        <h6 style="font-weight: 600">일정확인</h6>
         <c:forEach items="${tasklist}" var="task" varStatus="vs">
         <c:if test="${member.mno == task.tmno}">
         <p id="myTask">
-        <a onclick="fnMove('${task.ttitle}')">
+        <a onclick="fnMove('${task.tno}')">
           <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
           <input type="hidden" name="taskLv" value="${task.tno}" id="${task.tlevel}"> 
-          <label for="ck">${task.ttitle}</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
+          <label for="ck">${task.ttitle}</label>
         </a>
+         <i class="fas fa-times-circle delete_todo" style="display: none"></i>
         </p>
         </c:if>
         </c:forEach>
+        <small style="color: #FF8224">*완료된 일정은 자동삭제됩니다.</small>
       </div>
       <hr>
       <div class="timetable " style="color: #555">
   
-          <h6>스케줄매칭 </h6>
+          <h6 style="font-weight: 600">스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
@@ -826,11 +828,13 @@ function formSubmit(){
         	
         });
         
-        function fnMove(seq){
+        function fnMove(tno){
+        	console.log("tno:"+tno);
+        	console.log(":"+$('input:hidden[name=tno]').val());        		
+	        var offset = $('input:hidden[name=tno]').val(tno).parent().offset();
+	        
+	        $('html, body').animate({scrollTop : offset.top}, 400);        		        			
         	
-        	console.log(":"+$(".card-title").val(seq));
-	        var offset = $(".card-title").val(seq).parent().parent().parent().parent().parent().offset();
-	        $('html, body').animate({scrollTop : offset.top}, 400);
 	    };
         
         // right nav checkBox 
@@ -841,11 +845,17 @@ function formSubmit(){
 	       for(var i=0; i<countlv; i++){
 	         	   
 		      if( $("input:hidden[name='taskLv']").eq(i).prop("id")==4){
-		    	  $("input:hidden[name='taskLv']").eq(i).next().addClass("selected");
-		      } 
+		    	  $("input:hidden[name='taskLv']").eq(i).parent().css("display", "none");
+		    	  //$("input:hidden[name='taskLv']").eq(i).next().addClass("selected");
+		    	  //$("input:hidden[name='taskLv']").eq(i).parent().next(".delete_todo").show();
+		      }
 	       }
-        
-        
+	    $(".delete_todo").on('click',function(){
+	    	if(confirm("삭제한 내용은 복구가 불가능합니다.")){
+	    		$(this).parent().css("display", "none");
+	    	}
+	    	
+	    });
     });
     </script>
     
@@ -867,23 +877,13 @@ function formSubmit(){
 			var calendar = jsCalendar.new(elements.calendar);
 
 			// Create events elements
-			elements.title = document.createElement("div");
-			// elements.title.className = "title";
-			// elements.events.appendChild(elements.title);
-			// elements.subtitle = document.createElement("div");
-			// elements.subtitle.className = "subtitle";
-			// elements.events.appendChild(elements.subtitle);
 			elements.list = document.createElement("div");
 			elements.list.className = "list";
 			elements.events.appendChild(elements.list);
 			elements.actions = document.createElement("div");
 			elements.actions.className = "action";
 			elements.events.appendChild(elements.actions);
-			elements.addButton = document.createElement("input");
-			elements.addButton.type = "button";
-			elements.addButton.value = "Add";
-			elements.actions.appendChild(elements.addButton);
-
+		
 			var events = {};
 			var date_format = "DD/MM/YYYY";
 			var current = null;
@@ -925,31 +925,6 @@ function formSubmit(){
 				}
 			};
 
-			var removeEvent = function (date, index) {
-				// Date string
-				var id = jsCalendar.tools.dateToString(date, date_format, "en");
-
-				// If no events return
-				if (!events.hasOwnProperty(id)) {
-					return;
-				}
-				// If not found
-				if (events[id].length <= index) {
-					return;
-				}
-
-				// Remove event
-				events[id].splice(index, 1);
-
-				// Refresh events
-				showEvents(current);
-
-				// If no events uncheck date
-				if (events[id].length === 0) {
-					calendar.unselect(date);
-				}
-			}
-
 			// Show current date events
 			showEvents(new Date());
 
@@ -960,41 +935,8 @@ function formSubmit(){
 				// Show events
 				showEvents(date);
 			});
-
-			elements.addButton.addEventListener("click", function(){
-				// Get event name
-				var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
-				//var names = "가져온 일정";
-				//var name =+ names;
-				
-				var name = prompt(
-					"Event info",
-					names[Math. floor(Math.random() * names.length)] + "'s birthday."
-				);
-
-				//Return on cancel
-				if (name === null || name === "") {
-					return;
-				}
-				//date_format = "20/01/2019";
-				// Date string
-				var id = jsCalendar.tools.dateToString(current, date_format, "en");
-
-				// If no events, create list
-				if (!events.hasOwnProperty(id)) {
-					// Select date
-					calendar.select(current);
-					// Create list
-					events[id] = [];
-				}
-
-				// Add event
-				events[id].push({name : name});
-
-				// Refresh events
-				showEvents(current);
-     }, false);
     });
+     
     $(function(){
    	 
  	   // 한국어 설정

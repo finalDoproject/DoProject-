@@ -119,7 +119,7 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="tstartdate" value="${task.tenddate}" readonly>
+									<input name="enddate" id="${fn:substring(task.tenddate,0,10)}" value="${fn:substring(task.tenddate,0,10)}" readonly>
 								</div>
 							</div>
 						<hr />
