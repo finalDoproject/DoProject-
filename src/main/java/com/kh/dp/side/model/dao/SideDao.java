@@ -42,3 +42,4 @@ public interface SideDao {
 	public List<Map<String, String>> FileList (int currentPage, int numPerPage, int pno);
 
 }
+	

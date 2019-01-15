@@ -56,15 +56,18 @@ public class ProjectController {
 		List<Task> searchTasklist = taskService.searchListTask(mno, searchWd);
 		
 		/*for(int i = 0; i < searchTasklist.size(); i++) {
+
 			String resultContent = "";
 			String originContent = searchTasklist.get(i).getTcontent();			
 			String patterString = "(&lt;img[^>]*src=[\\\"']?([^>\\\"']+)[\\\"']?[^>]*&gt;|<p>|</p>|<br>)";
+
 				Pattern pattern = Pattern.compile(patterString);	
 				Matcher matcher = pattern.matcher(originContent);
 				
 				while(matcher.find()) {
 					resultContent = matcher.replaceAll("");
 				}
+
 				searchTasklist.get(i).setTcontent(resultContent);		
 		
 		}*/
