@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,6 @@ import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.vo.Task;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 @Repository
 public class SideDaoImpl implements SideDao {
@@ -105,10 +105,17 @@ public class SideDaoImpl implements SideDao {
 		return sqlSession.selectOne("matching.countMember", requestNo);
 	}
 
+
 	@Override
 	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		RowBounds rowBounds = new RowBounds((currentPage-1)*numPerPage, numPerPage);
+		
+		Map<String, String> map = new HashMap<String,String>();
+		
+		map.put("pno", String.valueOf(pno));
+
+		return sqlSession.selectList("matching.fileList", map, rowBounds);
 	}
 
 	@Override

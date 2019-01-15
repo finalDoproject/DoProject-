@@ -48,9 +48,7 @@ public interface ProjectDao {
 	List<Map<String, String>> projectMemberList(int mno);
 
 	TaskCount selectTaskLevelCount(int pno);
-	int updateOneLevelunCk(Project project);
-	int updateProject(Project project);
-	int updateProjectLv(List<Project> pjLevel);
+
 	
 
 

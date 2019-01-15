@@ -56,18 +56,15 @@ public class ProjectController {
 		List<Task> searchTasklist = taskService.searchListTask(mno, searchWd);
 		
 		/*for(int i = 0; i < searchTasklist.size(); i++) {
-
 			String resultContent = "";
 			String originContent = searchTasklist.get(i).getTcontent();			
 			String patterString = "(&lt;img[^>]*src=[\\\"']?([^>\\\"']+)[\\\"']?[^>]*&gt;|<p>|</p>|<br>)";
-
 				Pattern pattern = Pattern.compile(patterString);	
 				Matcher matcher = pattern.matcher(originContent);
 				
 				while(matcher.find()) {
 					resultContent = matcher.replaceAll("");
 				}
-
 				searchTasklist.get(i).setTcontent(resultContent);		
 		
 		}*/
@@ -169,10 +166,18 @@ public class ProjectController {
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateProject(project)>0?"프로젝트 수정 완료":"프로젝트 수정 실패";
 		
-		Map<String, String> hmap = new HashMap<String, String>();
+		Map<String, String> hmap = new HashMap<>();
 		hmap.put("msg", msg);	
 
-
+		if(pjLevelStr != null) {
+			List<Project> pjLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
+			System.out.println("pjLevel값 : " +pjLevel);
+			String msg1  = projectService.updateProjectLv(pjLevel)>0?"레벨 수정 완료":"레벨 수정 실패";
+			hmap.put("msg1", msg1);	
+		}
+		
+		return hmap;
+	}
 	
 	
 	@RequestMapping(value="/project/projectLevelCk.do", method=RequestMethod.POST)
@@ -184,19 +189,13 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
-
-		Map<String, String> map = new HashMap<String, String>();
-
+		Map<String, String> map = new HashMap<>();
 		map.put("msg", msg);	
-		map.put("msg1", msg1);	
 		
-		/*if(pjLevelStr != null) {
-			List<Project> oneLevel = new Gson().fromJson(pjLevelStr, new TypeToken<List<Project>>(){}.getType());
-			System.out.println("oneLevel값 : " +oneLevel);
-			String msg1  = projectService.updateOneLevelCk(oneLevel)>0?"2체크 완료":"2체크 실패";
-			map.put("msg1", msg1);	
-		}*/
-		//String msg2  = projectService.updateOneLevelCk(pno, lno)>0?"체크 완료":"체크 실패";
+	
+		String msg1  = projectService.updateOneLevelCk(project)>0?"체크함":"체크못함";
+		map.put("msg1", msg1);
+		
 		
 		return map;
 	}
@@ -230,16 +229,20 @@ public class ProjectController {
 		model.addAttribute("memberNo", mno);
 		
 		
+		//참여자 불러오기
+		List<Member> m = projectService.selectSearchMember(pno);
+				
 		// task List
 		ArrayList<Task> tasklist = 
-				new ArrayList<Task>(taskService.selectListTask(pno));
-				
+						new ArrayList<Task>(taskService.selectListTask(pno));
+						
 
-		
+				
 		System.out.println("taskList +" + tasklist);
 		model.addAttribute("m", m);
 		model.addAttribute("tasklist", tasklist);
-		
+		System.out.println("tasklist" + tasklist);
+				
 		return "project/projectPage";
 	}
 

@@ -34,17 +34,19 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	@Override
-	public Task selectOneTask(int taskNo) {
-		return sqlSession.selectOne("task.selectOneTask",taskNo);
+	public Task selectOneTask(int tno) {
+		return sqlSession.selectOne("task.selectOneTask",tno);
 	}
 	
 	@Override
-	public List<Attachment> selectAttachmentList(int taskNo){
-		return sqlSession.selectList("task.selectAttachmentList", taskNo);
+	public Attachment selectOneAttachment(int tno){
+		return sqlSession.selectOne("task.selectOneAttachment", tno);
 	}
 
 	@Override
-	public List<Map<String, String>> selectTaskList(int pno) {
+	public List<Task> selectTaskList(int pno) {
+		return sqlSession.selectList("task.selectTaskList", pno);
+	}
 
 	@Override
 	public int updateTask(Task task, Attachment a) {
@@ -70,9 +72,10 @@ public class TaskDaoImpl implements TaskDao {
 		return result; 
 	}
 
+	@Override
 	public int deleteTask(int tno) {
-		return sqlSession.selectList("task.selectTaskList", pno);
 		
+		return sqlSession.delete("task.deleteTask", tno);
 	}
 
 	@Override
@@ -101,6 +104,8 @@ public class TaskDaoImpl implements TaskDao {
 		map.put("searchWd", searchWd);
 		return sqlSession.selectList("task.searchListTask", map);
 	}
+
+
 	
 	
 }
