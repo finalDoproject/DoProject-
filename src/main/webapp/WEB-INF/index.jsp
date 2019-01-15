@@ -11,7 +11,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
-
+	<link href="https://fonts.googleapis.com/css?family=Exo+2:300i,800i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
 	</head>
 	<body class="is-preload">
 
@@ -29,9 +30,9 @@
 
 							<!-- Banner -->
 								<section id="banner">
-									<div class="content">
+									<div class="content" style="font-family: 'Exo 2', sans-serif !important; ">
 										<header>
-											<h1>프로젝트를<br />
+											<h1 style="font-family: 'Exo 2', sans-serif !important; ">프로젝트를<br />
 											쉽고 편하게 <br /> 관리하세요!</h1>
 
 										</header>
@@ -44,8 +45,8 @@
 										</c:when>
 										<c:when test="${member != null }">
 											<ul class="actions"> 
-												<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}" class="button big">내 프로젝트로 이동</a></li>
-													<li> &nbsp;&nbsp;<a onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'" class="button big">로그아웃</a></li>
+												<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}" class="button big" style="font-family: 'Exo 2', sans-serif !important; " >내 프로젝트로 이동</a></li>
+													<li> &nbsp;&nbsp;<a onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'" class="button big" style="font-family: 'Exo 2', sans-serif !important; ">로그아웃</a></li>
 											</ul>
 										</c:when>
 										</c:choose>

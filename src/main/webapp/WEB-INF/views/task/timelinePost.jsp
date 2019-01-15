@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div>
-                            	<%--  <c:if test="${member.userId eq task.TWRITER}"> --%>
+                            <c:if test="${member.userId eq task.twriter}">
                                 <div class="dropdown">
                                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         	더보기<i class="fa fa-ellipsis-h"></i>
@@ -53,7 +53,7 @@
                                         <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/task/deleteAttach.do?tno=${task.tno}&mno=${member.mno}">담아두기</a> --%>
                                     </div>
                                 </div>
-                                <%-- </c:if> --%>
+                               </c:if> 
                             </div>
                         </div>
 					
@@ -195,6 +195,7 @@
                     <br /><br />
                     </div>
                     
+                    
                     <c:forEach  items="${task.taskFiles}" var="attach" varStatus="tnum">
 						<button type="button" 
 								class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;" onclick="location.href='${pageContext.request.contextPath}/resources/upload/task/${attach.fnewname}'">
@@ -223,10 +224,11 @@
 	                    </div>
                     </c:forEach>
                     </c:if>
-                     <div id="commentdivi${tcount }" style="border : 1px solid lightgray; display:hidden;" >
-                     	<img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" />
-                    </div>
                     <input type="hidden" name="cwriter" value="${member.mno}" />
+                    <div id="locdiv${tcount}" style="display:hidden"></div>
+<%--                      <div id="commentdivi${tcount }" style="border : 1px solid lightgray; display:hidden;" >
+                     	<img class="rounded-circle" width="45" id="commentImgi${tcount }" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" />
+                    </div> --%>
 
                     <div id="commentdiv" style="border : 1px solid lightgray;">
                        <c:forEach items="${m}" var="m">
@@ -261,7 +263,7 @@
               </button>
             </div>
             <div class="modal-body">
-           <!--  --> <form name="requestForm" action="${pageContext.request.contextPath}/task/taskUpdate.do?mno=${member.mno}&pno=${project.pno}" method="post">
+           <!--  --> <form name="requestForm" action="${pageContext.request.contextPath}/task/taskUpdate.do?mno=${member.mno}&pno=${project.pno}" method="post"  enctype="multipart/form-data">
 					<h1 id="tnoh1"></h1>
                                 <div class="card gedf-card">
                     <div class="card-header" style="background-color : #F88E6F;">
@@ -472,12 +474,9 @@ $('a[id^=updatebtn]').click(function(){
 })
 $('button[id^=incomment]').click(function(){
 	var thisid = $(this).val();
-	console.log("지금거" + thisid);
 	
 	if($('#ccontent'+thisid).val() == null){
 		alert("댓글 내용을 입력해주세요.");
-		console.log("1"+$('#ccontent'+thisid))
-		console.log("2"+$('#ccontent'+thisid).val());
 		event.preventDefault();
 		return false;
 	}
@@ -499,13 +498,14 @@ $('button[id^=incomment]').click(function(){
 				var attach = data.img;
 				var comment = data.comment;
 				var m = data.m;  
+
+            	$('#locdiv'+thisid).after('<div id="commentdivi'+thisid +'" style="border : 1px solid lightgray;" ><img class="rounded-circle" width="45" id="commentImgi'+thisid +'" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" /></div>');
 				$('#commentdivi'+thisid).append(' <h4 type="text" value="" style=" float : left; display:inline-block;  margin-left:20px; margin-top:10px;">'+ m.nickName+'</h4>');
 				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none; display:inline-block;" maxlength="4000" placeholder="댓글을 입력하세요" id="nowcontent'+thisid+'" readonly>'+comment.ccontent+'</textarea> &nbsp;');
 				$('#commentImgi'+thisid).prop("src", "${pageContext.request.contextPath }/resources/upload/profile/"+ attach.renamedFileName);
 				$('#commentImgi'+thisid).css('display','block'); 
-				$('#nowcontent'+thisid).after('<button id="incom" style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small">삭제</button>');
+				$('#commentImgi'+thisid).after('<button id="incom" style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small">삭제</button>');
 				$('#incom').attr('onclick', "location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno="+comment.cno+"&pno="+pno+"&mno="+ mno+"'");
-				
                     
 	    },
 	    error : function(jqxhr, textStatus, errorThrown){

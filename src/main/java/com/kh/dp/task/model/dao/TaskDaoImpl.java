@@ -53,9 +53,13 @@ public class TaskDaoImpl implements TaskDao {
 	@Override
 	public int updateTask(Task task, Attachment a) {
 		// TODO Auto-generated method stub
+		int tno = task.getTno();
 		int result1 = 0;
+		System.out.println("a : " + a);
 		if(a.getFoldname() != null) {
+			result1 = sqlSession.delete("task.deleteAttach" , tno);
 			result1 = sqlSession.insert("task.insertAttachment", a);
+			
 		}else {
 			result1 = 1; 
 		}
