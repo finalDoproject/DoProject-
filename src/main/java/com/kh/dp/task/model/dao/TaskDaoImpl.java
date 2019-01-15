@@ -44,12 +44,38 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public List<Map<String, String>> selectTaskList(int pno) {
-
+	public List<Task> selectTaskList(int pno) {
+		System.out.println( sqlSession.selectList("task.selectTaskList", 1));
+		System.out.println("pno : "+pno);
 		return sqlSession.selectList("task.selectTaskList", pno);
+	}
+	
+	@Override
+	public int updateTask(Task task, Attachment a) {
+		// TODO Auto-generated method stub
+		int result1 = 0;
+		if(a.getFoldname() != null) {
+			result1 = sqlSession.insert("task.insertAttachment", a);
+		}else {
+			result1 = 1; 
+		}
 		
+		int result2 = sqlSession.update("task.updateTask",task);
+		
+		int result = 0;
+		if(result1 != 0 && result2 != 0) {
+			result = 1;
+		}
+		
+		return result; 
 	}
 
+	@Override
+	public int deleteTask(int tno) {
+		
+		return sqlSession.delete("task.deleteTask", tno);
+	}
+	
 	@Override
 	public int deleteAttach(int tno) {
 		// TODO Auto-generated method stub
@@ -76,6 +102,7 @@ public class TaskDaoImpl implements TaskDao {
 		map.put("searchWd", searchWd);
 		return sqlSession.selectList("task.searchListTask", map);
 	}
+
 	
 	
 }

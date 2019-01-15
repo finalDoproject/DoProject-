@@ -41,8 +41,6 @@ public interface ProjectService {
 	int insertExileAlarm(int mno, int pno);
 	int insertLeaveAlarm(int mno, int pno, int apmno);
 	
-
-	
 	List<Map<String, String>> projectMemberList(int mno);
 
 	TaskCount selectTaskLevelCount(int pno);

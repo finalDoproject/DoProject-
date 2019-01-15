@@ -83,7 +83,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		return sqlSession.selectList("project.memberProfileList", mno);
 	}
 
-
 	
 	// ---- 메모 ----//
 	@Override
@@ -186,9 +185,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	public TaskCount selectTaskLevelCount(int pno) {
 		return sqlSession.selectOne("project.selectTaskLevelCount", pno);
 	}
-
-
-
 
 
 

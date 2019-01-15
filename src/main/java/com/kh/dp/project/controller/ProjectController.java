@@ -143,6 +143,7 @@ public class ProjectController {
 		
 		return resultMap;
 	}
+
 	
 	@RequestMapping(value="/project/projectMainUpdate", method=RequestMethod.GET)
 	@ResponseBody
@@ -194,6 +195,7 @@ public class ProjectController {
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", msg);
+
 		
 		String msg1  = projectService.updateOneLevelCk(project)>0?"체크함":"체크못함";
 		map.put("msg1", msg1);	

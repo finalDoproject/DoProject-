@@ -55,7 +55,6 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.updateOneLevelCk(project);
 	}
 	
-
 	@Override
 	public int updateOneLevelunCk(Project project) {
 		return projectDao.updateOneLevelunCk(project);
@@ -76,7 +75,6 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.memberProfileList(mno);
 	}
 	
-
 	// ---- 메모 ---- //
 	@Override
     public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
@@ -155,11 +153,12 @@ public class ProjectServiecImpl implements ProjectService {
 		 return projectDao.projectMemberList(mno);
 	}
 
-
 	@Override
 	public TaskCount selectTaskLevelCount(int pno) {
 		return projectDao.selectTaskLevelCount(pno);
 	}
+
+
 
 
 

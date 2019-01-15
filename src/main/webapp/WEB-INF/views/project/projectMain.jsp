@@ -13,9 +13,7 @@
 <script>
 // 상세 불러오는 모달
 function optionModalClk(pno, mno){
-	
 	 console.log(pno+":"+ mno);
-
 	$.ajax({
        url  :"${pageContext.request.contextPath}/project/projectMainDetail",
        data : {pno:pno},
@@ -31,6 +29,7 @@ function optionModalClk(pno, mno){
    		console.log(persent);
    		
        	if(oneProject.plevel == 0){      		
+
        		var printPer ="";
        		printPer+='<label for="recipient-name" class="form-control-label">진행률</label>';       
        		printPer+='<p class="btn btn-light lvProgress" style="width: 100px; height: 100px; border-radius: 70px; line-height: 80px;font-weight: 600;font-size: 30px; cursor:default; ">X</p>';

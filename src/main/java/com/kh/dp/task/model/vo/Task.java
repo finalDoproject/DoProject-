@@ -25,7 +25,6 @@ public class Task {
 	private String foldName;
 	private String fnewName;
 	private String nickname; // 이름
-
 	
 	//첨부파일
 	private List<Attachment> taskFiles = new ArrayList<Attachment>();
@@ -46,6 +45,7 @@ public class Task {
 		this.foldName = foldName;
 		this.fnewName = fnewName;
 	}
+
 		
 	public Task(int tno, String ttitle, String tcontent, String pttitle, String twritedate, String nickname) {
 		super();
@@ -286,10 +286,12 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [tno=" + tno + ", tlevel=" + tlevel + ", tmno=" + tmno + ", tenddate=" + tenddate + ", ttpriority="
-				+ ttpriority + ", tbno=" + tbno + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate="
-				+ tstartdate + ", twriter=" + twriter + ", tpno=" + tpno + ", pttitle=" + pttitle + ", twritedate="
-				+ twritedate + ", fno=" + fno + ", foldName=" + foldName + ", fnewName=" + fnewName + ", nickname="
-				+ nickname + ", taskFiles=" + taskFiles + ", taskComment=" + taskComment + ", count=" + count + "]";
+				+ ttpriority + ", ttitle=" + ttitle + ", tcontent=" + tcontent + ", tstartdate=" + tstartdate
+				+ ", twriter=" + twriter + ", tpno=" + tpno + ", twritedate=" + twritedate + ", fno=" + fno
+				+ ", foldName=" + foldName + ", fnewName=" + fnewName + ", taskFiles=" + taskFiles + ", taskComment="
+				+ taskComment + ", count=" + count + "]";
+
+
 	}
 
 
