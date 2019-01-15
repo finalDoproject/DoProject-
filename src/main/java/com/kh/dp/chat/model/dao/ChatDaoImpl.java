@@ -81,4 +81,14 @@ public class ChatDaoImpl implements ChatDao{
 		sqlSession.update("chat.updatePtm", map);
 	}
 
+	@Override
+	public void updateMtm(String nickName, int pno, int chWriter, int chReader) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("nickName", nickName);
+		map.put("pno", String.valueOf(pno));
+		map.put("chWriter", String.valueOf(chWriter));
+		map.put("chReader", String.valueOf(chReader));
+		sqlSession.update("chat.updateMtm", map);
+	}
+
 }

@@ -11,6 +11,7 @@ import com.kh.dp.side.model.dao.SideDao;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
+import com.kh.dp.task.model.vo.Task;
 
 @Service
 public class SideServiceImpl implements SideService {
@@ -94,6 +95,18 @@ public class SideServiceImpl implements SideService {
 	public int FileTotalContents(int pno) {
 		
 		return sideDao.FileTotalContents(pno);
+	}
+
+	@Override
+	public List<Task> totalCalendar(int pno) {
+		
+		return sideDao.totalCalendar(pno);
+	}
+
+	@Override
+	public List<Member> browseMatchingMember(int requestNo) {
+		
+		return sideDao.browseMatchingMember(requestNo);
 	}
 
 }

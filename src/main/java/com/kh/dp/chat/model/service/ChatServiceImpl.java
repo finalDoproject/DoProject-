@@ -65,4 +65,9 @@ public class ChatServiceImpl implements ChatService{
 		chatDao.updatePtm(nickName, pno);
 	}
 
+	@Override
+	public void updateMtm(String nickName, int pno, int chWriter, int chReader) {
+		chatDao.updateMtm(nickName, pno, chWriter, chReader);
+	}
+
 }
