@@ -19,9 +19,9 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <script>
-
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
+	
 	var list = new Array();
 	<c:forEach items="${secondList}" var="sl">
 		list.push("${sl.mno},${sl.userId},${sl.nickName}");
@@ -35,6 +35,72 @@ $(document).ready(function(){
 			}
 		}	
 	}, 500);
+	
+	setInterval(function(){
+		countChatPtm();
+	}, 500);
+	
+	setInterval(function(){
+		countChatMtm();
+	}, 500);
+	
+	function countChatPtm(){
+		var nickName = $("#nickName").text();
+		var pno = $("#pno").text();
+		$.ajax({
+			url:"${pageContext.request.contextPath}/countChatPtm.ch",
+			dataType:"json",
+			type:"GET",
+			data:{"nickName":nickName, "pno":pno},
+			async:false,
+			success:function(response){
+				var msg = "";				
+				if(response.str > 99){
+					msg = "99+";
+				}else{
+					msg = response.str;
+				}
+				if(response.str != 0){
+					$("#countPtm").text(msg)
+					$("#countPtm").css("display", "");
+				}else{
+					$("#countPtm").css("display", "none");
+				}
+			}
+		});
+	};
+	
+	function countChatMtm(){
+		var mno = $("#mno").text();
+		var nickName = $("#nickName").text();
+		var pno = $("#pno").text();
+		for(var i = 0; i < list.length; i++){
+			if(i != '${member.mno}'){
+				var you = list[i].split(",")[0];
+				$.ajax({
+					url:"${pageContext.request.contextPath}/countChatMtm.ch",
+					dataType:"json",
+					type:"GET",
+					data:{"nickName":nickName, "pno":pno, "chWriter":mno, "chReader":you},
+					async:false,
+					success:function(response){
+						var msg = "";				
+						if(response.str > 99){
+							msg = "99+";
+						}else{
+							msg = response.str;
+						}
+						if(response.str != 0){
+							$("#countMtm"+you).text(msg);
+							$("#countMtm"+you).css("display", "");
+						}else{
+							$("#countMtm"+you).css("display", "none");
+						}
+					}
+				});
+			}
+		}
+	};
 });
 var sock;
 //웹소켓 객체 생성하기
@@ -297,6 +363,7 @@ function chatMtm(me, you, yourNick){
 			}
 		}
 	});
+	updateChatMtm($("#nickName").text(), $("#pno").text(), me, you);
 	lastChat(me, you);
 }
 
@@ -428,6 +495,50 @@ function checkLength(aro_name, ari_max){
 	aro_name.focus();
 	
 }
+
+function countChatPtm(){
+	var nickName = $("#nickName").text();
+	var pno = $("#pno").text();
+	$.ajax({
+		url:"${pageContext.request.contextPath}/countChatPtm.ch",
+		dataType:"json",
+		type:"GET",
+		data:{"nickName":nickName, "pno":pno},
+		async:false,
+		success:function(response){
+			var msg = "";				
+			if(response.str > 99){
+				msg = "99+";
+			}else{
+				msg = response.str;
+			}
+			if(response.str != 0){
+				$("#countPtm").text(msg)
+				$("#countPtm").css("display", "");
+			}else{
+				$("#countPtm").css("display", "none");
+			}
+		}
+	});
+}
+
+function updateChatPtm(nickName, pno){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateChatPtm.ch",
+		data:{"nickName":nickName, "pno":pno},
+		async:false,
+		success:function(){}
+	});
+}
+
+function updateChatMtm(nickName, pno, chWriter, chReader){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateChatMtm.ch",
+		data:{"nickName":nickName, "pno":pno, "chWriter":chWriter, "chReader":chReader},
+		async:false,
+		success:function(){}
+	});
+}
 </script>
 </head>
 
@@ -455,7 +566,7 @@ function checkLength(aro_name, ari_max){
 			<!-- 참여자 리스트 화면 -->
 			<div class="contact-list">
 				<!-- 프로젝트 단체방 -->
-				<div class="contact" onclick="chatPtm(${member.mno}, ${project.pno});">
+				<div class="contact" onclick="chatPtm(${member.mno}, ${project.pno});" onclick="updateChatPtm(${member.nickName}, ${project.pno});">
 					<img src="resources/images/profile/dope2.png" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text" style="margin-top:10%;">
@@ -464,7 +575,7 @@ function checkLength(aro_name, ari_max){
 						</div>
 					</div>
 					<div class="contact-time">
-						<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countPtm">99+</span>
+						<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countPtm"></span>
 					</div>
 				</div>
 				<c:forEach items="${secondList}" var="sl">
@@ -478,7 +589,7 @@ function checkLength(aro_name, ari_max){
 									</div>
 								</div>
 								<div class="contact-time">
-								<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="count">99+</span>
+								<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countMtm${sl.mno}"></span>
 								</div>
 							</div>
 						</c:if>

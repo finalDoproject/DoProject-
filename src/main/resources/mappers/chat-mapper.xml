@@ -59,7 +59,14 @@
 	</select>
 	
 	<select id="selectOneChatPtm" resultType="string">
-		SELECT COUNT(*) FROM CHAT_PTM WHERE CHPNO = #{pno} AND CHCONDITION = 'Y'
+		SELECT COUNT(*) FROM CHAT_PTM
+		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
+	</select>
+	
+	<select id="selectOneChatMtm" resultType="string">
+		SELECT COUNT(*) FROM CHAT_MTM
+		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
+		AND CHREADER = #{chWriter} AND CHWRITER = #{chReader}
 	</select>
 	
 	<select id="selectPtmLastChat" resultType="string">
@@ -68,7 +75,7 @@
 	
 	<select id="selectMtmLastChat" resultType="string">
 		SELECT * FROM (SELECT CHCONTENT FROM CHAT_MTM WHERE 
-		(CHWRITER = #{me} AND CHREADER = #{you}) OR (CHWRITER = #{you} AND CHREADER = #{me})
+		((CHWRITER = #{me} AND CHREADER = #{you}) OR (CHWRITER = #{you} AND CHREADER = #{me})) AND CHPNO = #{pno}
 		ORDER BY CHNO DESC) WHERE ROWNUM = 1
 	</select>
 	
@@ -87,14 +94,4 @@
 		ELSE CHREADERS
 		END WHERE CHPNO = #{pno}
 	</update>
-	
-	<select id="countPtm">
-		SELECT COUNT(*) FROM CHAT_PTM
-		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
-	</select>
-
-	<select id="countMtm">
-		SELECT COUNT(*) FROM CHAT_MTM
-		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
-	</select>
 </mapper>

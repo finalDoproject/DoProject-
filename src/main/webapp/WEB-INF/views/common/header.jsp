@@ -178,7 +178,9 @@
 				async : false,
 				success : function(response){
 					if(response==2 || response==5){
-						location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+						if(confirm("해당 프로젝트로 이동하시겠습니까?") == true){
+							location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+						}
 					}
 				},
 				error:function(request,status,error){
@@ -280,26 +282,6 @@
 		    }
 		    function onError(evt) {
 		    }
-		    
-		    /* function onChatCountOpen(evt) {
-				var pno = '<c:out value="${param.pno}"/>';
-				console.log("pno : " + pno);
-				chatWebsocket.send(pno);
-		    }
-		    function onChatCountMessage(evt) {
-		    	var data=evt.data;
-		    	console.log("count : " + data);
-		    	if(data!=0){
-		    		$("#chatCount").empty();
-		    		$('#chatCount').text("+");
-		    	}else{
-		    		$("#chatCount").empty();
-		    	}
-		    }
-		    function onChatCountError(evt) {
-		    } */
-		    
-		    //sendChatCount_message();
 		    
 	    	send_message();
 	    });

@@ -92,6 +92,11 @@
 		<websocket:mapping handler="alarmHandler" path="/count" />
 	</websocket:handlers>
 	
+	<!-- <websocket:handlers>
+		<websocket:mapping handler="countHandler" path="/Chatcount" />
+	</websocket:handlers> -->
+	
+	<!-- <beans:bean id="countHandler" class="com.kh.dp.chat.common.ChatCountWebSocketHandler" /> -->
 	<beans:bean id="alarmHandler" class="com.kh.dp.alarm.common.AlarmWebSocketHandler" />
 	<beans:bean id="chatWebSocketHandler" class="com.kh.dp.chat.common.ChatWebSocketHandler" />
 	

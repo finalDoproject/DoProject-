@@ -91,16 +91,18 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/lastChat.ch", method=RequestMethod.GET)
-	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("me") int me, @RequestParam("you") String you) {
-		
+	public ModelAndView selectSearchChatRoom(Model model, @RequestParam("me") int me, @RequestParam("you") String you,
+			HttpSession session) {
+
 		// ajax 채팅방 리스트 검색용
 		ModelAndView mv = new ModelAndView();
+		Project p = (Project)session.getAttribute("project");
 		String str = "";
 		/*System.out.println("you : " + you);*/
 		if(you.contains("p") || you.charAt(0) == '0') {
 			str = chatService.selectPtmLastChat(me, Integer.parseInt(you.substring(1)));
 		}else {
-			str = chatService.selectMtmLastChat(me, Integer.parseInt(you));
+			str = chatService.selectMtmLastChat(me, Integer.parseInt(you), p.getPno());
 		}
 		
 		mv.addObject("str", str);
@@ -116,7 +118,7 @@ public class ChatController {
 		ModelAndView mv = new ModelAndView();
 		
 		String yourName = chatService.selectOneYourName(me);
-		
+
 		mv.addObject("yourName", yourName);
 		mv.setViewName("jsonView");
 
@@ -124,8 +126,41 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="/countChatPtm.ch", method=RequestMethod.GET)
-	public int countChatPtm(@RequestParam("mno") int mno, @RequestParam("pno") int pno) {
-		return chatService.selectOneChatPtm(pno);
+	public ModelAndView countChatPtm(Model model, @RequestParam("nickName") String nickName, @RequestParam("pno") int pno) {
+		
+		ModelAndView mv = new ModelAndView();
+		String str = chatService.selectOneChatPtm(nickName, pno);
+
+		mv.addObject("str", str);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="/countChatMtm.ch", method=RequestMethod.GET)
+	public ModelAndView countChatMtm(Model model, @RequestParam("nickName") String nickName, @RequestParam("pno") int pno,
+			@RequestParam("chWriter") int chWriter, @RequestParam("chReader") int chReader) {
+		
+		ModelAndView mv = new ModelAndView();
+		String str = chatService.selectOneChatMtm(nickName, pno, chWriter, chReader);
+
+		mv.addObject("str", str);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="/updateChatPtm.ch")
+	public void updateChatPtm(@RequestParam("nickName") String nickName, @RequestParam("pno") int pno) {
+		chatService.updatePtm(nickName, pno);
+	}
+	
+	@RequestMapping(value="/updateChatMtm.ch")
+	public void updateChatMtm(@RequestParam("nickName") String nickName, @RequestParam("pno") int pno,
+			@RequestParam("chWriter") int chWriter, @RequestParam("chReader") int chReader) {
+		/*System.out.println("업데이트 전");*/
+		chatService.updateMtm(nickName, pno, chWriter, chReader);
+		/*System.out.println("업데이트 후");*/
 	}
 	
 }
