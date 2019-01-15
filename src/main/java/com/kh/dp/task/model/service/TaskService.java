@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 public interface TaskService {
 	static int TASK_SERVICE_ERROR = 0;
@@ -19,5 +20,16 @@ public interface TaskService {
 
 	List<Attachment> selectAttachmentList(int no);
 
-	List<Map<String, String>> selectListTask(int pno);
+	List<Task> selectListTask(int pno);
+		
+	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
+	
+	int insertTaskkeep(TaskKeep tk);
+
+	List<Task> selectListmyTask(int mno);
+
 }

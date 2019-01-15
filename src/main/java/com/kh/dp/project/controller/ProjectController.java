@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kh.dp.comment.model.service.CommentService;
+import com.kh.dp.comment.model.vo.TaskComment;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
@@ -26,6 +29,7 @@ import com.kh.dp.project.model.vo.TaskCount;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
+import com.kh.dp.task.model.vo.Task;
 
 @Controller
 public class ProjectController {
@@ -39,6 +43,20 @@ public class ProjectController {
 	@Autowired
 	private TaskService taskService;
 	
+	@Autowired
+	private CommentService commentService;
+	
+
+	@RequestMapping("/project/projectSearch.do")
+	public String projectSearch(
+			//Model model, @RequestParam("mno") int mno
+			) {
+		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
+		//model.addAttribute("projectList",projectList);
+		
+		return "project/projectSearch";
+	}
+
 	@RequestMapping("/project/projectMain.do")
 
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
@@ -159,9 +177,13 @@ public class ProjectController {
 		
 		
 		// task List
-		ArrayList<Map<String, String>> tasklist = 
-				new ArrayList<Map<String, String>>(taskService.selectListTask(pno));
-		System.out.println("tasklist"+ tasklist);
+		ArrayList<Task> tasklist = 
+				new ArrayList<Task>(taskService.selectListTask(pno));
+				
+
+		
+		System.out.println("taskList +" + tasklist);
+		model.addAttribute("m", m);
 		model.addAttribute("tasklist", tasklist);
 		
 		return "project/projectPage";

@@ -3,6 +3,41 @@
 <mapper namespace="task">
 	<resultMap type="map" id="task"/>
 	
+	<resultMap type="Task" id="taskandattach">
+		<id  property="tno"  column="TNO"/>
+		<result property="tlevel" column="TLEVEL" />
+		<result property="tmno" column="TMNO" />
+		<result property="tenddate" column="TENDDATE" />
+		<result property="ttpriority" column="TTPRIORITY" />
+		<result property="ttitle" column="TTITLE" />
+		<result property="tcontent" column="TCONTENT" />
+		<result property="tstartdate" column="TSTARTDATE" />
+		<result property="twriter" column="TWRITER" />
+		<result property="tpno" column="TPNO" />
+		<result property="twritedate" column="TWRITEDATE" />
+		<collection property="taskFiles" ofType="Attachment" resultMap="resultAttachment"/>
+		<collection property="taskComment" ofType="TaskComment" resultMap="taskandComment"/>
+	</resultMap>
+	
+	<resultMap id="resultAttachment" type="Attachment">
+		<id property="fno" column="FNO"/>
+		<result property="foldname" column="FOLDNAME"/>
+		<result property="fnewname" column="FNEWNAME"/>
+		<result property="fpath" column="FPATH"/>
+		<result property="ftno" column="FTNO"/>
+	</resultMap>
+		<resultMap id="taskandComment" type="TaskComment">
+		<id property="cno" column="CNO"/>
+		<result property="cwriter" column="CWRITER"/>
+		<result property="ccontent" column="CCONTENT"/>
+		<result property="cwritedate" column="CWRITEDATE"/>
+		<result property="ctno" column="CTNO"/>
+	</resultMap>
+	
+	<sql id="selectAttachmentSQL">
+		
+	</sql>
+	
 	<select id="selectTaskTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM TASK
 	</select>
@@ -33,8 +68,55 @@
 	<select id="selectTaskList" resultMap="task">
 		SELECT *
 		FROM TASK
-		WHERE TPNO = #{pno}
-		ORDER BY TWRITEDATE DESC
+		WHERE TNO = #{tno}
+	</select> 
+	
+	<select id="selectTaskList" parameterType="_int" resultMap="taskandattach">
+		SELECT TS.*, T.*, P.RENAMEDFILENAME FROM TASK TS
+		LEFT JOIN TASK_FILE TF ON(TS.TNO = TF.FTNO)
+		LEFT JOIN PROJECT PJ ON(TS.TPNO = PJ.PNO)
+	    LEFT JOIN TASK_COMMENT T ON (TS.TNO = T.CTNO)
+	    LEFT JOIN MEMBER M ON (T.CWRITER = M.MNO)
+	    LEFT JOIN PROFILE_IMG P ON (M.MPROFILE = P.IMGNO)
+		WHERE PNO = #{pno}
+		ORDER BY TWRITEDATE DESC, CWRITEDATE DESC
 	</select>
+	
+	<select id="selectOneAttachment" resultType="attachment">
+	SELECT * FROM TASK_FILE
+	WHERE FTNO = #{tno}
+	</select>
+	
+	<update id="updateTask">
+		UPDATE TASK
+		SET TLEVEL = #{tlevel},
+			TSTARTDATE = TO_DATE(#{tstartdate},'MM/DD/RRRR'),
+			TENDDATE = TO_DATE(#{tenddate},'MM/DD/RRRR'),
+			TTPRIORITY = #{ttpriority},
+			TTITLE = #{ttitle},
+			TCONTENT = #{tcontent}
+		WHERE TNO = #{tno}
+	</update>
+	
+	<delete id="deleteTask">	
+		DELETE FROM TASK WHERE TNO = #{tno}
+	</delete>
+	
+	<delete id="deleteAttach">
+	 	DELETE FROM TASK_FILE WHERE FTNO = #{tno}
+	</delete>
+	
+	<insert id="">
+	INSERT INTO BOARD_KEEP(BKMNO, BKBNO ) VALUES(#{bkmno}, #{bkbno} )
+	</insert>
+
+	<select id="selectListmyTask"  resultMap="taskandattach">
+			SELECT * FROM TASK
+			LEFT JOIN TASK_FILE ON(TASK.TNO = TASK_FILE.FTNO)
+			JOIN MEMBER ON(MEMBER.MNO = TASK.TMNO)
+			WHERE TMNO = #{mno}
+			ORDER BY TWRITEDATE DESC
+	</select>
+
 	
 </mapper>

@@ -33,7 +33,7 @@
 	 </insert>
 	 
 	 <select resultType="MatchingInfo" parameterType="_int" id="browseMatchingInfo">
-	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO
+	 SELECT SMNO, SMCONTENT, SMDATE, SMENDDATE, SSNO, SJMNO
 	 FROM SCHEDULE_MATCHING
 	 JOIN SCHEDULE_JOIN ON(SMNO = SJSM)
 	 WHERE SJMNO = #{mno}
@@ -62,6 +62,26 @@
 	 <select id="countMember" resultType="_int" parameterType="_int" >
 	 SELECT COUNT(*) FROM SCHEDULE_JOIN
 	 WHERE SJSM = #{requestNo}
+	 </select>
+	 
+	 <select id="fileList" resultMap="task2">
+	 SELECT TNO, TTITLE, TCONTENT, TWRITER, TWRITEDATE, FNO, FOLDNAME, FNEWNAME
+	 FROM TASK
+	 JOIN TASK_FILE ON(FTNO = TNO)
+	 WHERE TPNO = TO_NUMBER(#{pno})
+	 ORDER BY TWRITEDATE DESC, TNO DESC
+	 </select>
+	 
+	 <select id="fileTotalContents" resultType="_int">
+	 SELECT COUNT(*) FROM TASK_FILE
+	 JOIN TASK ON(FTNO = TNO AND TPNO = #{pno})
+	 </select>
+	 
+	 <select id="browseMatchingMember" resultType="Member">
+	 SELECT NICKNAME
+	 FROM MEMBER
+	 JOIN SCHEDULE_JOIN ON(SJMNO =MNO)
+	 WHERE SJSM = #{pno}
 	 </select>
 	 
 	 

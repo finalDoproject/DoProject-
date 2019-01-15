@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 public interface TaskDao {
 	
@@ -18,5 +19,15 @@ public interface TaskDao {
 
 	int selectTaskTotalContents();
 	
-	List<Map<String, String>> selectTaskList(int pno);
+	List<Task> selectTaskList(int pno);
+	
+	int updateTask(Task task, Attachment attach);
+	
+	int deleteTask(int tno);
+	
+	int deleteAttach(int tno);
+	
+	int insertTaskkeep(TaskKeep tk);
+
+	List<Task> selectListmyTask(int mno);
 }
