@@ -251,37 +251,31 @@ $(document).ready(function(){
 	$('.tab1').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", false);
 	});
 		
 	$('.tab2').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab3').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab4').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab5').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", false);
 	});
 	
 	$('.tab6').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
-		$("select[name=tmno]").attr("disabled", "disabled");
 		
 	});
 	
