@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -7,14 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <br /><br /><br />
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" >
+    <div class="container-fluid gedf-wrapper" style="width: 60%;" id="${task.tno }">
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -22,7 +25,7 @@
 			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
             <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card" id="t${task.tno}">
+                <div class="card gedf-card">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -53,14 +56,13 @@
                                </c:if> 
                             </div>
                         </div>
-
+					
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
                         
                             <h3 class="card-title">${task.ttitle }</h3>
                             <hr />
-
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
 								<c:forEach items="${m}" var="m" varStatus="tnum">
@@ -76,11 +78,11 @@
                          <p id="levelp"></p>
                          <input type="hidden" value="${task.tlevel}" id="levelchk${tcount }"/>
                          <input type="hidden" value="${tcount}" id="levelnum${tcount }"/>
-
 	                        <div class="line" >
 								<label class="icon1"><span class="blind"></span></label>
 								<div class="workTab" name="tLevelSelect" >
 									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
+									
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }1" class="tLevelSelect1 tab1" value="1">요청</button>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }2" class="tLevelSelect1 tab2" value="2">진행</button>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }3" class="tLevelSelect1 tab5" value="3">피드백</button>
@@ -122,12 +124,72 @@
 							<div class="line"  style="display: inline-block;">
 								<label class="icon4" ><span class="blind" >마감일</span></label>
 								<div  >
-									<input name="enddate" id="${fn:substring(task.tenddate,0,10)}" value="${fn:substring(task.tenddate,0,10)}" readonly>
+									<input name="enddate" value="${fn:substring(task.tenddate,0,11)}" readonly>
 								</div>
 							</div>
 						<hr />
-                        <p class="card-text" style="height: auto;">
+									<!-- 5. 진척도 지정 -->
+			<br />
+						<div class="line" id="PROGRESS_LINE" >
+							<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
+							<a class="workPrgrs" style="display: inline-block;">
+								<div class="workPrgrs_bg"><!-- 20170407 수정 -->
+									<strong id="PROGRESS_PER" class="txt"></strong>
+									<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
+									<!-- toltip -->
+									<div class="pcnt0" style="width:5%;display:block"><span class="pcnt"><button>0%</button></span></div>
+									<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div><!-- bar style="right:80%;" -->
+									<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div><!-- bar style="right:60%;" -->
+									<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div><!-- bar style="right:40%;" -->
+									<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div><!-- bar style="right:20%;" -->
+									<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div><!-- bar style="right:0;" -->
+								</div><!-- 20170407 수정 -->
+							</a>
+						</div>
+						<!-- 6. 우선순위 지정 -->
+						<input type="hidden" id="nowp${tcount }" value="${task.ttpriority }" />
+						<div class="form-group" >
+							우선순위 : 
+								<div class="col-md-4"  style="display: inline-block;">
+									<select id="ttpriority" name="ttpriority" class="form-control" >
+										<option value="1" class="ttp1${tcount }">낮음</option>
+										<option value="2" style="color:green;" class="ttp2${tcount }">보통</option>
+										<option value="3"style="color:orange;" class="ttp3${tcount }" >높음</option>
+										<option value="4" style="color:red;" class="ttp4${tcount }">긴급</option>
+									</select>
+
+								</div>
+						</div>
+					</div>
+					 <script>
+						$(function(){
+								var num = "${tcount}";
+								var tpr = $('#nowp'+ num).val();
+								
+								if($('.ttp1'+num).val() == tpr){
+									$('.ttp1'+num).attr("selected", true);
+									
+									$('.ttp1'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp2'+num).val() == tpr){
+									$('.ttp2'+num).attr("selected", true);
+									$('.ttp2'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp3'+num).val() == tpr){
+									$('.ttp3'+num).attr("selected", true);
+									$('.ttp3'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp4'+num).val() == tpr){
+									$('.ttp4'+num).attr("selected", true);
+									$('.ttp4'+num).parent().prop('disabled', true);
+								}
+							})
+										
+						</script> 
+					<div>
+                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
                             ${task.tcontent}
+                            <br /><br /><br /><br />
                         </p>
                     </div>
                     <br /><br />
@@ -182,12 +244,12 @@
 
 				<br /><br /><br />
 				<br/>
-				            </div>
-       				 </div>
-				</c:forEach>
+				
                
             </div>
- 
+        </div>
+        </c:forEach>
+    </div>
 
  <div class="modal fade mod" id="taskUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -543,6 +605,26 @@ function deleteAttach(){
 			},
 		});
 	}
+	
+	function tmanager(){
+		$("#tmno").empty();
+		var pNo = ${pno};
+		$.ajax({
+			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+			dataType:"json",
+			type:"get",
+			data:{pno: pNo},
+			success:function(response){
+				if($("#pmno").text() == $("#mno").text()){
+					for(var i=0; i<response.length; i++){
+						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+						console.log(response[i].mno);
+					}
+				}				
+			}
+		});
+		}
 	</script>
 </body>
 </html>

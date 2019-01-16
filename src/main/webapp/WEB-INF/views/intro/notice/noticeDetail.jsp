@@ -83,8 +83,10 @@
 						</div>
 						</div>
 						<a href="${pageContext.request.contextPath}/intro/board/notice.do" class="button primary icon fa-search" >목록으로</a>
+						<c:if test="${member.userId eq 'admin'}">
 						<a href="${pageContext.request.contextPath}/intro/board/updateNoticeView.do?bno=${board.bno}" class="button icon fa-download" style="float: right;" >수정하기</a>
 						<a href="javascript:void(0)" onclick="delHelp();" id="delhelp" class="button icon fa-download" style="float: right;" >삭제하기</a>
+						</c:if>
 				</section>
 	
 			</div>

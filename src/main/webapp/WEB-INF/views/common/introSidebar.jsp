@@ -22,7 +22,6 @@
 									</header>
 									<ul style="font-family: 'Exo 2', sans-serif !important; ">
 										<li><a href="/">index</a></li>
-										<li><a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}">프로젝트 화면</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
 										<c:if test="${member.userId eq 'admin'}">

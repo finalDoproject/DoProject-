@@ -3,6 +3,7 @@
 <mapper namespace="member">
 	<resultMap type="map" id="member"/>
 
+	<insert id="insertFile"> INSERT INTO PROFILE_IMG VALUES (SEQ_IMGNO.NEXTVAL, DEFAULT, DEFAULT, DEFAULT, DEFAULT) </insert>
 	<insert id="insertMember" parameterType="Member">
 		INSERT INTO MEMBER VALUES (
 			SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, 
