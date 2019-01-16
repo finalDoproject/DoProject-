@@ -305,8 +305,8 @@ function formSubmit(){
       <hr>
       <div class="timetable " style="color: #555">
   
-
-          <h6 style="font-weight: 600">스케줄매칭 </h6>
+          <h6>스케줄매칭</h6>
+ 
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
@@ -318,7 +318,6 @@ function formSubmit(){
                 data-backdrop="static" data-keyboard="false">결과보기</button>
                 </a>
                 </c:if>
-                
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
                 <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');"
@@ -329,6 +328,7 @@ function formSubmit(){
               </li>
             </c:forEach>
             </ul>
+            </div>
           
         </div>
         <hr>
@@ -359,6 +359,7 @@ function formSubmit(){
         <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
         <span style="color : black; "> : 75%이상</span>
         </div>
+        
         <div class="modal-body">
             <table class="table table-bordered schedule" style="color : black;">
                 <thead>
@@ -528,6 +529,7 @@ function formSubmit(){
             </table>
         </div>
         <div class="modal-footer">
+          <button type="button" class="ok" id="modalConfirm">확인</button>
         </div>
       </div>
     </div>
@@ -536,6 +538,7 @@ function formSubmit(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
+      
       	<div class="container-fluid gedf-wrapper">
       		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
         	<div id="donut" class="container-fluid collapse show in">
@@ -556,7 +559,6 @@ function formSubmit(){
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
-      
     </div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	
@@ -622,7 +624,6 @@ function formSubmit(){
 	    	// 요청 제목
 	    	var smcontent = B;
 	    	
-	    	
 	    	// 요일 값 가져오기(숫자)
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
@@ -654,6 +655,7 @@ function formSubmit(){
 	         	}
 	 		});  
 	    	
+	    	// DateTime 부러오기
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
 	 			data : {requestNo : requestNo,
@@ -664,6 +666,7 @@ function formSubmit(){
 	 				for(var i in data ) {
 	         			$('#'+data[i].sjdtno).css("background-color", "rgb(248, 142, 111)");
 	 				}
+	 				
 	 				}
 	 			},error : function(request, status, error){
 	      			alert(request + "\n"
@@ -671,6 +674,10 @@ function formSubmit(){
 	      					  + error);
 	         	}
 	 		});  
+	    	
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
 	    	
 	    	 $(".select").click(function(){
 	    		// dateTime 번호
@@ -694,7 +701,7 @@ function formSubmit(){
 	 				         	dataType : "json",
 	 				         	success : function(data) {
 	 				         			$('#'+dtNo).css("background-color", "rgb(248, 142, 111)");
-	 				         		
+	 				         			
 	 				         		
 	 				         	 },error : function(request, status, error){
 	 				      			alert(request + "\n"
@@ -712,7 +719,7 @@ function formSubmit(){
 	 				         	dataType : "json",
 	 				         	success : function(data) {
 	 				         			$('#'+dtNo).css("background-color", "white");
-	 				         		
+	 				         			
 	 				         		
 	 				         	 },error : function(request, status, error){
 	 				      			alert(request + "\n"
@@ -757,7 +764,6 @@ function formSubmit(){
 	    			};
 	    		};
 	    	};
-	    	
 	    	$('#modalConfirm').click(function(){
 		 		location.reload();
 		 	});
@@ -781,6 +787,7 @@ function formSubmit(){
 	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
 	    	var s = w[new Date(smdate).getDay()];
 	    	var e = w[new Date(smenddate).getDay()];
+	    	
 	    	$('#exampleTitle').html(smcontent);
 	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
 	    	$('#explain2').text("매칭 참여 인원 : ");
@@ -828,11 +835,12 @@ function formSubmit(){
 	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
 	            }
 	 		}); 
-	 		 }  
-	 		   
-	 		  $('#modalConfirm').click(function(){
-			 		location.reload();
-			 	});
+	 		 };
+	 		 
+	 		$('#modalConfirm').click(function(){
+		 		location.reload();
+		 	});
+		
 	 	};
 	 	
 	 	$(function(){

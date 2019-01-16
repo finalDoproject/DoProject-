@@ -22,6 +22,22 @@
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
 	
+	var source = new EventSource("/countSSE");
+	source.onopen = function(event){};
+	source.onmessage = function(event){
+		var data = event.data;
+		// 프로젝트 단체 채팅
+		if(data.contains("p")){
+			
+		}else{
+			// 개인 채팅 보내는 사람이 나 를 기준으로
+			if(data.split("TO")[0] == ${member.mno} && data.split("TO")[1] == ${sl.mno}){
+				
+			}
+		}
+		console.log("data : " + event.data);
+	};
+	
 	var list = new Array();
 	<c:forEach items="${secondList}" var="sl">
 		list.push("${sl.mno},${sl.userId},${sl.nickName}");
@@ -34,7 +50,7 @@ $(document).ready(function(){
 		}	
 	}, 500);
 	
-	setInterval(function(){
+	/* setInterval(function(){
 		countChatPtm();
 	}, 500);
 	
@@ -96,7 +112,7 @@ function countChatMtm(){
 				}
 			});
 		}	
-	};
+	}; */
 });
 var sock;
 //웹소켓 객체 생성하기

@@ -131,9 +131,7 @@ input[type="submit"].login:focus{outline: none;}
 <form action="${pageContext.request.contextPath}/member/memberLogin.do" method="post">
 		<div class="form-item">
 			<p class="formLabel">아이디</p>
-
-			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off"/>
-
+			<input type="text" name="userId" id="userId" class="form-style" autocomplete="off" />
 		</div>
 		<div class="form-item">
 			<p class="formLabel">비밀번호</p>

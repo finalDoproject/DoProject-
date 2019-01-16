@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
 <!-- Select 2 -->
 <link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
 
@@ -22,6 +24,7 @@
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 
 <style>
 	
@@ -296,7 +299,6 @@ function formSubmit(){
     <div class="container-fluid gedf-wrapper" style="width: 60%;">
         <div >
             <div class=" gedf-main">
-
 			<input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
@@ -312,11 +314,11 @@ function formSubmit(){
                                 </div>
                             </div>
                         </div>
-
+					
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
-
+                        
                             <h3 class="card-title">${task.ttitle }</h3>
                             <hr />
                          <c:if test="${task.tlevel != null}">
@@ -405,19 +407,15 @@ function formSubmit(){
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-
                 </div>
                 <!-- Post /////-->
 
 				<br /><br /><br />
 				<br/>
-
-
             </div>
         </div>
         </c:if>
         </c:forEach>
-        
 	</div>
         <!-- /.container-fluid -->
 

@@ -3,7 +3,7 @@ package com.kh.dp.member.model.vo;
 import java.sql.Date;
 
 public class Member {
-	private  int pno;                   // 프로젝트 번호
+	
 	private  int mno;                   // 회원 번호
 	private  String userId;             // 회원 아이디
 	private  String password;           // 회원 비밀번호
@@ -45,15 +45,6 @@ public class Member {
 		this.mno = mno;
 		this.userId = userId;
 		this.nickName = nickName;
-	}
-	
-	
-	public Member(int pno, int mno, int mProfile, String renamedFileName) {
-		super();
-		this.pno = pno;
-		this.mno = mno;
-		this.mProfile = mProfile;
-		this.renamedFileName = renamedFileName;
 	}
 
 	public int getMno() {
@@ -128,23 +119,13 @@ public class Member {
 		this.renamedFileName = renamedFileName;
 	}
 
-	
-	public int getPno() {
-		return pno;
-	}
-
-	public void setPno(int pno) {
-		this.pno = pno;
-	}
-
 	@Override
 	public String toString() {
-		return "Member [pno=" + pno + ", mno=" + mno + ", userId=" + userId + ", password=" + password + ", email="
-				+ email + ", nickName=" + nickName + ", mCondition=" + mCondition + ", mDate=" + mDate + ", mProfile="
-				+ mProfile + ", renamedFileName=" + renamedFileName + "]";
+		return "Member [mno=" + mno + ", userId=" + userId + ", password=" + password + ", email=" + email
+				+ ", nickName=" + nickName + ", mCondition=" + mCondition + ", mDate=" + mDate + ", mProfile="
+				+ mProfile + ", renamedfilename=" + renamedFileName + "]";
 	}
-
-
+	
 	
 	
 	
