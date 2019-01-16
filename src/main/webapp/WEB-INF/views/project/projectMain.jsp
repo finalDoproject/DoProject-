@@ -333,11 +333,11 @@ function optionModalClk(pno, mno){
                   <div class="modal-body" style="text-align: left">
                   <input class="pj_num" style="display: none;">
                       <div class="form-group">
-                        <label for="recipient-name" class="form-control-label" id="reTitle">프로젝트 명</label>
+                        <label for="recipient-name" class="form-control-label" id="reTitle" style="width: 80%;">프로젝트 명</label>
 
                       </div>
                       <div class="form-group">
-                        <label for="message-text" class="form-control-label" id="rePsummary">프로젝트 개요</label>
+                        <label for="message-text" class="form-control-label" id="rePsummary"style="width: 90%;">프로젝트 개요</label>
                        
                       </div> 
                        <div class="form-group levelbox" >
@@ -353,7 +353,7 @@ function optionModalClk(pno, mno){
 						        </tr>
 						        <tr>
 						         <td height="25">
-						           <table id="UpAddTable" width="400" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
+						           <table id="UpAddTable" width="100%" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
 							            <tr>
 							              <!-- <td><input type="text" name="lname" class="form-control firstLname" style="width: 90% !important; display: inline-block; margin-bottom: 5px;"></td> -->
 							              <td align="left"></td>
@@ -373,7 +373,7 @@ function optionModalClk(pno, mno){
 						 </table>
                         </div>
                         <div class="modal-footer" style="display: flex; flex-direction: row; justify-content: center; align-items: center;" >
-		                  <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
+		                  <button type="button" class="btn btn-light btn-sm updatemodalClose" data-dismiss="modal">취소</button>
 		                  <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">수정</button>
 		                </div>                 
                   </div>
@@ -471,7 +471,7 @@ function optionModalClk(pno, mno){
 	        	lvListHTML+='<label for="ck1">설정된 레벨이 없습니다.</label><br>';
 	        }else{
 	    		for(var i=0; i<oneProjectLvList.length;i++){
-	    			lvListHTML+='<input type="text" id="'+oneProjectLvList[i].lno+'" name="lname" class="form-control" style="width: 90% !important; display: inline-block; margin-bottom: 5px;" value="'+oneProjectLvList[i].lname+'">';
+	    			lvListHTML+='<input type="text" id="'+oneProjectLvList[i].lno+'" name="lname" class="form-control" style="width: 100% !important; display: inline-block; margin-bottom: 5px;" value="'+oneProjectLvList[i].lname+'">';
 	    			console.log(oneProjectLvList[i].lno+":"+oneProjectLvList[i].lname);
 	    		}
 	        }
@@ -528,7 +528,6 @@ function optionModalClk(pno, mno){
         });	
 		
 	});
-	
 	$('.detailmodalClose').click(function () { 
 		 // location.reload();
 		$('#onePj').empty();
@@ -536,6 +535,12 @@ function optionModalClk(pno, mno){
 		$('.formPer').empty();
 		$('.footbtn').empty();
 		location.reload();
+	});
+	$('.updatemodalClose').click(function () { 
+		 // location.reload();
+		$('#reTitle').empty();
+		$('#rePsummary').empty();
+		$('#UpAddTable').empty();
 	});
 
 	

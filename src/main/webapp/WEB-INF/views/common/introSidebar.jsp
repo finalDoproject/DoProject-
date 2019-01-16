@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,15 +21,13 @@
 										<h2>Menu</h2>
 									</header>
 									<ul style="font-family: 'Exo 2', sans-serif !important; ">
-										<li><a href="/dp">index</a></li>
+										<li><a href="/">index</a></li>
 										<li><a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}">프로젝트 화면</a></li>
-										<li><a href="${pageContext.request.contextPath}/mypage/mycalendar.do">마이페이지</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
-										<li><a href="${pageContext.request.contextPath}/task/taskForm.do">업무작성</a></li>
-										<li><a href="${pageContext.request.contextPath}/member/MemberList.do"">관리자 페이지</a></li>
-							
-
+										<c:if test="${member.userId eq 'admin'}">
+											<li><a href="${pageContext.request.contextPath}/member/MemberList.do">관리자 페이지</a></li>
+										</c:if>
 									</ul>
 								</nav>
 

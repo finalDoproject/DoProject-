@@ -80,7 +80,7 @@ public class BoardServiceImpl implements BoardService {
 	public int insertNotice(Board board) {
 		int result;
 		
-		result = boardDao.insertHelp(board);
+		result = boardDao.insertNotice(board);
 		
 		if(result==0) throw new BoardException();
 		

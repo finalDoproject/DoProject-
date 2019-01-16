@@ -82,7 +82,7 @@
 
 	                        <div class="line" >
 								<label class="icon1"><span class="blind"></span></label>
-								<div class="workTab" name="tLevelSelect">
+								<div class="workTab" name="tLevelSelect" >
 									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }1" class="tLevelSelect1 tab1" value="1">요청</button>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }2" class="tLevelSelect1 tab2" value="2">진행</button>
@@ -94,19 +94,19 @@
 							</div>
 							<script>
 							$(function(){
-								var num = '<c:out value="${tnum.count}"/>'
+								var num = ${tcount};
 								var level = $('#levelchk'+num).val();
 								var levelnum = $('#levelnum' + num).val();
-								console.log(num);
+								/* console.log("num"+num);
 								console.log(level);
-								console.log(levelnum);
+								console.log(levelnum); */
 								
-								$(".tLevelSelect").each(function(){
+								$(".tLevelSelect1").each(function(){
 									$(this).prop('disabled', true);
 								});
 								
 								$("#level"+levelnum+level).addClass("selected");
-								console.log(levelnum+"앞에는 num 뒤에는 레벨"+level);
+								/* console.log(levelnum+"앞에는 num 뒤에는 레벨"+level); */
 							})
 							</script>
 						</c:if>

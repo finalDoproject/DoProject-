@@ -296,7 +296,6 @@ function formSubmit(){
 						<th>작성자</th>
 						<th>첨부파일</th>
 					</tr>
-					
 					<c:forEach items="${list}" var="f" varStatus="status"> 
 					<tr id="${f.fno}">
 						<td>${status.count}</td>

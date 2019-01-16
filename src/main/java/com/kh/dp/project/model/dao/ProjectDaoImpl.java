@@ -52,8 +52,15 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public int updateOneLevelCk(Project project) {
-		System.out.println("요까지옴");
-		return sqlSession.update("project.updateOneLevelCk", project);			
+		System.out.println("project:"+project);
+		System.out.println("체크값:"+project.getLcheck());
+		if(project.getLcheck().equals("N")) {
+			System.out.println("Y로 변경");
+			return sqlSession.update("project.updateOneLevelCk", project);					
+		}else {
+			System.out.println("N으로 변경");
+			return sqlSession.update("project.updateOneLevelunCk", project);	
+		}		
 	}
 
 	@Override
@@ -77,6 +84,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		System.out.println("result:" + result);
 		return result;
 	}
+	
 	
 	@Override
 	public List<Member> memberProfileList(int mno) {

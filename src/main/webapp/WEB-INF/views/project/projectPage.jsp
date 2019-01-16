@@ -47,9 +47,9 @@
 	 width : 20px;
 	 height:20px;
 	 background-color:black;
-
-
 }
+
+
 
 </style>
 <script>
@@ -90,7 +90,7 @@ $(function(){
 //스케줄 매칭 요청 시 하나라도 입력하지 않으면 안넘어 가는 함수
 function formSubmit(){
 	 var title = $("input[name=title]").val()
-	 var member = $("option").val();
+	 var member = $("#selecName option:selected").size();
 	 var startdate = $("input[name=startDate]").val();
 	 var enddate = $("input[name=endDate]").val();
 	 
@@ -100,11 +100,10 @@ function formSubmit(){
 	  }if(startdate.length == 0){
 		  alert ("시작일이 입력되지 않았습니다.");
 		  return false;
-		  
 	  }if( enddate.length == 0){
 		  alert ("마감일이 입력되지 않았습니다.");
 		  return false;
-	  }if( MEMBER.LENGTH == 1){
+	  }if(member == 0){
 			alert ("사람 수 필수 사항이 입력되지 않았습니다.");
 		  return false;
 	} 
@@ -133,7 +132,8 @@ function formSubmit(){
           </a>
         </li>
         <li class="nav-item" >
-        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="sclick();">
+        	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="sclick();"
+        	data-backdrop="static" data-keyboard="false">
         	<i class="far fa-clock" ></i>
         	<span id="req">스케줄 매칭 요청</span>
         	</a>
@@ -224,7 +224,8 @@ function formSubmit(){
                                 <td colspan="3">
                                 	
                                     <select class="member-multiple" name="mNickname" multiple="multiple"
-                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요">
+                                    style="width : 100%" data-placeholder="스케줄 매칭을 요청할 인원을 선택해주세요"
+                                    id="selecName">
                              		
                                      <c:forEach items="${mArr}" var="m" varStatus="status">
                                         <c:if test = "${m.mno eq member.mno}">
@@ -309,15 +310,19 @@ function formSubmit(){
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-                <c:if test="${s.SSNO eq 0 || s.SSNO eq 1}">
+                <c:if test="${s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
-                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">진행중</button>
-                <button class="request" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">결과보기</button>
-                 </a>
+                <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');"
+                data-backdrop="static" data-keyboard="false">진행중</button>
+                <button class="request" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');"
+                data-backdrop="static" data-keyboard="false">결과보기</button>
+                </a>
                 </c:if>
                 <c:if test="${s.SSNO eq 2}">
-                <a style="color: #555;">${s.SMCONTENT}
-                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');">완료</button> </a>
+                <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO},'${s.SMCONTENT}','${s.SMDATE}','${s.SMENDDATE}');"
+                data-backdrop="static" data-keyboard="false">완료</button>
+                </a>
                 </c:if>
                
               </li>
@@ -334,16 +339,18 @@ function formSubmit(){
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="exampleModalLongTitle" 
-          style="font-weight:bold;">
+          style="font-weight:bold;" >
           <span id="exampleTitle"></span>
           </h4>
+          <button type="button" class="close" id="modalConfirm" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         
         
         <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
         <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
-       	
-       	<div style="display:none" class="explain">
+       	<div style="display : none;" id="impor" >
        	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
         <button class="explainB" style="background-color : gray;"></button>
         <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
@@ -627,6 +634,10 @@ function formSubmit(){
 	    	var s = w[new Date(smdate).getDay()];
 	    	var e = w[new Date(smenddate).getDay()];
 	    	
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
 	    	// 매칭에 참여하는 멤버 불러오기
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
@@ -757,11 +768,9 @@ function formSubmit(){
 		 		location.reload();
 		 	});
 		
-	 	};
+		};
 	    
 	 	$('.select2-search__field').attr("style", "width : 370px");
-	 	
-	 	
 	 	
 	 	function result(a,b,c,d){
 
@@ -774,7 +783,6 @@ function formSubmit(){
 	    	var smenddate = d;
 	    	// 요청 제목
 	    	var smcontent = b;
-	    	
 	    	// 요일 값 가져오기(한글)
 	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
 	    	var s = w[new Date(smdate).getDay()];
@@ -784,8 +792,7 @@ function formSubmit(){
 	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
 	    	$('#explain2').text("매칭 참여 인원 : ");
 	    	
-	    	$('.explain').css("display","inline");
-	    	
+	    	$('#impor').css("display","block");
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
 	 			data : {requestNo : requestNo},
@@ -811,11 +818,12 @@ function formSubmit(){
 	 			type : "get",
 	 			success : function(data){
 	 				
-	 				 if((data.result/data.totalMember)*100 <= 25){
+	 				 if((data.result/data.totalMember)*100 < 25){
 	 					$('#'+data.i).css("background-color", "black");
-	 				}else if((data.result/data.totalMember)*100 > 25 && (data.result/data.totalMember)*100 <= 50) {
+	 				}else if((data.result/data.totalMember)*100 >= 25 && (data.result/data.totalMember)*100 < 50) {
+	 					
 	 					$('#'+data.i).css("background-color", "gray");
-	 				}else if((data.result/data.totalMember)*100 > 50 && (data.result/data.totalMember)*100 <= 75){
+	 				}else if((data.result/data.totalMember)*100 >= 50 && (data.result/data.totalMember)*100 < 75){
 	 					$('#'+data.i).css("background-color", "orange");
 	 				}else{
 	 					$('#'+data.i).css("background-color", "coral");

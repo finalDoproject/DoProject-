@@ -137,5 +137,4 @@ public class MypageController {
 		
 		return "/mypage/mypost";
 	}
-	
 }

@@ -48,8 +48,9 @@
 									<header class="main">
 										<h1>고객센터</h1>
 									</header>
-
+									<c:if test="${member.userId eq 'admin'}">
 									<a href="${pageContext.request.contextPath}/intro/board/insertHelpView.do" style="float : right; " class="button primary small">글쓰기</a>
+									</c:if>
 											<h2> QnA</h2>
 
 					<div class="table-wrapper" >

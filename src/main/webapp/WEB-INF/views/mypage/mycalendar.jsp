@@ -41,15 +41,15 @@
         <hr>
 
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do">
+          <a class="nav-link" href="${pageContext.request.contextPath}/mypage/mypost.do?mno=${member.mno}">
             
             <span>내가 쓴 글</span></a>
         </li>
-        <li class="nav-item">
+        <%-- <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/mypage/keeping.do">
             
             <span>담아둔 글</span></a>
-        </li>
+        </li> --%>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do?mno=${member.mno}">
             
@@ -125,8 +125,8 @@
 	        <input type="hidden" id="calendarId" />
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" onclick="updateCalendar();">수정</button>
-	        <button type="button" class="btn btn-primary" onclick="deleteCalendar();">삭제</button>
+	        <button type="button" class="btn btn-primary" id="upbtn" onclick="updateCalendar();">수정</button>
+	        <button type="button" class="btn btn-primary" id="delbtn" onclick="deleteCalendar();">삭제</button>
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 	      </div>
 	    </div>
@@ -142,6 +142,10 @@
          window.open(url, "_self");  
      });  
 
+	 
+	 $(document).ready(function(){
+		 
+	 })
 	 var gEvent;
 	 function updateCalendar() {
 		 var calendarId = $("#calendarId").val();
@@ -154,9 +158,12 @@
 		 
 		 // Close Modal
           $("#myCalendarModal").modal('hide');
+		 console.log("mcno : "+ calendarId);
+         location.href = "/dp/mypage/update.do?mcno=" + calendarId + "&content=" + editCalendar;
 	 }
 	 
 	 function deleteCalendar() {
+		 
 		 var calendarId = $("#calendarId").val();
 		 
 		 if(confirm("선택하신 일정을 삭제하시겠습니까?")) {
@@ -164,14 +171,18 @@
 			 
 			 // Close Modal
 			 $("#myCalendarModal").modal('hide');
+			 
 		 }
+		 
+		 location.href = "/dp/mypage/delete.do?mcno=" + calendarId;
 	 }
 	</script>
 	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/moment.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script> 
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/locale/ko.js"></script>
+    
 </body>
 
 </html>
