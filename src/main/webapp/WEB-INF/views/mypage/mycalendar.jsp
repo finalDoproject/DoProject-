@@ -45,11 +45,11 @@
             
             <span>내가 쓴 글</span></a>
         </li>
-        <li class="nav-item">
+        <%-- <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/mypage/keeping.do">
             
             <span>담아둔 글</span></a>
-        </li>
+        </li> --%>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/mypage/profile.do?mno=${member.mno}">
             
