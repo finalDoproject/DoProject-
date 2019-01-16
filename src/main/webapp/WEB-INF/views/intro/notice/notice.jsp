@@ -43,9 +43,11 @@
 					<header class="main">
 						<h1>공지사항</h1>
 					</header>
+					<c:if test="${member.userId eq 'admin'}">
 					<a
 						href="${pageContext.request.contextPath}/intro/board/insertNoticeView.do"
 						style="float: right;" class="button primary small">글쓰기</a>
+					</c:if>
 					<h2>공지</h2>
 
 					<div class="table-wrapper" >
