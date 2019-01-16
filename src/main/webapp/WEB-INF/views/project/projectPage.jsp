@@ -146,12 +146,12 @@ function formSubmit(){
             <span>전체보기</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/dp/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
+          <a class="nav-link" href="/project/totalCalendar.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-map-marked-alt"></i>
             <span>전체일정</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/dp/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
+          <a class="nav-link" href="/project/filePage.do?pno=${project.pno}&mno=${member.mno}">
             <i class="fas fa-file-download"></i>
             <span>파일함</span></a>
         </li>

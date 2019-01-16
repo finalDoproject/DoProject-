@@ -7,7 +7,7 @@
 	<insert id="insertMember" parameterType="Member">
 		INSERT INTO MEMBER VALUES (
 			SEQ_MNO.NEXTVAL, #{userId}, #{password}, #{email}, #{nickName}, 
-			DEFAULT, DEFAULT, DEFAULT)
+			DEFAULT, DEFAULT, SEQ_IMGNO.CURRVAL)
 	</insert>
 	
 	<select id="checkIdDuplicate" statementType="CALLABLE" parameterType="hashmap">

@@ -24,6 +24,7 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int insertMember(Member member) {
 		System.out.println(member);
+		sqlSession.insert("member.insertFile");
 		return sqlSession.insert("member.insertMember", member);
 	}
 

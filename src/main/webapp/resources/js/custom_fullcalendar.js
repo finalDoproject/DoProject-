@@ -10,7 +10,7 @@ var eventId = 0;
 		console.log("asd");
 		
 		$.ajax({
-			url : "/dp/mypage/selectMypage.do",
+			url : "/mypage/selectMypage.do",
 			success : function(data){
 				for(var i=0; i<data.length; i++){
 					var evt = {
@@ -101,7 +101,7 @@ var eventId = 0;
 						true // make the event "stick"
 					);
 					
-					location.href = "/dp/mypage/insert.do?start=" + start + "&end=" + end + "&content=" + title;
+					location.href = "/mypage/insert.do?start=" + start + "&end=" + end + "&content=" + title;
 				}
 				calendar.fullCalendar('unselect');
 			},

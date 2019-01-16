@@ -606,25 +606,7 @@ function deleteAttach(){
 		});
 	}
 	
-	function tmanager(){
-		$("#tmno").empty();
-		var pNo = ${pno};
-		$.ajax({
-			url:"${pageContext.request.contextPath }/project/searchMemberList.do",
-			dataType:"json",
-			type:"get",
-			data:{pno: pNo},
-			success:function(response){
-				if($("#pmno").text() == $("#mno").text()){
-					for(var i=0; i<response.length; i++){
-						$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
-						$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
-						console.log(response[i].mno);
-					}
-				}				
-			}
-		});
-		}
+
 	</script>
 </body>
 </html>
