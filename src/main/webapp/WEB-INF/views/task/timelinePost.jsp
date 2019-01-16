@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -8,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
         crossorigin="anonymous">
 </head>
@@ -16,7 +17,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" id="${task.tno}">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" >
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -24,7 +25,7 @@
 			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
             <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <div class="card gedf-card" id="t${task.tno}">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -83,11 +84,12 @@
 								<label class="icon1"><span class="blind"></span></label>
 								<div class="workTab" name="tLevelSelect">
 									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }1" class="tLevelSelect tab1" value="1">요청</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }2" class="tLevelSelect tab2" value="2">진행</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }3" class="tLevelSelect tab5" value="3">피드백</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }4" class="tLevelSelect tab3" value="4">완료</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tnum.count }5" class="tLevelSelect tab4" value="5">보류</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }1" class="tLevelSelect1 tab1" value="1">요청</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }2" class="tLevelSelect1 tab2" value="2">진행</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }3" class="tLevelSelect1 tab5" value="3">피드백</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }4" class="tLevelSelect1 tab3" value="4">완료</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }5" class="tLevelSelect1 tab4" value="5">보류</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }6" class="tLevelSelect1 tab6" value="6">일정</button>
 								</div>
 							</div>
 							<script>

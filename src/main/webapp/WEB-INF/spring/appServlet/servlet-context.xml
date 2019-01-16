@@ -73,10 +73,6 @@
 			<exclude-mapping path="/board/boardList.do"/>
 			<beans:bean id="loginCheckInterceptor" class="com.kh.dp.common.interceptor.LogincheckInterceptor" />
 		</interceptor>
-		<!-- <interceptor>
-			<mapping path="/member/login.do" />
-			<beans:bean id="signinCheckInterceptor" class="com.kh.dp.common.interceptor.SignincheckInterceptor" />
-		</interceptor> -->
 	</interceptors>
 	
 	<!-- 파일업로드 시에 사용할 MultipartResolver 등록하기 -->

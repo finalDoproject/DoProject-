@@ -293,8 +293,8 @@ a:hover{ text-decoration:none; color: #555; }
     color: #fff;
     border: 0;
 }
- .request{
-    margin-left: 3px;
+.request{
+	margin-left: 3px;
     font-size: 10px;
     border-radius: 50px;
     background-color: white;

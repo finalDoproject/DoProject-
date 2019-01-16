@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/BootSideMenu.css">
 
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
 <!-- Select 2 -->
 <link href="${pageContext.request.contextPath }/resources/css/select2.min.css" rel="stylesheet" />
 
@@ -20,6 +22,7 @@
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 
 <style>
 	
@@ -116,14 +119,9 @@ function formSubmit(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>업무 작성하기</span>
+            <span>업무/일정 작성하기</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" href="#" >
-            <i class="fas fa-map-marker-alt"></i>
-            <span>일정 작성하기</span>
-          </a>
           <li class="nav-item">
         	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
         	<i class="far fa-clock" ></i>
@@ -292,6 +290,134 @@ function formSubmit(){
             </div>
              <div id="content-wrapper" >
             <div class="container-fluid">
+		
+		<c:forEach items="${tasklist}" var="task" varStatus="tnum">
+	<c:set var="tcount" value="${tnum.count}" />
+	<c:if test="${task.tlevel eq 6}">
+    <div class="container-fluid gedf-wrapper" style="width: 60%;">
+        <div >
+            <div class=" gedf-main">
+			
+			<input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
+                <!--- \\\\\\\Post-->
+                <div class="card gedf-card">
+                    <div class="card-header" style="background-color : #F88E6F;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div >
+                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                </div>
+                                <div >
+                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
+                                    <div class="h7 text-muted"></div>
+                                </div>
+                            </div>
+                        </div>
+					
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
+                        
+                            <h3 class="card-title">${task.ttitle }</h3>
+                            <hr />
+                         <c:if test="${task.tlevel != null}">
+                         <p id="levelp"></p>
+                         <input type="hidden" value="${task.tlevel}" id="levelchk${tcount }"/>
+                         <input type="hidden" value="${tcount}" id="levelnum${tcount }"/>
+	                        <div class="line" >
+								<label class="icon1"><span class="blind"></span></label>
+								<div class="workTab" name="tLevelSelect" >
+									<input type="hidden" name="tlevel" id="tlevel" value="0"/>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }6" class="tLevelSelect1 tab6" value="6">일정</button>
+								</div>
+							</div>
+							<script>
+							$(function(){
+								var num = ${tcount};
+								var level = $('#levelchk'+num).val();
+								var levelnum = $('#levelnum' + num).val();
+								/* console.log("num"+num);
+								console.log(level);
+								console.log(levelnum); */
+								
+								$(".tLevelSelect1").each(function(){
+									$(this).prop('disabled', true);
+								});
+								
+								$("#level"+levelnum+level).addClass("selected");
+								/* console.log(levelnum+"앞에는 num 뒤에는 레벨"+level); */
+							})
+							</script>
+						</c:if>
+							<hr />
+							<!-- 3. 시작일 지정 -->
+							<c:if test="${task.tstartdate != null}">
+							<div class="line" style="display: inline-block;">
+								<label class="icon3"><span class="blind" >시작일</span></label>&nbsp; &nbsp;  
+								<div >
+									<input name="tstartdate" value="${task.tstartdate}" readonly>
+								</div>
+							</div>
+							</c:if>
+							<!-- 4. 마감일 지정 -->
+							&nbsp;~&nbsp; 
+							<div class="line"  style="display: inline-block;">
+								<label class="icon4" ><span class="blind" >마감일</span></label>
+								<div  >
+									<input name="tstartdate" value="${task.tenddate}" readonly>
+								</div>
+							</div>
+						<hr />
+					</div>
+					 <script>
+						$(function(){
+								var num = "${tcount}";
+								var tpr = $('#nowp'+ num).val();
+								
+								if($('.ttp1'+num).val() == tpr){
+									$('.ttp1'+num).attr("selected", true);
+									
+									$('.ttp1'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp2'+num).val() == tpr){
+									$('.ttp2'+num).attr("selected", true);
+									$('.ttp2'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp3'+num).val() == tpr){
+									$('.ttp3'+num).attr("selected", true);
+									$('.ttp3'+num).parent().prop('disabled', true);
+								}
+								if($('.ttp4'+num).val() == tpr){
+									$('.ttp4'+num).attr("selected", true);
+									$('.ttp4'+num).parent().prop('disabled', true);
+								}
+							})
+										
+						</script> 
+					<div>
+                        <p class="card-text" style="height: auto; margin:0 auto; border : 1px solid lightgray; " >
+                            ${task.tcontent}
+                            <br /><br /><br /><br />
+                        </p>
+                    </div>
+                    <br /><br />
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                    </div>
+                   
+                </div>
+                <!-- Post /////-->
+
+				<br /><br /><br />
+				<br/>
+				
+               
+            </div>
+        </div>
+        </c:if>
+        </c:forEach>
 		
 	</div>
         <!-- /.container-fluid -->

@@ -3,7 +3,6 @@
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,15 +51,14 @@
 	     
 	
 	      <!-- Navbar Search -->
+	      <form>
 	        <div class="input-group">
 	          <div class="input-group-append searchBar_area" >
 	            <i class="fas fa-search" style="color: rgba(73, 77, 82, 0.6); margin: 5px 10px;"></i>
-			      <form id="searchListFrm" action="${pageContext.request.contextPath}/project/projectSearch.do?" >
-			      <input type="hidden" name="mno" value="${member.mno}">
-			      <input type="text" class="searchBar" id="searchWd" name="searchWd" placeholder="검색어 입력 후 Enter" />
-		      	 </form>
+	            <input type="text" class="searchBar" placeholder="검색어 입력 후 Enter" aria-label="Search" >
 	          </div>
 	        </div>
+	      </form>
 	
 	      <!-- Navbar -->
 	      <ul class="navbar-nav" style="padding-right: 30px; position: absolute; right: 0;">
@@ -89,6 +87,7 @@
 	        <li class="nav-item dropdown no-arrow mx-1" style="margin-top: 10px">
 	        <!-- c:if 부분 조건식 수정해서 프로젝트 메인인지 상세인지로 구분, chat 표현방식 바꾸기 -->
 	        <c:set var="pno" value="${param.pno}" />
+	        <c:set var="mno" value="${member.mno}" />
 	          <c:if test="${pno eq null}">
 	          <a class="nav-link dropdown-toggle" href="#" onclick="openAlert()" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	            <i class="fas fa-comment fa-fw" style="color: rgba(248, 143, 111, 0.6)"></i>
@@ -186,7 +185,7 @@
 						}
 					}else if(response==5){
 						if(confirm("해당 글로 이동하시겠습니까?") == true){
-							location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}";
+							location.href="${pageContext.request.contextPath}/project/projectPage.do?pno="+aPno+"&mno=${member.mno}#t"+aTno;
 						}
 					}
 				},
@@ -243,7 +242,7 @@
 		
 	    $(document).ready(function(){
 			// 192.168.20.72 ---> 서버 실행시키는 ip, 접속 또한 localhost가 아닌 ip로 접속해야 함
-			var wsUri = "ws://192.168.0.6/count";
+			var wsUri = "ws://192.168.20.108/count";
 			function send_message() {
 		        websocket = new WebSocket(wsUri);
 		        websocket.onopen = function(evt) {
@@ -299,7 +298,6 @@
 		    
 	    	send_message();
 	    });
-
 	</script>
 </body>
 </html>
