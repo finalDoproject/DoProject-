@@ -127,7 +127,7 @@ input[type="submit"].login:focus{outline: none;}
 
 <div id="form">
 <div class="logo">
-<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/mypage/users/thin_arrow.png" /></a>
 <h1 class="text-center head" id="title">회원가입</h1>
 </div>
 
@@ -157,13 +157,13 @@ input[type="submit"].login:focus{outline: none;}
 		
 		<div class="form-item">
 			<p class="formLabel">이름</p>
-			<input type="text" name="nickName" id="nickName" class="form-style" required="required" autocomplete="off" />
+			<input type="text" name="nickName" id="nickName" class="form-style" required="required" />
 			
 		</div>
 		
 		<div class="form-item">
 			<p class="formLabel">이메일 주소</p>
-			<input type="email" name="email" id="email" class="form-style" required="required" autocomplete="off"/>
+			<input type="email" name="email" id="email" class="form-style" required="required" />
 			<span class="emailDuplicateCheck"><em>이미 사용중인 이메일입니다.</em></span>
 			<input type="hidden" name="emailDuplicateCheck" id="emailDuplicateCheck" value="0"/>	
 			<br>

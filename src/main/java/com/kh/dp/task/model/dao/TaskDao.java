@@ -1,11 +1,11 @@
 package com.kh.dp.task.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 public interface TaskDao {
 	
@@ -27,5 +27,12 @@ public interface TaskDao {
 	
 	int deleteAttach(int tno);
 	
+	int insertTaskkeep(TaskKeep tk);
+
 	List<Task> selectListmyTask(int mno);
+
+	//검색결과 리스트
+	List<Task> searchListTask(String mno, String searchWd);
+	
+
 }

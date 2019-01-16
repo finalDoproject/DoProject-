@@ -21,12 +21,14 @@ public interface ChatService {
 
 	String selectPtmLastChat(int me, int pno);
 
-	String selectMtmLastChat(int me, int you);
+	String selectMtmLastChat(int me, int you, int pno);
 
-	int selectOneChatPtm(int pno);
+	String selectOneChatPtm(String nickName, int pno);
 
 	void updatePtm(String nickName, int pno);
 
 	void updateMtm(String nickName, int pno, int chWriter, int chReader);
+
+	String selectOneChatMtm(String nickName, int pno, int chWriter, int chReader);
 
 }

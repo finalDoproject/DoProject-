@@ -24,10 +24,7 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int insertMember(Member member) {
 		System.out.println(member);
-		int result = sqlSession.insert("member.insertFile");
-		int result2 = sqlSession.insert("member.insertMember", member);
-		
-		return result+result2;
+		return sqlSession.insert("member.insertMember", member);
 	}
 
 	@Override
@@ -107,12 +104,14 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public int updateAttachment(Attachment a) {
-		
+	
 		return sqlSession.update("member.updateAttachment", a);
 	}
-	
-	
 
+  @Override
+	public Member selectOne(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("member.selectOneMno", mno);
+	}
 	
-
 }

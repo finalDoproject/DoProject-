@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kh.dp.comment.model.service.CommentService;
+import com.kh.dp.comment.model.vo.TaskComment;
 import com.kh.dp.member.model.service.MemberService;
+import com.kh.dp.member.model.vo.Attachment;
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.service.ProjectService;
 import com.kh.dp.project.model.vo.Project;
@@ -26,8 +31,8 @@ import com.kh.dp.project.model.vo.TaskCount;
 import com.kh.dp.side.model.service.SideService;
 import com.kh.dp.side.model.vo.MatchingInfo;
 import com.kh.dp.task.model.service.TaskService;
-import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+
 
 @Controller
 public class ProjectController {
@@ -37,31 +42,62 @@ public class ProjectController {
 	MemberService memberService;
 	@Autowired
 	SideService sideService;
+	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private CommentService commentService;
+	
 
 	@RequestMapping("/project/projectSearch.do")
-	public String projectSearch(
-			//Model model, @RequestParam("mno") int mno
-			) {
-		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		//model.addAttribute("projectList",projectList);
+	public String projectSearch( @RequestParam String mno,@RequestParam String searchWd, Model model) {
 		
-		return "project/projectSearch";
+		List<Task> searchTasklist = taskService.searchListTask(mno, searchWd);
+		
+		/*for(int i = 0; i < searchTasklist.size(); i++) {
+
+			String resultContent = "";
+			String originContent = searchTasklist.get(i).getTcontent();			
+			String patterString = "(&lt;img[^>]*src=[\\\"']?([^>\\\"']+)[\\\"']?[^>]*&gt;|<p>|</p>|<br>)";
+
+				Pattern pattern = Pattern.compile(patterString);	
+				Matcher matcher = pattern.matcher(originContent);
+				
+				while(matcher.find()) {
+					resultContent = matcher.replaceAll("");
+				}
+
+				searchTasklist.get(i).setTcontent(resultContent);		
+		
+		}*/
+		
+		model.addAttribute("searchTasklist", searchTasklist);		
+		System.out.println("searchTasklist:" +searchTasklist);
+		
+		return "/project/projectSearch";
 	}
 
+	
 	@RequestMapping("/project/projectMain.do")
+
 	public String ProjectView(Model model, @RequestParam("mno") int mno) {
 		
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-
+		
 		List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
+		List<Member> memberProfileList = projectService.memberProfileList(mno);
 		//List<Project> OneProjectLv = projectService.selectOneProjectLv(pno);
 		//List<Project> OneProject = projectService.selectOneProject(pno);
+		System.out.println("projectList:"+projectList);
+		System.out.println("memberProfileList:"+memberProfileList);
+		
 		
 		model.addAttribute("projectList",projectList);
+		model.addAttribute("memberProfileList",memberProfileList);
 		model.addAttribute("alarmList", alarmList);
 		//model.addAttribute("OneProjectLv", OneProjectLv);
+
 		
 		return "project/projectMain";
 	}
@@ -78,7 +114,7 @@ public class ProjectController {
 		System.out.println("project값 : " +project);
 		String msg  = projectService.insertProject(project)>0?"프로젝트 생성 완료":"프로젝트 생성 실패";
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);	
 
 		if(pjLevelStr != null) {
@@ -101,12 +137,13 @@ public class ProjectController {
 		System.out.println("pno : " + pno);
 		System.out.println("OneProject : " + OneProject);
 		System.out.println("OneProjectLvList : " + OneProjectLvList);
-		Map<String,Object> resultMap = new HashMap<>();
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("OneProjectLvList", OneProjectLvList);
 		resultMap.put("OneProject", OneProject);
 		
 		return resultMap;
 	}
+
 	
 	@RequestMapping(value="/project/projectMainUpdate", method=RequestMethod.GET)
 	@ResponseBody
@@ -115,7 +152,7 @@ public class ProjectController {
 		List<Project> OneProjectLvList = projectService.selectOneProjectLv(pno);
 		Project OneProject = projectService.selectOneProject(pno);
 
-		Map<String,Object> resultMap = new HashMap<>();
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("OneProjectLvList", OneProjectLvList);
 		resultMap.put("OneProject", OneProject);
 		
@@ -181,7 +218,7 @@ public class ProjectController {
 		List<Member> mArr =  sideService.browseMember(pno);
 		model.addAttribute("project",project).addAttribute("mArr", mArr);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
@@ -194,21 +231,21 @@ public class ProjectController {
 		model.addAttribute("sArr", sArr);
 		model.addAttribute("memberNo", mno);
 		
-
+		
 		//참여자 불러오기
 		List<Member> m = projectService.selectSearchMember(pno);
-		
+				
 		// task List
 		ArrayList<Task> tasklist = 
-				new ArrayList<Task>(taskService.selectListTask(pno));
-		
-		
+						new ArrayList<Task>(taskService.selectListTask(pno));
+						
 
-
-		model.addAttribute("mem", m);
+				
+		System.out.println("taskList +" + tasklist);
+		model.addAttribute("m", m);
 		model.addAttribute("tasklist", tasklist);
 		System.out.println("tasklist" + tasklist);
-		
+				
 		return "project/projectPage";
 	}
 
@@ -231,14 +268,14 @@ public class ProjectController {
 										@RequestParam(value="saveMemo", required=false) String saveMemo){
 		System.out.println("메모:" + saveMemo);
 		
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("saveMemo", saveMemo);
 		map.put("pno", pno);
 		map.put("mno", mno);
 		
 		String msg = projectService.updateMemo(map)>0?"메모 저장":"저장 실패";
 
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		hmap.put("msg", msg);
 		return hmap;
 		
@@ -317,6 +354,7 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) String userNick, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(userNick);
+		
 		return m;
 		
 	}
@@ -350,6 +388,7 @@ public class ProjectController {
 	public @ResponseBody List<Member> selectSearchMember(@RequestParam(required=true) int pno, HttpServletResponse response) throws Exception {
 		
 		List<Member> m = projectService.selectSearchMember(pno);
+		
 		return m;
 		
 	}

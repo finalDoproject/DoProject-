@@ -12,10 +12,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_main.css">
 <script>
 // 상세 불러오는 모달
-function optionModalClk(pno){
-	 var pno = pno;
-
-	 console.log(pno);
+function optionModalClk(pno, mno){
+	
+	 console.log(pno+":"+ mno);
+	 
 	$.ajax({
        url  :"${pageContext.request.contextPath}/project/projectMainDetail",
        data : {pno:pno},
@@ -90,7 +90,7 @@ function optionModalClk(pno){
     			$('#checkLevel').append(printListHTML);
     			printListHTML = ""; 	
     			
-    			
+
     			// 체크값 Y 일 때 자동으로 체크
     			if(OneProjectLvList[i].lcheck =='Y'){
     				var ckNum =OneProjectLvList[i].lno;
@@ -100,7 +100,15 @@ function optionModalClk(pno){
     				var ckNumN =OneProjectLvList[i].lno;
     				//console.log("N값ck:" + ckNumN );
     				$('input:checkBox[id='+ckNumN+']').prop( "checked", false );
-    			}	 
+    			}
+    			if(mno == oneProject.pmno){
+    				console.log("mno 같음");
+    				 $('input:checkBox[name="levelCk"]').attr( "disabled", false );
+    			}else{
+    				console.log("mno 다름"); 
+    				 $('input:checkBox[name="levelCk"]').attr( "disabled", true );
+    				 $('.updateModal').css( "display", "none");
+    			}
     		}
     		
        	}
@@ -209,7 +217,7 @@ function optionModalClk(pno){
           <c:forEach items="${projectList}" var="project" varStatus="vs">
           <c:if test="${project.plevel >0}">
             <div class="pj_folder" id="pj_folder" style="background: rgba(255, 220, 205, 1);">
-                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno})">
+                <button type="button"  class="optionBtn btn btn-link" data-toggle="modal" data-target="#optionModal" onclick="optionModalClk(${project.pno}, ${member.mno})">
                     <i class="fas fa-cog setting_icon fa-1x"></i></button>
               <div class="pj_folder_in" >
             		<span id="pno" name="pno" style="display: none;">${project.pno}</span>
@@ -225,8 +233,8 @@ function optionModalClk(pno){
                         style="width: ${persent}%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
                         <b id="per">${persent}%</b></div>
                       </div>
-                      <p>AA님 외 N명 참여중</p>
-                    </div>       
+                      <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
+                    </div> 
               </div>
             </div>
             </c:if>
@@ -240,15 +248,34 @@ function optionModalClk(pno){
                         <h5>${project.ptitle}</h5>
                         <p>${project.psummary}</p>
                         <div class="users_area">
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <div id="users_Img" class="users_cropcircle"></div>
-                          <p>AA님 외 N명 참여중</p>
+                        <%-- <c:forEach items="${memberProfileList}" var="item" varStatus="status">	 --%>
+                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status">	
+                        <c:if test="${memberProfile.pno == project.pno}">
+                          <div id="users_Img ${memberProfile.mProfile}" class="users_cropcircle">
+                          	<input type="hidden" class="thisImg" id="${memberProfile.renamedFileName}">
+                          </div>
+                        </c:if>
+                        </c:forEach>
+                        <%-- </c:forEach> --%>
+                          <p>${project.nickname}님 외 ${project.mnocnt-1}명 참여중</p>
                         </div>       
                   </div>
                 </div>
 			</c:if>
 			</c:forEach>
+		 		<script>
+			 $(document).ready(function() { 
+				 var users_area_cnt = $(".users_area").length;
+				 console.log("cnt:"+users_area_cnt);
+				 
+				 for(var i=0; i<users_area_cnt; i++){
+				 var img = $(".thisImg").eq(i).prop("id");
+				 console.log("img:"+img);
+				$(".thisImg").eq(i).parent().css( 'background-image','url("${pageContext.request.contextPath}/resources/upload/profile/'+img+'")'); 						 
+				 }
+			 });
+			</script>
+		
 			
                 <!-- optionModal -->
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
@@ -374,6 +401,7 @@ function optionModalClk(pno){
 		   var sum = 0;
 		   var count = frm.levelCk.length;
 		   var param = {}; 
+		   
 		   $('input:checkbox[name="levelCk"]').change(function(){
 			    console.log("체인지:"+$('input:checkbox[name="levelCk"]'));
 			    param.lpno = $(this).prop('class');

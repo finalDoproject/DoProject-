@@ -69,7 +69,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		// 1:1 채팅 핸들링을 위한 컨트롤
 		String[] msg = message.getPayload().split("_");
 		String[] chatRoom = msg[0].split(":");
-		
+		System.out.println(msg[0] + ":" + msg[1]);
 		int chatTarget = Integer.parseInt(chatRoom[0]);
 		int chatMe = Integer.parseInt(chatRoom[1]);
 		int check = 0;
@@ -92,7 +92,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				for(String key : projectSessionList.keySet()) {
 					// 해당 프로젝트를 찾아
 					if(key.contains(pNo) && !key.contains("TO")) {
-						projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno()));
+						projectSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno() + "|" + m.getRenamedFileName()));
 						ChatPtm data = new ChatPtm();
 						data.setChContent(realMsg);
 						data.setChWriter(m.getMno());
@@ -118,7 +118,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 					// key값이 'a to b' 이거나 'b to a'인것 찾아서
 					if(key.equals(p.getPno()+"p" + mNo + "TO" + mNo2) || key.equals(p.getPno()+"p" + mNo2 + "TO" + mNo)) {
 						// 위와 같은 방식으로 메시지를 뿌려줌
-						memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe));
+						oneKey = key;
+						memberSessionList.get(key).sendMessage(new TextMessage(session.getId() + "|" + realMsg + "|" + session.getRemoteAddress() + "|" + m.getNickName()+ "|" + chatRoom[0] + "|" + chatMe + "|" + p.getPno() + "|" + m.getRenamedFileName()));
 						ChatMtm data = new ChatMtm();
 						data.setChContent(realMsg);
 						data.setChWriter(chatMe);

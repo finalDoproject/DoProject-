@@ -70,6 +70,11 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.updateProjectLv(pjLevel);
 	}
 	
+	@Override
+	public List<Member> memberProfileList(int mno) {
+		return projectDao.memberProfileList(mno);
+	}
+	
 	// ---- 메모 ---- //
 	@Override
     public List<Map<String, String>> selectMemoList(Map<String, Object> map) {
@@ -144,9 +149,16 @@ public class ProjectServiecImpl implements ProjectService {
 	}
 
 	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		 return projectDao.projectMemberList(mno);
+	}
+
+	@Override
 	public TaskCount selectTaskLevelCount(int pno) {
 		return projectDao.selectTaskLevelCount(pno);
 	}
+
+
 
 	
 

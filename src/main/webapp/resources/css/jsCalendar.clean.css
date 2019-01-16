@@ -158,7 +158,7 @@
 	}
 	
 	#events .list {
-		height: 50px;
+		height: 5px;
 		overflow-y: auto;
 	}
 	#events .list .event-item {

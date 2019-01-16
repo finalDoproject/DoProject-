@@ -19,22 +19,8 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <script>
-var eventSource;
-
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
-	
-	/* eventSource = new EventSource("<c:url value='/chatCount'/>");
-	eventSource.onopen = function(event){
-		$("#countPtm").text(event.data);
-	}
-	eventSource.onmessage = function(event){
-		var data = JSON.parse(event.data);
-		$("#countPtm").text(data);
-	}
-	eventSource.onerror = function(event){
-		$("#countPtm").text(event.data);
-	} */
 	
 	var list = new Array();
 	<c:forEach items="${secondList}" var="sl">
@@ -43,12 +29,74 @@ $(document).ready(function(){
 	setInterval(function() {
 		lastChat($("#mno").text(), "p"+$("#pno").text());
 		for(var i = 0; i < list.length; i++){
-			if(i != '${member.mno}'){
-				var you = list[i].split(",")[0];
-				lastChat('${member.mno}', you);
-			}
+			var you = list[i].split(",")[0];
+			lastChat('${member.mno}', you);
 		}	
 	}, 500);
+	
+	setInterval(function(){
+		countChatPtm();
+	}, 500);
+	
+	setInterval(function(){
+		countChatMtm();
+	}, 500);
+	
+	function countChatPtm(){
+		var nickName = $("#nickName").text();
+		var pno = $("#pno").text();
+		$.ajax({
+			url:"${pageContext.request.contextPath}/countChatPtm.ch",
+			dataType:"json",
+			type:"GET",
+			data:{"nickName":nickName, "pno":pno},
+			async:false,
+			success:function(response){
+				var msg = "";				
+				if(response.str > 99){
+					msg = "99+";
+				}else{
+					msg = response.str;
+				}
+				if(response.str != 0){
+					$("#countPtm").text(msg)
+					$("#countPtm").css("display", "");
+				}else{
+					$("#countPtm").css("display", "none");
+				}
+			}
+		});
+	};
+
+function countChatMtm(){
+	var mno = $("#mno").text();
+	var nickName = $("#nickName").text();
+	var pno = $("#pno").text();
+	for(var i = 0; i < list.length; i++){
+			var you = list[i].split(",")[0];
+			$.ajax({
+				url:"${pageContext.request.contextPath}/countChatMtm.ch",
+				dataType:"json",
+				type:"GET",
+				data:{"nickName":nickName, "pno":pno, "chWriter":mno, "chReader":you},
+				async:false,
+				success:function(response){
+					var msg = "";				
+					if(response.str > 99){
+						msg = "99+";
+					}else{
+						msg = response.str;
+					}
+					if(response.str != 0){
+						$("#countMtm"+you).text(msg);
+						$("#countMtm"+you).css("display", "");
+					}else{
+						$("#countMtm"+you).css("display", "none");
+					}
+				}
+			});
+		}	
+	};
 });
 var sock;
 //웹소켓 객체 생성하기
@@ -110,6 +158,7 @@ function onMessage(evt){
 		you=strArray[4];
 		me=strArray[5];
 		pNo=strArray[6];
+		yourImg=strArray[7];
 		today=new Date();
 		
 		if(userName == $("#nickName").text())
@@ -129,6 +178,8 @@ function onMessage(evt){
 		else{
 			// if조건으로 현재 있는 방에만 출력
 			if(you.charAt(0) == 0){
+				console.log($("#chatMe").text());
+				console.log("0"+pNo);
 				if($("#chatMe").text().includes("0"+pNo)){
 					var yourNickName=null;
 					$.ajax({
@@ -136,7 +187,7 @@ function onMessage(evt){
 						type : "GET",
 						data : { "me" : me},
 						success : function(responseData){
-							var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
+							var printHTML="<div><img src='/resources/upload/profile/" + yourImg + "' alt='profilpicture' style='float: left;'>";
 							printHTML+="<span style=''>"+responseData.yourName+"</span><br>"
 							printHTML+="<div class='chat-bubble you' style='float: left;'>";
 							printHTML+="<div class='content'>";
@@ -159,7 +210,7 @@ function onMessage(evt){
 						data : { "me" : me},
 						success : function(responseData){
 							console.log(me);
-							var printHTML="<div><img src='resources/images/profile/" + $("#renamedFileName").text() + "' alt='profilpicture' style='float: left;'>";
+							var printHTML="<div><img src='/resources/upload/profile/" + yourImg + "' alt='profilpicture' style='float: left;'>";
 							printHTML+="<span style=''>"+responseData.yourName+"</span><br>"
 							printHTML+="<div class='chat-bubble you' style='float: left;'>";
 							printHTML+="<div class='content'>";
@@ -260,7 +311,7 @@ function chatMtm(me, you, yourNick){
 			var yourNickName = responseData.yourName;
 			
 			if(data.length == 0){
-				$("#thisImg").attr("src", "resources/images/profile/" + yourRenamedFileName);
+				$("#thisImg").attr("src", "resources/upload/profile/" + yourRenamedFileName);
 				$("#chatList").empty();
 			} else {
 				var today = new Date();
@@ -276,7 +327,7 @@ function chatMtm(me, you, yourNick){
 					var chatDay = (data[i].chDate.year+1900) + '-' + (data[i].chDate.month+1) + '-' + (data[i].chDate.date);
 					if(data[i].chWriter == me)
 					{
-						$("#thisImg").attr("src", "resources/images/profile/" + data[i].renamedFileName);
+						$("#thisImg").attr("src", "resources/upload/profile/" + yourRenamedFileName);
 						var printHTML="<div style='clear:both;'></div>";
 						printHTML+="<div class='chat-bubble me' id='myChat'>";
 						printHTML+="<div class='content' id='content' style='word-break:break-all;'>";
@@ -291,8 +342,8 @@ function chatMtm(me, you, yourNick){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						$("#thisImg").attr("src", "resources/images/profile/" + data[i].renamedFileName);
-						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
+						$("#thisImg").attr("src", "resources/upload/profile/" + yourRenamedFileName);
+						var printHTML="<div><img src='resources/upload/profile/" + yourRenamedFileName + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<span>"+yourNickName+"</span><br>"
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
@@ -359,7 +410,7 @@ function chatPtm(me, pno){
 						$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
 					}
 					else{
-						var printHTML="<div><img src='resources/images/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
+						var printHTML="<div><img src='resources/upload/profile/" + data[i].renamedFileName + "' alt='profilpicture' style='float: left;'>";
 						printHTML+="<span style=''>"+data[i].nickName+"</span><br>"
 						printHTML+="<div class='chat-bubble you' style='float: left;'>";
 						printHTML+="<div class='content'>";
@@ -442,6 +493,34 @@ function checkLength(aro_name, ari_max){
 	aro_name.focus();
 	
 }
+
+function updateChatPtm(nickName, pno){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateChatPtm.ch",
+		data:{"nickName":nickName, "pno":pno},
+		async:false,
+		success:function(){}
+	});
+}
+
+function updateChatMtm(nickName, pno, chWriter, chReader){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateChatMtm.ch",
+		data:{"nickName":nickName, "pno":pno, "chWriter":chWriter, "chReader":chReader},
+		async:false,
+		success:function(){}
+	});
+}
+
+function sumPtm(mno, nickName, pno){
+	updateChatPtm(nickName, pno);
+	chatPtm(mno, pno);
+}
+
+function sumMtm(myMno, yourMno, myNickName, yourNickName, pno){
+	updateChatMtm(myNickName, pno, myMno, yourMno);
+	chatMtm(myMno, yourMno, yourNickName);
+}
 </script>
 </head>
 
@@ -469,7 +548,7 @@ function checkLength(aro_name, ari_max){
 			<!-- 참여자 리스트 화면 -->
 			<div class="contact-list">
 				<!-- 프로젝트 단체방 -->
-				<div class="contact" onclick="chatPtm(${member.mno}, ${project.pno});">
+				<div class="contact" onclick="sumPtm(${member.mno}, '${member.nickName}', ${project.pno});">
 					<img src="resources/images/profile/dope2.png" alt="logo">
 					<div class="contact-preview">
 						<div class="contact-text" style="margin-top:10%;">
@@ -478,13 +557,13 @@ function checkLength(aro_name, ari_max){
 						</div>
 					</div>
 					<div class="contact-time">
-						<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countPtm">99+</span>
+						<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countPtm"></span>
 					</div>
 				</div>
 				<c:forEach items="${secondList}" var="sl">
 						<c:if test="${sl.mno ne member.mno}">
-							<div class="contact" onclick="chatMtm(${member.mno}, ${sl.mno}, '${sl.nickName}');">
-								<img src="resources/images/profile/${sl.renamedFileName}" alt="profilpicture">
+							<div class="contact" onclick="sumMtm(${member.mno}, ${sl.mno}, '${member.nickName}', '${sl.nickName}', ${project.pno});">
+								<img src="resources/upload/profile/${sl.renamedFileName}" alt="profilpicture">
 								<div class="contact-preview">
 									<div class="contact-text" style="margin-top:10%;">
 										<h1 class="font-name">${sl.nickName}</h1>
@@ -492,7 +571,7 @@ function checkLength(aro_name, ari_max){
 									</div>
 								</div>
 								<div class="contact-time">
-								<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="count">99+</span>
+								<span class="badge" style="margin-top:5px; background-color:red; border-radius:25%; text-align:center; width:25px;" id="countMtm${sl.mno}"></span>
 								</div>
 							</div>
 						</c:if>

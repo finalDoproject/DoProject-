@@ -14,6 +14,8 @@ public class Project {
 	private int lno; // 프로젝트 단계 번호
 	private String lname; //프로젝트 단계별 이름
 	private String lcheck; // 프젝 단계 체크여부
+	private String nickname; // 이름
+	private int mnocnt; // 프로젝트 별 회원수
 	
 	public Project() {
 		super();
@@ -21,6 +23,13 @@ public class Project {
 
 	public Project(int pmmno) {
 		super();
+		this.pmmno = pmmno;
+	}
+
+	
+	public Project(int pno, int pmmno) {
+		super();
+		this.pno = pno;
 		this.pmmno = pmmno;
 	}
 
@@ -59,6 +68,27 @@ public class Project {
 		this.lpno = lpno;
 		this.lno = lno;
 		this.lname = lname;
+	}
+	
+	
+	public Project(int pno, String ptitle, String psummary, int plevel, int plevelck, int pmno, int pmpno, int pmmno,
+			String pmtype, int lpno, int lno, String lname, String lcheck, String nickname, int mnocnt) {
+		super();
+		this.pno = pno;
+		this.ptitle = ptitle;
+		this.psummary = psummary;
+		this.plevel = plevel;
+		this.plevelck = plevelck;
+		this.pmno = pmno;
+		this.pmpno = pmpno;
+		this.pmmno = pmmno;
+		this.pmtype = pmtype;
+		this.lpno = lpno;
+		this.lno = lno;
+		this.lname = lname;
+		this.lcheck = lcheck;
+		this.nickname = nickname;
+		this.mnocnt = mnocnt;
 	}
 
 	public int getPno() {
@@ -170,16 +200,32 @@ public class Project {
 		this.plevelck = plevelck;
 	}
 
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	
+	public int getMnocnt() {
+		return mnocnt;
+	}
+
+	public void setMnocnt(int mnocnt) {
+		this.mnocnt = mnocnt;
+	}
+
 	@Override
 	public String toString() {
 		return "Project [pno=" + pno + ", ptitle=" + ptitle + ", psummary=" + psummary + ", plevel=" + plevel
 				+ ", plevelck=" + plevelck + ", pmno=" + pmno + ", pmpno=" + pmpno + ", pmmno=" + pmmno + ", pmtype="
-				+ pmtype + ", lpno=" + lpno + ", lno=" + lno + ", lname=" + lname + ", lcheck=" + lcheck + "]";
+				+ pmtype + ", lpno=" + lpno + ", lno=" + lno + ", lname=" + lname + ", lcheck=" + lcheck + ", nickname="
+				+ nickname + ", mnocnt=" + mnocnt + "]";
 	}
 
-
 	
-
 	
 	
 	
