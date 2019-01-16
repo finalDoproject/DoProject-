@@ -114,14 +114,9 @@ function formSubmit(){
         <li class="nav-item" style="margin-top: 20px;">
           <a class="nav-link" onclick="taskToggle();">
             <i class="fas fa-pen-alt"></i>
-            <span>업무 작성하기</span>
+            <span>업무/일정 작성하기</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" href="#" >
-            <i class="fas fa-map-marker-alt"></i>
-            <span>일정 작성하기</span>
-          </a>
           <li class="nav-item">
         	<a class="nav-link" id ="request" href="#" data-toggle="modal" data-target="#exampleModalCenter">
         	<i class="far fa-clock" ></i>
@@ -301,17 +296,16 @@ function formSubmit(){
 						<th>작성자</th>
 						<th>첨부파일</th>
 					</tr>
-					<c:forEach items="${list}" var="f"> 
-					<c:forEach begin="1" end="${fn:length(list)}">
+					<c:forEach items="${list}" var="f" varStatus="status"> 
 					<tr id="${f.fno}">
-						<td>${f.fno}</td>
+						<td>${status.count}</td>
 						<td>${f.foldName}</td>
 						<td>${f.twritedate}</td>
 						<td>${f.twriter}</td>
 						<td align="center">
 						<a href="${pageContext.request.contextPath}/resources/upload/task/${f.fnewName}" download>
 						<img alt="첨부파일" src="${pageContext.request.contextPath}/resources/images/file.png" width=16px></a>
-					</c:forEach>
+					
 					</c:forEach>
 				</table>
 				<c:out value="${pageBar}" escapeXml="false"/>
