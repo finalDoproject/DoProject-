@@ -38,7 +38,6 @@ public interface MemberDao {
 	Attachment selectAttach(int mno);
 	
 	int updateAttachment(Attachment a);
-	
-	Member selectOne(int mno);
+
 
 }

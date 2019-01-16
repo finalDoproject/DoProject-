@@ -34,7 +34,7 @@ public interface MemberService {
 
 	int updateNewPw(Member m);
 
-	Member selectOne(int mno);
+	
 
 	
 
