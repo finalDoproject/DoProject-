@@ -20,9 +20,12 @@ var eventId = 0;
 						end : data[i].mcEnd + 86400000 + 86400000,
 						allDay: true,
 						className: 'info',
+						editable : (data[i].type == 1) ? true : false,
+						color : (data[i].type == 1) ? '#03a9f3' : '#9675ce',
 						getMcno : function(){
 							return data[i].mcno;
 						}
+						
 					}
 					console.log(data[i].mcStart +' ~ ' +data[i].mcEnd);
 					console.log(evt.getMcno());
@@ -131,11 +134,27 @@ var eventId = 0;
 	            var title = event.title;
 	            var start = event.start.format('YYYY-MM-DD');
 	            var end = event.end;
-	            
+	            var editable = event.editable;
+	            var evtType = (editable == true) ? "내 일정" : "업무";
+	            console.log(event);
 	            gEvent = event;
-	            $("#myCalendarModal").find(".modal-title").text(start + " " + title);
+	            
+	            $("#myCalendarModal").find(".modal-title").text("["+evtType+"]"+start + " " + title);
 	            $("#myCalendarModal").find("#editCalendar").val(title);
+	            if(!editable){
+
+	            	$("#myCalendarModal").find("#editCalendar").prop('readonly',true);
+	            	$('#upbtn').css('display', 'none');
+	            	$('#delbtn').css('display', 'none');
+	            } else {
+	            	$("#myCalendarModal").find("#editCalendar").prop('readonly', false);
+	            	$('#upbtn').css('display', 'block');
+	            	$('#delbtn').css('display', 'block');
+	            	
+	            }
 	            $("#myCalendarModal").find("#calendarId").val(id);
+	            
+	            
 	            
 	            // Show Modal
 	            $("#myCalendarModal").modal('show');

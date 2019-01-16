@@ -10,6 +10,7 @@ public class Mypage {
 	private String mcContent; // 개인 일정 내용
 	private String mcCondition; // 개인 일정 상태 
 	private int mcMno; // 개인 일정 회원 번호 
+	private int type; // 마이캘린더 : 1 / 업무 : 2
 	
 	public Mypage() {
 		super();
@@ -23,6 +24,25 @@ public class Mypage {
 		this.mcContent = mcContent;
 		this.mcCondition = mcCondition;
 		this.mcMno = mcMno;
+	}
+
+	public Mypage(int mcno, Date mcStart, Date mcEnd, String mcContent, String mcCondition, int mcMno, int type) {
+		super();
+		this.mcno = mcno;
+		this.mcStart = mcStart;
+		this.mcEnd = mcEnd;
+		this.mcContent = mcContent;
+		this.mcCondition = mcCondition;
+		this.mcMno = mcMno;
+		this.type = type;
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public int getMcno() {
@@ -76,10 +96,8 @@ public class Mypage {
 	@Override
 	public String toString() {
 		return "Mypage [mcno=" + mcno + ", mcStart=" + mcStart + ", mcEnd=" + mcEnd + ", mcContent=" + mcContent
-				+ ", mcCondition=" + mcCondition + ", mcMno=" + mcMno + "]";
+				+ ", mcCondition=" + mcCondition + ", mcMno=" + mcMno + ", type=" + type + "]";
 	}
-	
-	
-	
+
 	
 }
