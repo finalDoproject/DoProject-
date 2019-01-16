@@ -10,7 +10,7 @@
 	
 	<select id="selectProjectList"  parameterType="_int" resultType="project">
 		<!-- SELECT * FROM PROJECT ORDER BY PNO DESC -->
-		SELECT P.*, PM.PMPNO, PM.PMMNO, MNOCNT, M.NICKNAME
+		SELECT DISTINCT P.*, PM.PMPNO, MNOCNT, M.NICKNAME
 		FROM (SELECT PMPNO,COUNT(DISTINCT PMMNO) MNOCNT
 		        FROM PROJECT_MEMBER
 		        GROUP BY PMPNO) PMM
@@ -111,11 +111,13 @@
 	
 	<select id="memberProfileList" resultType="member">
 		SELECT PNO, MNO, MPROFILE, RENAMEDFILENAME
-		FROM (SELECT * FROM PROJECT WHERE PMNO = #{mno})
+		FROM  PROJECT
 		JOIN PROJECT_MEMBER ON (PNO = PMPNO)
 		JOIN MEMBER ON (MNO=PMMNO)
 		JOIN PROFILE_IMG ON (MPROFILE=IMGNO)
 	</select>
+		
+		
 
     
 	<select id="selectTaskLevelCount" resultType="TaskCount">
