@@ -192,7 +192,7 @@ public class ProjectController {
 		//Project project = new Gson().fromJson(projectStr, Project.class);
 		System.out.println("project값 : " +project);
 		String msg  = projectService.updateLevelCk(project)>0?"체크 완료":"체크 실패";
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("msg", msg);	
 		
 	

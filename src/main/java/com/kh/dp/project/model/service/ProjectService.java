@@ -1,11 +1,9 @@
 package com.kh.dp.project.model.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.dp.member.model.vo.Member;
-import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
 import com.kh.dp.project.model.vo.TaskCount;
 

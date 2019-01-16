@@ -51,14 +51,15 @@
 	     
 	
 	      <!-- Navbar Search -->
-	      <form>
 	        <div class="input-group">
 	          <div class="input-group-append searchBar_area" >
 	            <i class="fas fa-search" style="color: rgba(73, 77, 82, 0.6); margin: 5px 10px;"></i>
-	            <input type="text" class="searchBar" placeholder="검색어 입력 후 Enter" aria-label="Search" >
+			      <form id="searchListFrm" action="${pageContext.request.contextPath}/project/projectSearch.do?" >
+			      <input type="hidden" name="mno" value="${member.mno}">
+			      <input type="text" class="searchBar" id="searchWd" name="searchWd" placeholder="검색어 입력 후 Enter" />
+		      	 </form>
 	          </div>
 	        </div>
-	      </form>
 	
 	      <!-- Navbar -->
 	      <ul class="navbar-nav" style="padding-right: 30px; position: absolute; right: 0;">
