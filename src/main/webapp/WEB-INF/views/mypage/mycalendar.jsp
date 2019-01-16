@@ -125,8 +125,8 @@
 	        <input type="hidden" id="calendarId" />
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" onclick="updateCalendar();">수정</button>
-	        <button type="button" class="btn btn-primary" onclick="deleteCalendar();">삭제</button>
+	        <button type="button" class="btn btn-primary" id="upbtn" onclick="updateCalendar();">수정</button>
+	        <button type="button" class="btn btn-primary" id="delbtn" onclick="deleteCalendar();">삭제</button>
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 	      </div>
 	    </div>
@@ -142,6 +142,10 @@
          window.open(url, "_self");  
      });  
 
+	 
+	 $(document).ready(function(){
+		 
+	 })
 	 var gEvent;
 	 function updateCalendar() {
 		 var calendarId = $("#calendarId").val();
@@ -159,6 +163,7 @@
 	 }
 	 
 	 function deleteCalendar() {
+		 
 		 var calendarId = $("#calendarId").val();
 		 
 		 if(confirm("선택하신 일정을 삭제하시겠습니까?")) {
@@ -175,8 +180,9 @@
 	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/moment.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/fullcalendar.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/custom_fullcalendar.js"></script> 
     <script src="${pageContext.request.contextPath }/resources/fullcalendar/locale/ko.js"></script>
+    
 </body>
 
 </html>

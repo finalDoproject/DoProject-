@@ -9,8 +9,14 @@
 	</insert>
 	
 	<select id="selectMypage" resultType="my">
-	SELECT * FROM MYCALENDAR WHERE MCMNO = #{mno} AND MCCONDITION = 'Y'
-	
+	<!-- SELECT * FROM MYCALENDAR WHERE MCMNO = #{mno} AND MCCONDITION = 'Y' -->
+		SELECT * FROM (
+			SELECT 1 "TYPE", MCNO, MCSTART, MCEND, MCCONTENT, MCMNO FROM MYCALENDAR
+			WHERE MCCONDITION = 'Y'
+			UNION
+			SELECT 2 "TYPE", TNO, TSTARTDATE, TENDDATE, TTITLE, TMNO FROM TASK )
+		WHERE MCMNO = #{mno}
+		ORDER BY MCSTART
 	</select>
 	
 	<update id="updateContent">

@@ -100,7 +100,6 @@ public class MypageController {
 		
 		Mypage my = new Mypage();
 		my.setMcno(mcno);
-		/*my.setMcCondition(condition);*/
 		my.setMcMno(m.getMno());
 		
 		System.out.println("삭제됩니다~~");
@@ -138,4 +137,5 @@ public class MypageController {
 		
 		return "/mypage/mypost";
 	}
+	
 }
