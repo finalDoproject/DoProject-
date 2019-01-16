@@ -17,7 +17,7 @@
 <style>
 
 body{
-	 background: url('/semi/resources/img/handsOn.jpg') no-repeat center center fixed; 
+	 background: url('../resources/images/main/twoCom.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -135,6 +135,9 @@ color:#F88E6F;
 <div id="formWrapper">
 
 <div id="form">
+
+<a href="${pageContext.request.contextPath}/member/login.do"><img align="left" width="34" height="30" src="${pageContext.request.contextPath}/resources/images/main/thin_arrow.png" /></a>
+<br>
 <div class="logo">
         <ul class="nav nav-tabs">
 			<li ><a href="${pageContext.request.contextPath}/member/toFindId.do">&nbsp;
