@@ -251,31 +251,38 @@ $(document).ready(function(){
 	$('.tab1').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", false);
 	});
 		
 	$('.tab2').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab3').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab4').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", false);
 	});
 
 	$('.tab5').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", false);
 	});
 	
 	$('.tab6').click(function(){
 		$(this).addClass('selected');
 		$(this).siblings().removeClass('selected');
+		$("select[name=tmno]").attr("disabled", "disabled");
+		
 	});
 	
 	/*업무 우선순위*/
@@ -393,24 +400,7 @@ $(function() {
  
             google.maps.event.addDomListener(window, 'load', init);
         </script> -->
-			<!-- 5. 진척도 지정 -->
 			<br />
-			<div class="line" id="PROGRESS_LINE" >
-				<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
-				<a class="workPrgrs" style="display: inline-block;">
-					<div class="workPrgrs_bg"><!-- 20170407 수정 -->
-						<strong id="PROGRESS_PER" class="txt"></strong>
-						<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
-						<!-- toltip -->
-						<div class="pcnt0" style="width:5%;display:block"><span class="pcnt"><button>0%</button></span></div>
-						<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div><!-- bar style="right:80%;" -->
-						<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div><!-- bar style="right:60%;" -->
-						<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div><!-- bar style="right:40%;" -->
-						<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div><!-- bar style="right:20%;" -->
-						<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div><!-- bar style="right:0;" -->
-					</div><!-- 20170407 수정 -->
-				</a>
-			</div>
 			<!-- 6. 우선순위 지정 -->
 			<div class="form-group" >
 				우선순위 : 
@@ -487,6 +477,8 @@ $(function() {
 		donutPie();
 
 	}
+	
+	
 	
 	</script>
 </body>
