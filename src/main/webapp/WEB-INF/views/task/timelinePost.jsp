@@ -540,10 +540,10 @@ function deleteAttach(){
 
 	function validate(){
 		
-/* 		if($("#tlevel").val() == 0){
+ 		if($("#tlevel").val() == 0){
 			alert("업무 단계를 입력해주세요.");
 			return false;
-		} */
+		} 
 		
 		if($("#tmno").val() == ""){
 			alert("업무 담당자를 지정해주세요.");
