@@ -16,7 +16,7 @@
 <div >
 <c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
-    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" id="${task.tno}">
+    <div class="container-fluid gedf-wrapper" style="width: 60%; margin-top: 70px;" >
         <div >
             <div class=" gedf-main">
             <input type="hidden" name="tno" id="tno${tnum.count }" value="${task.tno }"/>
@@ -24,7 +24,7 @@
 			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
             <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <div class="card gedf-card" id="t${task.tno}">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">

@@ -263,7 +263,7 @@ function optionModalClk(pno, mno){
                 </div>
 			</c:if>
 			</c:forEach>
-			<script>
+		 		<script>
 			 $(document).ready(function() { 
 				 var users_area_cnt = $(".users_area").length;
 				 console.log("cnt:"+users_area_cnt);
@@ -271,10 +271,11 @@ function optionModalClk(pno, mno){
 				 for(var i=0; i<users_area_cnt; i++){
 				 var img = $(".thisImg").eq(i).prop("id");
 				 console.log("img:"+img);
-				$(".thisImg").eq(i).parent().css( 'background-image','url("'+img+'")'); 						 
+				$(".thisImg").eq(i).parent().css( 'background-image','url("${pageContext.request.contextPath}/resources/upload/profile/'+img+'")'); 						 
 				 }
 			 });
 			</script>
+		
 			
                 <!-- optionModal -->
                 <div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
