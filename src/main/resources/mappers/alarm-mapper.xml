@@ -18,8 +18,21 @@
 	</select>
 	
 	<select id="selectCountAlarm" resultType="string">
-		SELECT COUNT(A.ANO) FROM ALARM A
-		JOIN MEMBER M ON(A.AMNO = M.MNO)
-		WHERE M.NICKNAME = #{payload} AND ACONDITION = 'Y'
-	</select>	
+		SELECT COUNT(*) FROM ALARM WHERE AMNO = (SELECT MNO FROM MEMBER WHERE NICKNAME = #{nickName}) AND ACONDITION = 'Y'
+	</select>
+	
+	<select id="selectApno" resultType="_int">
+		SELECT ATYPE FROM ALARM WHERE ANO = #{ano}
+	</select>
+	
+	<select id="selectCountChatAlarm" resultType="string">
+		SELECT COUNT(*) FROM
+        (SELECT CHCONTENT FROM CHAT_PTM WHERE CHREADERS NOT LIKE '%' || #{nickName} || '%' AND CHPNO = #{pno}
+        UNION ALL
+        SELECT CHCONTENT FROM CHAT_MTM WHERE 
+		(CHWRITER = #{mno} OR CHREADER = #{mno}) AND CHPNO = #{pno}
+        AND CHREADERS NOT LIKE '%' || #{nickName} || '%')
+	</select>
+	
+	
 </mapper>

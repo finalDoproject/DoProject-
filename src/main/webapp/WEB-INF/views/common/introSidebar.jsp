@@ -24,7 +24,7 @@
 									<header class="major">
 										<h2>Menu</h2>
 									</header>
-									<ul>
+									<ul style="font-family: 'Exo 2', sans-serif !important; ">
 										<li><a href="/dp">index</a></li>
 										<li><a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}">프로젝트 화면</a></li>
 										<li><a href="${pageContext.request.contextPath}/mypage/mycalendar.do">마이페이지</a></li>

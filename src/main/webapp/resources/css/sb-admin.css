@@ -118,7 +118,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
 }
 .searchBar_area{
   position: relative; 
-  right:-65%;
+  left:230px;
 }
 .searchBar{
   /* margin: 0 auto; */
@@ -259,7 +259,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
     width: 400px;
   }
   .searchBar_area{
-    right:-25%;
+    left:110px;
   }
 
 }

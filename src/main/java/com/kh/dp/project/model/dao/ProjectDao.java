@@ -1,11 +1,13 @@
 package com.kh.dp.project.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 
 public interface ProjectDao {
 	// ---- 프로젝트 ----//
@@ -19,6 +21,8 @@ public interface ProjectDao {
 	int updateOneLevelunCk(Project project);
 	int updateProject(Project project);
 	int updateProjectLv(List<Project> pjLevel);
+	List<Member> memberProfileList(int mno);
+
 	
 	// ---- 메모 ---- //
 	List<Map<String, String>> selectMemoList(Map<String, Object> map);
@@ -39,6 +43,11 @@ public interface ProjectDao {
 	Object selectSearchPM(int pno, int mno);
 	int insertExileAlarm(int pno, int mno);
 	int insertLeaveAlarm(int pno, int mno, int apmno);
+	
+	
+	List<Map<String, String>> projectMemberList(int mno);
+
+	TaskCount selectTaskLevelCount(int pno);
 
 	
 

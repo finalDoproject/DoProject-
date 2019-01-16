@@ -12,7 +12,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.side.model.vo.Join;
 import com.kh.dp.side.model.vo.Matching;
 import com.kh.dp.side.model.vo.MatchingInfo;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
+import com.kh.dp.task.model.vo.Task;
 
 @Repository
 public class SideDaoImpl implements SideDao {
@@ -105,6 +105,7 @@ public class SideDaoImpl implements SideDao {
 		return sqlSession.selectOne("matching.countMember", requestNo);
 	}
 
+
 	@Override
 	public List<Map<String, String>> FileList(int currentPage, int numPerPage, int pno) {
 		
@@ -119,8 +120,21 @@ public class SideDaoImpl implements SideDao {
 
 	@Override
 	public int FileTotalContents(int pno) {
-		
+		// TODO Auto-generated method stub
 		return sqlSession.selectOne("matching.fileTotalContents", pno);
+	}
+
+	@Override
+	public List<Task> totalCalendar(int pno) {
+		
+		
+		return sqlSession.selectList("task.selectTaskList", pno);
+	}
+
+	@Override
+	public List<Member> browseMatchingMember(int requestNo) {
+		
+		return sqlSession.selectList("matching.browseMatchingMember", requestNo);
 	}
 
 }

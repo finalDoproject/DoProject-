@@ -42,6 +42,15 @@
 .ok:hover{background-color: #fff; border:1px solid #F88E6F; color:#F88E6F; cursor:pointer;}
 .ok:focus{outline: none;}
 
+.explainB {
+	 margin-left : 20px;
+	 width : 20px;
+	 height:20px;
+	 background-color:black;
+
+
+}
+
 </style>
 <script>
  var chk = 0;
@@ -68,8 +77,6 @@ function sclick(){
 	
 		$('#taskForm').css('display', 'none');
 		chk=0;
-	
-	
 }
 	
 
@@ -80,16 +87,26 @@ $(function(){
 		});	
 });
 
+//스케줄 매칭 요청 시 하나라도 입력하지 않으면 안넘어 가는 함수
 function formSubmit(){
-	 var title = $("input[name=title]").text();
+	 var title = $("input[name=title]").val()
 	 var member = $("option").val();
-	 var startdate = $("input[name=startDate]").text();
-	 var enddate = $("input[name=endDate]").text();
+	 var startdate = $("input[name=startDate]").val();
+	 var enddate = $("input[name=endDate]").val();
 	 
-	  if(title.length == 0 || startdate.length == 0 
-		|| enddate.length ==0 || member.length == 1){
-		alert ("필수 사항이 입력되지 않았습니다.");
-		return false;
+	  if(title.length == 0){
+		  alert ("제목이 입력되지 않았습니다.");
+		  return false;  
+	  }if(startdate.length == 0){
+		  alert ("시작일이 입력되지 않았습니다.");
+		  return false;
+		  
+	  }if( enddate.length == 0){
+		  alert ("마감일이 입력되지 않았습니다.");
+		  return false;
+	  }if( MEMBER.LENGTH == 1){
+			alert ("사람 수 필수 사항이 입력되지 않았습니다.");
+		  return false;
 	} 
 	  
 	return true;  
@@ -183,7 +200,7 @@ function formSubmit(){
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color : black; margin-left : 180px; font-weight: bolder;">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="background-color : white; color : black; margin-left : 180px; font-weight: bolder;">
               스케줄 매칭</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -239,50 +256,6 @@ function formSubmit(){
           </div>
         </div>
       </div>
-      
-      <!-- invitationModal -->
-      <div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 999999" data-backdrop="static">
-              <div class="modal-dialog" role="document">
-              
-               <form id="proejctEnrollFrm">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="invitationModalLabel">${project.ptitle}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">프로젝트 명</label>
-                        <input type="text" class="form-control" name="ptitle" placeholder="프로젝트명">
-                      </div>
-                      <div class="form-group">
-                        <label for="message-text" class="form-control-label">프로젝트 개요</label>
-                        <textarea class="form-control" name="psummary" placeholder="개요" style="resize: none;"></textarea>
-                      </div>                  
-                        <a href="#" class="addLevel" style="color:#ff7f50; font-weight: 700; font-size: 13px;">프로젝트 단계 설정 추가</a>
-                        <a href="#" class="delLevel" style="color: rgb(185, 185, 185); font-weight: 700; font-size: 13px; display: none">프로젝트 단계 설정 취소</a>                        
-                        <div class="form-group levelbox" style="display: none;">
-                          <hr>
-                          <label for="message-text" class="form-control-label">프로젝트 단계설정 (최대 5단계)</label>
-                          <button type="button" class="btn plusbtn btn-light">+</button>
-                          <button type="button" class="btn minusbtn btn-light">-</button>
-                          
-                          <input type="text" class="form-control" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">
-
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-sm btn-send" style="background-color: coral; color: white">만들기!</button>
-                  </div>                  
-                </div>
-               </form>
-              </div>
-            </div>   
-      
-
      
       <!-- right nav --> 
       <div id="rightNav">
@@ -313,43 +286,32 @@ function formSubmit(){
       </div>
       <hr>
       <div class="todo" style="color: #555">
-        <h6>할일</h6>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck1" id="ck1"> 
-          <label for="ck1">우유 사기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
+        <h6 style="font-weight: 600">일정확인</h6>
+        <c:forEach items="${tasklist}" var="task" varStatus="vs">
+        <c:if test="${member.mno == task.tmno}">
+        <p id="myTask">
+        <a onclick="fnMove('${task.tno}')">
+          <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
+          <input type="hidden" name="taskLv" value="${task.tno}" id="${task.tlevel}"> 
+          <label for="ck">${task.ttitle}</label>
+        </a>
+         <i class="fas fa-times-circle delete_todo" style="display: none"></i>
         </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck2" id="ck2">
-          <label for="ck2">자전거 타기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck3" id="ck3">
-          <label for="ck3">낮잠 자기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck4" id="ck4">
-          <label for="ck4">고양이랑 놀아주기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        <p>
-          <input type="checkbox" name="todo_answer" value="ck5" id="ck5">
-          <label for="ck5">점심메뉴 정하기</label> <i class="fas fa-times-circle delete_todo" style="display: none"></i>
-        </p>
-        
+        </c:if>
+        </c:forEach>
+        <small style="color: #FF8224">*완료된 일정은 자동삭제됩니다.</small>
       </div>
       <hr>
       <div class="timetable " style="color: #555">
   
-          <h6>스케줄매칭 </h6>
+
+          <h6 style="font-weight: 600">스케줄매칭 </h6>
           <ul style="list-style-type: disc;">
             <c:forEach items="${sArr}" var="s" varStatus="status">
               <li>
-              
-                <c:if test="${s.SSNO eq 0}">
-                <a href="#" style="color: #555;">${s.SMCONTENT} <button class="request">요청 준비</button> </a>
-                </c:if>
-                
-                <c:if test="${s.SSNO eq 1}">
+                <c:if test="${s.SSNO eq 0 || s.SSNO eq 1}">
                 <a style="color: #555;">${s.SMCONTENT}
+                <input type="hidden" value="${s.SMCONTENT}" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="ongoing" data-toggle="modal" data-target="#ongoingModalCenter" onclick="selectId(${s.SMNO});">진행중</button> </a>
@@ -357,6 +319,7 @@ function formSubmit(){
                 
                 <c:if test="${s.SSNO eq 2}">
                 <a href="#" style="color: #555;">${s.SMCONTENT} 
+                <input type="hidden" value="${s.SMCONTENT }" id="smcontent" />
                 <input type="hidden" value="${s.SMDATE}" id="smdate"/>
                 <input type="hidden" value="${s.SMENDDATE}" id="smenddate"/>
                 <button class="complete" data-toggle="modal" data-target="#ongoingModalCenter" onclick="result(${s.SMNO});">완료</button> </a>
@@ -374,10 +337,26 @@ function formSubmit(){
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">스케줄 매칭</h5>
+          <h4 class="modal-title" id="exampleModalLongTitle" 
+          style="font-weight:bold;">
+          <span id="exampleTitle"></span>
+          </h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        
+        
+        <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
+        <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
+       	<div>
+       	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
+        <button class="explainB" style="background-color : gray;"></button>
+        <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
+        <button class="explainB" style="background-color : orange; "></button>
+        <span style="color : black"> : 50%이상 ~ 75%미만</span><br />
+        <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
+        <span style="color : black; "> : 75%이상</span>
         </div>
         <div class="modal-body">
             <table class="table table-bordered schedule" style="color : black;">
@@ -557,23 +536,23 @@ function formSubmit(){
       <!-- /right nav -->
 
       <div id="content-wrapper" >
-      	<h5 class="btn" data-toggle="collapse" data-target="#donut"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
-        <div id="donut" class="container-fluid collapse show in">
-        	<div id="piechart"></div>
-        	<div>
-        	<ul class="circle_chart_list">
-				<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>피드백&nbsp;<strong>N건</strong></li>
-				<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
-				<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
-			</ul>
-			</div>
-			<!-- <div style="text-align:center; float:left;"></div> -->
+      	<div class="container-fluid gedf-wrapper">
+      		<h5 class="btn card-header" data-toggle="collapse" data-target="#donut" style="background-color : #F88E6F; width:60%;"><span style="font-size:20px;">업무리포트 총(n건)</span></h5>        
+        	<div id="donut" class="container-fluid collapse show in">
+        		<div id="piechart"></div>
+        		<!-- <div>
+        		<ul class="circle_chart_list">
+					<li>요청&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>진행&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>피드백&nbsp;<strong>N건</strong></li>
+					<li>완료&nbsp;&nbsp;<strong>N건</strong></li>
+					<li>보류&nbsp;&nbsp;<strong>N건</strong></li>		
+				</ul>
+				</div> -->
+        	</div>
         </div>
         
         <!-- /.container-fluid -->
-
         <c:import url="../task/timelinePost.jsp"/>
       </div>
       <!-- /.content-wrapper -->
@@ -640,11 +619,38 @@ function formSubmit(){
 	    	var smdate = $('#smdate').val();
 	    	// 요청 종료일
 	    	var smenddate = $('#smenddate').val();
-	    	alert(requestNo + ", " + smdate + ", " + smenddate);
-	    	// 요일 값 가져오기
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	
+	    	
+	    	// 요일 값 가져오기(숫자)
 	    	var week = ['1','2','3','4','5','6','7'];
 	    	var startDayOfWeek = week[new Date(smdate).getDay()];
 	    	var endDayOfWeek = week[new Date(smenddate).getDay()];
+	    	
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});  
 	    	
 	    	$.ajax({
 	 			url : '${pageContext.request.contextPath}/project/browseDT.do',
@@ -755,6 +761,39 @@ function formSubmit(){
 	 	$('.select2-search__field').attr("style", "width : 370px");
 	 	
 	 	function result(a){
+
+	 		// 요청 번호
+	    	var requestNo = a;
+	 		
+	 		// 요청 시작일
+	    	var smdate = $('#smdate').val();
+	    	// 요청 종료일
+	    	var smenddate = $('#smenddate').val();
+	    	// 요청 제목
+	    	var smcontent = $('#smcontent').val();
+	    	// 요일 값 가져오기(한글)
+	    	var w = ['일요일', '월요일','화요일','수요일','목요일','금요일','토요일'];
+	    	var s = w[new Date(smdate).getDay()];
+	    	var e = w[new Date(smenddate).getDay()];
+	    	$('#exampleTitle').html(smcontent);
+	    	$('#explain').html("매칭 요청 기간 : "+smdate +"("+s + ") ~ " + smenddate +"("+e +")");
+	    	$('#explain2').text("매칭 참여 인원 : ");
+	    	
+	    	$.ajax({
+	 			url : '${pageContext.request.contextPath}/project/browseMatchingMember.do',
+	 			data : {requestNo : requestNo},
+	 			dataType : "json",
+	 			success : function(data){
+	 				
+	 				for(var i in data ) {
+	         			$('#explain2').append(data[i].nickName+ "/" );
+	 				}
+	 			},error : function(request, status, error){
+	      			alert(request + "\n"
+	      					  + status + "\n"
+	      					  + error);
+	         	}
+	 		});
 	    	
 	 		   for(i=1; i<106; i++){
 	 		 $.ajax({
@@ -880,22 +919,34 @@ function formSubmit(){
         	
         });
         
-        
+        function fnMove(tno){
+        	console.log("tno:"+tno);
+        	console.log(":"+$('input:hidden[name=tno]').val());        		
+	        var offset = $('input:hidden[name=tno]').val(tno).parent().offset();
+	        
+	        $('html, body').animate({scrollTop : offset.top}, 400);        		        			
+        	
+	    };
         
         // right nav checkBox 
-        $(document).ready(function() { 
-        $("input:checkbox").on('click', function() {
-             if ( $(this).prop('checked') ) {
-                  $(this).next().addClass("selected");
-                  
-             } else { $(this).next().removeClass("selected");
-             } 
-             if($(this).next().next(".delete_todo").css("display") == "none"){
-                $(this).next().next(".delete_todo").show();
-            } else {
-                $(this).next().next(".delete_todo").hide();
-            }
-        }); 
+         $(document).ready(function() { 
+        	 
+	       var countlv = $(".todo p").length;
+	       
+	       for(var i=0; i<countlv; i++){
+	         	   
+		      if( $("input:hidden[name='taskLv']").eq(i).prop("id")==4){
+		    	  $("input:hidden[name='taskLv']").eq(i).parent().css("display", "none");
+		    	  //$("input:hidden[name='taskLv']").eq(i).next().addClass("selected");
+		    	  //$("input:hidden[name='taskLv']").eq(i).parent().next(".delete_todo").show();
+		      }
+	       }
+	    $(".delete_todo").on('click',function(){
+	    	if(confirm("삭제한 내용은 복구가 불가능합니다.")){
+	    		$(this).parent().css("display", "none");
+	    	}
+	    	
+	    });
     });
     </script>
     
@@ -917,23 +968,13 @@ function formSubmit(){
 			var calendar = jsCalendar.new(elements.calendar);
 
 			// Create events elements
-			elements.title = document.createElement("div");
-			// elements.title.className = "title";
-			// elements.events.appendChild(elements.title);
-			// elements.subtitle = document.createElement("div");
-			// elements.subtitle.className = "subtitle";
-			// elements.events.appendChild(elements.subtitle);
 			elements.list = document.createElement("div");
 			elements.list.className = "list";
 			elements.events.appendChild(elements.list);
 			elements.actions = document.createElement("div");
 			elements.actions.className = "action";
 			elements.events.appendChild(elements.actions);
-			elements.addButton = document.createElement("input");
-			elements.addButton.type = "button";
-			elements.addButton.value = "Add";
-			elements.actions.appendChild(elements.addButton);
-
+		
 			var events = {};
 			var date_format = "DD/MM/YYYY";
 			var current = null;
@@ -975,31 +1016,6 @@ function formSubmit(){
 				}
 			};
 
-			var removeEvent = function (date, index) {
-				// Date string
-				var id = jsCalendar.tools.dateToString(date, date_format, "en");
-
-				// If no events return
-				if (!events.hasOwnProperty(id)) {
-					return;
-				}
-				// If not found
-				if (events[id].length <= index) {
-					return;
-				}
-
-				// Remove event
-				events[id].splice(index, 1);
-
-				// Refresh events
-				showEvents(current);
-
-				// If no events uncheck date
-				if (events[id].length === 0) {
-					calendar.unselect(date);
-				}
-			}
-
 			// Show current date events
 			showEvents(new Date());
 
@@ -1010,38 +1026,8 @@ function formSubmit(){
 				// Show events
 				showEvents(date);
 			});
-
-			elements.addButton.addEventListener("click", function(){
-				// Get event name
-				var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
-				var name = prompt(
-					"Event info",
-					names[Math. floor(Math.random() * names.length)] + "'s birthday."
-				);
-
-				//Return on cancel
-				if (name === null || name === "") {
-					return;
-				}
-
-				// Date string
-				var id = jsCalendar.tools.dateToString(current, date_format, "en");
-
-				// If no events, create list
-				if (!events.hasOwnProperty(id)) {
-					// Select date
-					calendar.select(current);
-					// Create list
-					events[id] = [];
-				}
-
-				// Add event
-				events[id].push({name : name});
-
-				// Refresh events
-				showEvents(current);
-      }, false);
     });
+     
     $(function(){
    	 
  	   // 한국어 설정
@@ -1090,7 +1076,7 @@ function formSubmit(){
     
 	</script>
     <script>
-    $('input[type="text"]').keydown(function() {
+    $('input[type="text"]').not('#searchWd').keydown(function() {
 	    if (event.keyCode === 13) {
 	        event.preventDefault();
 	    }
@@ -1188,7 +1174,7 @@ function formSubmit(){
 						console.log("response" + response[i].mno);
 						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
 						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/upload/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
 						printHTML+="</div>";
 						$('#searchMemberList').append(printHTML);
@@ -1211,12 +1197,13 @@ function formSubmit(){
 			type:"get",
 			data:{pno:pNo},
 			success:function(response){
+				console.log(response);
 				var printHTML = "";
 				if($("#pmno").text() == $("#mno").text()){
 					printHTML+="<div><a class='dropdown-item' href='#' data-toggle='modal' data-target='#invitationModal' style='text-align:center; font-weight:bolder; font-size: 14px; color:coral'>프로젝트 초대하기</a></div>";
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;' onclick='kick(&#39;"+response[i].nickName+"&#39;, &#39;${project.pno}&#39;, &#39;"+response[i].mno+"&#39;, &#39;${member.mno}&#39;);'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/upload/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' onclick='deleteProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;)'";
@@ -1226,7 +1213,7 @@ function formSubmit(){
 				}else{
 					for(var i=0; i<response.length; i++){
 						printHTML+="<div><a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/images/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+						printHTML+="<img src='${pageContext.request.contextPath}/resources/upload/profile/"+response[i].renamedFileName+"' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
 						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a></div>";
 					}
 					printHTML+="<a class='dropdown-item' href='#' onclick='leaveProject(&#39;${project.pno}&#39;, &#39;${member.mno}&#39;, &#39;${project.pmno}&#39;);'";
@@ -1276,25 +1263,40 @@ function formSubmit(){
 		donutPie();
     });
 	function donutPie(){
-		var pieData = {
-			요청: 11,
-			진행: 3,
-			피드백: 3,
-			완료: 10,
-			보류: 7
-		};
-		var chartDonut = c3.generate({
-			bindto: "#piechart",
-			data: {
-				json: [pieData],
-				keys: {
-					value: Object.keys(pieData),
-				},
-				type: "donut",
-			},
-			donut: {
-				title: "전체 " + "건",
-			},
+		var sum;
+		var pieData;
+		$.ajax({
+			url : "${pageContext.request.contextPath}/project/taskLevelCount.do?pno=${project.pno}",
+			success : function(data){
+				sum = data.one + data.two + data.three + data.four + data.five
+				
+				if(data.one == 0 && data.two == 0 && data.three == 0 && data.four == 0 && data.five == 0){
+					pieData = {
+						없음 : 1
+					}
+				}else{
+					pieData = {
+						요청: data.one,
+						진행: data.two,
+						피드백: data.three,
+						완료: data.four,
+						보류: data.five
+					}
+				};
+				var chartDonut = c3.generate({
+					bindto: "#piechart",
+					data: {
+						json: [pieData],
+						keys: {
+							value: Object.keys(pieData),
+						},
+						type: "donut",
+					},
+					donut: {
+						title: "전체 " + sum + "건",
+					},
+				});
+			}
 		});
 	}
 	</script>

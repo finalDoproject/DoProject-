@@ -108,6 +108,10 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update("member.updateAttachment", a);
 	}
 
+  @Override
+	public Member selectOne(int mno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("member.selectOneMno", mno);
+	}
 	
-
 }

@@ -2,6 +2,7 @@ package com.kh.dp.task.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import com.kh.dp.task.model.exception.TaskException;
 import com.kh.dp.task.model.service.TaskService;
 import com.kh.dp.task.model.vo.Attachment;
 import com.kh.dp.task.model.vo.Task;
+import com.kh.dp.task.model.vo.TaskKeep;
 
 @Controller
 public class TaskController {
@@ -106,6 +108,7 @@ public class TaskController {
 		} catch(Exception e) {
 			throw new TaskException("게시글 등록 오류");
 		}
+		System.out.println("task tno 값:" + task.getTbno() );
 		String loc = "/task/taskList.do";
 		String msg = "";
 		
@@ -138,7 +141,7 @@ public class TaskController {
 		System.out.println("tno: " + tno);
 		int tno1 = Integer.parseInt(tno);
 		System.out.println("tno: " + tno1);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		Task task = taskService.selectOneTask(tno1);
 		Attachment attach = taskService.selectOneAttachment(tno1);
 		if(attach != null) {
@@ -154,14 +157,16 @@ public class TaskController {
 								HttpServletRequest request, @RequestParam(value="upFile", required = false) MultipartFile[] upFile,
 								@RequestParam int mno, @RequestParam int pno 
 			/*@RequestParam(value="startdate", required=false) String startdate,
-			@RequestParam(value="enddate", required=false) String enddate*/) {
+			@RequestParam(value="enddate", required=false) String enddate*/) throws ParseException {
 		
 		task.setTpno(pno);
-		System.out.println("pno, mno : " +pno+", " + mno);
 		/*String tTitle = request.getParameter("tTitle");*/
 		// 1. 파일 저장 경로 생성
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
 		Attachment at = new Attachment();
+		System.out.println("upfile" + upFile);
+		task.setTstartdate(parseDate(task.getTstartdate()));
+		task.setTenddate(parseDate(task.getTenddate()));
 		
 		if(upFile != null) {
 		
@@ -215,7 +220,7 @@ public class TaskController {
 		String msg = "";
 		
 		if(result > 0) {
-			msg = "게시글 등록 성공!";
+			msg = "게시글 수정 성공!";
 			/*loc = "/task/taskView.do?no="+task.getTno();*/
 			loc = "/project/projectPage.do?mno="+ mno +"&pno=" + pno;
 			
@@ -249,7 +254,7 @@ public class TaskController {
 	@ResponseBody
 	public Map<String,String> deleteAttach(@RequestParam int tno) {
 		
-		Map<String, String> hmap = new HashMap<>();
+		Map<String, String> hmap = new HashMap<String, String>();
 		int result = taskService.deleteAttach(tno);
 		
 		String msg = "";
@@ -259,6 +264,34 @@ public class TaskController {
 		hmap.put("msg", msg);
 		return hmap;
 	}
+	
+	public String insertTaskKeep(@RequestParam int tno, @RequestParam int mno) {
+		
+		TaskKeep tk = new TaskKeep();
+		
+		tk.setBkbno(tno);
+		tk.setBkmno(mno);
+		
+		int result = taskService.insertTaskkeep(tk);
+		
+		String msg = "";
+		
+		if(result >0) {
+			msg="글을 담아두기 하였습니다. 마이페이지에서 확인하세요!";
 			
-			
+		}else {
+			msg="담아두기 실패!";
+		}
+		
+		return "common/msg";
+	}
+	
+	public static String parseDate(String str) throws ParseException {		
+
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
+		
+		return sdf2.format(sdf1.parse(str));
+	}
+	
 }

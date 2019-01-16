@@ -99,7 +99,6 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneNickname(String nickname) {
 		return memberDao.selectOneNickname(nickname);
 	}
-
 	@Override
 	public Attachment selectAttach(int mno) {
 		return memberDao.selectAttach(mno);
@@ -179,6 +178,12 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public Member selectOne(int mno) {
+		// TODO Auto-generated method stub
+		return memberDao.selectOne(mno);
 	}
 
 	

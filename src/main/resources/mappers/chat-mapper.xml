@@ -4,7 +4,7 @@
 	<resultMap type="map" id="chatPtm"/>	
 	
 	<select id="selectProjectChatList" resultType="chatPtm">
-		SELECT C.*, P.RENAMEDFILENAME
+		SELECT C.*, P.RENAMEDFILENAME, M.NICKNAME
 		FROM CHAT_PTM C  
 		JOIN MEMBER M ON(C.CHWRITER = M.MNO)
 		JOIN PROFILE_IMG P ON(M.MPROFILE = P.IMGNO)
@@ -12,9 +12,9 @@
 		ORDER BY C.CHNO
 	</select>
 	
-	<!-- <update id="updateProjectChatList">
-		UPDATE CHAT_PTM SET CHCONDITION = 'N' WHERE CHPNO = #{pno}
-	</update> -->
+	<update id="updateProjectChatList">
+		UPDATE CHAT_PTM SET CHCONDITION = 'N', CHREADERS = CHREADERS || ',' || #{mno} WHERE CHPNO = #{pno} AND CHCONDITION = 'Y'
+	</update>
 	
 	<select id="selectChatRoomList" resultType="member">
 		SELECT M.*, P.RENAMEDFILENAME FROM MEMBER M
@@ -34,22 +34,64 @@
 		WHERE C.CHPNO = #{pno} AND 
 		((C.CHWRITER = #{chWriter} AND C.CHREADER = #{chReader}) OR 
 		(C.CHWRITER = #{chReader} AND C.CHREADER = #{chWriter}))
+		ORDER BY C.CHNO
 	</select>
 	
-	<!-- <update id="updateOneChatList">
+	<update id="updateOneChatList">
 		UPDATE CHAT_MTM SET CHCONDITION = 'N' WHERE CHPNO = #{pno} AND (CHWRITER = #{chWriter} AND CHREADER = #{chReader}) or CHWRITER = #{chReader} AND CHREADER = #{chWriter}
-	</update> -->
-	
-	<select id="selectSearchChatRoom" resultType="member">
-		SELECT * FROM MEMBER WHERE NICKNAME LIKE '%' || #{roomName} || '%'
-	</select>
+	</update>
 	
 	<insert id="insertMtm">
-		INSERT INTO CHAT_MTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chReader}, #{chPno})
+		INSERT INTO CHAT_MTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chReader}, #{nickName}, #{chPno})
 	</insert>
 	
 	<insert id="insertPtm">
-		INSERT INTO CHAT_PTM VALUES(SEQ_CMMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{chPno})
+		INSERT INTO CHAT_PTM VALUES(SEQ_CPMNO.NEXTVAL, #{chContent}, DEFAULT, DEFAULT, #{chWriter}, #{nickName}, #{chPno})
 	</insert>
-		
+	
+	<select id="selectOneFileName" resultType="string">
+		SELECT RENAMEDFILENAME FROM PROFILE_IMG WHERE
+		IMGNO = (SELECT MPROFILE FROM MEMBER WHERE MNO = #{chReader})
+	</select>
+
+	<select id="selectOneYourName" resultType="string">
+		SELECT NICKNAME FROM MEMBER WHERE MNO = #{chReader}
+	</select>
+	
+	<select id="selectOneChatPtm" resultType="string">
+		SELECT COUNT(*) FROM CHAT_PTM
+		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
+	</select>
+	
+	<select id="selectOneChatMtm" resultType="string">
+		SELECT COUNT(*) FROM CHAT_MTM
+		WHERE CHPNO = #{pno} AND CHREADERS NOT LIKE '%' || #{nickName} || '%'
+		AND CHREADER = #{chWriter} AND CHWRITER = #{chReader}
+	</select>
+	
+	<select id="selectPtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_PTM WHERE CHPNO = #{pno} ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
+	
+	<select id="selectMtmLastChat" resultType="string">
+		SELECT * FROM (SELECT CHCONTENT FROM CHAT_MTM WHERE 
+		((CHWRITER = #{me} AND CHREADER = #{you}) OR (CHWRITER = #{you} AND CHREADER = #{me})) AND CHPNO = #{pno}
+		ORDER BY CHNO DESC) WHERE ROWNUM = 1
+	</select>
+	
+	<update id="updatePtm">
+		UPDATE CHAT_PTM SET CHREADERS =
+		CASE WHEN CHREADERS NOT LIKE '%' || #{nickName} || '%'
+		THEN CHREADERS || ',' || #{nickName}
+		ELSE CHREADERS
+		END WHERE CHPNO = #{pno}
+	</update>
+	
+	<update id="updateMtm">		
+		UPDATE CHAT_MTM SET CHREADERS =
+		CASE WHEN CHREADERS NOT LIKE '%' || #{nickName} || '%'
+		THEN CHREADERS || ',' || #{nickName}
+		ELSE CHREADERS
+		END WHERE CHPNO = #{pno} AND (CHWRITER = #{chWriter} AND CHREADER = #{chReader}) OR (CHWRITER = #{chReader} AND CHREADER = #{chWriter})
+	</update>
 </mapper>

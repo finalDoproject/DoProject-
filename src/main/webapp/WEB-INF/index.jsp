@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
 
+
 		<link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:700" rel="stylesheet">
 		
@@ -23,6 +24,10 @@
 	
 	}
 	</style>
+
+	<link href="https://fonts.googleapis.com/css?family=Exo+2:300i,800i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+
 	</head>
 	<body class="is-preload">
 
@@ -40,9 +45,9 @@
 
 							<!-- Banner -->
 								<section id="banner">
-									<div class="content">
+									<div class="content" style="font-family: 'Exo 2', sans-serif !important; ">
 										<header>
-											<h1>프로젝트를<br />
+											<h1 style="font-family: 'Exo 2', sans-serif !important; ">프로젝트를<br />
 											쉽고 편하게 <br /> 관리하세요!</h1>
 
 										</header>
@@ -55,8 +60,8 @@
 										</c:when>
 										<c:when test="${member != null }">
 											<ul class="actions"> 
-												<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}" class="button big">내 프로젝트로 이동</a></li>
-													<li> &nbsp;&nbsp;<a onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'" class="button big">로그아웃</a></li>
+												<li> &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/project/projectMain.do?mno=${member.mno}" class="button big" style="font-family: 'Exo 2', sans-serif !important; " >내 프로젝트로 이동</a></li>
+													<li> &nbsp;&nbsp;<a onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'" class="button big" style="font-family: 'Exo 2', sans-serif !important; ">로그아웃</a></li>
 											</ul>
 										</c:when>
 										</c:choose>
@@ -65,6 +70,7 @@
 										<img src="resources/images/intro/main1.png" alt="" />
 									</span>
 								</section>
+
 								
 							<!-- Section -->
 								<section>
@@ -162,11 +168,66 @@
 									</div>
 								</section>
 
-
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Ipsum sed dolor</h2>
+									</header>
+									<div class="posts">
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic01.jpg" alt="" /></a>
+											<h3>Interdum aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic02.jpg" alt="" /></a>
+											<h3>Nulla amet dolore</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic03.jpg" alt="" /></a>
+											<h3>Tempus ullamcorper</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic04.jpg" alt="" /></a>
+											<h3>Sed etiam facilis</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic05.jpg" alt="" /></a>
+											<h3>Feugiat lorem aenean</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="resources/images/intro/pic06.jpg" alt="" /></a>
+											<h3>Amet varius aliquam</h3>
+											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<ul class="actions">
+												<li><a href="#" class="button">More</a></li>
+											</ul>
+										</article>
+									</div>
+								</section>
 
 						</div>
 					</div>
-       
+
 				<c:import url="views/common/introSidebar.jsp"/>
 
 		<!-- Scripts -->

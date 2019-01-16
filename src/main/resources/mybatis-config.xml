@@ -32,7 +32,13 @@
 				 alias="Attachment_profile"/>
 		<typeAlias type="com.kh.dp.project.model.vo.ProjectMember" 
 				 alias="ProjectMember"/>
-	</typeAliases>
+		<typeAlias type="com.kh.dp.project.model.vo.TaskCount" 
+				 alias="TaskCount"/>
+		<typeAlias type="com.kh.dp.mypage.model.vo.Mypage" 
+				 alias="my"/>
+		<typeAlias type="com.kh.dp.comment.model.vo.TaskComment" 
+				 alias="taskcomment"/>
+	  </typeAliases>
 	
 	
 </configuration>

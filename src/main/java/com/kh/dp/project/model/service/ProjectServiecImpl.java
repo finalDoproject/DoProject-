@@ -1,5 +1,6 @@
 package com.kh.dp.project.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.kh.dp.member.model.vo.Member;
 import com.kh.dp.project.model.dao.ProjectDao;
 import com.kh.dp.project.model.vo.Memo;
 import com.kh.dp.project.model.vo.Project;
+import com.kh.dp.project.model.vo.TaskCount;
 
 @Service
 public class ProjectServiecImpl implements ProjectService {
@@ -66,6 +68,11 @@ public class ProjectServiecImpl implements ProjectService {
 	@Override
 	public int updateProjectLv(List<Project> pjLevel) {
 		return projectDao.updateProjectLv(pjLevel);
+	}
+	
+	@Override
+	public List<Member> memberProfileList(int mno) {
+		return projectDao.memberProfileList(mno);
 	}
 	
 	// ---- 메모 ---- //
@@ -141,9 +148,17 @@ public class ProjectServiecImpl implements ProjectService {
 		return projectDao.insertLeaveAlarm(pno, mno, apmno);
 	}
 
+	@Override
+	public List<Map<String, String>> projectMemberList(int mno) {
+		 return projectDao.projectMemberList(mno);
+	}
+
+	@Override
+	public TaskCount selectTaskLevelCount(int pno) {
+		return projectDao.selectTaskLevelCount(pno);
+	}
 
 
-	
 
 	
 
