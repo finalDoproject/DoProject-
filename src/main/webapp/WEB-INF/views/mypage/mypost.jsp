@@ -350,16 +350,11 @@ $(function() {
           <!-- Page Content -->
           <div class="page-wrapper">
             <div class="page-breadcrumb" align="left">
-                <div class="row">
-                    <div class="col-5 align-self-center">
-                        <h4 class="page-title">내가 쓴글</h4>
-                    </div>
-                    <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <a href="/">Home</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">내가 쓴글</li>
                                 </ol>
@@ -392,21 +387,7 @@ $(function() {
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>
-                            <div>
-                            	<%--  <c:if test="${member.userId eq task.TWRITER}"> --%>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        	더보기<i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#taskUpdate" id="updatebtn${tnum.count }" name="${tnum.count }">수정하기</a>
-                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/task/taskdelete.do?tno=${task.tno}&mno=${member.mno}&pno=${project.pno}">삭제</a>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                                <%-- </c:if> --%>
-                            </div>
+                            
                         </div>
 					
                     </div>

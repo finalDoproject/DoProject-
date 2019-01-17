@@ -77,7 +77,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <a href="/">Home</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">내 캘린더</li>
                                 </ol>
@@ -159,7 +159,7 @@
 		 // Close Modal
           $("#myCalendarModal").modal('hide');
 		 console.log("mcno : "+ calendarId);
-         location.href = "/dp/mypage/update.do?mcno=" + calendarId + "&content=" + editCalendar;
+         location.href = "/mypage/update.do?mcno=" + calendarId + "&content=" + editCalendar;
 	 }
 	 
 	 function deleteCalendar() {
@@ -174,7 +174,7 @@
 			 
 		 }
 		 
-		 location.href = "/dp/mypage/delete.do?mcno=" + calendarId;
+		 location.href = "/mypage/delete.do?mcno=" + calendarId;
 	 }
 	</script>
 	<script src="${pageContext.request.contextPath }/resources/fullcalendar/jquery-ui.min.js"></script>

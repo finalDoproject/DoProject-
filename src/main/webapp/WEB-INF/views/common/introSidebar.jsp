@@ -24,7 +24,7 @@
 										<li><a href="/">index</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/notice.do">공지사항</a></li>
 										<li><a href="${pageContext.request.contextPath}/intro/board/help.do">고객센터</a></li>
-										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a></li>
+										<li><a href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a></li>
 										<c:if test="${member.userId eq 'admin'}">
 											<li><a href="${pageContext.request.contextPath}/member/MemberList.do">관리자 페이지</a></li>
 										</c:if>

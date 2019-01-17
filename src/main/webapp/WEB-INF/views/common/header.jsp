@@ -118,7 +118,6 @@
 	          </a>
 	          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 	            <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mycalendar.do">My Page</a>
-	            <a class="dropdown-item" href="#">Activity Log</a>
 	            <div class="dropdown-divider"></div>
 	            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">Logout</a>
 	          </div>
@@ -159,7 +158,7 @@
 
 		function openChat() {
 			var windowObj = null;
-			var xPos = (document.body.clientWidth / 2) - 400;
+			var xPos = (document.body.clientWidth / 2) - 450;
 			xPos += window.screenLeft;
 			var yPos = (screen.availHeight / 2) - 300;
 			
@@ -170,7 +169,7 @@
 			}else{		
 			windowObj = window.open(
 					'${pageContext.request.contextPath}/chat.ch?pno='+pno, '채팅방',
-					'width=800,height=600,top=' + yPos + ',left=' + xPos
+					'width=900,height=600,top=' + yPos + ',left=' + xPos
 					+ ',toolbar=no,menubar=no,scrollbars=no,resizable=no,status=no');
 			}
 			

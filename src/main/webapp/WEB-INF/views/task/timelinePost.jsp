@@ -11,6 +11,20 @@
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
         crossorigin="anonymous">
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+        
+ <style>
+ 	.red {
+ 		color : red;
+ 	}
+ 	
+ 	.green {
+ 		color : green;
+ 	}
+ 	
+ 	.yellow {
+ 		color : yellow;
+ 	}
+ </style>
 </head>
 <body>
 <br /><br /><br />
@@ -130,22 +144,22 @@
 						<hr />
 									<!-- 5. 진척도 지정 -->
 			<br />
-						<div class="line" id="PROGRESS_LINE" >
+<!-- 						<div class="line" id="PROGRESS_LINE" >
 							<label class="icon5" style="font-size: 16px; margin-bottom:10px;">진척도 : </label>
 							<a class="workPrgrs" style="display: inline-block;">
-								<div class="workPrgrs_bg"><!-- 20170407 수정 -->
+								<div class="workPrgrs_bg">20170407 수정
 									<strong id="PROGRESS_PER" class="txt"></strong>
-									<span id="PROGRESS" class="bar" ></span><!-- progress bar 100%일때 추가 class="color100p" -->
-									<!-- toltip -->
+									<span id="PROGRESS" class="bar" ></span>progress bar 100%일때 추가 class="color100p"
+									toltip
 									<div class="pcnt0" style="width:5%;display:block"><span class="pcnt"><button>0%</button></span></div>
-									<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div><!-- bar style="right:80%;" -->
-									<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div><!-- bar style="right:60%;" -->
-									<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div><!-- bar style="right:40%;" -->
-									<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div><!-- bar style="right:20%;" -->
-									<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div><!-- bar style="right:0;" -->
-								</div><!-- 20170407 수정 -->
+									<div class="pcnt20" style="left:5%;"><span class="pcnt"><button>20%</button></span></div>bar style="right:80%;"
+									<div class="pcnt40"><span class="pcnt"><button>40%</button></span></div>bar style="right:60%;"
+									<div class="pcnt60"><span class="pcnt"><button>60%</button></span></div>bar style="right:40%;"
+									<div class="pcnt80"><span class="pcnt"><button>80%</button></span></div>bar style="right:20%;"
+									<div class="pcnt100"><span class="pcnt"><button>100%</button></span></div>bar style="right:0;"
+								</div>20170407 수정
 							</a>
-						</div>
+						</div> -->
 						<!-- 6. 우선순위 지정 -->
 						<input type="hidden" id="nowp${tcount }" value="${task.ttpriority }" />
 						<div class="form-group" >
@@ -203,10 +217,6 @@
 						</button>
 						
 					</c:forEach>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
                     <c:if test="${task.taskComment != null}">
                     <c:forEach items="${task.taskComment}" var="c" varStatus="cnum">
 	                    <div id="commentdiv${cnum.count }" style="border : 1px solid lightgray;" >
@@ -501,7 +511,7 @@ $('button[id^=incomment]').click(function(){
 				var attach = data.img;
 				var comment = data.comment;
 				var m = data.m;  
-
+				console.log("선택 : " + $('#ccontent'+thisid).val());
             	$('#locdiv'+thisid).after('<div id="commentdivi'+thisid +'" style="border : 1px solid lightgray;" ><img class="rounded-circle" width="45" id="commentImgi'+thisid +'" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" /></div>');
 				$('#commentdivi'+thisid).append(' <h4 type="text" value="" style=" float : left; display:inline-block;  margin-left:20px; margin-top:10px;">'+ m.nickName+'</h4>');
 				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none; display:inline-block;" maxlength="4000" placeholder="댓글을 입력하세요" id="nowcontent'+thisid+'" readonly>'+comment.ccontent+'</textarea> &nbsp;');
@@ -509,7 +519,7 @@ $('button[id^=incomment]').click(function(){
 				$('#commentImgi'+thisid).css('display','block'); 
 				$('#commentImgi'+thisid).after('<button id="incom" style="float: right; width:50px; height:50px; border-radius: 5px; background-color: #F88E6F; margin-right:20px; margin-top:10px;" class="primary small">삭제</button>');
 				$('#incom').attr('onclick', "location.href='${pageContext.request.contextPath }/comment/deletecomment.do?cno="+comment.cno+"&pno="+pno+"&mno="+ mno+"'");
-                    
+                $('#ccontent'+thisid).val("");
 	    },
 	    error : function(jqxhr, textStatus, errorThrown){
 	        console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
