@@ -743,6 +743,8 @@ function formSubmit(){
 		    				"cursor" : "not-allowed",
 		    				"background-color" : "lightgray"
 		    			});
+	    				
+	    				$('.'+i).off("click");
 	    			};
 	    		};
 	    	}else{
@@ -754,6 +756,7 @@ function formSubmit(){
 		    				"cursor" : "not-allowed",
 		    				"background-color" : "lightgray"
 		    			});
+	    				$('.'+i).off("click");
 	    			};
 	    		};
 	    	};
