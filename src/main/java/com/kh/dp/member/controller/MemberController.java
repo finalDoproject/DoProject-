@@ -126,6 +126,7 @@ public class MemberController {
 		
 		if( m == null) {
 			msg = "존재하지 않는 회원입니다.";
+			loc = "/member/login.do";
 		} else {
 			
 			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
@@ -134,6 +135,7 @@ public class MemberController {
 				loc="/";
 			} else {
 				msg = "비밀번호를 다시 확인해주세요.";
+				loc = "/member/login.do";
 			}
 		}
 		
