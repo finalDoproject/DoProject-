@@ -21,6 +21,7 @@ var eventId = 0;
 						allDay: true,
 						className: 'info',
 						editable : (data[i].type == 1) ? true : false,
+						startEditable : false,
 						color : (data[i].type == 1) ? '#03a9f3' : '#9675ce',
 						getMcno : function(){
 							return data[i].mcno;

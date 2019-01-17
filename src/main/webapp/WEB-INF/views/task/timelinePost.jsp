@@ -212,7 +212,7 @@
                     
                     <c:forEach  items="${task.taskFiles}" var="attach" varStatus="tnum">
 						<button type="button" 
-								class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;" onclick="location.href='${pageContext.request.contextPath}/resources/upload/task/${attach.fnewname}'">
+							class="btn btn-outline-danger btn-block" style="border-color : #F88E6F;" onclick="location.href='${pageContext.request.contextPath}/resources/upload/task/${attach.fnewname}'" download>
 								첨부파일 - ${attach.foldname }
 						</button>
 						

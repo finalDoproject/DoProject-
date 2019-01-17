@@ -352,7 +352,7 @@ $(function() {
             <div class="page-breadcrumb" align="left">
                         <div class="d-flex align-items-center justify-content-end">
                             <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
+                                <ol class="breadcrumb" style="background-color : white">
                                     <li class="breadcrumb-item">
                                         <a href="/">Home</a>
                                     </li>

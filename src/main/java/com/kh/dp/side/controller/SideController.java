@@ -201,7 +201,7 @@ public class SideController {
 				new ArrayList<Task>(taskService.selectListTask(pno));
 		
 		
-
+		System.out.println("t레벨  " + tasklist);
 
 		model.addAttribute("mem", m);
 		model.addAttribute("tasklist", tasklist);
