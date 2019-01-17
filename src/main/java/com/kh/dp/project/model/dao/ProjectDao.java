@@ -47,7 +47,7 @@ public interface ProjectDao {
 
 	TaskCount selectTaskLevelCount(int pno);
 
-	
+	void deleteMemo(int mno, int pno);
 
 
 }

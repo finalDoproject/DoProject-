@@ -195,7 +195,13 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-
+  @Override
+  public void deleteMemo(int mno, int pno) {
+  Map<String, Integer> map = new HashMap<String, Integer>();
+  map.put("pno", pno);
+  map.put("mno", mno);
+  sqlSession.delete("project.deleteMemo", map);
+  }
 
 
 	

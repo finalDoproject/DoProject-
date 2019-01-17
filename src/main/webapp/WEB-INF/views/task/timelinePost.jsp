@@ -8,13 +8,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-        crossorigin="anonymous">
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
         
  <style>
  	.red {
- 		color : red;
+ 		color : #DF4D4D;
  	}
  	
  	.green {
@@ -22,7 +20,7 @@
  	}
  	
  	.yellow {
- 		color : yellow;
+ 		color :  #F6EA14;
  	}
  </style>
 </head>
@@ -39,8 +37,8 @@
 			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
             <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card" id="t${task.tno }">
-                    <div class="card-header" style="background-color : #F88E6F;">
+                <div class="card gedf-card" id="t${task.tno }" >
+                    <div class="card-header" id="card-header${tcount }" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
@@ -74,8 +72,8 @@
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>${task.twritedate }</div>
-                        
-                            <h3 class="card-title">${task.ttitle }</h3>
+                        	
+                            <div id="titlecolor${tcount}"><h3 class="card-title">${task.ttitle }</h3></div>
                             <hr />
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
@@ -171,7 +169,21 @@
 										<option value="3"style="color:orange;" class="ttp3${tcount }" >높음</option>
 										<option value="4" style="color:red;" class="ttp4${tcount }">긴급</option>
 									</select>
-
+								<script>
+								$(function(){
+									var tcount = ${tcount};
+									console.log("옵션" + $('#nowp'+ tcount).val());
+									
+									if($('#nowp'+ tcount).val() == 2){
+										$('#titlecolor'+ tcount).addClass('green');
+									}else if($('#nowp'+ tcount).val() == 3){
+										$('#titlecolor'+ tcount).addClass('yellow');
+									}else if($('#nowp'+ tcount).val() == 4){
+										$('#titlecolor'+ tcount).addClass('red');
+									}
+								});
+									
+								</script>
 								</div>
 						</div>
 					</div>
@@ -511,7 +523,6 @@ $('button[id^=incomment]').click(function(){
 				var attach = data.img;
 				var comment = data.comment;
 				var m = data.m;  
-				console.log("선택 : " + $('#ccontent'+thisid).val());
             	$('#locdiv'+thisid).after('<div id="commentdivi'+thisid +'" style="border : 1px solid lightgray;" ><img class="rounded-circle" width="45" id="commentImgi'+thisid +'" style=" float:left; margin-left:20px; margin-top:10px; display:inline-block;"  src="" alt="" /></div>');
 				$('#commentdivi'+thisid).append(' <h4 type="text" value="" style=" float : left; display:inline-block;  margin-left:20px; margin-top:10px;">'+ m.nickName+'</h4>');
 				$('#commentdivi'+thisid).append(' <textarea style="width: 65%; background-color: transparent; margin-top : 10px; margin-bottom:10px; resize:none; display:inline-block;" maxlength="4000" placeholder="댓글을 입력하세요" id="nowcontent'+thisid+'" readonly>'+comment.ccontent+'</textarea> &nbsp;');

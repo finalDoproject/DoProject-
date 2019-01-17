@@ -145,5 +145,10 @@
 		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 4 AND TPNO = #{pno}) FOUR,
 		(SELECT COUNT(*) FROM TASK WHERE TLEVEL = 5 AND TPNO = #{pno}) FIVE FROM DUAL
 	</select>
+	
+	
+	<delete id="deleteMemo">
+		DELETE MEMO WHERE MMPNO = #{pno} AND MMMNO = #{mno}
+   </delete>
 
 </mapper>

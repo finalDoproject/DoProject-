@@ -306,6 +306,7 @@ public class ProjectController {
 			// 성공
 			// 알림에 데이터 삽입
 			if(projectService.insertExileAlarm(mno, pno) > 0) {
+				projectService.deleteLeaveProject(pno, mno);
 				msg += "성공적으로 추방했습니다.";
 			}
 		}else {

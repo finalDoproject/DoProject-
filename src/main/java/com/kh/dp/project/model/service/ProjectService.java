@@ -43,7 +43,9 @@ public interface ProjectService {
 	List<Map<String, String>> projectMemberList(int mno);
 
 	TaskCount selectTaskLevelCount(int pno);
-
+	
+	
+	void deleteMemo(int mno, int pno);
 
 
 }

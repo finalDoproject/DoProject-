@@ -18,7 +18,6 @@
 	<!-- jQuery UI 라이브러리 js파일 -->
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>  
 	
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSep_oACVc__OknKvoBB2SN9ndH85aTLE&libraries=places"></script>
 <style>  
 
 /* input 기본 스타일 초기화 */
@@ -476,7 +475,6 @@ $(function() {
 	$(document).ready(function(){
 
 			/* function tmanager(){ */
-				console.log("hi");
 				$("#tmno").empty();
 				var pNo = ${project.pno};
 				$.ajax({
@@ -485,7 +483,6 @@ $(function() {
 					type:"get",
 					data:{pno: pNo},
 					success:function(response){
-						console.log("r ~~" + response);
 						
 							for(var i=0; i<response.length; i++){
 								$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');

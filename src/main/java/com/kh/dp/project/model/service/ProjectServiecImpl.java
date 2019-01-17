@@ -159,7 +159,10 @@ public class ProjectServiecImpl implements ProjectService {
 	}
 
 
-
+	@Override
+	public void deleteMemo(int mno, int pno) {
+		projectDao.deleteMemo(mno, pno);
+	}
 	
 
 	
