@@ -291,7 +291,7 @@ function formSubmit(){
         <c:forEach items="${tasklist}" var="task" varStatus="vs">
         <c:if test="${member.mno == task.tmno}">
         <p id="myTask">
-        <a onclick="fnMove('${task.tno}')">
+        <a onclick="fnMove('t${task.tno}')">
           <!-- <input type="checkbox" name="todo_answer" value="ck" id="ck">  -->
           <input type="hidden" name="taskLv" value="${task.tno}" id="${task.tlevel}"> 
           <label for="ck">${task.ttitle}</label>
@@ -941,13 +941,15 @@ function formSubmit(){
         });
         
         function fnMove(tno){
-        	console.log("tno:"+tno);
-        	console.log(":"+$('input:hidden[name=tno]').val());        		
-	        var offset = $('input:hidden[name=tno]').val(tno).parent().offset();
-	        
-	        $('html, body').animate({scrollTop : offset.top}, 400);        		        			
-        	
-	    };
+            console.log("tno:"+tno);
+            console.log(":"+$('#'+tno).prop('id'));  
+           if($('#'+tno).prop('id')== tno){
+             console.log("ok");   
+            var offset = $('#'+tno).offset();
+            $('html, body').animate({scrollTop : offset.top}, 400);                                     
+           }
+            
+        };
         
         // right nav checkBox 
          $(document).ready(function() { 
