@@ -38,16 +38,25 @@
 <!-- Logo fonts -->
 <link href="https://fonts.googleapis.com/css?family=Exo+2:300i,800i"
 	rel="stylesheet">
+<style>
+	.logo_area{ cursor: pointer;}
+</style>
 </head>
+
 <body id="page-top">
 	<div>
 		<nav class="navtop navbar navbar-expand static-top" >
-	      <div class="logo_area " style="width: 200px; height: 60px;">
-	        <a class="navtop_logo"  href="/dp">
+	      <div class="logo_area " onclick="goMain()" style="width: 200px; height: 60px;">
+	        <a class="navtop_logo" href="/" style="width: 200px; height: 60px;">
 	        	<b style="font-family:'Exo 2', sans-serif; font-size: 26px">DOPE</b>
-	        	<small style="font-family:'Exo 2', sans-serif; font-size: 17px">Do Project!</small></a>
+	        	<small style="font-family:'Exo 2', sans-serif; font-size: 17px">Do Project!</small>
+	       	</a>
 	      </div>
-	
+	<script> 
+	function goMain(){
+		location.href="/"; 
+	}
+	</script>
 	     
 	
 	      <!-- Navbar Search -->
