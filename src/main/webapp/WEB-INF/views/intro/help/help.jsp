@@ -40,7 +40,7 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="/dp" class="logo"><strong>Do </strong> Project!</a>
+									<a href="/" class="logo"><strong>Do </strong> Project!</a>
 								</header>
 
 							<!-- Content -->
@@ -51,7 +51,7 @@
 									<c:if test="${member.userId eq 'admin'}">
 									<a href="${pageContext.request.contextPath}/intro/board/insertHelpView.do" style="float : right; " class="button primary small">글쓰기</a>
 									</c:if>
-											<h2> QnA</h2>
+											<h2> FAQ </h2>
 
 					<div class="table-wrapper" >
 						<table style="text-align:center;" id="mtable">

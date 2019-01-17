@@ -249,7 +249,7 @@ function optionModalClk(pno, mno){
                         <p>${project.psummary}</p>
                         <div class="users_area">
                         <%-- <c:forEach items="${memberProfileList}" var="item" varStatus="status">	 --%>
-                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status">	
+                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status"  end="4">	
                         <c:if test="${memberProfile.pno == project.pno}">
                           <div id="users_Img ${memberProfile.mProfile}" class="users_cropcircle">
                           	<input type="hidden" class="thisImg" id="${memberProfile.renamedFileName}">

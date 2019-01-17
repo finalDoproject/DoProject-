@@ -217,6 +217,7 @@ button, a{cursor:pointer;}
 </style>
 <script>
 $(document).ready(function(){
+	
 	$('.pcnt100').click(function(){
 		$('#PROGRESS').css('right','0%')
 		/* $('#PROGRESS').css('background-color','#6db47c'); */
@@ -359,7 +360,7 @@ $(function() {
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="담당자 추가">담당자</label>
 							<div class="col-md-4">
-								<select id="tmno" name="tmno" class="form-control" style="margin-left:130px;">
+								<select id="tmno" name="tmno" class="form-control" style="margin-left:50px; width:250px;">
 								</select>
 				
 							</div>
@@ -471,30 +472,34 @@ $(function() {
 		donutPie();
 
 	}
-	
-	$(function(){
-		function tmanager(){
-			$("#tmno").empty();
-			var pNo = ${pno};
-			$.ajax({
-				url:"${pageContext.request.contextPath }/project/searchMemberList.do",
-				dataType:"json",
-				type:"get",
-				data:{pno: pNo},
-				success:function(response){
-					if($("#pmno").text() == $("#mno").text()){
-						for(var i=0; i<response.length; i++){
-							$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
-							$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
-							console.log(response[i].mno);
-						}
-					}				
-				}
-			});
-			}
-		
-	})
 
+	$(document).ready(function(){
+
+			/* function tmanager(){ */
+				console.log("hi");
+				$("#tmno").empty();
+				var pNo = ${project.pno};
+				$.ajax({
+					url:"${pageContext.request.contextPath }/project/searchMemberList.do",
+					dataType:"json",
+					type:"get",
+					data:{pno: pNo},
+					success:function(response){
+						console.log("r ~~" + response);
+						
+							for(var i=0; i<response.length; i++){
+								$('#tmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+								$('#uptmno').append('<option value="'+response[i].mno+'">'+response[i].nickName+'</option>');
+								console.log(response[i].mno);
+							}
+							
+					}, error:function(request,status,error){
+				    	console.log("code:"+request.status+"\n"+"error:"+error);
+				    }
+				});
+				/* } */
+
+	});
 	
 	
 	</script>

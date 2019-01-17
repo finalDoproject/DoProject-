@@ -38,7 +38,7 @@
 
 				<!-- Header -->
 				<header id="header">
-					<a href="/dp" class="logo"><strong>Do </strong> Project!</a>
+					<a href="/" class="logo"><strong>Do </strong> Project!</a>
 				</header>
 
 				<!-- Content -->
@@ -47,7 +47,7 @@
 						<h1>고객센터</h1>
 					</header>
 
-					<h2>QnA</h2>
+					<h2>FAQ</h2>
 
 					<div class="col-lg-7">
 						<div class="ui-block">

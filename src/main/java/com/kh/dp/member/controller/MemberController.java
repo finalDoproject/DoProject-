@@ -120,7 +120,7 @@ public class MemberController {
 		ModelAndView mv = new ModelAndView();
 		
 		Member m = memberService.selectOne(userId);
-		
+		System.out.println("m" + m);
 		String loc = "/";
 		String msg = "";
 		

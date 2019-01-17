@@ -385,7 +385,7 @@ $(function() {
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    <img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${member.renamedFileName}" alt="">
                                 </div>
                                 <div >
                                     <div class="h5 m-0">&nbsp; ${task.twriter }</div>

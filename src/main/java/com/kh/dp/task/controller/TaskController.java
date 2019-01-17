@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +166,17 @@ public class TaskController {
 		String saveDir = session.getServletContext().getRealPath("/resources/upload/task");
 		Attachment at = new Attachment();
 		System.out.println("upfile" + upFile);
-		task.setTstartdate(parseDate(task.getTstartdate()));
+		
+		
+		
+		if(task.getTstartdate() != null) {
+			task.setTstartdate(parseDate(task.getTstartdate()));
+		}else {
+			Date d = new Date();
+			SimpleDateFormat sdfa = new SimpleDateFormat("MM/dd/yyyy");
+			task.setTstartdate(sdfa.format(d));
+		}
+		
 		task.setTenddate(parseDate(task.getTenddate()));
 		
 		if(upFile != null) {

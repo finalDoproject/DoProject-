@@ -46,6 +46,7 @@ public class ChatController {
 		Project p = chatService.selectProject(pno);
 		model.addAttribute("list", list).addAttribute("secondList", secondList).addAttribute("project", p);
 		session.setAttribute("project", p);
+		session.setAttribute("secondList", secondList);
 
 		return "chat/chat";
 		}

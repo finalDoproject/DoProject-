@@ -161,7 +161,7 @@ function formSubmit(){
     			<i class="fas fa-user-friends"></i>
     			<span>참여자 목록</span>
   			</a>
-  			<div class="dropdown-menu" id="projectIntoMemberList">
+  			<div class="dropdown-menu" id="projectIntoMemberList" style="overflow:auto; max-height:200px;">
 			</div>
         </li>
         <div id="taskForm" class="taskForm" style="position:absolute; display: none; width:400px; height:650px; background-color : #F88E6F;">
@@ -186,7 +186,7 @@ function formSubmit(){
                    <input type="text" class="nickname" name="nickname" id="nickname" placeholder="닉네임 검색" style="width: 70% !important; display: inline-block; margin-bottom: 5px;">&nbsp;
                    <button type="button" id="findUserBtn" onclick="findUser();" class="btn btn-outline-warning">검색</button>
                  </div>
-                 <div class="form-group" id="searchMemberList">
+                 <div class="form-group" id="searchMemberList" style="overflow:auto; min-height:80px; max-height:300px;">
                  </div>              
              </div>                 
            </div>
@@ -871,6 +871,12 @@ function formSubmit(){
 
         $(document).ready(function () {
             w3.includeHTML(init);
+            
+            $("#nickname").keydown(function(event){
+    	 		if(event.keyCode == 13){
+    	 			findUser();
+    	 		}
+    	 	});
         });
         function init() {
             $('#rightNav').BootSideMenu({
@@ -1239,9 +1245,9 @@ function formSubmit(){
 		});
 		
 	}
-	$(function(){
+	/* $(function(){
 		tmanager();	
-	})
+	})*/
 	
 		function tmanager(){
 		$("#tmno").empty();
@@ -1273,6 +1279,7 @@ function formSubmit(){
 	<script>
 	$(document).ready(function () {
 		donutPie();
+		tmanager();
     });
 	function donutPie(){
 		var sum;

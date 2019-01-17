@@ -27,7 +27,7 @@
 
 				<!-- Header -->
 				<header id="header">
-					<a href="/dp" class="logo"><strong>Do </strong> Project!</a>
+					<a href="/" class="logo"><strong>Do </strong> Project!</a>
 				</header>
 
 				<!-- Content -->

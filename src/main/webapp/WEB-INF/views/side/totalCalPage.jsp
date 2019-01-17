@@ -290,6 +290,9 @@ function formSubmit(){
              <div id="content-wrapper" >
             <div class="container-fluid">
 		
+		<c:if test="${tasklist = null }" >
+			<h3>현재 등록된 일정이 없습니다.</h3>
+		</c:if>
 		<c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
 	<c:if test="${task.tlevel eq 6}">

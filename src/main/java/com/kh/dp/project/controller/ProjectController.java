@@ -288,20 +288,7 @@ public class ProjectController {
 		if(result > 0) {
 			projectService.insertLeaveAlarm(pmno, pno, mno);
 		}
-		// 프로젝트 추방됬을 때 성공적으로 나갔으면, alarm 테이블에 데이터 추가
 		
-		//List<Map<String,String>> projectList = projectService.selectProjectList(mno);
-		//List<Map<String,String>> alarmList = projectService.selectAlarmList(mno);
-		
-		//model.addAttribute("projectList",projectList);
-		//model.addAttribute("alarmList", alarmList);
-		
-		//return "project/projectMain";
-		/*Project project = projectService.selectOneProject(pno);
-		ArrayList<Map<String, String>> memberList =
-				new ArrayList<Map<String, String>>(projectService.selectProjectIntoMember(pno));
-		model.addAttribute("project",project);
-		model.addAttribute("memberList", memberList);*/
 		List<Map<String,String>> projectList = projectService.selectProjectList(mno);
 		model.addAttribute("projectList",projectList);
 				
@@ -315,10 +302,11 @@ public class ProjectController {
 		String msg = "";
 		
 		if(result > 0) {
+			projectService.deleteLeaveProject(pno, mno);
 			// 성공
 			// 알림에 데이터 삽입
 			if(projectService.insertExileAlarm(mno, pno) > 0) {
-				msg += "성공적으로 추방했습니다.";				
+				msg += "성공적으로 추방했습니다.";
 			}
 		}else {
 			msg += "추방에 실패했습니다. 관리자에게 문의하세요.";

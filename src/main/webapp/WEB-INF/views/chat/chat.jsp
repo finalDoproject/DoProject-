@@ -22,6 +22,46 @@
 $(document).ready(function(){
 	chatPtm($("#mno").text(), $("#pno").text());
 	
+	var source = new EventSource("/countSSE");
+	source.onopen = function(event){};
+	source.onmessage = function(event){
+		var msg = "";
+		var data = event.data;
+		var where = data.split(":")[0];
+		var count = data.split(":")[1];
+		console.log("data : " + data);
+		/* console.log("data : " + data);
+		console.log("where  : " + where);
+		console.log("count : " + count); */
+		// 프로젝트 단체 채팅
+		if(data.indexOf("p") != -1){
+			if(count > 99){
+				msg = "99+";
+			}else{
+				msg = count;
+			}
+			if(count != 0){
+				$("#countPtm").text(msg)
+				$("#countPtm").css("display", "");
+			}else{
+				$("#countPtm").css("display", "none");
+			}
+		}else{
+			// 개인 채팅 보내는 사람이 나 를 기준으로
+			if(count > 99){
+				msg = "99+";
+			}else{
+				msg = count;
+			}
+			if(count != 0){
+				$("#countMtm"+where.substr(1)).text(msg);
+				$("#countMtm"+where.substr(1)).css("display", "");
+			}else{
+				$("#countMtm"+where.substr(1)).css("display", "none");
+			}
+		}
+	};
+	
 	var list = new Array();
 	<c:forEach items="${secondList}" var="sl">
 		list.push("${sl.mno},${sl.userId},${sl.nickName}");
@@ -34,69 +74,6 @@ $(document).ready(function(){
 		}	
 	}, 500);
 	
-	setInterval(function(){
-		countChatPtm();
-	}, 500);
-	
-	setInterval(function(){
-		countChatMtm();
-	}, 500);
-	
-	function countChatPtm(){
-		var nickName = $("#nickName").text();
-		var pno = $("#pno").text();
-		$.ajax({
-			url:"${pageContext.request.contextPath}/countChatPtm.ch",
-			dataType:"json",
-			type:"GET",
-			data:{"nickName":nickName, "pno":pno},
-			async:false,
-			success:function(response){
-				var msg = "";				
-				if(response.str > 99){
-					msg = "99+";
-				}else{
-					msg = response.str;
-				}
-				if(response.str != 0){
-					$("#countPtm").text(msg)
-					$("#countPtm").css("display", "");
-				}else{
-					$("#countPtm").css("display", "none");
-				}
-			}
-		});
-	};
-
-function countChatMtm(){
-	var mno = $("#mno").text();
-	var nickName = $("#nickName").text();
-	var pno = $("#pno").text();
-	for(var i = 0; i < list.length; i++){
-			var you = list[i].split(",")[0];
-			$.ajax({
-				url:"${pageContext.request.contextPath}/countChatMtm.ch",
-				dataType:"json",
-				type:"GET",
-				data:{"nickName":nickName, "pno":pno, "chWriter":mno, "chReader":you},
-				async:false,
-				success:function(response){
-					var msg = "";				
-					if(response.str > 99){
-						msg = "99+";
-					}else{
-						msg = response.str;
-					}
-					if(response.str != 0){
-						$("#countMtm"+you).text(msg);
-						$("#countMtm"+you).css("display", "");
-					}else{
-						$("#countMtm"+you).css("display", "none");
-					}
-				}
-			});
-		}	
-	};
 });
 var sock;
 //웹소켓 객체 생성하기
@@ -241,8 +218,8 @@ $(document).ready(function(){
 	window.addEventListener('resize', resizeTest);
 	
 	function resizeTest(){
-		if($(window).width() < 800 || $(window).height() < 600){
-			window.resizeTo(800,600);
+		if($(window).width() < 900 || $(window).height() < 600){
+			window.resizeTo(900,600);
 		}
 	}
 
@@ -498,6 +475,7 @@ function updateChatPtm(nickName, pno){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/updateChatPtm.ch",
 		data:{"nickName":nickName, "pno":pno},
+		type:"GET",
 		async:false,
 		success:function(){}
 	});
@@ -507,6 +485,7 @@ function updateChatMtm(nickName, pno, chWriter, chReader){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/updateChatMtm.ch",
 		data:{"nickName":nickName, "pno":pno, "chWriter":chWriter, "chReader":chReader},
+		type:"GET",
 		async:false,
 		success:function(){}
 	});

@@ -25,7 +25,7 @@
 			<input type="hidden" name="pno" id="pno" value="${project.pno}" />
             <input type="hidden" name="mno" id="mno" value="${member.mno}" />
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <div class="card gedf-card" id="t${task.tno }">
                     <div class="card-header" style="background-color : #F88E6F;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div>
-                            <c:if test="${member.userId eq task.twriter}">
+                            <c:if test="${member.nickName eq task.twriter}">
                                 <div class="dropdown">
                                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         	더보기<i class="fa fa-ellipsis-h"></i>
@@ -270,7 +270,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                   <img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${member.renamedFileName}" alt="">
                                     &nbsp;&nbsp;
                                 </div>
                                 <div >
@@ -416,6 +416,8 @@
 
 <script>
 
+
+
 $('a[id^=updatebtn]').click(function(){
 	var num = $(this).prop("name");
 	var tno = $('#tno'+num).val();
@@ -446,7 +448,6 @@ $('a[id^=updatebtn]').click(function(){
 			$('#level'+task.tlevel).addClass("selected");
 			$('.tlevelup').val(task.tlevel);
 			
-			console.log(task.tstartdate.substring(0,10));
 			
 
 			/* if($(task.tlevel == 6)){ */
@@ -454,7 +455,9 @@ $('a[id^=updatebtn]').click(function(){
 				/*  	$('#upwritedate').text(task.twritedate); */
 				 		  $('#upttitle').attr("value",task.ttitle);
 				 		  $('#uptcontent').text(task.tcontent);
-				 	   	  $('#sd').val(task.tstartdate.substring(0,10));
+				 		  if(task.tstartdate != null){
+				 	   	  	$('#sd').val(task.tstartdate.substring(0,10));
+				 		  }
 				 	   	$('#ed').val(task.tenddate.substring(0,10));
 			/* }else{
 				$('#uptwriter').text(task.twriter);
@@ -605,6 +608,8 @@ function deleteAttach(){
 			},
 		});
 	}
+	
+
 	
 
 	</script>
