@@ -249,7 +249,8 @@ function optionModalClk(pno, mno){
                         <p>${project.psummary}</p>
                         <div class="users_area">
                         <%-- <c:forEach items="${memberProfileList}" var="item" varStatus="status">	 --%>
-                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status"  end="4">	
+                        <input type="hidden" id="memlist" value="${ memberProfileList.size()}" />
+                        <c:forEach items="${memberProfileList}" var="memberProfile" varStatus="status" >	
                         <c:if test="${memberProfile.pno == project.pno}">
                           <div id="users_Img ${memberProfile.mProfile}" class="users_cropcircle">
                           	<input type="hidden" class="thisImg" id="${memberProfile.renamedFileName}">
@@ -267,8 +268,9 @@ function optionModalClk(pno, mno){
 			 $(document).ready(function() { 
 				 var users_area_cnt = $(".users_area").length;
 				 console.log("cnt:"+users_area_cnt);
-				 
-				 for(var i=0; i<users_area_cnt; i++){
+				 var list = $('#memlist').val();
+				 console.log("list" + list);
+				 for(var i=0; i<list; i++){
 				 var img = $(".thisImg").eq(i).prop("id");
 				 console.log("img:"+img);
 				$(".thisImg").eq(i).parent().css( 'background-image','url("${pageContext.request.contextPath}/resources/upload/profile/'+img+'")'); 						 

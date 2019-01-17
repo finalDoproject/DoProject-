@@ -68,6 +68,8 @@
 			<mapping path="/member/memberView.do" />
 			<mapping path="/member/memberUpdate.do" />
 			<mapping path="/board/**/*.do" />
+			<mapping path="/project/*.do" />
+
 			<!-- 스프링 3.2버전 부터 exclude라는 태그가 도입되어 특정 url 경로를 등록하여
 				 제외시킬 수 있게 되었다. -->
 			<exclude-mapping path="/board/boardList.do"/>

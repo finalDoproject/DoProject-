@@ -97,9 +97,9 @@
 									
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }1" class="tLevelSelect1 tab1" value="1">요청</button>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }2" class="tLevelSelect1 tab2" value="2">진행</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }3" class="tLevelSelect1 tab5" value="3">피드백</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }4" class="tLevelSelect1 tab3" value="4">완료</button>
-									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }5" class="tLevelSelect1 tab4" value="5">보류</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }3" class="tLevelSelect1 tab3" value="3">피드백</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }4" class="tLevelSelect1 tab4" value="4">완료</button>
+									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }5" class="tLevelSelect1 tab5" value="5">보류</button>
 									<button type="button" style="text-decoration: none;" name="level" id="level${tcount }6" class="tLevelSelect1 tab6" value="6">일정</button>
 								</div>
 							</div>
