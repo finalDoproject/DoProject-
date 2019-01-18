@@ -290,12 +290,12 @@ function formSubmit(){
              <div id="content-wrapper" >
             <div class="container-fluid">
 		
-		<c:if test="${tasklist == null}" >
-			<h3>현재 등록된 일정이 없습니다.</h3>
-		</c:if>
+
+		<c:set var="chk" value="0"/>
 		<c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
 	<c:if test="${task.tlevel eq 6}">
+	<c:set target="${chk}" value="1" />
     <div class="container-fluid gedf-wrapper" style="width: 60%;">
         <div >
             <div class=" gedf-main">
@@ -420,7 +420,9 @@ function formSubmit(){
         </div>
         </c:if>
         </c:forEach>
-        
+        <c:if test="${chk == 0}" >
+			<h3>현재 등록된 일정이 없습니다.</h3>
+		</c:if>
 	</div>
         <!-- /.container-fluid -->
 
