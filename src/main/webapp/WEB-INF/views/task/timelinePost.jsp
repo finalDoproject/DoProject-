@@ -301,7 +301,7 @@
                                     &nbsp;&nbsp;
                                 </div>
                                 <div >
-                                    <div class="h5 m-0" id="uptwriter">&nbsp;</div>
+                                    <div class="h5 m-0" id="uptwriter">&nbsp; ${member.nickName }</div>
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>
@@ -449,7 +449,7 @@ $('a[id^=updatebtn]').click(function(){
 	var num = $(this).prop("name");
 	var tno = $('#tno'+num).val();
 	console.log("tno : " + tno);
-	
+
 	/* $('#levelp').append('<input type="hidden" value="'+num +'" id="levelnum'+num +'"/>'); */
 	
 	$.ajax({
@@ -478,7 +478,7 @@ $('a[id^=updatebtn]').click(function(){
 			
 
 			/* if($(task.tlevel == 6)){ */
-				$('#uptwriter').text(task.twriter);
+				/* $('#uptwriter').text(task.twriter); */
 				/*  	$('#upwritedate').text(task.twritedate); */
 				 		  $('#upttitle').attr("value",task.ttitle);
 				 		  $('#uptcontent').text(task.tcontent);
