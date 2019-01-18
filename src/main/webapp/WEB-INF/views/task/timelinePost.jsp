@@ -43,18 +43,23 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div >
                                 	<c:forEach items="${m}" var="m">
-                                		<c:if test="${m.nickName eq task.twriter}">
+                                		<c:if test="${m.mno eq task.twriter}">
                                 			<img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${m.renamedFileName}" alt="">
                                 		</c:if>
                                 	</c:forEach>
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
-                                    <div class="h7 text-muted"></div>
+                                <c:forEach items="${m}" var="m">
+                                		<c:if test="${m.mno eq task.twriter}">
+                                			<div class="h5 m-0">&nbsp; ${m.nickName}</div>
+                                    		<div class="h7 text-muted"></div>
+                                		</c:if>
+                                </c:forEach>
+                                    
                                 </div>
                             </div>
                             <div>
-                            <c:if test="${member.nickName eq task.twriter}">
+                            <c:if test="${member.mno eq task.twriter}">
                                 <div class="dropdown">
                                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         	더보기<i class="fa fa-ellipsis-h"></i>
@@ -78,7 +83,7 @@
                         <div class="form-group">
 							<h4><label class="col-md-4 control-label" for="담당자 추가" style="margin-top :7px;">담당자 :
 								<c:forEach items="${m}" var="m" varStatus="tnum">
-									<c:if test="${m.mno == task.tmno }">
+									<c:if test="${m.mno eq task.tmno }">
 										${m.nickName }
 									</c:if> 
 								</c:forEach>

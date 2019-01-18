@@ -167,16 +167,10 @@ public class TaskController {
 		Attachment at = new Attachment();
 		System.out.println("upfile" + upFile);
 		
+		System.out.println("task ~~" + task);
 		
-		
-		if(task.getTstartdate() != null) {
-			task.setTstartdate(parseDate(task.getTstartdate()));
-		}else {
-			Date d = new Date();
-			SimpleDateFormat sdfa = new SimpleDateFormat("MM/dd/yyyy");
-			task.setTstartdate(sdfa.format(d));
-		}
-		
+
+		task.setTstartdate(parseDate(task.getTstartdate()));
 		task.setTenddate(parseDate(task.getTenddate()));
 		
 		if(upFile != null) {

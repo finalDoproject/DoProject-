@@ -326,8 +326,9 @@ $(function() {
 			<!-- 작성자 -->
 		<div class="form-group">
 				<div class="col-md-4">
-					<input id="twriter" name="twriter" type="text" value="${member.nickName }" class="form-control" style="text-align:center; width:150px; margin-left:110px; border : 3px solid white; background : white;"
+					<input  type="text" value="${member.nickName }" class="form-control" style="text-align:center; width:150px; margin-left:110px; border : 3px solid white; background : white;"
 								readonly />
+								<input type="hidden" name="twriter" value="${member.mno }"  />
 					<input type="hidden" name="mno" value="${member.mno }" />
 					<input type="hidden" name="pno" value="${project.pno }" />
 				</div>
