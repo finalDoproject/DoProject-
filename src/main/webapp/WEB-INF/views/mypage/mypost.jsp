@@ -383,7 +383,7 @@ $(function() {
                                     <img class="rounded-circle" width="45" src="${pageContext.request.contextPath }/resources/upload/profile/${member.renamedFileName}" alt="">
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
+                                    <div class="h5 m-0">&nbsp; ${member.nickName }</div>
                                     <div class="h7 text-muted"></div>
                                 </div>
                             </div>

@@ -167,11 +167,16 @@ public class TaskController {
 		Attachment at = new Attachment();
 		System.out.println("upfile" + upFile);
 		
-		System.out.println("task ~~" + task);
+		System.out.println("task~~" + task);
+		System.out.println("tstartdate" + task.getTstartdate().getClass());
+		String hi = "";
+		if(task.getTstartdate().getClass() != hi.getClass()) {
+			task.setTstartdate(parseDate(task.getTstartdate()));
+		}
+		if(task.getTenddate().getClass() != hi.getClass()) {
+			task.setTenddate(parseDate(task.getTenddate()));
+		}
 		
-
-		task.setTstartdate(parseDate(task.getTstartdate()));
-		task.setTenddate(parseDate(task.getTenddate()));
 		
 		if(upFile != null) {
 		
