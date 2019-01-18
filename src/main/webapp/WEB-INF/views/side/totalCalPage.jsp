@@ -291,11 +291,11 @@ function formSubmit(){
             <div class="container-fluid">
 		
 
-		<c:set var="chk" value="0"/>
+<%-- 	<c:set var="chk" value="0"/> --%>
 		<c:forEach items="${tasklist}" var="task" varStatus="tnum">
 	<c:set var="tcount" value="${tnum.count}" />
 	<c:if test="${task.tlevel eq 6}">
-	<c:set target="${chk}" value="1" />
+<%-- 	<c:set target="${chk}" value="1" /> --%>
     <div class="container-fluid gedf-wrapper" style="width: 60%;">
         <div >
             <div class=" gedf-main">
@@ -310,8 +310,13 @@ function formSubmit(){
                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                 </div>
                                 <div >
-                                    <div class="h5 m-0">&nbsp; ${task.twriter }</div>
+                                <c:forEach items="${mem}" var="m" varStatus="tnum">
+									<c:if test="${m.mno eq task.twriter }">
+									<div class="h5 m-0">&nbsp; ${m.nickName }</div>
                                     <div class="h7 text-muted"></div>
+									</c:if> 
+								</c:forEach>
+
                                 </div>
                             </div>
                         </div>
@@ -420,13 +425,13 @@ function formSubmit(){
         </div>
         </c:if>
         </c:forEach>
-        <c:if test="${chk == 0}" >
-			<h3>현재 등록된 일정이 없습니다.</h3>
-		</c:if>
+
 	</div>
         <!-- /.container-fluid -->
-
-        
+   <%--      <c:if test="${chk == 0}" >
+			<h3>현재 등록된 일정이 없습니다.</h3>
+		</c:if>
+         --%>
       </div>
       <!-- /.content-wrapper -->
       

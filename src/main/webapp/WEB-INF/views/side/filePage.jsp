@@ -301,7 +301,11 @@ function formSubmit(){
 						<td>${status.count}</td>
 						<td>${f.foldName}</td>
 						<td>${f.twritedate}</td>
-						<td>${f.twriter}</td>
+						<c:forEach items="${mem}" var="m" >
+							<c:if test="${m.mno eq f.twriter }">
+									<td>${m.nickName}</td>
+							</c:if> 
+						</c:forEach>
 						<td align="center">
 						<a href="${pageContext.request.contextPath}/resources/upload/task/${f.fnewName}" download>
 						<img alt="첨부파일" src="${pageContext.request.contextPath}/resources/images/file.png" width=16px></a>
