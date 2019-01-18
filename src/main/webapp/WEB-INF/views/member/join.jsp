@@ -269,7 +269,7 @@ $(function(){
 });
 
 $("#mbEnrollFrm").submit(function(event){
-	
+
 		//아이디중복체크여부
 	    if($("#idDuplicateCheck").val()==0){
 	    	
@@ -313,12 +313,16 @@ $("#mbEnrollFrm").submit(function(event){
 			$(".idCheckFail").hide();
 		 	$(".pwdCheckFail").hide(); 
 			$(".pw2CheckFail").hide();
-		
+			
 			alert("사용가능한 이메일을 입력해주세요.");
 			return false;
 		} 
 		
-		return true;
+		if($("#nickName").val().length > 7){
+			alert("7글자 이하의 닉네임을 사용해주세요.");
+			return false;
+		}
+		/* return true; */
 	
 });
   

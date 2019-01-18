@@ -351,12 +351,12 @@ function formSubmit(){
         <span id="explain2" style="color : black; font-weight : bold; margin-left : 20px;"></span>
         <span id="explain" style="color : black; font-weight : bold; text-align : middle;"></span>
        	<div style="display : none;" id="impor" >
-       	<button class="explainB" style="margin-left : -10%"></button><span style="color : black"> : 25%미만</span><br />
-        <button class="explainB" style="background-color : gray;"></button>
+       	<button class="explainB" style="margin-left : -10%; background-color : #fef0d9;"></button><span style="color : black"> : 25%미만</span><br />
+        <button class="explainB" style="background-color : #fdcc8a;"></button>
         <span style="color : black"> : 25%이상 ~ 50%미만</span><br />
-        <button class="explainB" style="background-color : orange; "></button>
+        <button class="explainB" style="background-color : #fc8d59; "></button>
         <span style="color : black"> : 50%이상 ~ 75%미만</span><br />
-        <button class="explainB" style="background-color : coral; margin-left : -10%"></button>
+        <button class="explainB" style="background-color : #e34a33; margin-left : -10%"></button>
         <span style="color : black; "> : 75%이상</span>
         </div>
         <div class="modal-body">
@@ -815,14 +815,14 @@ function formSubmit(){
 	 			success : function(data){
 	 				
 	 				 if((data.result/data.totalMember)*100 < 25){
-	 					$('#'+data.i).css("background-color", "black");
+	 					$('#'+data.i).css("background-color", "#fef0d9");
 	 				}else if((data.result/data.totalMember)*100 >= 25 && (data.result/data.totalMember)*100 < 50) {
 	 					
-	 					$('#'+data.i).css("background-color", "gray");
+	 					$('#'+data.i).css("background-color", "#fdcc8a");
 	 				}else if((data.result/data.totalMember)*100 >= 50 && (data.result/data.totalMember)*100 < 75){
-	 					$('#'+data.i).css("background-color", "orange");
+	 					$('#'+data.i).css("background-color", "#fc8d59");
 	 				}else{
-	 					$('#'+data.i).css("background-color", "coral");
+	 					$('#'+data.i).css("background-color", "#e34a33");
 	 				} 
 	 				
 	 				
@@ -884,9 +884,9 @@ function formSubmit(){
         function init() {
             $('#rightNav').BootSideMenu({
                 side: "right",
-                //pushBody:false,
+                pushBody:false,
                 width: '280px',
-                closeOnClick: true
+                closeOnClick: false
             });
         }
         // right nav memopad 
@@ -1194,14 +1194,16 @@ function formSubmit(){
 				}else{
 					// 존재함
 					for(var i=0; i<response.length;i++){
-						console.log("response" + response[i].mno);
-						printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
-						printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
-						printHTML+="<img src='${pageContext.request.contextPath}/resources/upload/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
-						printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
-						printHTML+="</div>";
-						$('#searchMemberList').append(printHTML);
-						printHTML = "";
+						if(response[i].nickName != '${member.nickName}' && response[i].nickName != '관리자'){
+							console.log("response" + response[i].mno);
+							printHTML+="<div onclick='inviteProject("+response[i].mno+",&#39;"+response[i].nickName+"&#39;,${pno});'>";
+							printHTML+="<a class='dropdown-item' href='#' style='height:40px; vertical-align:middle;'>";
+							printHTML+="<img src='${pageContext.request.contextPath}/resources/upload/profile/" + response[i].renamedFileName + "' alt='profilpicture' style='float: left; width:30px; height:30px; border-radius: 50%;'>";
+							printHTML+="&nbsp;<span style='vertical-align:middle;'>"+response[i].nickName+"</span></a>";
+							printHTML+="</div>";
+							$('#searchMemberList').append(printHTML);
+							printHTML = "";
+						}
 					}
 				}
 			},

@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <div>
-                            <c:if test="${member.mno eq task.twriter}">
+                            <c:if test="${member.mno eq task.twriter || member.mno eq task.tmno}">
                                 <div class="dropdown">
                                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         	더보기<i class="fa fa-ellipsis-h"></i>

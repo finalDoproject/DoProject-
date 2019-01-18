@@ -171,14 +171,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		Member m = (Member)session.getAttributes().get("member");
+/*		Member m = (Member)session.getAttributes().get("member");
 		Project p = (Project)session.getAttributes().get("project");
 		// 프로젝트 이름
 		String pNo = "p" + p.getPno();
 		// 회원 이름
 		String mNo = "m" + m.getMno();
 		// 연결이 끊기면 프로젝트와 1:1 접속자를 제거 
-		projectSessionList.remove(pNo+mNo);
+		projectSessionList.remove(pNo+mNo);*/
 	}
 
 	@Override
